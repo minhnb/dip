@@ -1,0 +1,38 @@
+{
+    "name":"Neeah/Neeah",
+    "type":"project",
+    "homepage":"https://github.com/cofoundervp/neeah-api/wiki",
+    "authors": [
+      {
+        "name": "James Kenaley",
+        "email": "james.kenaley@cofoundervp.com",
+        "role": "Architect"
+      },
+      {
+        "name": "Vinh Dang",
+        "email": "vinh.dang@cofoundervp.com",
+        "role": "Developer"
+      }
+    ],
+    "require": {
+        "bshaffer/oauth2-server-php": "*",
+        "slim/slim": "*",
+        "tuupola/slim-jwt-auth": "*",
+        "palanik/corsslim": "*",
+        "slim/middleware": "*",
+        "josegonzalez/dotenv": "*",
+        "monolog/monolog": "^1.17",
+        "Flynsarmy/Slim-Monolog": "^1.0",
+        "ircmaxell/random-lib": "^1.1",
+        "segmentio/analytics-php": "^1.2",
+        "hashids/hashids"        : "^1.0",
+        "aws/aws-sdk-php"        : "^3.0",
+        "bugsnag/bugsnag"        : "^2.5",
+        "phpmailer/phpmailer"    : "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Neeah\\": "Neeah/"
+        }
+    }
+}

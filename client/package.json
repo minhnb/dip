@@ -1,0 +1,19 @@
+{
+  "name": "dip",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cofoundervp/Dip.php.git"
+  },
+  "author": "James Kenaley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cofoundervp/Dip.php/issues"
+  },
+  "homepage": "https://github.com/cofoundervp/Dip.php#readme"
+}
