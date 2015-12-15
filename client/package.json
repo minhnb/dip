@@ -1,19 +1,10 @@
 {
-  "name": "dip",
-  "version": "0.0.1",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cofoundervp/Dip.php.git"
-  },
-  "author": "James Kenaley",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cofoundervp/Dip.php/issues"
-  },
-  "homepage": "https://github.com/cofoundervp/Dip.php#readme"
+  "dependencies": {
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.7",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
 }

@@ -1,2 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
-/server/vendor
+Dip.iml
+.idea
+server/node_modules
+client/node_modules
