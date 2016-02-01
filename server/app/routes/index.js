@@ -1,4 +1,5 @@
 "use strict";
+
 const router = require('koa-router')();
 
 module.exports = router;
@@ -11,6 +12,8 @@ const pools = require('./pools');
 const reservations = require('./reservations');
 const sales = require('./sales');
 const users = require('./users');
+
+const auth = require('./auth');
 
 router.get('index page', '/', ctx => {
     ctx.render('index', {
@@ -26,3 +29,5 @@ router.use('/pools', pools.routes(), pools.allowedMethods());
 router.use('/reservations', reservations.routes(), reservations.allowedMethods());
 router.use('/sales', sales.routes(), sales.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
+
+router.use('/auth', auth.routes(), auth.allowedMethods());

@@ -9,12 +9,12 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 
-const router = require('./routes/root');
+const router = require('./routes');
 
 // middlewares
-app.use(convert(bodyparser));
+app.use(bodyparser);
 app.use(convert(json()));
-app.use(convert(logger()));
+app.use(logger());
 app.use(convert(require('koa-static')(__dirname + '/public')));
 
 app.use(convert(views('views', {
@@ -29,15 +29,22 @@ app.use((ctx, next) => {
 
 // logger
 app.use((ctx, next) => {
+    console.log('begin');
     const start = new Date;
-    next().then(() => {
+    return next().catch(err => {
+        console.log('caught', err);
+    }).then(() => {
         const ms = new Date - start;
         console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+        console.log('end');
     });
 });
 app.on('error', function (err, ctx) {
     log.error('server error', err, ctx);
 });
+
+const auth = require('./passport_auth'); // Initialize auth strategies
+app.use(auth.passport.initialize());
 
 // response
 app.use(router.routes(), router.allowedMethods());

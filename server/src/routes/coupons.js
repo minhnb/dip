@@ -1,10 +1,18 @@
 "use strict";
+
 const router = require('koa-router')();
+const auth = require('../passport_auth');
+
+const db = require('../db');
+const entities = require('../entities');
 
 module.exports = router;
 
-router.get('/:code', ctx => {
-    // TODO: authenticate user
-    // TODO: return list of coupons
-    ctx.body = {coupon: {code: ctx.params.code}};
-});
+router.get('get coupon', '/:code',
+    auth.authenticate(),
+    ctx => {
+        return db.coupons.findById(ctx.params.code).exec().then(data => {
+            ctx.body = {coupon: entities.coupon(data)};
+        });
+    }
+);
