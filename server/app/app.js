@@ -10,6 +10,7 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 
+const config = require('./config');
 const router = require('./routes');
 
 // middlewares
@@ -30,14 +31,14 @@ app.use((ctx, next) => {
 
 // logger
 app.use((ctx, next) => {
-    console.log('begin');
     const start = new Date();
     return next().catch(err => {
-        console.log('caught', err);
+        if (config.env != 'production' && config.env != 'prod') {
+            console.log('caught', err);
+        }
     }).then(() => {
         const ms = new Date() - start;
         console.log(`${ ctx.method } ${ ctx.url } - ${ ms }ms`);
-        console.log('end');
     });
 });
 app.on('error', function (err, ctx) {

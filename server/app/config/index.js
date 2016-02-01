@@ -1,6 +1,7 @@
 const merge = require('lodash.merge');
 
-var environment = process.env.NODE_ENV;
+var environment = process.env.NODE_ENV || 'development';
+environment = environment.toLowerCase();
 
 var config = {
     env: environment,
