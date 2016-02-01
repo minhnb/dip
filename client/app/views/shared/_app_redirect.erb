@@ -1,0 +1,18 @@
+<script type="text/javascript">
+var startDate = new Date();
+
+window.location = "thedipapp://<%= @app_redirect_path %>";
+!window.document.webkitHidden && setTimeout(function() {
+	// Handles returning to browser
+	if (new Date() - startDate < 200) {
+		window.location = "<%= Settings.itunes_us_device_app_url %>";
+
+		setTimeout(function() {
+			window.location = "/";
+		}, 100);
+	} else {
+		window.location = "/";
+	}
+}, 100);
+
+</script>
