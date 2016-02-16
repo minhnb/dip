@@ -23,6 +23,7 @@ router.put('add user', '/', (ctx, next) => {
         if (!user) {
             ctx.body = { user: null, error: 'Invalid user' };
         } else {
+            console.log(user);
             ctx.body = { user: entities.user(user, user._id === ctx.state.user._id) };
         }
     });

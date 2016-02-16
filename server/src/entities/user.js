@@ -17,6 +17,7 @@ function convertUser(user, _private) {
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
     }
+    return data;
 }
 
 module.exports = convertUser;
