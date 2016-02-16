@@ -112,6 +112,9 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
     if (Object.keys(offerOpts).length > 0) {
         query = query.elemMatch('offers', offerOpts);
     }
+    if (ctx.query.limit && ctx.query.limit > 0) {
+        query = query.limit(limit);
+    }
     return query.exec().then(pools => {
         ctx.body = { pools: pools.map(entities.pool) };
     });
