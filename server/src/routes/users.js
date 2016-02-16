@@ -36,7 +36,7 @@ router
     .post('update user', '/:username',
         auth.authenticate(['user:update']),
         ctx => {
-            if (ctx.query.username !== 'me') {
+            if (ctx.params.username !== 'me') {
                 let error = "Couldn't update other user's info";
                 ctx.response.status = 401;
                 ctx.body = error;
@@ -45,7 +45,7 @@ router
             let postData = ctx.request.body.user,
                 user = ctx.state.user;
             if (postData.gender) {
-                user.gender = postData.gender;
+                user.gender = postData.gender.toLowerCase();
             }
             if (postData.firstName) {
                 user.firstName = postData.firstName;
@@ -57,7 +57,7 @@ router
                 user.avatar.url = postData.picture.url;
                 user.avatar.contentType = postData.picture.mediaType;
             }
-            user.save().then(() => {
+            return user.save().then(() => {
                 ctx.response.status = 204;
             }).catch(err => {
                 ctx.response.status = 400;
