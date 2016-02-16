@@ -67,7 +67,8 @@ function login() {
                 return next();
             } else {
                 ctx.response.status = 401;
-                ctx.body = 'Unauthorized';
+                //ctx.body = 'Unauthorized';
+                ctx.body = ctx.state.error || 'Unauthorized';
                 throw ctx.state.error;
             }
         });
@@ -93,8 +94,7 @@ function authenticateJwt(requiredScopes) {
                 return next();
             } else {
                 ctx.status = 401;
-                //ctx.body = 'Unauthorized';
-                ctx.body = ctx.state.error || 'Unauthorized';
+                ctx.body = 'Unauthorized';
                 throw ctx.state.error;
             }
         });
