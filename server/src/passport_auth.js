@@ -93,7 +93,8 @@ function authenticateJwt(requiredScopes) {
                 return next();
             } else {
                 ctx.status = 401;
-                ctx.body = 'Unauthorized';
+                //ctx.body = 'Unauthorized';
+                ctx.body = ctx.state.error || 'Unauthorized';
                 throw ctx.state.error;
             }
         });
