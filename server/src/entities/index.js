@@ -8,5 +8,6 @@ module.exports = {
     userReference: require('./userRef'),
     poolReference: require('./poolRef'),
     pool: require('./pool'),
-    photo: require('./photo')
+    photo: require('./photo'),
+    user: require('./user')
 };

@@ -7,6 +7,7 @@ const utils = require('../utils');
 const config = require('../config');
 
 const Schema = mongoose.Schema;
+const cardSchema = require('./subSchemas/creditCard');
 
 const userSchema = new Schema({
     //username: { type: String, required: true },
@@ -26,7 +27,8 @@ const userSchema = new Schema({
     },
     account: {
         stripeId: String,
-        balance: { type: Number, required: true, default: 0 }
+        balance: { type: Number, required: true, default: 0 },
+        cards: [cardSchema]
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{ type: Schema.ObjectId, ref: 'Device' }],

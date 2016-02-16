@@ -12,7 +12,6 @@ router.put('add user', '/', (ctx, next) => {
     let user_info = ctx.params.user;
     ctx.body = { user: ctx.request.body };
 }).get('get user', '/:username', auth.authenticate(['user:read']), ctx => {
-    console.log('render body');
     return db.users.findByEmail(ctx.params.username).exec().then(user => {
         if (!user) {
             ctx.body = { user: null, error: 'Invalid user' };
