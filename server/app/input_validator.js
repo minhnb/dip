@@ -25,6 +25,7 @@ function optional(verifier) {
 
 // Map necessary validator functions to wrapper (and enable IDE's code-hint also)
 validatorWrapper.isAlphanumeric = validator.isAlphanumeric;
+validatorWrapper.isNumeric = validator.isNumeric;
 validatorWrapper.isMongoId = validator.isMongoId;
 validatorWrapper.isURL = validator.isURL;
 validatorWrapper.isInt = validator.isInt;

@@ -5,6 +5,7 @@ const auth = require('../passport_auth');
 
 const db = require('../db');
 const entities = require('../entities');
+const validator = require('../input_validator');
 
 module.exports = router;
 
@@ -35,6 +36,16 @@ router
     )
     .post('update user', '/:username',
         auth.authenticate(['user:update']),
+        validator({
+            request: {
+                body: {
+                    user: {
+                        dob: validator.optional(validator.isDate()),
+                        phone: validator.optional(validator.isNumeric())
+                    }
+                }
+            }
+        }),
         ctx => {
             if (ctx.params.username !== 'me') {
                 let error = "Couldn't update other user's info";
@@ -52,6 +63,12 @@ router
             }
             if (postData.lastName) {
                 user.lastName = postData.lastName;
+            }
+            if (postData.dob) {
+                user.dob = new Date(postData.dob);
+            }
+            if (postData.phone) {
+                user.phone = postData.phone;
             }
             if (postData.picture && postData.picture.url) {
                 user.avatar.url = postData.picture.url;

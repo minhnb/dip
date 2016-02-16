@@ -17,6 +17,8 @@ const userSchema = new Schema({
     firstName: String,
     lastName: String,
     gender: {type: String, required: true, enum: ['male', 'female', 'na']},
+    dob: Date,
+    phone: String,
     status: String,
     location: String,
     timezone: String,

@@ -7,7 +7,7 @@ function convertCreditCard(card) {
         cardType: card.stripeCard.brand,
         lastDigits: card.stripeCard.lastDigits,
         expirationDate: card.stripeCard.expDate,
-        address: card.address
+        address: card.address // street, city, state, zip
     };
 }
 
