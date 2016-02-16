@@ -27,7 +27,7 @@ router
                 if (!user) {
                     ctx.body = {user: null, error: 'Invalid user'};
                 } else {
-                    ctx.body = {user: entities.user(user, user._id === ctx.state.user._id)};
+                    ctx.body = {user: entities.user(user, user._id.equals(ctx.state.user._id))};
                 }
             });
         }
