@@ -38,7 +38,11 @@ passport.use(new JwtStrategy({ secretOrKey: config.jwt.key, algorithms: [config.
         if (err) done(err);else {
             if (!user) {
                 done(null, false, 'Invalid user');
-            } else if (user.sessions.indexOf(jwt_payload.jti) != -1) done(null, false, 'Token has been revoked');else done(null, { user: user, scopes: jwt_payload.scopes });
+            } else if (user.sessions.indexOf(jwt_payload.jti) == -1) {
+                console.log('jti', jwt_payload.jti);
+                console.log(jwt_payload);
+                done(null, false, 'Token has been revoked');
+            } else done(null, { user: user, scopes: jwt_payload.scopes });
         }
     });
 }));

@@ -69,7 +69,7 @@ userSchema.methods.generateJWT = function() {
     this.sessions.push(session);
     return this.save().then(() => {
         return new Promise((resolve, reject) => {
-            jwt.sign({scopes: ['all']}, config.jwt.key, {
+            jwt.sign({scopes: ['all'], jti: session}, config.jwt.key, {
                 subject: this._id,
                 jwtid: session,
                 issuer: config.jwt.issuer,
