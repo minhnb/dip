@@ -35,6 +35,11 @@ const userSchema = new Schema({
 }, {
     timestamps: true
 });
+
+userSchema.virtual('username').get(function () {
+    return this.email;
+});
+
 userSchema.statics.findByEmail = function (email, callback) {
     return this.findOne({ email: email }, callback);
 };

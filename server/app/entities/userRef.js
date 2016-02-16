@@ -3,8 +3,8 @@
 function convertUserReference(user) {
     return {
         id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         username: user.username,
         picture: user.avatar
     };
