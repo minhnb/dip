@@ -9,25 +9,54 @@ const entities = require('../entities');
 module.exports = router;
 
 router.put('add user', '/', (ctx, next) => {
+    // Why do we have a user-adding route here?
     let user_info = ctx.params.user;
     ctx.body = { user: ctx.request.body };
 }).get('get user', '/:username', auth.authenticate(['user:read']), ctx => {
-    return db.users.findByEmail(ctx.params.username).exec().then(user => {
+    return new Promise((resolve, reject) => {
+        if (ctx.params.username === 'me') {
+            resolve(ctx.state.user);
+        } else {
+            resolve(db.users.findByEmail(ctx.params.username).exec());
+        }
+    }).then(user => {
         if (!user) {
             ctx.body = { user: null, error: 'Invalid user' };
         } else {
-            ctx.body = { user: entities.userReference(user) };
+            ctx.body = { user: entities.user(user, user._id === ctx.state.user._id) };
         }
     });
 }).post('update user', '/:username', auth.authenticate(['user:update']), ctx => {
-    let user_info = ctx.params.user;
-    if (ctx.params.username !== 'me') {
-        // TODO: handle unauthorized error
-        throw new Error();
+    if (ctx.query.username !== 'me') {
+        let error = "Couldn't update other user's info";
+        ctx.response.status = 401;
+        ctx.body = error;
+        throw new Error(error);
     }
-    // TODO: Update user's information
-    ctx.body = { user: { username: ctx.params.username } };
+    let postData = ctx.request.body.user,
+        user = ctx.state.user;
+    if (postData.gender) {
+        user.gender = postData.gender;
+    }
+    if (postData.firstName) {
+        user.firstName = postData.firstName;
+    }
+    if (postData.lastName) {
+        user.lastName = postData.lastName;
+    }
+    if (postData.picture && postData.picture.url) {
+        user.avatar.url = postData.picture.url;
+        user.avatar.contentType = postData.picture.mediaType;
+    }
+    user.save().then(() => {
+        ctx.response.status = 204;
+    }).catch(err => {
+        ctx.response.status = 400;
+        ctx.body = "Bad request";
+        throw err;
+    });
 }).put('add payment', '/me/payment_methods', auth.authenticate(['user:updatePayment']), ctx => {
-    let token = ctx.params.stripe_token;
+    let token = ctx.query.stripeToken;
+    // TODO: Read stripe docs
     ctx.body = { user: {} };
 });
