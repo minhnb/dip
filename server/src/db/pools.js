@@ -9,6 +9,7 @@ const pools = new Schema({
     location: {type: String, required: true},
     details: String,
     url: String,
+    instagram: String,
     lowRate: Number,
     highRate: Number,
     rating: Number,

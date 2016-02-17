@@ -42,7 +42,7 @@ pool.use('/', function (ctx, next) {
     }
 }), function (ctx) {
     var date = ctx.query.date;
-    db.pool.find({ _id: ctx.params.id, "offers.date": date }).exec().then(function (pool_data) {
+    return db.pool.find({ _id: ctx.params.id, "offers.date": date }).exec().then(function (pool_data) {
         ctx.body({
             offers: pool_data.offers.map(function (x) {
                 return entities.offer(x, pool_data);
