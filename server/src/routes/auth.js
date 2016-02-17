@@ -1,10 +1,11 @@
 "use strict";
 
 const router = require('koa-router')();
-const auth = require('../passport_auth');
-
-const validator = require('../input_validator');
 const db = require('../db');
+
+const auth = require('../helpers/passport_auth');
+const validator = require('../helpers/input_validator');
+const stripe = require('../helpers/stripe');
 
 module.exports = router;
 
@@ -37,8 +38,14 @@ router
                 gender: ctx.request.body.gender
             });
             return user.setPassword(ctx.request.body.password).then(() => {
-                return user.save().then(data => {
+                return user.save().then(user => {
                     ctx.response.status = 204;
+                    return stripe.customers.create({
+                        email: user.email
+                    }).then(customer => {
+                        user.account.stripeId = customer.id;
+                        user.save();
+                    });
                 }).catch(err => {
                     if (err.code === 11000) {
                         // Duplicate key error -- existed email

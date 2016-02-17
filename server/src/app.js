@@ -61,7 +61,7 @@ app.on('error', function (err, ctx) {
     console.error('server error', err, ctx);
 });
 
-const auth = require('./passport_auth'); // Initialize auth strategies
+const auth = require('./helpers/passport_auth'); // Initialize auth strategies
 app.use(auth.passport.initialize());
 
 // response

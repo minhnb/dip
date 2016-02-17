@@ -9,9 +9,9 @@ const passport = require('koa-passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 
-const users = require('./db/users');
+const users = require('./../db/users');
 
-const config = require('./config');
+const config = require('./../config/index');
 
 module.exports = {
     passport: passport,

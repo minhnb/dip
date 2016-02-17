@@ -1,7 +1,7 @@
 "use strict";
 
 const router = require('koa-router')();
-const auth = require('../passport_auth');
+const auth = require('../helpers/passport_auth');
 const db = require('../db');
 
 const entities = require('../entities');
