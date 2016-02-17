@@ -3,11 +3,13 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const utils = require('../helpers/utils');
 const config = require('../config');
+
+const utils = require('../helpers/utils');
 
 const Schema = mongoose.Schema;
 const cardSchema = require('./subSchemas/creditCard');
+const sessions = require('./sessions');
 
 const userSchema = new Schema({
     //username: { type: String, required: true },
@@ -34,7 +36,6 @@ const userSchema = new Schema({
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{ type: Schema.ObjectId, ref: 'Device'}],
-    sessions: [String],
     facebookId: {type: String, index: {unique: true, sparse: true}}
 }, {
     timestamps: true
@@ -48,24 +49,13 @@ userSchema.statics.findByEmail = function(email, callback) {
     return this.findOne({email: email}, callback);
 };
 userSchema.methods.generateSalt = function() {
-    return new Promise(function(resolve, reject) {
-        crypto.randomBytes(64, function(err, buf) {
-            if (err) reject(err);
-            else resolve(buf.toString('hex'));
-        });
-    });
+    return crypto.randomBytes(64).toString('hex');
 };
 userSchema.methods.setPassword = function(password) {
-    return Promise.resolve().then(() => {
-        if (!this.salt) {
-            return this.generateSalt().then(salt => {
-                this.salt = salt;
-                this.encryptedPassword = this.encryptPassword(password);
-            });
-        } else {
-            this.encryptedPassword = this.encryptPassword(password);
-        }
-    });
+    if (!this.salt) {
+        this.salt = this.generateSalt();
+    }
+    this.encryptedPassword = this.encryptPassword(password);
 };
 userSchema.methods.checkPassword = function(password) {
     return this.encryptedPassword === this.encryptPassword(password);
@@ -74,13 +64,13 @@ userSchema.methods.encryptPassword = function (password) {
     return crypto.pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString('hex');
 };
 userSchema.methods.generateJWT = function() {
-    var session = utils.generateToken(64);
-    this.sessions.push(session);
-    return this.save().then(() => {
+    var sessionKey = utils.generateToken(64);
+    var session = new sessions({_id: sessionKey, user: this});
+    return session.save().then(() => {
         return new Promise((resolve, reject) => {
-            jwt.sign({scopes: ['all'], jti: session}, config.jwt.key, {
+            jwt.sign({scopes: ['all'], jti: sessionKey}, config.jwt.key, {
                 subject: this._id,
-                jwtid: session,
+                jwtid: sessionKey,
                 issuer: config.jwt.issuer,
                 algorithm: config.jwt.algorithm
             }, token => {

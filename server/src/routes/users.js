@@ -44,23 +44,37 @@ router
                         email: validator.optional(validator.isEmail),
                         dob: validator.optional(validator.isDate()),
                         phone: validator.optional(validator.isNumeric()),
-                        oldPassword: validator.optional(validator.validatePassword),
+                        gender: validator.optional(validator.isIn('male', 'female', 'na')),
+                        oldPassword: pwd => {
+                            if (pwd !== undefined && !ctx.state.user.checkPassword(pwd)) {
+                                throw new Error('Wrong password');
+                            }
+                        },
                         newPassword: validator.optional(validator.validatePassword)
                     }
                 }
+            },
+            params: {
+                username: validator.isIn('me')
             }
         }),
         ctx => {
-            if (ctx.params.username !== 'me') {
-                let error = "Couldn't update other user's info";
-                ctx.response.status = 401;
-                ctx.body = error;
-                throw new Error(error);
-            }
+            //if (ctx.params.username !== 'me') {
+            //    ctx.throw(401, "Couldn't update other user's info");
+            //    //let error = "Couldn't update other user's info";
+            //    //ctx.response.status = 401;
+            //    //ctx.body = error;
+            //    //throw new Error(error);
+            //}
             let postData = ctx.request.body.user,
                 user = ctx.state.user;
+
+            if (postData.email !== undefined) {
+                user.email = postData.email.toLowerCase();
+            }
+
             if (postData.gender !== undefined) {
-                user.gender = postData.gender ? postData.gender.toLowerCase() : 'na';
+                user.gender = postData.gender;
             }
             if (postData.firstName !== undefined) {
                 user.firstName = postData.firstName;
@@ -77,6 +91,9 @@ router
             if (postData.picture && postData.picture.url) {
                 user.avatar.url = postData.picture.url;
                 user.avatar.contentType = postData.picture.mediaType;
+            }
+            if (postData.oldPassword !== undefined) {
+                user.setPassword(postData.newPassword);
             }
             return user.save().then(() => {
                 ctx.response.status = 204;

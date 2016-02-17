@@ -9,9 +9,10 @@ var passport = require('koa-passport');
 var LocalStrategy = require('passport-local').Strategy;
 var JwtStrategy = require('passport-jwt').Strategy;
 
-var users = require('./../db/users');
+var users = require('../db/users');
+var sessions = require('../db/sessions');
 
-var config = require('./../config/index');
+var config = require('../config/index');
 
 module.exports = {
     passport: passport,
@@ -34,15 +35,21 @@ passport.use(new LocalStrategy({ session: false }, function (username, password,
 }));
 
 passport.use(new JwtStrategy({ secretOrKey: config.jwt.key, algorithms: [config.jwt.algorithm], issuer: config.jwt.issuer }, function (jwt_payload, done) {
-    users.findById(jwt_payload.sub, function (err, user) {
-        if (err) done(err);else {
-            if (!user) {
-                done(null, false, 'Invalid user');
-            } else if (user.sessions.indexOf(jwt_payload.jti) == -1) {
-                done(null, false, 'Token has been revoked');
-            } else {
-                done(null, { user: user, scopes: jwt_payload.scopes });
-            }
+    sessions.find({ _id: jwt_payload.jti, user: jwt_payload.sub }, function (err, session) {
+        if (err) {
+            done(err);
+        } else if (!session) {
+            done(null, false, 'Session has been expired');
+        } else {
+            users.findById(jwt_payload.sub, function (err, user) {
+                if (err) {
+                    done(err);
+                } else if (!user) {
+                    done(null, false, 'Invalid user');
+                } else {
+                    done(null, { user: user, scopes: jwt_payload.scopes });
+                }
+            });
         }
     });
 }));

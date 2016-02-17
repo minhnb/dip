@@ -7,6 +7,7 @@ function convertPool(pool) {
         id: pool._id,
         name: pool.name,
         title: pool.title,
+        instagram: pool.instagram,
         location: pool.location,
         address: pool.address,
         coordinates: pool.coordinates,
