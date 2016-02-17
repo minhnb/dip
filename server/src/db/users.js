@@ -7,6 +7,7 @@ const utils = require('../utils');
 const config = require('../config');
 
 const Schema = mongoose.Schema;
+const cardSchema = require('./subSchemas/creditCard');
 
 const userSchema = new Schema({
     //username: { type: String, required: true },
@@ -16,6 +17,8 @@ const userSchema = new Schema({
     firstName: String,
     lastName: String,
     gender: {type: String, required: true, enum: ['male', 'female', 'na']},
+    dob: Date,
+    phone: String,
     status: String,
     location: String,
     timezone: String,
@@ -26,15 +29,21 @@ const userSchema = new Schema({
     },
     account: {
         stripeId: String,
-        balance: {type: Number, required: true, default: 0}
+        balance: {type: Number, required: true, default: 0},
+        cards: [cardSchema]
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{ type: Schema.ObjectId, ref: 'Device'}],
     sessions: [String],
-    facebookId: {type: String, index: {unique: true}}
+    facebookId: {type: String, index: {unique: true, sparse: true}}
 }, {
     timestamps: true
 });
+
+userSchema.virtual('username').get(function() {
+    return this.email;
+});
+
 userSchema.statics.findByEmail = function(email, callback) {
     return this.findOne({email: email}, callback);
 };
@@ -69,7 +78,7 @@ userSchema.methods.generateJWT = function() {
     this.sessions.push(session);
     return this.save().then(() => {
         return new Promise((resolve, reject) => {
-            jwt.sign({scopes: ['all']}, config.jwt.key, {
+            jwt.sign({scopes: ['all'], jti: session}, config.jwt.key, {
                 subject: this._id,
                 jwtid: session,
                 issuer: config.jwt.issuer,

@@ -1,16 +1,16 @@
-const merge = require('lodash.merge');
+'use strict';
 
 var environment = process.env.NODE_ENV || 'development';
 environment = environment.toLowerCase();
 
-var config = {
+module.exports = {
     env: environment,
-    mongo: {},
+    mongo: {
+        uri: process.env.URI
+    },
     jwt: {
-        key: 'default key',
-        algorithm: 'HS256',
+        key: process.env.JWT_KEY,
+        algorithm: process.env.JWT_ALG,
         issuer: 'dip'
     }
 };
-
-module.exports = merge(config, require('./' + environment + '.js') || {});

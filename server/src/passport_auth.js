@@ -44,10 +44,11 @@ passport.use(new JwtStrategy(
             else {
                 if (!user) {
                     done(null, false, 'Invalid user');
-                } else if (user.sessions.indexOf(jwt_payload.jti) != -1)
+                } else if (user.sessions.indexOf(jwt_payload.jti) == -1) {
                     done(null, false, 'Token has been revoked');
-                else
+                } else {
                     done(null, {user: user, scopes: jwt_payload.scopes});
+                }
             }
         });
     }
@@ -66,7 +67,8 @@ function login() {
                 return next();
             } else {
                 ctx.response.status = 401;
-                ctx.body = 'Unauthorized';
+                //ctx.body = 'Unauthorized';
+                ctx.body = ctx.state.error || 'Unauthorized';
                 throw ctx.state.error;
             }
         });
