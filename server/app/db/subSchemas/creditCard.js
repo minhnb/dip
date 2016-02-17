@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var dateFormat = require('dateformat');
+var utils = require('../../helpers/utils');
 
 var Schema = mongoose.Schema;
 
@@ -19,7 +19,7 @@ var cardSchema = new Schema({
 });
 
 cardSchema.virtual('expDate').get(function () {
-    return dateFormat(new Date(this.expYear, this.expMonth), 'mm/yyyy');
+    return utils.convertCardExpireDate(this.expYear, this.expMonth);
 });
 
 module.exports = cardSchema;

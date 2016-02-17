@@ -5,6 +5,7 @@ const pool = Router();
 
 const auth = require('../helpers/passport_auth');
 const validator = require('../helpers/input_validator');
+const utils = require('../helpers/utils');
 
 const db = require('../db');
 const entities = require('../entities');
@@ -13,7 +14,7 @@ module.exports = router;
 
 pool.use('/', (ctx, next) => {
         let id = ctx.params.id;
-        db.pools.findById(id).exec().then(data => {
+        return db.pools.findById(id).exec().then(data => {
             ctx.state.pool = data;
             return next();
         }).catch(err => {
@@ -33,12 +34,12 @@ pool.use('/', (ctx, next) => {
             }
         }),
         ctx => {
-        let pool = ctx.state.pool,
-            limit = ctx.query.limit || 100,
-            offset = ctx.query.offset || 0;
-        db.photos.find({pool: pool}).populate('users').limit(limit).skip(offset).exec().then(photos => {
-            ctx.body = {photos: photos.map(entities.photo)};
-        });
+            let pool = ctx.state.pool,
+                limit = ctx.query.limit || 100,
+                offset = ctx.query.offset || 0;
+            return db.photos.find({pool: pool}).populate('users').limit(limit).skip(offset).exec().then(photos => {
+                ctx.body = {photos: photos.map(entities.photo)};
+            });
     })
     .get('pool offers', '/offers',
         validator({
@@ -47,14 +48,22 @@ pool.use('/', (ctx, next) => {
             }
         }),
         ctx => {
-        let date = ctx.query.date;
-        return db.pool.find({_id: ctx.params.id, "offers.date": date}).exec().then(function(pool_data) {
-            ctx.body({
-                offers: pool_data.offers.map(x => {
-                    return entities.offer(x, pool_data);
-                })
+            let date = ctx.query.date,
+                pool = ctx.state.pool;
+                pool = ctx.state.pool;
+            let offers = pool.offers.filter(offer => {
+                    return offer.date === utils.convertDate(date);
+                });
+            ctx.response.body = offers.map(x => {
+                return entities.offer(x, pool);
             });
-        });
+            //return db.pool.find({_id: ctx.params.id, "offers.date": utils.convertDate(date)}).exec().then(function(pool_data) {
+            //    ctx.response.body = {
+            //        offers: pool_data.offers.map(x => {
+            //            return entities.offer(x, pool_data);
+            //        })
+            //    };
+            //});
     });
 
 router
@@ -77,7 +86,6 @@ router
             }
         }),
         ctx => {
-            console.log(ctx.query);
             var query = db.pools.where("active").equals(true);
 
             // Filter on location
@@ -105,7 +113,7 @@ router
             // Filter on offer
             let offerOpts = {};
             if (ctx.query.date) {
-                offerOpts.date = ctx.query.date;
+                offerOpts.date = utils.convertDate(ctx.query.date);
             }
             if (ctx.query.startTime) {
                 offerOpts.endTime = {$gt: ctx.query.startTime};
