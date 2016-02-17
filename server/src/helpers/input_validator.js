@@ -23,6 +23,12 @@ function optional(verifier) {
     };
 }
 
+function required(strong) {
+    return (data => {
+        return data !== undefined && (!strong || (data !== null && data !== ''));
+    });
+}
+
 // Map necessary validator functions to wrapper (and enable IDE's code-hint also)
 validatorWrapper.isAlphanumeric = validator.isAlphanumeric;
 validatorWrapper.isNumeric = validator.isNumeric;
@@ -43,5 +49,6 @@ validatorWrapper.normalizeEmail = validator.normalizeEmail;
 validatorWrapper.trim = validator.trim;
 validatorWrapper.validatePassword = validatePassword;
 validatorWrapper.optional = optional;
+validatorWrapper.required = required;
 
 module.exports = validatorWrapper;

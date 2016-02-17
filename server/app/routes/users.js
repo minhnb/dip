@@ -1,11 +1,12 @@
 "use strict";
 
 var router = require('koa-router')();
-var auth = require('../helpers/passport_auth');
-
 var db = require('../db');
 var entities = require('../entities');
+
+var auth = require('../helpers/passport_auth');
 var validator = require('../helpers/input_validator');
+var stripe = require('../helpers/stripe');
 
 module.exports = router;
 
@@ -32,8 +33,11 @@ router.put('add user', '/', function (ctx, next) {
     request: {
         body: {
             user: {
+                email: validator.optional(validator.isEmail),
                 dob: validator.optional(validator.isDate()),
-                phone: validator.optional(validator.isNumeric())
+                phone: validator.optional(validator.isNumeric()),
+                oldPassword: validator.optional(validator.validatePassword),
+                newPassword: validator.optional(validator.validatePassword)
             }
         }
     }
@@ -72,8 +76,35 @@ router.put('add user', '/', function (ctx, next) {
         ctx.body = "Bad request";
         throw err;
     });
-}).put('add payment', '/me/payment_methods', auth.authenticate(['user:updatePayment']), function (ctx) {
-    var token = ctx.query.stripeToken;
-    // TODO: Read stripe docs
-    ctx.body = { user: {} };
+}).put('add payment', '/me/payment_methods', auth.authenticate(['user:updatePayment']), validator({
+    request: {
+        body: {
+            stripeToken: validator.required(true)
+        }
+    }
+}), function (ctx) {
+    var token = ctx.request.body.stripeToken,
+        user = ctx.state.user;
+    return stripe.customers.createSource(ctx.state.user.account.stripeId, {
+        source: token
+    }).catch(function (err) {
+        err.status = 500; // Which is the appropriate http code for stripe error?
+        throw err;
+    }).then(function (card) {
+        var userCard = user.account.cards.create({
+            stripeToken: token,
+            brand: card.brand,
+            last4Digits: card.last4,
+            expMonth: card.exp_month,
+            expYear: card.exp_year,
+            cvcCheck: card.cvc_check,
+            country: card.country,
+            funding: card.funding
+        });
+        user.account.cards.push(userCard);
+        user.save().then(function () {
+            ctx.response.status = 200;
+            ctx.body = { newCard: entities.creditCard(userCard) };
+        });
+    });
 });
