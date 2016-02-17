@@ -9,5 +9,6 @@ module.exports = {
     poolReference: require('./poolRef'),
     pool: require('./pool'),
     photo: require('./photo'),
-    user: require('./user')
+    user: require('./user'),
+    creditCard: require('./creditCard')
 };
