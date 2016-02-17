@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var utils = require('../utils');
+var utils = require('../helpers/utils');
 var config = require('../config');
 
 var Schema = mongoose.Schema;

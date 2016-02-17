@@ -1,11 +1,11 @@
 "use strict";
 
 var router = require('koa-router')();
-var auth = require('../passport_auth');
+var auth = require('../helpers/passport_auth');
 
 var db = require('../db');
 var entities = require('../entities');
-var validator = require('../input_validator');
+var validator = require('../helpers/input_validator');
 
 module.exports = router;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const userRef = require('./userRef');
+var userRef = require('./userRef');
 
 function convertPhoto(photo) {
     var obj = {

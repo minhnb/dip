@@ -1,11 +1,11 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const crypto = require('crypto');
+var mongoose = require('mongoose');
+var crypto = require('crypto');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const activitySchema = new Schema({
+var activitySchema = new Schema({
     actor: { type: Schema.ObjectId, ref: 'User', required: true },
     verb: { type: String, required: true },
     object: { type: String, required: true },

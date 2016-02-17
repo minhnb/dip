@@ -1,21 +1,21 @@
 "use strict";
 
-const router = require('koa-router')();
+var router = require('koa-router')();
 
 module.exports = router;
 
-const activities = require('./activities');
-const announcements = require('./announcements');
-const coupons = require('./coupons');
-const devices = require('./devices');
-const pools = require('./pools');
-const reservations = require('./reservations');
-const sales = require('./sales');
-const users = require('./users');
+var activities = require('./activities');
+var announcements = require('./announcements');
+var coupons = require('./coupons');
+var devices = require('./devices');
+var pools = require('./pools');
+var reservations = require('./reservations');
+var sales = require('./sales');
+var users = require('./users');
 
-const auth = require('./auth');
+var auth = require('./auth');
 
-router.get('index page', '/', ctx => {
+router.get('index page', '/', function (ctx) {
     ctx.render('index', {
         title: 'Hello World Koa!'
     });

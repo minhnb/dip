@@ -1,10 +1,10 @@
 'use strict';
 
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const deviceSchema = new Schema({
+var deviceSchema = new Schema({
     user: { type: Schema.ObjectId, ref: 'User' },
     deviceId: String,
     pushToken: String,

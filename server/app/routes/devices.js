@@ -1,11 +1,11 @@
 "use strict";
 
-const router = require('koa-router')();
-const auth = require('../passport_auth');
-const validator = require('../input_validator');
+var router = require('koa-router')();
+var auth = require('../helpers/passport_auth');
+var validator = require('../helpers/input_validator');
 
-const db = require('../db');
-const entities = require('../entities');
+var db = require('../db');
+var entities = require('../entities');
 
 module.exports = router;
 
@@ -18,13 +18,13 @@ router.post('/', auth.authenticate(), validator({
             details: validator.isJSON()
         }
     }
-}), ctx => {
+}), function (ctx) {
     var deviceInfo = ctx.request.body;
     var device = new db.devices(deviceInfo);
-    return device.save().then(device => {
+    return device.save().then(function (device) {
         ctx.status = 204;
         // TODO: Register device for sending message/notification
-    }).catch(err => {
+    }).catch(function (err) {
         ctx.status = 400;
     });
 });

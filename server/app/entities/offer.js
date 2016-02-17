@@ -1,7 +1,7 @@
 'use strict';
 
-const poolRef = require('./poolRef');
-const ticket = require('./ticket');
+var poolRef = require('./poolRef');
+var ticket = require('./ticket');
 
 function convertOffer(offer, pool) {
     var obj = {

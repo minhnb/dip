@@ -1,6 +1,6 @@
 'use strict';
 
-const offer = require('./offer');
+var offer = require('./offer');
 
 function convertPool(pool) {
     return {

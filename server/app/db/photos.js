@@ -1,9 +1,9 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const photoSchema = new Schema({
+var photoSchema = new Schema({
     status: Number,
     source: Number,
     sourceId: String,

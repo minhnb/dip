@@ -1,15 +1,16 @@
 "use strict";
 
-const router = require('koa-router')();
-const auth = require('../passport_auth');
+var router = require('koa-router')();
+var db = require('../db');
 
-const validator = require('../input_validator');
-const db = require('../db');
+var auth = require('../helpers/passport_auth');
+var validator = require('../helpers/input_validator');
+var stripe = require('../helpers/stripe');
 
 module.exports = router;
 
-router.post('Log in', '/login', auth.login(), ctx => {
-    return ctx.state.user.generateJWT().then(token => {
+router.post('Log in', '/login', auth.login(), function (ctx) {
+    return ctx.state.user.generateJWT().then(function (token) {
         ctx.response.status = 200;
         ctx.body = { JWT: token };
     });
@@ -23,24 +24,30 @@ router.post('Log in', '/login', auth.login(), ctx => {
             gender: validator.isIn(['male', 'female', 'na'])
         }
     }
-}), ctx => {
+}), function (ctx) {
     var user = new db.users({
         email: ctx.request.body.email,
         firstName: ctx.request.body.firstName,
         lastName: ctx.request.body.lastName,
         gender: ctx.request.body.gender
     });
-    return user.setPassword(ctx.request.body.password).then(() => {
-        return user.save().then(data => {
+    return user.setPassword(ctx.request.body.password).then(function () {
+        return user.save().then(function (user) {
             ctx.response.status = 204;
-        }).catch(err => {
+            return stripe.customers.create({
+                email: user.email
+            }).then(function (customer) {
+                user.account.stripeId = customer.id;
+                user.save();
+            });
+        }).catch(function (err) {
             if (err.code === 11000) {
                 // Duplicate key error -- existed email
                 ctx.body = "Email existed";
             }
             throw err;
         });
-    }).catch(err => {
+    }).catch(function (err) {
         //console.log(err);
         ctx.response.status = 400;
     });
