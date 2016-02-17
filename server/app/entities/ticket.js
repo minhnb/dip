@@ -2,7 +2,7 @@
 
 function convertTicket(ticket, pool) {
     if (pool) {
-        let _ticket = pool.tickets.id(ticket._id);
+        var _ticket = pool.tickets.id(ticket._id);
         if (_ticket) {
             ticket = _ticket;
         }

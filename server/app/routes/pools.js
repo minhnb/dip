@@ -4,8 +4,8 @@ var Router = require('koa-router');
 var router = Router();
 var pool = Router();
 
-var auth = require('../passport_auth');
-var validator = require('../input_validator');
+var auth = require('../helpers/passport_auth');
+var validator = require('../helpers/input_validator');
 
 var db = require('../db');
 var entities = require('../entities');

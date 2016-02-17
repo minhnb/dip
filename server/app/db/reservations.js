@@ -1,9 +1,9 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const reservationSchema = new Schema({
+var reservationSchema = new Schema({
     date: Date,
     user: { type: Schema.ObjectId, ref: 'User' },
     pool: { type: Schema.ObjectId, ref: 'Pool' },

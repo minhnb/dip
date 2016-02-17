@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require('./config');
+var db = require('./config');
 
 module.exports = {
     db: db,

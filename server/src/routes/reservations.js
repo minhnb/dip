@@ -1,8 +1,8 @@
 "use strict";
 
 const router = require('koa-router')();
-const auth = require('../passport_auth');
-const validator = require('../input_validator');
+const auth = require('../helpers/passport_auth');
+const validator = require('../helpers/input_validator');
 
 module.exports = router;
 

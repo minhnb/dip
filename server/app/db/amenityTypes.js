@@ -1,11 +1,11 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const crypto = require('crypto');
+var mongoose = require('mongoose');
+var crypto = require('crypto');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const amenityTypeSchema = new Schema({
+var amenityTypeSchema = new Schema({
     name: { type: String, required: true },
     details: { type: String, required: true },
     asset: {

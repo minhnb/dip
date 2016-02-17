@@ -1,4 +1,6 @@
-const env = {
+'use strict';
+
+var env = {
     mongo: {
         uri: 'mongodb://localhost/test_db'
     },

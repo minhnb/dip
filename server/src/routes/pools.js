@@ -3,8 +3,8 @@ const Router = require('koa-router');
 const router = Router();
 const pool = Router();
 
-const auth = require('../passport_auth');
-const validator = require('../input_validator');
+const auth = require('../helpers/passport_auth');
+const validator = require('../helpers/input_validator');
 
 const db = require('../db');
 const entities = require('../entities');

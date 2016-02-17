@@ -1,11 +1,11 @@
 "use strict";
 
 var router = require('koa-router')();
-var auth = require('../passport_auth');
+var auth = require('../helpers/passport_auth');
 
 var db = require('../db');
 var entities = require('../entities');
-var validator = require('../input_validator');
+var validator = require('../helpers/input_validator');
 
 module.exports = router;
 
@@ -46,19 +46,19 @@ router.put('add user', '/', function (ctx, next) {
     }
     var postData = ctx.request.body.user,
         user = ctx.state.user;
-    if (postData.gender) {
-        user.gender = postData.gender.toLowerCase();
+    if (postData.gender !== undefined) {
+        user.gender = postData.gender ? postData.gender.toLowerCase() : 'na';
     }
-    if (postData.firstName) {
+    if (postData.firstName !== undefined) {
         user.firstName = postData.firstName;
     }
-    if (postData.lastName) {
+    if (postData.lastName !== undefined) {
         user.lastName = postData.lastName;
     }
-    if (postData.dob) {
+    if (postData.dob !== undefined) {
         user.dob = new Date(postData.dob);
     }
-    if (postData.phone) {
+    if (postData.phone !== undefined) {
         user.phone = postData.phone;
     }
     if (postData.picture && postData.picture.url) {

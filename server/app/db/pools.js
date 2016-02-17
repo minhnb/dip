@@ -1,9 +1,9 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const pools = new Schema({
+var pools = new Schema({
     propertyCategory: { type: Number, required: true },
     name: { type: String, required: true },
     location: { type: String, required: true },
@@ -81,6 +81,6 @@ const pools = new Schema({
     timestamps: true
 });
 
-const poolModel = mongoose.model('Pool', pools);
+var poolModel = mongoose.model('Pool', pools);
 
 module.exports = poolModel;

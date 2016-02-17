@@ -62,7 +62,7 @@ app.on('error', function (err, ctx) {
     console.error('server error', err, ctx);
 });
 
-var auth = require('./passport_auth'); // Initialize auth strategies
+var auth = require('./helpers/passport_auth'); // Initialize auth strategies
 app.use(auth.passport.initialize());
 
 // response

@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const utils = require('../utils');
+const utils = require('../helpers/utils');
 const config = require('../config');
 
 const Schema = mongoose.Schema;

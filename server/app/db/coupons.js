@@ -1,11 +1,11 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const crypto = require('crypto');
+var mongoose = require('mongoose');
+var crypto = require('crypto');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const couponSchema = new Schema({
+var couponSchema = new Schema({
     status: Number,
     code: { type: String, required: true },
     percentOff: { type: Number, required: true }

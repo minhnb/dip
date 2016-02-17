@@ -12,5 +12,8 @@ module.exports = {
         key: process.env.JWT_KEY,
         algorithm: process.env.JWT_ALG,
         issuer: 'dip'
+    },
+    stripe: {
+        key: process.env.STRIPE_KEY
     }
 };
