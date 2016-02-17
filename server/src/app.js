@@ -7,9 +7,9 @@ const json = require('koa-json');
 //const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
-<<<<<<< HEAD
 const dotenv = require('dotenv');
 const path = require('path');
+const error = require('koa-error');
 
 var rootFoder = path.normalize(__dirname + '/../..');
 
@@ -18,9 +18,6 @@ dotenv.load({
 });
 
 const app = new Koa();
-=======
-const error = require('koa-error');
->>>>>>> origin/master
 
 const config = require('./config');
 const router = require('./routes');
@@ -56,13 +53,10 @@ app.use((ctx, next) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 // This is clean and nice, but we couldn't modify it to our needs
 // Considering create a simple error-template for dev env and do it ourselves
 //app.use(convert(error()));
 
->>>>>>> origin/master
 app.on('error', function (err, ctx) {
     console.error('server error', err, ctx);
 });

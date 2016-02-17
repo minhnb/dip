@@ -1,14 +1,15 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const utils = require('../utils');
-const config = require('../config');
+var mongoose = require('mongoose');
+var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
+var utils = require('../utils');
+var config = require('../config');
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
+var cardSchema = require('./subSchemas/creditCard');
 
-const userSchema = new Schema({
+var userSchema = new Schema({
     //username: { type: String, required: true },
     email: { type: String, required: true, index: { unique: true } },
     encryptedPassword: { type: String, required: true },
@@ -16,6 +17,8 @@ const userSchema = new Schema({
     firstName: String,
     lastName: String,
     gender: { type: String, required: true, enum: ['male', 'female', 'na'] },
+    dob: Date,
+    phone: String,
     status: String,
     location: String,
     timezone: String,
@@ -26,15 +29,21 @@ const userSchema = new Schema({
     },
     account: {
         stripeId: String,
-        balance: { type: Number, required: true, default: 0 }
+        balance: { type: Number, required: true, default: 0 },
+        cards: [cardSchema]
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{ type: Schema.ObjectId, ref: 'Device' }],
     sessions: [String],
-    facebookId: { type: String, index: { unique: true } }
+    facebookId: { type: String, index: { unique: true, sparse: true } }
 }, {
     timestamps: true
 });
+
+userSchema.virtual('username').get(function () {
+    return this.email;
+});
+
 userSchema.statics.findByEmail = function (email, callback) {
     return this.findOne({ email: email }, callback);
 };
@@ -46,14 +55,16 @@ userSchema.methods.generateSalt = function () {
     });
 };
 userSchema.methods.setPassword = function (password) {
-    return Promise.resolve().then(() => {
-        if (!this.salt) {
-            return this.generateSalt().then(salt => {
-                this.salt = salt;
-                this.encryptedPassword = this.encryptPassword(password);
+    var _this = this;
+
+    return Promise.resolve().then(function () {
+        if (!_this.salt) {
+            return _this.generateSalt().then(function (salt) {
+                _this.salt = salt;
+                _this.encryptedPassword = _this.encryptPassword(password);
             });
         } else {
-            this.encryptedPassword = this.encryptPassword(password);
+            _this.encryptedPassword = _this.encryptPassword(password);
         }
     });
 };
@@ -64,16 +75,18 @@ userSchema.methods.encryptPassword = function (password) {
     return crypto.pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString('hex');
 };
 userSchema.methods.generateJWT = function () {
+    var _this2 = this;
+
     var session = utils.generateToken(64);
     this.sessions.push(session);
-    return this.save().then(() => {
-        return new Promise((resolve, reject) => {
-            jwt.sign({ scopes: ['all'] }, config.jwt.key, {
-                subject: this._id,
+    return this.save().then(function () {
+        return new Promise(function (resolve, reject) {
+            jwt.sign({ scopes: ['all'], jti: session }, config.jwt.key, {
+                subject: _this2._id,
                 jwtid: session,
                 issuer: config.jwt.issuer,
                 algorithm: config.jwt.algorithm
-            }, token => {
+            }, function (token) {
                 resolve(token);
             });
         });
@@ -84,6 +97,6 @@ userSchema.methods.generateJWT = function () {
  * @class
  * @type {Model<T>}
  */
-const userModel = mongoose.model('User', userSchema);
+var userModel = mongoose.model('User', userSchema);
 
 module.exports = userModel;

@@ -1,11 +1,11 @@
 'use strict';
 
-const convert = require('koa-convert');
-const validator = require('koa-router-validator');
+var convert = require('koa-convert');
+var validator = require('koa-router-validator');
 //const merge = require('merge-descriptors');
 
 function validatorWrapper() {
-    return convert(validator(...arguments));
+    return convert(validator.apply(undefined, arguments));
 }
 
 function validatePassword(pwd) {
@@ -25,6 +25,7 @@ function optional(verifier) {
 
 // Map necessary validator functions to wrapper (and enable IDE's code-hint also)
 validatorWrapper.isAlphanumeric = validator.isAlphanumeric;
+validatorWrapper.isNumeric = validator.isNumeric;
 validatorWrapper.isMongoId = validator.isMongoId;
 validatorWrapper.isURL = validator.isURL;
 validatorWrapper.isInt = validator.isInt;
