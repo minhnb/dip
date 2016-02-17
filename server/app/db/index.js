@@ -11,5 +11,6 @@ module.exports = {
     pools: require('./pools'),
     photos: require('./photos'),
     reservations: require('./reservations'),
-    coupons: require('./coupons')
+    coupons: require('./coupons'),
+    sessions: require('./sessions')
 };

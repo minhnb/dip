@@ -37,25 +37,20 @@ router
                 lastName: ctx.request.body.lastName,
                 gender: ctx.request.body.gender
             });
-            return user.setPassword(ctx.request.body.password).then(() => {
-                return user.save().then(user => {
-                    ctx.response.status = 204;
-                    return stripe.customers.create({
-                        email: user.email
-                    }).then(customer => {
-                        user.account.stripeId = customer.id;
-                        user.save();
-                    });
-                }).catch(err => {
-                    if (err.code === 11000) {
-                        // Duplicate key error -- existed email
-                        ctx.body = "Email existed";
-                    }
-                    throw err;
+            user.setPassword(ctx.request.body.password);
+            return user.save().then(user => {
+                ctx.response.status = 204;
+                return stripe.customers.create({
+                    email: user.email
+                }).then(customer => {
+                    user.account.stripeId = customer.id;
+                    user.save();
                 });
             }).catch(err => {
-                //console.log(err);
-                ctx.response.status = 400;
+                if (err.code === 11000) {
+                    // Duplicate key error -- existed email
+                    ctx.body = "Email existed";
+                }
+                throw err;
             });
-
         });
