@@ -6,6 +6,7 @@ var pool = Router();
 
 var auth = require('../helpers/passport_auth');
 var validator = require('../helpers/input_validator');
+var utils = require('../helpers/utils');
 
 var db = require('../db');
 var entities = require('../entities');
@@ -14,7 +15,7 @@ module.exports = router;
 
 pool.use('/', function (ctx, next) {
     var id = ctx.params.id;
-    db.pools.findById(id).exec().then(function (data) {
+    return db.pools.findById(id).exec().then(function (data) {
         ctx.state.pool = data;
         return next();
     }).catch(function (err) {
@@ -33,7 +34,7 @@ pool.use('/', function (ctx, next) {
     var pool = ctx.state.pool,
         limit = ctx.query.limit || 100,
         offset = ctx.query.offset || 0;
-    db.photos.find({ pool: pool }).populate('users').limit(limit).skip(offset).exec().then(function (photos) {
+    return db.photos.find({ pool: pool }).populate('users').limit(limit).skip(offset).exec().then(function (photos) {
         ctx.body = { photos: photos.map(entities.photo) };
     });
 }).get('pool offers', '/offers', validator({
@@ -41,14 +42,22 @@ pool.use('/', function (ctx, next) {
         date: validator.isDate()
     }
 }), function (ctx) {
-    var date = ctx.query.date;
-    return db.pool.find({ _id: ctx.params.id, "offers.date": date }).exec().then(function (pool_data) {
-        ctx.body({
-            offers: pool_data.offers.map(function (x) {
-                return entities.offer(x, pool_data);
-            })
-        });
+    var date = ctx.query.date,
+        pool = ctx.state.pool;
+    pool = ctx.state.pool;
+    var offers = pool.offers.filter(function (offer) {
+        return offer.date === utils.convertDate(date);
     });
+    ctx.response.body = offers.map(function (x) {
+        return entities.offer(x, pool);
+    });
+    //return db.pool.find({_id: ctx.params.id, "offers.date": utils.convertDate(date)}).exec().then(function(pool_data) {
+    //    ctx.response.body = {
+    //        offers: pool_data.offers.map(x => {
+    //            return entities.offer(x, pool_data);
+    //        })
+    //    };
+    //});
 });
 
 router.use('/', auth.authenticate()).get('pools', '/', validator({
@@ -67,7 +76,6 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
         endTime: validator.optional(validator.isInt())
     }
 }), function (ctx) {
-    console.log(ctx.query);
     var query = db.pools.where("active").equals(true);
 
     // Filter on location
@@ -95,7 +103,7 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
     // Filter on offer
     var offerOpts = {};
     if (ctx.query.date) {
-        offerOpts.date = ctx.query.date;
+        offerOpts.date = utils.convertDate(ctx.query.date);
     }
     if (ctx.query.startTime) {
         offerOpts.endTime = { $gt: ctx.query.startTime };

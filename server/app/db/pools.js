@@ -1,6 +1,9 @@
 'use strict';
 
 var mongoose = require('mongoose');
+
+var offerSchema = require('./subSchemas/poolOffer');
+
 var Schema = mongoose.Schema;
 
 var pools = new Schema({
@@ -49,20 +52,7 @@ var pools = new Schema({
     reservable: Boolean,
     // Each offer needs to contain enough information so that we can filter for pools based on it
     // Onto more details: filter based on date, start/end time, and price range
-    offers: [{
-        baseId: Schema.ObjectId,
-        date: Date,
-        reservationCount: Number,
-        duration: {
-            startTime: Number,
-            endTime: Number
-        },
-        allotmentCount: Number,
-        tickets: [{
-            _id: Schema.ObjectId,
-            price: Number
-        }]
-    }],
+    offers: [offerSchema],
     baseOffers: [{
         _id: { type: Schema.ObjectId, turnOn: true },
         duration: {
