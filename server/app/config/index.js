@@ -15,5 +15,10 @@ module.exports = {
     },
     stripe: {
         key: process.env.STRIPE_KEY
+    },
+    aws: {
+        region: process.env.AWS_REGION,
+        s3Bucket: process.env.S3_BUCKET,
+        s3Version: process.env.S3_API_VERSION
     }
 };

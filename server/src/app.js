@@ -1,15 +1,19 @@
 "use strict";
+
 const Koa = require('koa');
 const views = require('koa-views');
-const co = require('co');
 const convert = require('koa-convert');
-const json = require('koa-json');
-//const onerror = require('koa-onerror');
-const bodyparser = require('koa-bodyparser')();
+
 const logger = require('koa-logger');
 const dotenv = require('dotenv');
-const path = require('path');
+
+const co = require('co');
+const json = require('koa-json');
+//const onerror = require('koa-onerror');
 const error = require('koa-error');
+
+const bodyparser = require('koa-bodyparser')();
+const path = require('path');
 
 var rootFoder = path.normalize(__dirname + '/../..');
 

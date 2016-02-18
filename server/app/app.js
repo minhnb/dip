@@ -2,15 +2,18 @@
 
 var Koa = require('koa');
 var views = require('koa-views');
-var co = require('co');
 var convert = require('koa-convert');
-var json = require('koa-json');
-//const onerror = require('koa-onerror');
-var bodyparser = require('koa-bodyparser')();
+
 var logger = require('koa-logger');
 var dotenv = require('dotenv');
-var path = require('path');
+
+var co = require('co');
+var json = require('koa-json');
+//const onerror = require('koa-onerror');
 var error = require('koa-error');
+
+var bodyparser = require('koa-bodyparser')();
+var path = require('path');
 
 var rootFoder = path.normalize(__dirname + '/../..');
 
