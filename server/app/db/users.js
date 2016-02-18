@@ -45,9 +45,17 @@ userSchema.virtual('username').get(function () {
     return this.email;
 });
 
+/**
+ * @properties avatarS3Path
+ */
+userSchema.virtual('avatarS3Path').get(function () {
+    return 'avatars/' + this._id;
+});
+
 userSchema.statics.findByEmail = function (email, callback) {
     return this.findOne({ email: email }, callback);
 };
+
 userSchema.methods.generateSalt = function () {
     return crypto.randomBytes(64).toString('hex');
 };
