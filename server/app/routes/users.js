@@ -127,15 +127,24 @@ router.put('add user', '/', function (ctx, next) {
             ctx.body = { newCard: entities.creditCard(userCard) };
         });
     });
-}).put('add avatar', '/me/avatar', auth.authenticate(), multer(), function (ctx) {
-    var img = ctx.request.body.image,
-        user = ctx.state.user;
-    // TODO: convert/compress/process image before uploading to s3
-    return s3.upload(user.avatarS3Path, img).then(function (data) {
-        user.avatar.url = data.Location;
-        return user.save().then(function () {
-            ctx.status = 200;
-            ctx.body = { location: data.Location };
+}).put('add avatar', '/me/avatar', auth.authenticate(), multer().single('image'), function (ctx) {
+    var img = ctx.req.file,
+        // NOTE: koa-multer still saves file to ctx.req
+    user = ctx.state.user;
+    if (!img) {
+        ctx.throw(400, 'No image specified');
+    } else {
+        // TODO: convert/compress/process image before uploading to s3
+        return s3.upload(user.avatarS3Path, img.buffer).catch(function (err) {
+            console.error(err);
+            ctx.throw(500, 'S3 Error');
+        }).then(function (data) {
+            user.avatar.url = data.Location;
+            user.avatar.contentType = img.mimeType;
+            return user.save().then(function () {
+                ctx.status = 200;
+                ctx.body = { location: data.Location };
+            });
         });
-    });
+    }
 });
