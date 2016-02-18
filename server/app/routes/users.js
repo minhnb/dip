@@ -7,6 +7,9 @@ var entities = require('../entities');
 var auth = require('../helpers/passport_auth');
 var validator = require('../helpers/input_validator');
 var stripe = require('../helpers/stripe');
+var s3 = require('../helpers/s3');
+
+var multer = require('koa-multer');
 
 module.exports = router;
 
@@ -122,6 +125,17 @@ router.put('add user', '/', function (ctx, next) {
         user.save().then(function () {
             ctx.response.status = 200;
             ctx.body = { newCard: entities.creditCard(userCard) };
+        });
+    });
+}).put('add avatar', '/me/avatar', auth.authenticate(), multer(), function (ctx) {
+    var img = ctx.request.body.image,
+        user = ctx.state.user;
+    // TODO: convert/compress/process image before uploading to s3
+    return s3.upload(user.avatarS3Path, img).then(function (data) {
+        user.avatar.url = data.Location;
+        return user.save().then(function () {
+            ctx.status = 200;
+            ctx.body = { location: data.Location };
         });
     });
 });
