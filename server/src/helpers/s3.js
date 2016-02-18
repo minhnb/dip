@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const config = require('../config');
 
 AWS.config.region = config.aws.region;
-const s3 = AWS.S3({params: {Bucket: config.aws.s3Bucket, apiVersion: config.aws.s3Version}});
+const s3 = new AWS.S3({params: {Bucket: config.aws.s3Bucket, apiVersion: config.aws.s3Version}});
 
 function getSignedUrl(key, md5) {
     var params = {Key: key, ACL: 'public-read'};
