@@ -6,6 +6,7 @@ const ticket = require('./ticket');
 function convertOffer(offer, pool) {
     var obj = {
         id: offer._id,
+        name: offer.name,
         allotmentCount: offer.allotmentCount,
         duration: offer.duration,
         tickets: offer.tickets.map(function(x){return ticket(x, pool);})

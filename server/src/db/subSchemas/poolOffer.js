@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 
 const offerSchema = new Schema({
     baseId: Schema.ObjectId,
+    name: {type: String, required: true},
     date: String,
     reservationCount: Number,
     duration: {

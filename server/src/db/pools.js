@@ -55,6 +55,7 @@ const pools = new Schema({
     offers: [offerSchema],
     baseOffers: [{
         _id: {type: Schema.ObjectId, turnOn: true},
+        name: {type: String, required: true},
         duration: {
             startTime: Number,
             endTime: Number
