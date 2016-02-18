@@ -15,10 +15,11 @@ var error = require('koa-error');
 var bodyparser = require('koa-bodyparser')();
 var path = require('path');
 
-var rootFoder = path.normalize(__dirname + '/../..');
+var rootFolder = path.normalize(__dirname + '/../..'),
+    serverFolder = rootFolder + '/server';
 
 dotenv.load({
-    path: rootFoder + '/.env'
+    path: rootFolder + '/.env'
 });
 
 var app = new Koa();
@@ -30,10 +31,10 @@ app.use(bodyparser);
 app.use(convert(json()));
 app.use(logger());
 
-app.use(convert(require('koa-static')(__dirname + '/public')));
+app.use(convert(require('koa-static')(serverFolder + '/public')));
 
 app.use(convert(views('views', {
-    root: __dirname + '/views',
+    root: serverFolder + '/views',
     default: 'jade'
 })));
 
