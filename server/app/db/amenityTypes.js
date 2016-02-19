@@ -10,10 +10,6 @@ var amenityTypeSchema = new Schema({
         type: String,
         required: true
     },
-    details: {
-        type: String,
-        required: true
-    },
     icon: {
         url: {
             type: String,

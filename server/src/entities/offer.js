@@ -1,6 +1,7 @@
 'use strict';
 
-const ticket = require('./ticket');
+const amenityEntity = require('./amenity');
+const ticketEntity = require('./ticket');
 
 function convertOffer(offer) {
     var obj = {
@@ -8,9 +9,10 @@ function convertOffer(offer) {
         description: offer.description,
         allotmentCount: offer.allotmentCount,
         duration: offer.duration,
+        amenities: offer.amenities.map(amenityEntity),
         ticket: {
             price: offer.ticket.price,
-            ref: ticket(offer.ticket.ref)
+            ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
         }
     };
 

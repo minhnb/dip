@@ -21,7 +21,6 @@ function convertPool(pool) {
         rating: pool.rating,
         imageUrl: pool.image.url,
         phone: pool.phone,
-        amenities: pool.amenities,
         reservable: pool.reservable
     };
 }

@@ -41,18 +41,6 @@ const poolSchema = new Schema({
         url: String,
         verified: Boolean
     },
-    amenities: [{
-        type: {
-            type: Schema.ObjectId,
-            ref: 'AmenityType',
-            required: true
-        },
-        count: {
-            type: Number,
-            required: true,
-            default: 1
-        }
-    }],
     active: Boolean,
     title: {
         prefix: String,

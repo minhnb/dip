@@ -34,6 +34,13 @@ router.get('pool', '/', function (ctx) {
     return db.offers.find({
         pool: pool,
         date: utils.convertDate(date)
+    }).populate({
+        path: 'amenities',
+        model: 'Amenity',
+        populate: {
+            path: 'type',
+            model: 'AmenityType'
+        }
     }).populate('ticket.ref').exec().then(function (offers) {
         ctx.body = offers.map(entities.offer);
     });
