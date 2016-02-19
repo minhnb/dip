@@ -76,7 +76,6 @@ router
                     if (ctx.query.maxPrice) opts.$lte = ctx.query.maxPrice;
                     offerOpts['ticket.price'] = opts;
                 }
-                console.log('offer filter', offerOpts);
                 return db.offers
                     .aggregate([
                         {$match: offerOpts},
@@ -86,7 +85,6 @@ router
                     ])
                     .exec()
                     .then(data => {
-                        console.log('got offers');
                         data = data.map(x => x._id.toString());
                         pools = pools.filter(p => {
                             return data.indexOf(p._id.toString()) >= 0;

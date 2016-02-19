@@ -46,6 +46,14 @@ router.get('pool', '/', ctx => {
                     pool: pool,
                     date: utils.convertDate(date)
                 })
+                .populate({
+                    path: 'amenities',
+                    model: 'Amenity',
+                    populate: {
+                        path: 'type',
+                        model: 'AmenityType'
+                    }
+                })
                 .populate('ticket.ref')
                 .exec()
                 .then(offers => {

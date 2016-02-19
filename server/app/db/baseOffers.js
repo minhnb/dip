@@ -24,7 +24,11 @@ var baseOfferSchema = new Schema({
             required: true
         }
     },
-    reservationCount: Number,
+    allotmentCount: Number,
+    amenities: [{
+        type: Schema.ObjectId,
+        ref: 'Amenities'
+    }],
     ticket: {
         type: Schema.ObjectId,
         ref: 'Ticket',

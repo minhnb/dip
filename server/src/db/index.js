@@ -12,6 +12,8 @@ module.exports = {
     offers: require('./offers'),
     baseOffers: require('./baseOffers'),
     tickets: require('./tickets'),
+    amenities: require('./amenities'),
+    amenityTypes: require('./amenityTypes'),
     photos: require('./photos'),
     reservations: require('./reservations'),
     coupons: require('./coupons'),

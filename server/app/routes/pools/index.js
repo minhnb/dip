@@ -75,11 +75,9 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
             if (ctx.query.maxPrice) opts.$lte = ctx.query.maxPrice;
             offerOpts['ticket.price'] = opts;
         }
-        console.log('offer filter', offerOpts);
         return db.offers.aggregate([{ $match: offerOpts }, { $group: {
                 _id: '$pool'
             } }]).exec().then(function (data) {
-            console.log('got offers');
             data = data.map(function (x) {
                 return x._id.toString();
             });
