@@ -31,10 +31,10 @@ router.use('/', auth.authenticate()).get('pools', '/', validator.pools(), valida
     }
     // Filter on rating
     if (ctx.query.minRating) {
-        query = query.where('rating').gte(parseFloat(ctx.query.minRating));
+        query = query.where('rating.avg').gte(parseFloat(ctx.query.minRating));
     }
     if (ctx.query.maxRating) {
-        query = query.where('rating').lte(parseFloat(ctx.query.maxRating));
+        query = query.where('rating.avg').lte(parseFloat(ctx.query.maxRating));
     }
 
     return query.exec().then(function (pools) {

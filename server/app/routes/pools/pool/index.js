@@ -12,9 +12,10 @@ var utils = require('../../../helpers/utils');
 var photosRouter = require('./photos');
 var offersRouter = require('./offers');
 var amenitiesRouter = require('./amenities');
+var ratingRouter = require('./rating');
 
 router.get('pool', '/', function (ctx) {
     ctx.body = { pool: entities.pool(ctx.state.pool) };
-}).use('/photos', photosRouter.routes(), photosRouter.allowedMethods()).use('/offers', offersRouter.routes(), offersRouter.allowedMethods()).use('/amenities', amenitiesRouter.routes(), amenitiesRouter.allowedMethods());
+}).use('/photos', photosRouter.routes(), photosRouter.allowedMethods()).use('/offers', offersRouter.routes(), offersRouter.allowedMethods()).use('/amenities', amenitiesRouter.routes(), amenitiesRouter.allowedMethods()).use('/rating', ratingRouter.routes(), ratingRouter.allowedMethods());
 
 module.exports = router;

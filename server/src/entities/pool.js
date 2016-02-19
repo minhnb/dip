@@ -18,7 +18,8 @@ function convertPool(pool) {
         url: pool.url,
         lowRate: pool.lowRate,
         highRate: pool.highRate,
-        rating: pool.rating,
+        rating: pool.rating.avg,
+        ratingCount: pool.rating.count,
         imageUrl: pool.image.url,
         phone: pool.phone,
         reservable: pool.reservable

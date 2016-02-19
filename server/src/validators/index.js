@@ -3,5 +3,6 @@
 module.exports = {
     pools: require('./pools'),
     offers: require('./offers'),
-    limitParams: require('./limitParams')
+    limitParams: require('./limitParams'),
+    rating: require('./rating')
 };
