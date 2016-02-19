@@ -34,6 +34,8 @@ var baseOfferSchema = new Schema({
         ref: 'Ticket',
         required: true
     }
+}, {
+    timestamps: true
 });
 
 var baseOfferModel = mongoose.model('BaseOffer', baseOfferSchema);

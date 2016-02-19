@@ -25,7 +25,9 @@ const ratingSchema = new Schema({
             message: 'Rating must be between 0 and 5'
         }
     }
+}, {
+    timestamps: true
 });
-ratingSchema.index(['user', 'pool'], {unique: true});
+ratingSchema.index({user: 1, pool: 1}, {unique: true});
 
 module.exports = mongoose.model('Rating', ratingSchema);

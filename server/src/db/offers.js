@@ -62,6 +62,8 @@ const offerSchema = new Schema({
             required: true
         }
     }
+}, {
+    timestamps: true
 });
 offerSchema.pre('save', function(next) {
     this.date = utils.convertDate(this.date);

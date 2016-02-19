@@ -12,7 +12,9 @@ var reservationSchema = new Schema({
         ticket: { type: Schema.ObjectId },
         price: Number
     }],
-    price: Number // why?
+    price: Number
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Reservation', reservationSchema);

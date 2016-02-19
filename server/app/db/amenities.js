@@ -24,6 +24,8 @@ var amenitySchema = new Schema({
         required: true,
         default: 1
     }
+}, {
+    timestamps: true
 });
 
 var amenityModel = mongoose.model('Amenity', amenitySchema);
