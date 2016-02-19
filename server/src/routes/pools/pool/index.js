@@ -57,7 +57,7 @@ router.get('pool', '/', ctx => {
                 .populate('ticket.ref')
                 .exec()
                 .then(offers => {
-                    ctx.body = offers.map(entities.offer);
+                    ctx.body = {offers: offers.map(entities.offer)};
                 });
             //return db.pool.find({_id: ctx.params.id, "offers.date": utils.convertDate(date)}).exec().then(function(pool_data) {
             //    ctx.response.body = {
