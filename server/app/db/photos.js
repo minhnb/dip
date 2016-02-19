@@ -21,10 +21,10 @@ var photoSchema = new Schema({
     asset: {
         url: String,
         md5: String,
-        mediaType: String,
-        verified: Boolean
+        mediaType: String
     },
-    caption: String
+    caption: String,
+    verified: Boolean // verified == true means the photo is allowed to display in partner's profile page?
 }, {
     timestamps: true
 });

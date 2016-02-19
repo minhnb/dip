@@ -8,7 +8,8 @@ function convertPhoto(photo) {
         user: userRef(photo.user),
         caption: photo.caption,
         url: photo.assert.url,
-        date: photo.createdAt
+        date: photo.createdAt,
+        verified: photo.verified
     };
 }
 
