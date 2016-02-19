@@ -5,21 +5,14 @@ const router = require('koa-router')();
 const db = require('../../../db');
 const entities = require('../../../entities');
 
-const validator = require('../../../helpers/input_validator');
+const validator = require('../../../validators');
 const utils = require('../../../helpers/utils');
 
 router.get('pool', '/', ctx => {
         ctx.body = {pool: entities.pool(ctx.state.pool)};
     })
     .get('pool photos', '/photos',
-        validator({
-            request: {
-                query: {
-                    limit: validator.optional(validator.isInt()),
-                    offset: validator.optional(validator.isInt())
-                }
-            }
-        }),
+        validator.poolPhotos(),
         ctx => {
             let pool = ctx.state.pool,
                 limit = ctx.query.limit || 100,
@@ -34,11 +27,7 @@ router.get('pool', '/', ctx => {
                 });
         })
     .get('pool offers', '/offers',
-        validator({
-            query: {
-                date: validator.isDate()
-            }
-        }),
+        validator.offers(true),
         ctx => {
             let date = ctx.query.date,
                 pool = ctx.state.pool;

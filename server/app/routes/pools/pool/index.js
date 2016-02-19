@@ -5,30 +5,19 @@ var router = require('koa-router')();
 var db = require('../../../db');
 var entities = require('../../../entities');
 
-var validator = require('../../../helpers/input_validator');
+var validator = require('../../../validators');
 var utils = require('../../../helpers/utils');
 
 router.get('pool', '/', function (ctx) {
     ctx.body = { pool: entities.pool(ctx.state.pool) };
-}).get('pool photos', '/photos', validator({
-    request: {
-        query: {
-            limit: validator.optional(validator.isInt()),
-            offset: validator.optional(validator.isInt())
-        }
-    }
-}), function (ctx) {
+}).get('pool photos', '/photos', validator.poolPhotos(), function (ctx) {
     var pool = ctx.state.pool,
         limit = ctx.query.limit || 100,
         offset = ctx.query.offset || 0;
     return db.photos.find({ pool: pool }).populate('user').limit(limit).skip(offset).exec().then(function (photos) {
         ctx.body = { photos: photos.map(entities.photo) };
     });
-}).get('pool offers', '/offers', validator({
-    query: {
-        date: validator.isDate()
-    }
-}), function (ctx) {
+}).get('pool offers', '/offers', validator.offers(true), function (ctx) {
     var date = ctx.query.date,
         pool = ctx.state.pool;
     return db.offers.find({
