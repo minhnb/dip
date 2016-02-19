@@ -45,3 +45,5 @@ router.get('pool', '/', function (ctx) {
     //    };
     //});
 });
+
+module.exports = router;
