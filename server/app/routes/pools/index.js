@@ -53,7 +53,7 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
 
     return query.exec().then(function (pools) {
         if (pools.length == 0) {
-            ctx.body = { pools: 0 };
+            ctx.body = { pools: [] };
             return;
         }
         // Filter on offer

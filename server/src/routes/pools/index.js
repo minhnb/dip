@@ -56,7 +56,7 @@ router
 
             return query.exec().then(pools => {
                 if (pools.length == 0) {
-                    ctx.body = {pools: 0};
+                    ctx.body = {pools: []};
                     return;
                 }
                 // Filter on offer
