@@ -10,6 +10,12 @@ const amenityTypeSchema = new Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true,
+        default: 'pool',
+        enum: ['pool', 'hotel', 'fare']
+    },
     icon: {
         url: {
             type: String,

@@ -32,9 +32,9 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
 
     // Filter on location
     if (ctx.query.longitude && ctx.query.latitude) {
-        var minDistance = ctx.query.minDistance || 0,
-            maxDistance = ctx.query.maxDistance || 8046.72,
-            center = [ctx.query.longitude, ctx.query.latitude];
+        var minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
+            maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 8046.72,
+            center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
         var geoOptions = {
             center: center,
             minDistance: minDistance,
@@ -45,10 +45,10 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
     }
     // Filter on rating
     if (ctx.query.minRating) {
-        query = query.where('rating').gte(ctx.query.minRating);
+        query = query.where('rating').gte(parseFloat(ctx.query.minRating));
     }
     if (ctx.query.maxRating) {
-        query = query.where('rating').lte(ctx.query.maxRating);
+        query = query.where('rating').lte(parseFloat(ctx.query.maxRating));
     }
 
     return query.exec().then(function (pools) {
@@ -64,15 +64,17 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
             offerOpts.date = utils.convertDate(ctx.query.date);
         }
         if (ctx.query.startTime) {
-            offerOpts.endTime = { $gt: ctx.query.startTime };
+            var startTime = parseInt(ctx.query.startTime);
+            offerOpts['duration.startTime'] = { $gte: startTime };
         }
         if (ctx.query.endTime) {
-            offerOpts.startTime = { $lt: ctx.query.endTime };
+            var endTime = parseInt(ctx.query.endTime);
+            offerOpts['duration.endTime'] = { $lte: endTime };
         }
         if (ctx.query.minPrice || ctx.query.maxPrice) {
             var opts = {};
-            if (ctx.query.minPrice) opts.$gte = ctx.query.minPrice;
-            if (ctx.query.maxPrice) opts.$lte = ctx.query.maxPrice;
+            if (ctx.query.minPrice) opts.$gte = parseFloat(ctx.query.minPrice);
+            if (ctx.query.maxPrice) opts.$lte = parseFloat(ctx.query.maxPrice);
             offerOpts['ticket.price'] = opts;
         }
         return db.offers.aggregate([{ $match: offerOpts }, { $group: {
@@ -84,8 +86,11 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
             pools = pools.filter(function (p) {
                 return data.indexOf(p._id.toString()) >= 0;
             });
-            if (ctx.query.limit && ctx.query.limit > 0) {
-                pools.splice(limit);
+            if (ctx.query.limit) {
+                var limit = parseInt(ctx.query.limit);
+                if (limit > 0) {
+                    pools.splice(limit);
+                }
             }
             ctx.body = { pools: pools.map(entities.pool) };
         });
