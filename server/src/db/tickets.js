@@ -1,10 +1,10 @@
 'use strict';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var ticketSchema = new Schema({
+const ticketSchema = new Schema({
     pool: {
         type: Schema.ObjectId,
         ref: 'Pool',
@@ -21,6 +21,6 @@ var ticketSchema = new Schema({
     }
 });
 
-var ticketModel = mongoose.model('Ticket', ticketSchema);
+const ticketModel = mongoose.model('Ticket', ticketSchema);
 
 module.exports = ticketModel;

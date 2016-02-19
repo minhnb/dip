@@ -3,7 +3,7 @@
 var userRef = require('./userRef');
 
 function convertPhoto(photo) {
-    var obj = {
+    return {
         id: photo._id,
         user: userRef(photo.user),
         caption: photo.caption,

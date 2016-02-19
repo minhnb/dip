@@ -93,7 +93,7 @@ router
             }
             if (postData.picture && postData.picture.url) {
                 user.avatar.url = postData.picture.url;
-                user.avatar.contentType = postData.picture.mediaType;
+                user.avatar.mediaType = postData.picture.mediaType;
             }
             if (postData.oldPassword !== undefined) {
                 user.setPassword(postData.newPassword);
@@ -153,17 +153,18 @@ router
                 ctx.throw(400, 'No image specified');
             } else {
                 // TODO: convert/compress/process image before uploading to s3
-                return s3.upload(user.avatarS3Path, img.buffer).catch(err => {
-                    console.error(err);
-                    ctx.throw(500, 'S3 Error');
-                }).then(data => {
-                    user.avatar.url = data.Location;
-                    user.avatar.contentType = img.mimeType;
-                    return user.save().then(() => {
-                        ctx.status = 200;
-                        ctx.body = {location: data.Location};
+                return s3.upload(user.avatarS3Path, img.buffer)
+                    .catch(err => {
+                        console.error(err);
+                        ctx.throw(500, 'S3 Error');
+                    }).then(data => {
+                        user.avatar.url = data.Location;
+                        user.avatar.contentType = img.mimeType;
+                        return user.save().then(() => {
+                            ctx.status = 200;
+                            ctx.body = {location: data.Location};
+                        });
                     });
-                });
             }
         }
     );

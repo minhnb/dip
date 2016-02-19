@@ -13,7 +13,7 @@ function convertUser(user, _private) {
     };
     if (_private) {
         data.email = user.email;
-        data.dob = user.dob ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
+        data.dob = user.dob; // ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
         data.phone = user.phone;
         data.createdAt = user.createdAt;
         data.balance = user.account.balance;

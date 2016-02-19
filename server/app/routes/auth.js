@@ -43,8 +43,9 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
     }).catch(function (err) {
         if (err.code === 11000) {
             // Duplicate key error -- existed email
-            ctx.body = "Email existed";
+            ctx.throw(400, "Email existed");
+        } else {
+            throw err;
         }
-        throw err;
     });
 });

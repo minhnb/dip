@@ -2,14 +2,21 @@
 
 const mongoose = require('mongoose');
 
-const offerSchema = require('./subSchemas/poolOffer');
-
 const Schema = mongoose.Schema;
 
-const pools = new Schema({
-    propertyCategory: {type: Number, required: true},
-    name: {type: String, required: true},
-    location: {type: String, required: true},
+const poolSchema = new Schema({
+    propertyCategory: {
+        type: Number,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
     details: String,
     url: String,
     instagram: String,
@@ -35,13 +42,17 @@ const pools = new Schema({
         verified: Boolean
     },
     amenities: [{
-        _id: {
+        type: {
             type: Schema.ObjectId,
-            turnOn: true
+            ref: 'AmenityType',
+            required: true
         },
-        type: {type: Schema.ObjectId, ref: 'AmenityType', required: true}
+        count: {
+            type: Number,
+            required: true,
+            default: 1
+        }
     }],
-    amenitiesString: String,
     active: Boolean,
     title: {
         prefix: String,
@@ -49,30 +60,11 @@ const pools = new Schema({
         suffix: String
     },
     phone: String,
-    reservable: Boolean,
-    // Each offer needs to contain enough information so that we can filter for pools based on it
-    // Onto more details: filter based on date, start/end time, and price range
-    offers: [offerSchema],
-    baseOffers: [{
-        _id: {type: Schema.ObjectId, turnOn: true},
-        name: {type: String, required: true},
-        duration: {
-            startTime: Number,
-            endTime: Number
-        },
-        allotmentCount: Number,
-        tickets: [{
-            _id: Schema.ObjectId
-        }]
-    }],
-    tickets: [{
-        _id: {type: Schema.ObjectId, turnOn: true},
-        price: Number
-    }]
+    reservable: Boolean
 }, {
     timestamps: true
 });
 
-const poolModel = mongoose.model('Pool', pools);
+const poolModel = mongoose.model('Pool', poolSchema);
 
 module.exports = poolModel;

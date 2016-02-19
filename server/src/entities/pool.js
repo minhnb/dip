@@ -1,7 +1,5 @@
 'use strict';
 
-const offer = require('./offer');
-
 function convertPool(pool) {
     return {
         id: pool._id,
@@ -10,7 +8,10 @@ function convertPool(pool) {
         instagram: pool.instagram,
         location: pool.location,
         address: pool.address,
-        coordinates: pool.coordinates,
+        coordinates: pool.coordinates ? {
+            longitude: pool.coordinates[0],
+            latitude: pool.coordinates[1]
+        } : null,
         propertyCategory: pool.propertyCategory,
         airportCode: pool.airportCode,
         details: pool.details,
@@ -20,9 +21,8 @@ function convertPool(pool) {
         rating: pool.rating,
         imageUrl: pool.image.url,
         phone: pool.phone,
-        amenities: pool.amenitiesString,
-        reservable: pool.reservable,
-        defaultOffers: pool.baseOffers.map(function(x){return offer(x, pool);})
+        amenities: pool.amenities,
+        reservable: pool.reservable
     }
 }
 

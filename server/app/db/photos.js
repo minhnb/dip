@@ -21,7 +21,7 @@ var photoSchema = new Schema({
     asset: {
         url: String,
         md5: String,
-        contentType: String,
+        mediaType: String,
         verified: Boolean
     },
     caption: String

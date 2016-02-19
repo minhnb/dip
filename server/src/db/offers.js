@@ -1,14 +1,14 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var utils = require('../helpers/utils');
+const mongoose = require('mongoose');
+const utils = require('../helpers/utils');
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 // Each offer needs to contain enough information so that we can filter for pools based on it
 // Onto more details: filter based on date, start/end time, and price range
 
-var offerSchema = new Schema({
+const offerSchema = new Schema({
     baseId: {
         type: Schema.ObjectId,
         ref: 'BaseOffer'
@@ -59,11 +59,11 @@ var offerSchema = new Schema({
         }
     }
 });
-offerSchema.pre('save', function (next) {
+offerSchema.pre('save', function(next) {
     this.date = utils.convertDate(this.date);
     next();
 });
 
-var offerModel = mongoose.model('Offer', offerSchema);
+const offerModel = mongoose.model('Offer', offerSchema);
 
 module.exports = offerModel;

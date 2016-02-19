@@ -7,9 +7,9 @@ function convertPoolReference(pool) {
         image_url: pool.image.url,
         reservable: pool.reservable,
         title: pool.title,
-        coordinate: pool.coordinate ? {
-                longitude: pool.coordinate[0],
-                latitude: pool.coordinate[1]
+        coordinates: pool.coordinates ? {
+                longitude: pool.coordinates[0],
+                latitude: pool.coordinates[1]
             } : null
     };
 }

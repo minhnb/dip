@@ -6,12 +6,27 @@ const crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const amenityTypeSchema = new Schema({
-    name: {type: String, required: true},
-    details: {type: String, required: true},
-    asset: {
-        url: String,
-        md5: String,
-        mediaType: String
+    name: {
+        type: String,
+        required: true
+    },
+    details: {
+        type: String,
+        required: true
+    },
+    icon: {
+        url: {
+            type: String,
+            required: true
+        },
+        md5: {
+            type: String,
+            required: true
+        },
+        mediaType: {
+            type: String,
+            required: true
+        }
     }
 }, {
     timestamps: true
