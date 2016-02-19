@@ -6,7 +6,7 @@ const db = require('../../db');
 const entities = require('../../entities');
 
 const auth = require('../../helpers/passport_auth');
-const validator = require('../../helpers/input_validator');
+const validator = require('../../validators');
 const utils = require('../../helpers/utils');
 
 module.exports = router;
@@ -14,23 +14,10 @@ module.exports = router;
 router
     .use('/', auth.authenticate())
     .get('pools', '/',
-        validator({
-            query: {
-                limit: validator.optional(validator.isInt()),
-                longitude: validator.optional(validator.isDecimal()),
-                latitude: validator.optional(validator.isDecimal()),
-                minDistance: validator.optional(validator.isDecimal()),
-                maxDistance: validator.optional(validator.isDecimal()),
-                minRating: validator.optional(validator.isDecimal()),
-                maxRating: validator.optional(validator.isDecimal()),
-                minPrice: validator.optional(validator.isDecimal()),
-                maxPrice: validator.optional(validator.isDecimal()),
-                date: validator.optional(validator.isDate()),
-                startTime: validator.optional(validator.isInt()),
-                endTime: validator.optional(validator.isInt())
-            }
-        }),
+        validator.pools(),
+        validator.offers(),
         ctx => {
+            // TODO: Move this to either db or controller module
             var query = db.pools.where("active").equals(true);
 
             // Filter on location
