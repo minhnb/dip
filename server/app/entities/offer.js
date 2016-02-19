@@ -1,17 +1,17 @@
 'use strict';
 
-var poolRef = require('./poolRef');
 var ticket = require('./ticket');
 
-function convertOffer(offer, pool) {
+function convertOffer(offer) {
     var obj = {
         id: offer._id,
-        name: offer.name,
+        description: offer.description,
         allotmentCount: offer.allotmentCount,
         duration: offer.duration,
-        tickets: offer.tickets.map(function (x) {
-            return ticket(x, pool);
-        })
+        ticket: {
+            price: offer.ticket.price,
+            ref: ticket(offer.ticket.ref)
+        }
     };
 
     if (offer.date) {

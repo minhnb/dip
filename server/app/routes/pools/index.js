@@ -1,61 +1,16 @@
 "use strict";
 
-var Router = require('koa-router');
-var router = Router();
-var pool = Router();
+var router = require('koa-router')();
+var pool = require('./pool');
 
-var db = require('../db');
-var entities = require('../entities');
+var db = require('../../db');
+var entities = require('../../entities');
 
-var auth = require('../helpers/passport_auth');
-var validator = require('../helpers/input_validator');
-var utils = require('../helpers/utils');
+var auth = require('../../helpers/passport_auth');
+var validator = require('../../helpers/input_validator');
+var utils = require('../../helpers/utils');
 
 module.exports = router;
-
-pool.use('/', function (ctx, next) {
-    var id = ctx.params.id;
-    return db.pools.findById(id).exec().then(function (data) {
-        ctx.state.pool = data;
-        return next();
-    });
-}).get('pool', '/', function (ctx) {
-    ctx.body = { pool: entities.pool(ctx.state.pool) };
-}).get('pool photos', '/photos', validator({
-    request: {
-        query: {
-            limit: validator.optional(validator.isInt()),
-            offset: validator.optional(validator.isInt())
-        }
-    }
-}), function (ctx) {
-    var pool = ctx.state.pool,
-        limit = ctx.query.limit || 100,
-        offset = ctx.query.offset || 0;
-    return db.photos.find({ pool: pool }).populate('user').limit(limit).skip(offset).exec().then(function (photos) {
-        ctx.body = { photos: photos.map(entities.photo) };
-    });
-}).get('pool offers', '/offers', validator({
-    query: {
-        date: validator.isDate()
-    }
-}), function (ctx) {
-    var date = ctx.query.date,
-        pool = ctx.state.pool;
-    return db.offers.find({
-        pool: pool,
-        date: utils.convertDate(date)
-    }).populate('ticket').exec().then(function (offers) {
-        ctx.body = offers.map(entities.offer);
-    });
-    //return db.pool.find({_id: ctx.params.id, "offers.date": utils.convertDate(date)}).exec().then(function(pool_data) {
-    //    ctx.response.body = {
-    //        offers: pool_data.offers.map(x => {
-    //            return entities.offer(x, pool_data);
-    //        })
-    //    };
-    //});
-});
 
 router.use('/', auth.authenticate()).get('pools', '/', validator({
     query: {
@@ -137,4 +92,10 @@ router.use('/', auth.authenticate()).get('pools', '/', validator({
             ctx.body = { pools: pools.map(entities.pool) };
         });
     });
-}).use('/:id', pool.routes(), pool.allowedMethods());
+}).use('/:id', function (ctx, next) {
+    var id = ctx.params.id;
+    return db.pools.findById(id).exec().then(function (data) {
+        ctx.state.pool = data;
+        return next();
+    });
+}, pool.routes(), pool.allowedMethods());

@@ -84,7 +84,7 @@ router.put('add user', '/', function (ctx, next) {
     }
     if (postData.picture && postData.picture.url) {
         user.avatar.url = postData.picture.url;
-        user.avatar.contentType = postData.picture.mediaType;
+        user.avatar.mediaType = postData.picture.mediaType;
     }
     if (postData.oldPassword !== undefined) {
         user.setPassword(postData.newPassword);

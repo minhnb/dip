@@ -6,6 +6,7 @@ function generateRandomToken(length) {
 }
 
 function convertDate(dateString) {
+    if (!dateString) return null;
     var date = new Date(dateString);
     return dateformat(date, 'yyyy-mm-dd');
 }
