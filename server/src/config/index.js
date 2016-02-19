@@ -17,5 +17,11 @@ module.exports = {
         region: process.env.AWS_REGION,
         s3Bucket: process.env.S3_BUCKET,
         s3Version: process.env.S3_API_VERSION
+    },
+    email: {
+        server: process.env.MAIL_HOST,
+        user: process.env.MAIL_USER,
+        password: process.env.MAIL_PASS,
+        domain: process.env.MAIL_DOMAIN
     }
 };
