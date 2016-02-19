@@ -22,7 +22,16 @@ var poolSchema = new Schema({
     instagram: String,
     lowRate: Number,
     highRate: Number,
-    rating: Number,
+    rating: {
+        avg: {
+            type: Number
+        },
+        count: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
     address: {
         airportCode: String,
         street: String,

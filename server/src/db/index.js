@@ -15,6 +15,7 @@ module.exports = {
     amenities: require('./amenities'),
     amenityTypes: require('./amenityTypes'),
     photos: require('./photos'),
+    ratings: require('./ratings'),
     reservations: require('./reservations'),
     coupons: require('./coupons'),
     sessions: require('./sessions')

@@ -12,6 +12,7 @@ const utils = require('../../../helpers/utils');
 const photosRouter = require('./photos');
 const offersRouter = require('./offers');
 const amenitiesRouter = require('./amenities');
+const ratingRouter = require('./rating');
 
 router.get('pool', '/', ctx => {
         ctx.body = {pool: entities.pool(ctx.state.pool)};
@@ -27,6 +28,10 @@ router.get('pool', '/', ctx => {
     .use('/amenities',
         amenitiesRouter.routes(),
         amenitiesRouter.allowedMethods()
+    )
+    .use('/rating',
+        ratingRouter.routes(),
+        ratingRouter.allowedMethods()
     );
 
 module.exports = router;
