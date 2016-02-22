@@ -39,9 +39,10 @@ router.get('/',
                 group: group,
                 content: content
             });
-            return message.save().then(() => {
+            return message.save().then(message => {
                 // TODO: Send push notification to all members
-                ctx.status = 204;
+                ctx.status = 200;
+                ctx.body = {message: entities.message(message)};
                 group.members.forEach(member => {
                     gcm.pushNotification(member, entities.message(message));
                 });

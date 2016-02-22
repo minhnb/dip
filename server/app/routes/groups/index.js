@@ -31,8 +31,9 @@ router.use('/', auth.authenticate()).get('/', validator.limitParams(), function 
         }))
     });
     group.members.addToSet(ctx.state.user._id);
-    return group.save().then(function () {
-        ctx.status = 204;
+    return group.save().then(function (group) {
+        ctx.status = 200;
+        ctx.body = { group: entities.group(group) };
     });
 }).use('/:id', function (ctx, next) {
     return db.groups.findById(ctx.params.id).populate('owner').populate('members').exec().then(function (group) {

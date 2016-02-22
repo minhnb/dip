@@ -20,7 +20,7 @@ router.get('/',
             .then(photos => {
                 ctx.body = {photos: photos.map(entities.photo)};
             });
-    })
+    });
 
 
 module.exports = router;
