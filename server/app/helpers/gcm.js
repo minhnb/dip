@@ -18,7 +18,7 @@ function pushNotification(user, data) {
 
     return db.devices.find({ user: user }).exec().then(function (devices) {
         devices = devices.map(function (d) {
-            return d.pushToken;
+            return d.deviceToken;
         });
         return new Promise(function (resolve, reject) {
             sender.send(message, { registrationTokens: devices }, function (err, response) {
