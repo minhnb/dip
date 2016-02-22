@@ -5,7 +5,7 @@ var gcm = require('node-gcm');
 var db = require('../db');
 var config = require('../config');
 
-var sender = new gcm.sender(config.gcm.apiKey);
+var sender = new gcm.Sender(config.gcm.apiKey);
 
 function pushNotification(user, data) {
     var message = new gcm.Message({ data: data });
