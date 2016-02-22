@@ -12,6 +12,7 @@ const pools = require('./pools');
 const reservations = require('./reservations');
 const sales = require('./sales');
 const users = require('./users');
+const groups = require('./groups');
 
 const auth = require('./auth');
 
@@ -29,5 +30,6 @@ router.use('/pools', pools.routes(), pools.allowedMethods());
 router.use('/reservations', reservations.routes(), reservations.allowedMethods());
 router.use('/sales', sales.routes(), sales.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
+router.use('/groups', groups.routes(), groups.allowedMethods());
 
 router.use('/auth', auth.routes(), auth.allowedMethods());
