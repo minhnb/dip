@@ -7,7 +7,7 @@ module.exports = function () {
         request: {
             body: {
                 rating: function rating(r) {
-                    if (validator.isDecimal()(r)) {
+                    if (validator.isDecimal()(r).value) {
                         r = parseFloat(r);
                         if (r < 0 || r > 5) throw new Error('Rating must be between 0 and 5');
                     } else {
