@@ -5,13 +5,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const deviceSchema = new Schema({
-    user: {type: Schema.ObjectId, ref: 'User'},
-    deviceId: String,
-    pushToken: String,
-    status: Number,
-    deviceToken: String,
-    subscriptionToken: String,
-    apnsEnvironment: String,
+    deviceId: {type: String,
+        required: true,
+        index: {unique: true}
+    },
+    deviceToken: { // the gcm registration token
+        type: String,
+        required: true,
+        index: {unique: true}
+    },
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User'
+    },
+    status: Number, // what status?
+    //apnsEnvironment: String,
     details: {
         model: String,
         osName: String,
@@ -19,8 +27,8 @@ const deviceSchema = new Schema({
         carrier: String,
         appVersion: String
     }
+}, {
+    timestamps: true
 });
-
-deviceSchema.index({user:1, deviceId:1}, {unique: true});
 
 module.exports = mongoose.model('Device', deviceSchema);
