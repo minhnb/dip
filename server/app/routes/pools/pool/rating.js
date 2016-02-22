@@ -43,6 +43,21 @@ router.put('/', validator.rating(), function (ctx) {
     }).then(function () {
         ctx.status = 204;
     });
+}).get('/', function (ctx) {
+    var user = ctx.state.user,
+        pool = ctx.state.pool;
+
+    ctx.body = {
+        rating: {
+            avg: pool.rating.avg,
+            count: pool.rating.count
+        }
+    };
+    return db.ratings.findOne({ user: user, pool: pool }).then(function (rating) {
+        if (rating) {
+            ctx.body.rating.myRating = rating.rating;
+        }
+    });
 });
 
 module.exports = router;
