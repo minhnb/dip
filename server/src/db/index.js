@@ -8,6 +8,8 @@ module.exports = {
     devices: require('./devices'),
     activities: require('./activities'),
     announcements: require('./announcements'),
+    groups: require('./groups'),
+    messages: require('./messages'),
     pools: require('./pools'),
     offers: require('./offers'),
     baseOffers: require('./baseOffers'),

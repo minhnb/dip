@@ -11,5 +11,8 @@ module.exports = {
     offer: require('./offer'),
     amenity: require('./amenity'),
     user: require('./user'),
-    creditCard: require('./creditCard')
+    creditCard: require('./creditCard'),
+    device: require('./device'),
+    group: require('./group'),
+    message: require('./message')
 };

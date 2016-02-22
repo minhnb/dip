@@ -26,5 +26,9 @@ module.exports = {
         user: process.env.MAIL_USER,
         password: process.env.MAIL_PASS,
         domain: process.env.MAIL_DOMAIN
+    },
+    gcm: {
+        apiKey: process.env.GCM_KEY,
+        senderId: process.env.GCM_ID
     }
 };
