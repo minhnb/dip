@@ -60,7 +60,19 @@ app.use((ctx, next) => {
         });
         if (config.env != 'production' && config.env != 'prod') {
             console.log('caught', err);
-            ctx.response.body = err.message || 'Bad Request';
+
+            // Print stack trace if debug is set to 1 (only for dev/sandbox/testing... env)
+            if (ctx.query.debug) {
+                let title = 'Error Debug',
+                    message = err.message || 'Bad Request';
+                ctx.render('error', {
+                    title: title,
+                    message: message,
+                    error: err
+                });
+            } else {
+                ctx.response.body = err.message || 'Bad Request';
+            }
         } else {
             // If err.expose is true, it means the error is safe to display to the user
             // err.expose is set to true whenever we use ctx.throw, so be careful!
