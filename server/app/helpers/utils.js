@@ -17,8 +17,17 @@ function convertCardExpireDate(year, month) {
     return dateformat(date, 'mm/yyyy');
 }
 
+function checkGroupOwner(ctx, next) {
+    if (ctx.state.user && ctx.state.user._id.equals(ctx.state.group.owner._id)) {
+        return next();
+    } else {
+        ctx.throw(403); // access denied
+    }
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
-    convertCardExpireDate: convertCardExpireDate
+    convertCardExpireDate: convertCardExpireDate,
+    checkGroupOwner: checkGroupOwner
 };

@@ -13,11 +13,13 @@ var multer = require('koa-multer');
 
 module.exports = router;
 
-router.put('add user', '/', function (ctx, next) {
-    // Why do we have a user-adding route here?
-    var user_info = ctx.params.user;
-    ctx.body = { user: ctx.request.body };
-}).get('get user', '/:username', auth.authenticate(['user:read']), function (ctx) {
+router
+//.put('add user', '/', (ctx, next) => {
+//    // Why do we have a user-adding route here?
+//    let user_info = ctx.params.user;
+//    ctx.body = {user: ctx.request.body};
+//})
+.get('get user', '/:username', auth.authenticate(['user:read']), function (ctx) {
     return new Promise(function (resolve, reject) {
         if (ctx.params.username === 'me') {
             resolve(ctx.state.user);
@@ -43,6 +45,8 @@ router.put('add user', '/', function (ctx, next) {
                 oldPassword: function oldPassword(pwd) {
                     if (pwd !== undefined && !ctx.state.user.checkPassword(pwd)) {
                         throw new Error('Wrong password');
+                    } else {
+                        return true;
                     }
                 },
                 newPassword: validator.optional(validator.validatePassword)

@@ -19,6 +19,8 @@ const ticketSchema = new Schema({
         required: true,
         default: ''
     }
+}, {
+    timestamps: true
 });
 
 const ticketModel = mongoose.model('Ticket', ticketSchema);

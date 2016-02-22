@@ -50,6 +50,24 @@ router.put('/',
                 ctx.status = 204;
             });
     }
+)
+.get('/',
+    ctx => {
+        let user = ctx.state.user,
+            pool = ctx.state.pool;
+
+        ctx.body = {
+            rating: {
+                avg: pool.rating.avg,
+                count: pool.rating.count
+            }
+        };
+        return db.ratings.findOne({user: user, pool: pool}).then(rating => {
+            if (rating) {
+                ctx.body.rating.myRating = rating.rating;
+            }
+        });
+    }
 );
 
 module.exports = router;

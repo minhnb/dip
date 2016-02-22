@@ -22,6 +22,8 @@ const saleSchema = new Schema({
     amount: Number,
     feeAmount: Number,
     coupon: {type: Schema.ObjectId, ref: 'Coupon'}
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Sale', saleSchema);

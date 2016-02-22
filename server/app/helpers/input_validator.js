@@ -19,7 +19,7 @@ function validatePassword(pwd) {
 // Kind of silly but it works
 function optional(verifier) {
     return function (data) {
-        return data === undefined || verifier(data);
+        return data === undefined || typeof verifier !== 'function' || verifier(data);
     };
 }
 
@@ -41,12 +41,15 @@ validatorWrapper.isDate = validator.isDate;
 validatorWrapper.isEmail = validator.isEmail;
 validatorWrapper.isJSON = validator.isJSON;
 validatorWrapper.isIn = validator.isIn;
+validatorWrapper.isLength = validator.isLength;
+
 validatorWrapper.toInt = validator.toInt;
 validatorWrapper.toFloat = validator.toFloat;
 validatorWrapper.toBoolean = validator.toBoolean;
 validatorWrapper.toDate = validator.toDate;
 validatorWrapper.normalizeEmail = validator.normalizeEmail;
 validatorWrapper.trim = validator.trim;
+
 validatorWrapper.validatePassword = validatePassword;
 validatorWrapper.optional = optional;
 validatorWrapper.required = required;
