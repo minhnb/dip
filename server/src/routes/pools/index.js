@@ -41,52 +41,67 @@ router
                 query = query.where('rating.avg').lte(parseFloat(ctx.query.maxRating));
             }
 
-            return query.exec().then(pools => {
-                if (pools.length == 0) {
-                    ctx.body = {pools: []};
-                    return;
-                }
-                // Filter on offer
-                let offerOpts = {pool: {$in: pools.map(p => p._id)}};
-                if (ctx.query.date) {
-                    offerOpts.date = utils.convertDate(ctx.query.date);
-                }
-                if (ctx.query.startTime) {
-                    let startTime = parseInt(ctx.query.startTime);
-                    offerOpts['duration.startTime'] = {$gte: startTime};
-                }
-                if (ctx.query.endTime) {
-                    let endTime = parseInt(ctx.query.endTime);
-                    offerOpts['duration.endTime'] = {$lte: endTime};
-                }
-                if (ctx.query.minPrice || ctx.query.maxPrice) {
-                    let opts = {};
-                    if (ctx.query.minPrice) opts.$gte = parseFloat(ctx.query.minPrice);
-                    if (ctx.query.maxPrice) opts.$lte = parseFloat(ctx.query.maxPrice);
-                    offerOpts['ticket.price'] = opts;
-                }
-                return db.offers
-                    .aggregate([
-                        {$match: offerOpts},
-                        {$group: {
-                            _id: '$pool'
-                        }}
-                    ])
-                    .exec()
-                    .then(data => {
-                        data = data.map(x => x._id.toString());
-                        pools = pools.filter(p => {
-                            return data.indexOf(p._id.toString()) >= 0;
-                        });
-                        if (ctx.query.limit) {
-                            let limit = parseInt(ctx.query.limit);
-                            if (limit > 0) {
-                                pools.splice(limit);
+            return query.exec()
+                .then(pools => {
+                    if (pools.length == 0) {
+                        return pools;
+                    }
+                    // Filter on searchKey (aka, name)
+                    if (ctx.query.searchKey) {
+                        return db.pools.find({
+                            _id: {$in: pools},
+                            $text: {$search: ctx.query.searchKey}
+                        }).exec();
+                    } else {
+                        return pools;
+                    }
+                })
+                .then(pools => {
+                    if (pools.length == 0) {
+                        ctx.body = {pools: []};
+                        return;
+                    }
+                    // Filter on offer
+                    let offerOpts = {pool: {$in: pools.map(p => p._id)}};
+                    if (ctx.query.date) {
+                        offerOpts.date = utils.convertDate(ctx.query.date);
+                    }
+                    if (ctx.query.startTime) {
+                        let startTime = parseInt(ctx.query.startTime);
+                        offerOpts['duration.startTime'] = {$gte: startTime};
+                    }
+                    if (ctx.query.endTime) {
+                        let endTime = parseInt(ctx.query.endTime);
+                        offerOpts['duration.endTime'] = {$lte: endTime};
+                    }
+                    if (ctx.query.minPrice || ctx.query.maxPrice) {
+                        let opts = {};
+                        if (ctx.query.minPrice) opts.$gte = parseFloat(ctx.query.minPrice);
+                        if (ctx.query.maxPrice) opts.$lte = parseFloat(ctx.query.maxPrice);
+                        offerOpts['ticket.price'] = opts;
+                    }
+                    return db.offers
+                        .aggregate([
+                            {$match: offerOpts},
+                            {$group: {
+                                _id: '$pool'
+                            }}
+                        ])
+                        .exec()
+                        .then(data => {
+                            data = data.map(x => x._id.toString());
+                            pools = pools.filter(p => {
+                                return data.indexOf(p._id.toString()) >= 0;
+                            });
+                            if (ctx.query.limit) {
+                                let limit = parseInt(ctx.query.limit);
+                                if (limit > 0) {
+                                    pools.splice(limit);
+                                }
                             }
-                        }
-                        ctx.body = {pools: pools.map(entities.pool)};
-                    });
-            });
+                            ctx.body = {pools: pools.map(entities.pool)};
+                        });
+                });
         })
     .use('/:id',
         (ctx, next) => {

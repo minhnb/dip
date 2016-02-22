@@ -61,6 +61,7 @@ var poolSchema = new Schema({
 }, {
     timestamps: true
 });
+poolSchema.index({ name: 'text', 'title.text': 'text' });
 
 var poolModel = mongoose.model('Pool', poolSchema);
 

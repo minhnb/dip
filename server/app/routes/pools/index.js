@@ -39,6 +39,19 @@ router.use('/', auth.authenticate()).get('pools', '/', validator.pools(), valida
 
     return query.exec().then(function (pools) {
         if (pools.length == 0) {
+            return pools;
+        }
+        // Filter on searchKey (aka, name)
+        if (ctx.query.searchKey) {
+            return db.pools.find({
+                _id: { $in: pools },
+                $text: { $search: ctx.query.searchKey }
+            }).exec();
+        } else {
+            return pools;
+        }
+    }).then(function (pools) {
+        if (pools.length == 0) {
             ctx.body = { pools: [] };
             return;
         }
