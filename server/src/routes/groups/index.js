@@ -42,8 +42,9 @@ router.use('/', auth.authenticate())
                 members: new Set(members.map(m => m.toLowerCase()))
             });
             group.members.addToSet(ctx.state.user._id);
-            return group.save().then(() => {
-                ctx.status = 204;
+            return group.save().then(group => {
+                ctx.status = 200;
+                ctx.body = {group: entities.group(group)}
             });
         }
     )

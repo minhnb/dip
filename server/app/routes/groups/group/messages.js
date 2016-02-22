@@ -27,9 +27,10 @@ router.get('/', inputValidator.limitParams(), function (ctx) {
         group: group,
         content: content
     });
-    return message.save().then(function () {
+    return message.save().then(function (message) {
         // TODO: Send push notification to all members
-        ctx.status = 204;
+        ctx.status = 200;
+        ctx.body = { message: entities.message(message) };
         group.members.forEach(function (member) {
             gcm.pushNotification(member, entities.message(message));
         });
