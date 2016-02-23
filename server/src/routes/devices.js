@@ -52,17 +52,24 @@ router.use('/', auth.authenticate())
             });
     }
 )
-//.post('/:id',
-//    ctx => {
-//        let id = ctx.params.id,
-//            user = ctx.state.user;
-//        return db.devices
-//            .findOne({deviceId: id, user: user})
-//            .then(device => {
-//                ctx.body = {device: entities.device(device)};
-//            });
-//    }
-//)
+.post('/:deviceId',
+    ctx => {
+        let deviceId = ctx.params.deviceId,
+            token = ctx.request.body.deviceToken,
+            user = ctx.state.user;
+        return db.devices
+            .findOneAndUpdate({
+                deviceId: deviceId,
+                user: user
+            }, {
+                $set: {deviceToken: token}
+            }, {'new': true})
+            .exec()
+            .then(device => {
+                ctx.status = 204;
+            });
+    }
+)
 .delete('/:id',
     ctx => {
         let id = ctx.params.id,

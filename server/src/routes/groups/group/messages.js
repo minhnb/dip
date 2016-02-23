@@ -44,7 +44,13 @@ router.get('/',
                 ctx.status = 200;
                 ctx.body = {message: entities.message(message)};
                 group.members.forEach(member => {
-                    gcm.pushNotification(member, entities.message(message));
+                    gcm.pushNotification(member, entities.message(message))
+                        .then(data => {
+                            console.log('gcm response', data);
+                        })
+                        .catch(err => {
+                            console.error('gcm error', err);
+                        });
                 });
             });
         }

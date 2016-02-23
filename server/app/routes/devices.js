@@ -38,19 +38,19 @@ router.use('/', auth.authenticate()).put('/', validator({
     return db.devices.findOne({ deviceId: id, user: user }).then(function (device) {
         ctx.body = { device: entities.device(device) };
     });
-})
-//.post('/:id',
-//    ctx => {
-//        let id = ctx.params.id,
-//            user = ctx.state.user;
-//        return db.devices
-//            .findOne({deviceId: id, user: user})
-//            .then(device => {
-//                ctx.body = {device: entities.device(device)};
-//            });
-//    }
-//)
-.delete('/:id', function (ctx) {
+}).post('/:deviceId', function (ctx) {
+    var deviceId = ctx.params.deviceId,
+        token = ctx.request.body.deviceToken,
+        user = ctx.state.user;
+    return db.devices.findOneAndUpdate({
+        deviceId: deviceId,
+        user: user
+    }, {
+        $set: { deviceToken: token }
+    }, { 'new': true }).exec().then(function (device) {
+        ctx.status = 204;
+    });
+}).delete('/:id', function (ctx) {
     var id = ctx.params.id,
         user = ctx.state.user;
     return db.devices.findOneAndRemove({ deviceId: id, user: user }).then(function (device) {
