@@ -5,7 +5,7 @@ function convertUserReference(user) {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        fullName: user.name,
+        fullName: user.firstName + ' ' + user.lastName,
         username: user.username,
         picture: user.avatar
     };
