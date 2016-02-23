@@ -32,7 +32,11 @@ router.get('/', inputValidator.limitParams(), function (ctx) {
         ctx.status = 200;
         ctx.body = { message: entities.message(message) };
         group.members.forEach(function (member) {
-            gcm.pushNotification(member, entities.message(message));
+            gcm.pushNotification(member, entities.message(message)).then(function (data) {
+                console.log('gcm response', data);
+            }).catch(function (err) {
+                console.error('gcm error', err);
+            });
         });
     });
 });
