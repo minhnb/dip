@@ -6,6 +6,7 @@ var db = require('../db');
 var auth = require('../helpers/passport_auth');
 var validator = require('../helpers/input_validator');
 var stripe = require('../helpers/stripe');
+var email = require('../email');
 
 module.exports = router;
 
@@ -34,12 +35,13 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
     user.setPassword(ctx.request.body.password);
     return user.save().then(function (user) {
         ctx.response.status = 204;
-        return stripe.customers.create({
-            email: user.email
-        }).then(function (customer) {
-            user.account.stripeId = customer.id;
-            user.save();
-        });
+        email.welcome(user.email, { name: user.firstName });
+        //return stripe.customers.create({
+        //    email: user.email
+        //}).then(customer => {
+        //    user.account.stripeId = customer.id;
+        //    user.save();
+        //});
     }).catch(function (err) {
         if (err.code === 11000) {
             // Duplicate key error -- existed email
