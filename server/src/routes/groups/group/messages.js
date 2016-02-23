@@ -43,8 +43,21 @@ router.get('/',
                 // TODO: Send push notification to all members
                 ctx.status = 200;
                 ctx.body = {message: entities.message(message)};
+
+                let entityMessage = entities.message(message);
+                let payload = {
+                    data: entityMessage,
+                    notification: {
+                        title: entityMessage.user.fullName,
+                        body: entityMessage.content,
+                        sound: 'default',
+                        badge: 1,
+                        click_action: 'chat'
+                    }
+                };
                 group.members.forEach(member => {
-                    gcm.pushNotification(member, entities.message(message))
+                    if (member._id.equals(user._id)) return;
+                    gcm.pushNotification(member, payload)
                         .then(data => {
                             console.log('gcm response', data);
                         })
