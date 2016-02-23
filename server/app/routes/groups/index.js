@@ -38,7 +38,9 @@ router.use('/', auth.authenticate()).get('/', validator.limitParams(), function 
 }).use('/:id', function (ctx, next) {
     return db.groups.findById(ctx.params.id).populate('owner').populate('members').exec().then(function (group) {
         ctx.state.group = group;
-        if (!ctx.state.user._id.equals(group.owner._id) && !group.members.id(ctx.state.user._id)) {
+        if (!ctx.state.user._id.equals(group.owner._id) && !group.members.some(function (m) {
+            return m._id.equals(ctx.state.user._id);
+        })) {
             ctx.throw(403); // Access denied
         } else {
                 return next();
