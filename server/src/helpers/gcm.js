@@ -11,7 +11,7 @@ function pushNotification(user, data) {
     var message = new gcm.Message({
         data: data,
         notification: {
-            title: data.user.name,
+            title: data.user.fullName,
             body: data.content,
             sound: 'default',
             badge: 1
