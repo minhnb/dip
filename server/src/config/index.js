@@ -15,6 +15,8 @@ module.exports = {
     },
     aws: {
         region: process.env.AWS_REGION,
+        key: process.env.AWS_ACCESS_KEY,
+        secret: process.env.AWS_SECRET,
         s3Bucket: process.env.S3_BUCKET,
         s3Version: process.env.S3_API_VERSION
     },
@@ -22,7 +24,8 @@ module.exports = {
         server: process.env.MAIL_HOST,
         user: process.env.MAIL_USER,
         password: process.env.MAIL_PASS,
-        domain: process.env.MAIL_DOMAIN
+        domain: process.env.MAIL_DOMAIN,
+        address: process.env.MAIL_ADDRESS
     },
     gcm: {
         apiKey: process.env.GCM_KEY,

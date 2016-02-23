@@ -60,6 +60,8 @@ app.use(function (ctx, next) {
         });
         if (config.env != 'production' && config.env != 'prod') {
             console.log('caught', err);
+
+            // Print stack trace if debug is set to 1 (only for dev/sandbox/testing... env)
             if (ctx.query.debug) {
                 var title = 'Error Debug',
                     message = err.message || 'Bad Request';
