@@ -8,15 +8,7 @@ const config = require('../config');
 const sender = new gcm.Sender(config.gcm.apiKey);
 
 function pushNotification(user, data) {
-    var message = new gcm.Message({
-        data: data,
-        notification: {
-            title: data.user.fullName,
-            body: data.content,
-            sound: 'default',
-            badge: 1
-        }
-    });
+    var message = new gcm.Message(data);
 
     //message.addNotification({
     //    title: 'Alert!!!',

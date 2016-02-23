@@ -31,8 +31,21 @@ router.get('/', inputValidator.limitParams(), function (ctx) {
         // TODO: Send push notification to all members
         ctx.status = 200;
         ctx.body = { message: entities.message(message) };
+
+        var entityMessage = entities.message(message);
+        var payload = {
+            data: entityMessage,
+            notification: {
+                title: entityMessage.user.fullName,
+                body: entityMessage.content,
+                sound: 'default',
+                badge: 1,
+                click_action: 'chat'
+            }
+        };
         group.members.forEach(function (member) {
-            gcm.pushNotification(member, entities.message(message)).then(function (data) {
+            if (member._id.equals(user._id)) return;
+            gcm.pushNotification(member, payload).then(function (data) {
                 console.log('gcm response', data);
             }).catch(function (err) {
                 console.error('gcm error', err);
