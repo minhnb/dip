@@ -56,7 +56,9 @@ router.get('/',
                     }
                 };
                 group.members.forEach(member => {
-                    if (member._id.equals(user._id)) return;
+                    // A user can have multiple phones,
+                    // and so we need to send push notification to all of them just in case
+                    //if (member._id.equals(user._id)) return;
                     gcm.pushNotification(member, payload)
                         .then(data => {
                             console.log('gcm response', data);
