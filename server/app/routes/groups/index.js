@@ -26,9 +26,9 @@ router.use('/', auth.authenticate()).get('/', validator.limitParams(), function 
         name: name,
         description: description,
         owner: ctx.state.user,
-        members: new Set(members.map(function (m) {
+        members: new Array(new Set(members.map(function (m) {
             return m.toLowerCase();
-        }))
+        })))
     });
     group.members.addToSet(ctx.state.user._id);
     return group.save().then(function (group) {

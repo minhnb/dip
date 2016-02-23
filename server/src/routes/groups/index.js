@@ -39,7 +39,7 @@ router.use('/', auth.authenticate())
                 name: name,
                 description: description,
                 owner: ctx.state.user,
-                members: new Set(members.map(m => m.toLowerCase()))
+                members: new Array(new Set(members.map(m => m.toLowerCase())))
             });
             group.members.addToSet(ctx.state.user._id);
             return group.save().then(group => {
