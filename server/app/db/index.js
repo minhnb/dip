@@ -20,5 +20,6 @@ module.exports = {
     ratings: require('./ratings'),
     reservations: require('./reservations'),
     coupons: require('./coupons'),
-    sessions: require('./sessions')
+    sessions: require('./sessions'),
+    passwordToken: require('./passwordToken')
 };

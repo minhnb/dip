@@ -8,5 +8,7 @@ module.exports = {
     groups: require('./groups'),
     members: require('./members'),
     messages: require('./messages'),
-    devices: require('./devices')
+    devices: require('./devices'),
+    userSignup: require('./userSignup'),
+    resetPassword: require('./resetPassword')
 };

@@ -2,8 +2,19 @@ var environment = (process.env.NODE_ENV || 'development').toLowerCase();
 
 module.exports = {
     env: environment,
+    baseUrl: process.env.BASE_URL,
     mongo: {
-        uri: process.env.URI
+        uri: process.env.MONGO_URI
+    },
+    ttl: {
+        resetPassword: {
+            hours: process.env.TTL_RST_PWD,
+            seconds: process.env.TTL_RST_PWD * 3600
+        },
+        session: {
+            hours: process.env.TTL_SESSION,
+            seconds: process.env.TTL_SESSION * 3600
+        }
     },
     jwt: {
         key: process.env.JWT_KEY,
