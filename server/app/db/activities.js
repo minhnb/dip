@@ -7,8 +7,8 @@ var Schema = mongoose.Schema;
 
 var activitySchema = new Schema({
     actor: { type: Schema.ObjectId, ref: 'User', required: true },
-    verb: { type: String, required: true },
-    object: { type: String, required: true },
+    verb: { type: String, required: true }, // Reservation, ... ?
+    object: { type: String, required: true }, // Reservation/...?
     feedId: String, // example: notification#username
     foreignId: { type: Schema.ObjectId, required: true }
 }, {
