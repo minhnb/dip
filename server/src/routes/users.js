@@ -155,7 +155,7 @@ router
                 ctx.throw(400, 'No image specified');
             } else {
                 // TODO: convert/compress/process image before uploading to s3
-                return s3.upload(user.avatarS3Path, img.buffer)
+                return s3.upload(user.avatarS3Path, img.buffer, img.mimeType)
                     .catch(err => {
                         console.error(err);
                         ctx.throw(500, 'S3 Error');
@@ -164,7 +164,10 @@ router
                         user.avatar.contentType = img.mimeType;
                         return user.save().then(() => {
                             ctx.status = 200;
-                            ctx.body = {location: data.Location};
+                            ctx.body = {
+                                location: data.Location,
+                                contentType: img.mimeType
+                            };
                         });
                     });
             }
