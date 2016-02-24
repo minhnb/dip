@@ -1,5 +1,8 @@
 var environment = (process.env.NODE_ENV || 'development').toLowerCase();
 
+let ttlResetPassword = parseInt(process.env.TTL_RST_PWD) || 24;
+let ttlSession = parseInt(process.env.TTL_SESSION) || 72;
+
 module.exports = {
     env: environment,
     baseUrl: process.env.BASE_URL,
@@ -8,12 +11,12 @@ module.exports = {
     },
     ttl: {
         resetPassword: {
-            hours: process.env.TTL_RST_PWD,
-            seconds: process.env.TTL_RST_PWD * 3600
+            hours: ttlResetPassword,
+            seconds: ttlResetPassword * 3600
         },
         session: {
-            hours: process.env.TTL_SESSION,
-            seconds: process.env.TTL_SESSION * 3600
+            hours: ttlSession,
+            seconds: ttlSession * 3600
         }
     },
     jwt: {
