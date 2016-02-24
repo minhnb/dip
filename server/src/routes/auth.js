@@ -6,7 +6,7 @@ const url = require('url');
 const config = require('../config');
 const db = require('../db');
 const validator = require('../validators');
-const email = require('../email');
+const mailer = require('../mailer');
 
 const auth = require('../helpers/passport_auth');
 const stripe = require('../helpers/stripe');
@@ -35,7 +35,7 @@ router
             user.setPassword(ctx.request.body.password);
             return user.save().then(user => {
                 ctx.response.status = 204;
-                email.welcome(user.email, {name: user.firstName});
+                mailer.welcome(user.email, {name: user.firstName});
                 return stripe.customers.create({
                     email: user.email
                 }).then(customer => {

@@ -6,7 +6,7 @@ var url = require('url');
 var config = require('../config');
 var db = require('../db');
 var validator = require('../validators');
-var email = require('../email');
+var mailer = require('../mailer');
 
 module.exports = router;
 
@@ -22,7 +22,7 @@ router.post('Request password reset', '/', validator.resetPassword.request(), fu
             });
             return token.save().then(function (token) {
                 // Send email
-                email.resetPassword(user.email, {
+                mailer.resetPassword(user.email, {
                     name: user.firstName || user.lastName || user.email,
                     link: url.format({
                         protocol: 'https',

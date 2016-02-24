@@ -6,7 +6,7 @@ var url = require('url');
 var config = require('../config');
 var db = require('../db');
 var validator = require('../validators');
-var email = require('../email');
+var mailer = require('../mailer');
 
 var auth = require('../helpers/passport_auth');
 var stripe = require('../helpers/stripe');
@@ -28,7 +28,7 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
     user.setPassword(ctx.request.body.password);
     return user.save().then(function (user) {
         ctx.response.status = 204;
-        email.welcome(user.email, { name: user.firstName });
+        mailer.welcome(user.email, { name: user.firstName });
         return stripe.customers.create({
             email: user.email
         }).then(function (customer) {
