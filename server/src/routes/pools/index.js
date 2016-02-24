@@ -103,9 +103,9 @@ router
                         });
                 });
         })
-    .use('/:id',
+    .use('/:poolId',
         (ctx, next) => {
-            let id = ctx.params.id;
+            let id = ctx.params.poolId;
             return db.pools.findById(id)
                 .exec()
                 .then(data => {

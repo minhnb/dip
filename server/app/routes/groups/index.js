@@ -18,7 +18,7 @@ router.use('/', auth.authenticate()).get('/', validator.limitParams(), function 
     return db.groups.find({ members: user }).limit(limit).skip(offset).populate('owner').populate('members').exec().then(function (groups) {
         ctx.body = { groups: groups.map(entities.group) };
     });
-}).put('/', validator.groups.addGroup(), function (ctx) {
+}).post('/', validator.groups.addGroup(), function (ctx) {
     var name = ctx.request.body.name || '',
         description = ctx.request.body.description || '',
         members = ctx.request.body.members || [];
@@ -35,8 +35,8 @@ router.use('/', auth.authenticate()).get('/', validator.limitParams(), function 
         ctx.status = 200;
         ctx.body = { group: entities.group(group) };
     });
-}).use('/:id', function (ctx, next) {
-    return db.groups.findById(ctx.params.id).populate('owner').populate('members').exec().then(function (group) {
+}).use('/:groupId', function (ctx, next) {
+    return db.groups.findById(ctx.params.groupId).populate('owner').populate('members').exec().then(function (group) {
         ctx.state.group = group;
         if (!ctx.state.user._id.equals(group.owner._id) && !group.members.some(function (m) {
             return m._id.equals(ctx.state.user._id);

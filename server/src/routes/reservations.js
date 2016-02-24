@@ -8,7 +8,7 @@ module.exports = router;
 
 router
     .use('/', auth.authenticate())
-    .put('add reservation', '/',
+    .post('add reservation', '/',
         //validator({
         //    request: {
         //        body: {

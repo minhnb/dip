@@ -14,7 +14,7 @@ const multer = require('koa-multer');
 module.exports = router;
 
 router
-    //.put('add user', '/', (ctx, next) => {
+    //.post('add user', '/', (ctx, next) => {
     //    // Why do we have a user-adding route here?
     //    let user_info = ctx.params.user;
     //    ctx.body = {user: ctx.request.body};
@@ -38,7 +38,7 @@ router
             });
         }
     )
-    .post('update user', '/:username',
+    .put('update user', '/:username',
         auth.authenticate(['user:update']),
         validator({
             request: {
@@ -109,7 +109,7 @@ router
             });
         }
     )
-    .put('add payment', '/me/payment_methods',
+    .post('add payment', '/me/payment_methods',
         auth.authenticate(['user:updatePayment']),
         validator({
             request: {

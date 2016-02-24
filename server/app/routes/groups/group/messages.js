@@ -18,7 +18,7 @@ router.get('/', inputValidator.limitParams(), function (ctx) {
     return db.messages.find({ group: group }).sort({ createdAt: -1 }).limit(limit).skip(offset).populate('user').exec().then(function (messages) {
         ctx.body = { messages: messages.map(entities.message) };
     });
-}).put('/', inputValidator.messages.addMessage(), function (ctx) {
+}).post('/', inputValidator.messages.addMessage(), function (ctx) {
     var user = ctx.state.user,
         group = ctx.state.group,
         content = ctx.request.body.content;

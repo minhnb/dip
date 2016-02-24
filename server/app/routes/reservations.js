@@ -6,7 +6,7 @@ var validator = require('../helpers/input_validator');
 
 module.exports = router;
 
-router.use('/', auth.authenticate()).put('add reservation', '/',
+router.use('/', auth.authenticate()).post('add reservation', '/',
 //validator({
 //    request: {
 //        body: {

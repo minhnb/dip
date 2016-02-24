@@ -14,7 +14,7 @@ var multer = require('koa-multer');
 module.exports = router;
 
 router
-//.put('add user', '/', (ctx, next) => {
+//.post('add user', '/', (ctx, next) => {
 //    // Why do we have a user-adding route here?
 //    let user_info = ctx.params.user;
 //    ctx.body = {user: ctx.request.body};
@@ -34,7 +34,7 @@ router
             ctx.body = { user: entities.user(user, user._id.equals(ctx.state.user._id)) };
         }
     });
-}).post('update user', '/:username', auth.authenticate(['user:update']), validator({
+}).put('update user', '/:username', auth.authenticate(['user:update']), validator({
     request: {
         body: {
             user: {
@@ -100,7 +100,7 @@ router
         ctx.body = "Bad request";
         throw err;
     });
-}).put('add payment', '/me/payment_methods', auth.authenticate(['user:updatePayment']), validator({
+}).post('add payment', '/me/payment_methods', auth.authenticate(['user:updatePayment']), validator({
     request: {
         body: {
             stripeToken: validator.required(true)

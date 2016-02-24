@@ -20,8 +20,8 @@ router.get('/', function (ctx) {
     return group.save().then(function () {
         ctx.status = 204;
     });
-}).delete('/:id', utils.checkGroupOwner, inputValidator.members.removeMember(), function (ctx) {
-    var userId = ctx.params.id,
+}).delete('/:memberId', utils.checkGroupOwner, inputValidator.members.removeMember(), function (ctx) {
+    var userId = ctx.params.memberId,
         group = ctx.state.group;
     if (ctx.state.user.equals(userId)) {
         // If one (group's owner or not) wants to remove oneself from the group,

@@ -28,11 +28,11 @@ router.get('/',
             });
         }
     )
-    .delete('/:id',
+    .delete('/:memberId',
         utils.checkGroupOwner,
         inputValidator.members.removeMember(),
         ctx => {
-            let userId = ctx.params.id,
+            let userId = ctx.params.memberId,
                 group = ctx.state.group;
             if (ctx.state.user.equals(userId)) {
                 // If one (group's owner or not) wants to remove oneself from the group,
