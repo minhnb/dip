@@ -1,12 +1,15 @@
 "use strict";
 
 var router = require('koa-router')();
+var url = require('url');
+
+var config = require('../config');
 var db = require('../db');
+var validator = require('../validators');
+var mailer = require('../mailer');
 
 var auth = require('../helpers/passport_auth');
-var validator = require('../helpers/input_validator');
 var stripe = require('../helpers/stripe');
-var email = require('../email');
 
 module.exports = router;
 
@@ -15,19 +18,9 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
         ctx.response.status = 200;
         ctx.body = { JWT: token };
     });
-}).post('Sign up', '/signup', validator({
-    request: {
-        body: {
-            email: validator.isEmail(),
-            password: validator.validatePassword,
-            firstName: validator.trim(),
-            lastName: validator.trim,
-            gender: validator.isIn(['male', 'female', 'na'])
-        }
-    }
-}), function (ctx) {
+}).post('Sign up', '/signup', validator.userSignup(), function (ctx) {
     var user = new db.users({
-        email: ctx.request.body.email,
+        email: ctx.request.body.email.toLowerCase(),
         firstName: ctx.request.body.firstName,
         lastName: ctx.request.body.lastName,
         gender: ctx.request.body.gender
@@ -35,13 +28,13 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
     user.setPassword(ctx.request.body.password);
     return user.save().then(function (user) {
         ctx.response.status = 204;
-        email.welcome(user.email, { name: user.firstName });
-        //return stripe.customers.create({
-        //    email: user.email
-        //}).then(customer => {
-        //    user.account.stripeId = customer.id;
-        //    user.save();
-        //});
+        mailer.welcome(user.email, { name: user.firstName });
+        return stripe.customers.create({
+            email: user.email
+        }).then(function (customer) {
+            user.account.stripeId = customer.id;
+            user.save();
+        });
     }).catch(function (err) {
         if (err.code === 11000) {
             // Duplicate key error -- existed email

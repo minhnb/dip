@@ -14,6 +14,7 @@ var sales = require('./sales');
 var users = require('./users');
 var groups = require('./groups');
 
+var resetPassword = require('./resetPassword');
 var auth = require('./auth');
 
 router.get('index page', '/', function (ctx) {
@@ -32,4 +33,5 @@ router.use('/sales', sales.routes(), sales.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
 router.use('/groups', groups.routes(), groups.allowedMethods());
 
+router.use('/resetpassword', resetPassword.routes(), resetPassword.allowedMethods());
 router.use('/auth', auth.routes(), auth.allowedMethods());

@@ -94,8 +94,8 @@ router.use('/', auth.authenticate()).get('pools', '/', validator.pools(), valida
             ctx.body = { pools: pools.map(entities.pool) };
         });
     });
-}).use('/:id', function (ctx, next) {
-    var id = ctx.params.id;
+}).use('/:poolId', function (ctx, next) {
+    var id = ctx.params.poolId;
     return db.pools.findById(id).exec().then(function (data) {
         ctx.state.pool = data;
         return next();

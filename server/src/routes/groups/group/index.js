@@ -17,7 +17,7 @@ router.get('/',
             ctx.body = {group: entities.group(ctx.state.group)};
         }
     )
-    .post('/',
+    .put('/',
         utils.checkGroupOwner,
         inputValidator.groups.updateGroup(),
         ctx => {

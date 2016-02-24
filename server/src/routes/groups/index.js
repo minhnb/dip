@@ -29,7 +29,7 @@ router.use('/', auth.authenticate())
                 });
         }
     )
-    .put('/',
+    .post('/',
         validator.groups.addGroup(),
         ctx => {
             let name = ctx.request.body.name || '',
@@ -48,9 +48,9 @@ router.use('/', auth.authenticate())
             });
         }
     )
-    .use('/:id',
+    .use('/:groupId',
         (ctx, next) => {
-            return db.groups.findById(ctx.params.id)
+            return db.groups.findById(ctx.params.groupId)
                 .populate('owner')
                 .populate('members')
                 .exec()

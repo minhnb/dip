@@ -6,17 +6,16 @@ var Schema = mongoose.Schema;
 
 var deviceSchema = new Schema({
     deviceId: { type: String,
-        required: true,
-        index: { unique: true }
-    },
-    deviceToken: { // the gcm registration token
-        type: String,
-        required: true,
-        index: { unique: true }
+        required: true
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
+    },
+    deviceToken: { // the gcm registration token
+        type: String,
+        required: true
     },
     status: Number, // what status?
     //apnsEnvironment: String,
@@ -30,5 +29,9 @@ var deviceSchema = new Schema({
 }, {
     timestamps: true
 });
+deviceSchema.index({
+    deviceId: 1,
+    user: 1
+}, { unique: true });
 
 module.exports = mongoose.model('Device', deviceSchema);

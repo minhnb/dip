@@ -14,7 +14,7 @@ module.exports = router;
 
 router.get('/', function (ctx) {
     ctx.body = { group: entities.group(ctx.state.group) };
-}).post('/', utils.checkGroupOwner, inputValidator.groups.updateGroup(), function (ctx) {
+}).put('/', utils.checkGroupOwner, inputValidator.groups.updateGroup(), function (ctx) {
     var group = ctx.state.group,
         name = ctx.request.body.name,
         description = ctx.request.body.description;

@@ -28,7 +28,7 @@ router.get('/',
                 });
         }
     )
-    .put('/',
+    .post('/',
         inputValidator.messages.addMessage(),
         ctx => {
             let user = ctx.state.user,
