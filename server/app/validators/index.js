@@ -7,5 +7,6 @@ module.exports = {
     rating: require('./rating'),
     groups: require('./groups'),
     members: require('./members'),
-    messages: require('./messages')
+    messages: require('./messages'),
+    devices: require('./devices')
 };

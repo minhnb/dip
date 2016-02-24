@@ -1,7 +1,7 @@
 "use strict";
 const router = require('koa-router')();
 const auth = require('../helpers/passport_auth');
-const validator = require('../helpers/input_validator');
+const inputValidator = require('../validators');
 
 const db = require('../db');
 const entities = require('../entities');
@@ -9,26 +9,30 @@ const entities = require('../entities');
 module.exports = router;
 
 router.use('/', auth.authenticate())
-.put('/',
-    validator({
-        request: {
-            body: {
-                deviceId: validator.required(true),
-                deviceToken: validator.required(true),
-                details: validator.optional()
-            }
-        }
-    }),
+.put('/:deviceId',
+    inputValidator.devices.addDevice(),
     ctx => {
-        var deviceInfo = ctx.request.body;
-        deviceInfo.user = ctx.state.user;
-        var device = new db.devices(deviceInfo);
-        return device.save().then(device => {
-            ctx.status = 204;
-            // TODO: Register device for sending message/notification
-        }).catch(err => {
-            ctx.status = 400;
-        });
+        let deviceId = ctx.params.deviceId,
+            token = ctx.request.body.deviceToken,
+            details = ctx.request.body.details || {},
+            user = ctx.state.user;
+        return db.devices
+            .findOneAndUpdate({
+                deviceId: deviceId,
+                user: user
+            }, {
+                deviceId: deviceId,
+                user: user._id,
+                deviceToken: token,
+                details: details
+            }, {
+                'new': true,
+                upsert: true
+            })
+            .exec()
+            .then(device => {
+                ctx.status = 204;
+            });
     }
 )
 .get('/',
@@ -49,24 +53,6 @@ router.use('/', auth.authenticate())
             .findOne({deviceId: id, user: user})
             .then(device => {
                 ctx.body = {device: entities.device(device)};
-            });
-    }
-)
-.post('/:deviceId',
-    ctx => {
-        let deviceId = ctx.params.deviceId,
-            token = ctx.request.body.deviceToken,
-            user = ctx.state.user;
-        return db.devices
-            .findOneAndUpdate({
-                deviceId: deviceId,
-                user: user
-            }, {
-                $set: {deviceToken: token}
-            }, {'new': true})
-            .exec()
-            .then(device => {
-                ctx.status = 204;
             });
     }
 )
