@@ -52,7 +52,7 @@ passport.use(new JwtStrategy(
                     } else if (!user) {
                         done(null, false, 'Invalid user');
                     } else {
-                        done(null, {user: user, scopes: jwt_payload.scopes});
+                        done(null, {user: user, session: session, scopes: jwt_payload.scopes});
                     }
                 });
             }
@@ -90,6 +90,7 @@ function authenticateJwt(requiredScopes) {
                 console.log("Required: " + JSON.stringify(requiredScopes));
                 // TODO: Compare jwt and required scope
                 ctx.state.user = data.user;
+                ctx.state.session = data.session;
                 ctx.state.scopes = data.scopes;
             } else {
                 ctx.state.error = info;

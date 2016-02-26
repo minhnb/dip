@@ -27,8 +27,6 @@ const tokenSchema = new Schema({
         required: true
     }
 });
-console.log('ttl config hour', config.ttl.resetPassword.hours, typeof config.ttl.resetPassword.hours);
-console.log('ttl config second', config.ttl.resetPassword.seconds, typeof config.ttl.resetPassword.seconds);
 //tokenSchema.index({user: 1, token: 1}, {unique: true});
 tokenSchema.statics.generateToken = function() {
     return crypto.randomBytes(20).toString('hex');

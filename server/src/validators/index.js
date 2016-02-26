@@ -3,12 +3,13 @@
 module.exports = {
     pools: require('./pools'),
     offers: require('./offers'),
+    reservations: require('./reservations'),
     limitParams: require('./limitParams'),
     rating: require('./rating'),
     groups: require('./groups'),
     members: require('./members'),
     messages: require('./messages'),
     devices: require('./devices'),
-    userSignup: require('./userSignup'),
+    auth: require('./auth'),
     resetPassword: require('./resetPassword')
 };
