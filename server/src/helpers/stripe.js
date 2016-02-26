@@ -14,7 +14,7 @@ function addUser(user) {
     });
 }
 
-function addUserCard(user, token) {
+function addUserCard(user, token, defaultCard) {
     var p;
     if (!user.account.stripeId) {
         p = addUser(user);
@@ -36,6 +36,9 @@ function addUserCard(user, token) {
                 funding: card.funding
             });
             user.account.cards.push(userCard);
+            if (defaultCard) {
+                user.account.defaultCardId = userCard._id;
+            }
             return user.save().then(() => userCard);
         });
     });
