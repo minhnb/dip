@@ -15,7 +15,7 @@ module.exports = {
                         if (!o.id || !o.count || !o.price) {
                             throw new Error('Missing offer field');
                         }
-                        if (!validator.isInt(o.count).value || !validator.isDecimal(o.price).value) {
+                        if (!validator.isInt()(o.count).value || !validator.isDecimal()(o.price).value) {
                             throw new Error('Invalid offer field');
                         }
                         o.count = parseInt(o.count);
