@@ -26,14 +26,15 @@ function addUserCard(user, token, defaultCard) {
             source: token
         }).then(card => {
             var userCard = user.account.cards.create({
-                stripeToken: token,
+                stripeId: card.id,
                 brand: card.brand,
                 last4Digits: card.last4,
                 expMonth: card.exp_month,
                 expYear: card.exp_year,
                 cvcCheck: card.cvc_check,
                 country: card.country,
-                funding: card.funding
+                funding: card.funding,
+                fingerprint: card.fingerprint
             });
             user.account.cards.push(userCard);
             if (defaultCard) {
@@ -51,7 +52,7 @@ function chargeSale(sale) {
         capture: true,
         description: 'Charge on Dip app',
         customer: sale.stripe.customerId,
-        source: sale.stripe.cardInfo.stripeToken
+        source: sale.stripe.cardInfo.stripeId
     });
 }
 
