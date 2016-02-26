@@ -121,27 +121,13 @@ router
         ctx => {
             let token = ctx.request.body.stripeToken,
                 user = ctx.state.user;
-            return stripe.customers.createSource(ctx.state.user.account.stripeId, {
-                source: token
-            }).catch(err => {
-                err.status = 500; // Which is the appropriate http code for stripe error?
-                throw err;
-            }).then(card => {
-                var userCard = user.account.cards.create({
-                    stripeToken: token,
-                    brand: card.brand,
-                    last4Digits: card.last4,
-                    expMonth: card.exp_month,
-                    expYear: card.exp_year,
-                    cvcCheck: card.cvc_check,
-                    country: card.country,
-                    funding: card.funding
-                });
-                user.account.cards.push(userCard);
-                user.save().then(() => {
-                    ctx.response.status = 200;
-                    ctx.body = {newCard: entities.creditCard(userCard)};
-                });
+            if (!user.account.stripeId) {
+
+            }
+            // How about returning 202 (accepted) immediately without waiting for stripe?
+            return stripe.addUserCard(user, token).then(card => {
+                ctx.response.status = 200;
+                ctx.body = {newCard: entities.creditCard(card)};
             });
         }
     )

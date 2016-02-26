@@ -1,3 +1,5 @@
+'use strict';
+
 var environment = (process.env.NODE_ENV || 'development').toLowerCase();
 
 let ttlResetPassword = parseInt(process.env.TTL_RST_PWD) || 24;
@@ -25,7 +27,8 @@ module.exports = {
         issuer: 'dip'
     },
     stripe: {
-        key: process.env.STRIPE_KEY
+        publicKey: process.env.STRIPE_PUBLIC_KEY,
+        secretKey: process.env.STRIPE_SECRET_KEY
     },
     aws: {
         region: process.env.AWS_REGION,

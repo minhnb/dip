@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "gulp compile && pm2 start app/bin/www",
+    "start": "pm2 start src/bin/www --name dip_api",
+    "restart": "pm2 restart dip_api",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

@@ -24,7 +24,7 @@ router
         }
     )
     .post('Sign up', '/signup',
-        validator.userSignup(),
+        validator.auth.signup(),
         ctx => {
             var user = new db.users({
                 email: ctx.request.body.email.toLowerCase(),
@@ -36,12 +36,7 @@ router
             return user.save().then(user => {
                 ctx.response.status = 204;
                 mailer.welcome(user.email, {name: user.firstName});
-                return stripe.customers.create({
-                    email: user.email
-                }).then(customer => {
-                    user.account.stripeId = customer.id;
-                    user.save();
-                });
+                stripe.addUser(user); // Not using return to allow it to process in background
             }).catch(err => {
                 if (err.code === 11000) {
                     // Duplicate key error -- existed email
@@ -49,6 +44,16 @@ router
                 } else {
                     throw err;
                 }
+            });
+        }
+    )
+    .post('Sign out', '/signout',
+        auth.authenticate(),
+        ctx => {
+            let session = ctx.state.session;
+
+            session.remove().exec().then(session => {
+                ctx.status = 200;
             });
         }
     );

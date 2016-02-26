@@ -9,38 +9,38 @@ const entities = require('../entities');
 module.exports = router;
 
 router.use('/', auth.authenticate())
-.put('/:deviceId',
+.put('/:deviceId', // Add/Replace device for current session
     inputValidator.devices.addDevice(),
     ctx => {
         let deviceId = ctx.params.deviceId,
             token = ctx.request.body.deviceToken,
             details = ctx.request.body.details || {},
-            user = ctx.state.user;
-        return db.devices
-            .findOneAndUpdate({
-                deviceId: deviceId,
-                user: user
-            }, {
-                deviceId: deviceId,
-                user: user._id,
-                deviceToken: token,
-                details: details
-            }, {
-                'new': true,
-                upsert: true
-            })
-            .exec()
-            .then(device => {
-                ctx.status = 204;
-            });
+            session = ctx.state.session;
+
+        session.device = {
+            deviceId: deviceId,
+            deviceToken: token,
+            details: details
+        };
+
+        return session.save().then(session => {
+            ctx.status = 204;
+        });
     }
 )
 .get('/',
     ctx => {
         let user = ctx.state.user;
-        return db.devices
+        return db.sessions
             .find({user: user})
-            .then(devices => {
+            .then(sessions => {
+                let devices = sessions.reduce((arr, session) => {
+                    if (session.device) {
+                        arr.push(session.device);
+                    }
+                    return arr;
+                }, []);
+                ctx.status = 200;
                 ctx.body = {devices: devices.map(entities.device)};
             });
     }
@@ -49,21 +49,10 @@ router.use('/', auth.authenticate())
     ctx => {
         let id = ctx.params.id,
             user = ctx.state.user;
-        return db.devices
-            .findOne({deviceId: id, user: user})
-            .then(device => {
-                ctx.body = {device: entities.device(device)};
-            });
-    }
-)
-.delete('/:id',
-    ctx => {
-        let id = ctx.params.id,
-            user = ctx.state.user;
-        return db.devices
-            .findOneAndRemove({deviceId: id, user: user})
-            .then(device => {
-                ctx.status = 204;
+        return db.sessions
+            .findOne({user: user, 'device.deviceId': id})
+            .then(session => {
+                ctx.body = {device: entities.device(session.device)};
             });
     }
 );

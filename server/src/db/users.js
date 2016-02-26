@@ -50,7 +50,8 @@ const userSchema = new Schema({
             required: true,
             default: 0
         },
-        cards: [cardSchema]
+        cards: [cardSchema],
+        defaultCardId: Schema.ObjectId
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{
