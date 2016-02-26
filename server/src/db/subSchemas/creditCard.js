@@ -51,7 +51,7 @@ cardSchema.virtual('expDate').get(function() {
     return utils.convertCardExpireDate(this.expYear, this.expMonth);
 });
 
-cardSchema.virtual('passCvc').get(() => {
+cardSchema.virtual('passCvc').get(function() {
     return this.cvcCheck === 'pass';
 });
 
