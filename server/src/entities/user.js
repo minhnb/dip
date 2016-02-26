@@ -18,6 +18,7 @@ function convertUser(user, _private) {
         data.createdAt = user.createdAt;
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
+        data.defaultCardId = user.account.defaultCardId;
     }
     return data;
 }
