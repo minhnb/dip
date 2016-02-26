@@ -27,7 +27,7 @@ router.post('add payment', '/',
             // How about returning 202 (accepted) immediately without waiting for stripe?
             return stripe.addUserCard(user, token, defaultCard).then(card => {
                 ctx.response.status = 200;
-                ctx.body = {newCard: entities.creditCard(card)};
+                ctx.body = {newCard: entities.creditCard(card, user.account.defaultCardId)};
             });
         }
     )

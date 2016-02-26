@@ -25,6 +25,9 @@ router
             if (!userCard) {
                 ctx.throw(400, 'Invalid card id');
             }
+            if (!userCard.passCvc) {
+                ctx.throw(400, 'Cvc checking failed');
+            }
 
             return db.pools.findById(poolId)
                 .exec()
