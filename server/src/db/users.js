@@ -64,10 +64,21 @@ const userSchema = new Schema({
             unique: true,
             sparse: true
         }
-    }
+    },
+    privateMode: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    friends: [{
+        type: Schema.ObjectId,
+        ref: 'User'
+    }]
 }, {
     timestamps: true
 });
+userSchema.index({firstName: 'text', lastName: 'text'});
+
 userSchema.pre('save', function(next) {
     this.dob = utils.convertDate(this.dob);
     next();

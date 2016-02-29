@@ -16,9 +16,16 @@ function pushNotification(user, data) {
     //    icon: 'ic_launcher'
     //});
 
-    return db.devices.find({user: user})
+    return db.sessions
+        .find({user: user})
         .exec()
-        .then(devices => {
+        .then(sessions => {
+            let devices = sessions.reduce((arr, session) => {
+                if (session.device) {
+                    arr.push(session.device);
+                }
+                return arr;
+            }, []);
             if (devices.length == 0) {
                 return {success: 1};
             }

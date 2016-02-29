@@ -21,6 +21,28 @@ router
     //    let user_info = ctx.params.user;
     //    ctx.body = {user: ctx.request.body};
     //})
+    .get('search user', '/',
+        auth.authenticate(),
+        ctx => {
+            let user = ctx.state.user,
+                query = ctx.query.query,
+                userOpts = {};
+            if (query) {
+                userOpts = {
+                    $text: {$search: query},
+                    privateMode: false
+                };
+            } else {
+                userOpts = {
+                    _id: {$in: user.friends}
+                };
+            }
+            return db.users.find(userOpts)
+                .then(users => {
+                ctx.body = {users: users.map(entities.user)};
+            });
+        }
+    )
     .get('get user', '/:username',
         auth.authenticate(['user:read']),
         ctx => {
