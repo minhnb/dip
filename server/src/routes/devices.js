@@ -33,6 +33,7 @@ router.use('/', auth.authenticate())
         let user = ctx.state.user;
         return db.sessions
             .find({user: user})
+            .exec()
             .then(sessions => {
                 let devices = sessions.reduce((arr, session) => {
                     if (session.device) {

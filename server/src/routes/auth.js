@@ -47,7 +47,7 @@ router
             });
         }
     )
-    .post('Sign out', '/signout',
+    .post('Sign out', '/logout',
         auth.authenticate(),
         ctx => {
             let session = ctx.state.session;
