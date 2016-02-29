@@ -16,12 +16,21 @@ const msgSchema = new Schema({
         required: true
     },
     content: {
-        type: String,
-        required: true
+        type: String
+    },
+    media: {
+        url: String,
+        contentType: String
     }
 }, {
     timestamps: true
 });
 msgSchema.index({content: 'text'});
+
+
+msgSchema.virtual('messageImageS3Path').get(function() {
+    return 'messageImages/' + this._id;
+});
+
 
 module.exports = mongoose.model('Message', msgSchema);
