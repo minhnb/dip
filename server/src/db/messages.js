@@ -29,7 +29,7 @@ msgSchema.index({content: 'text'});
 
 
 msgSchema.virtual('messageImageS3Path').get(function() {
-    return 'messageImage/' + this._id;
+    return 'messageImages/' + this._id;
 });
 
 

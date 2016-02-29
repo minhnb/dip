@@ -34,13 +34,11 @@ router.get('/',
     )
     .post('/',
         inputValidator.messages.addMessage(),
-        multer().single('image'),
+        multer().single('image'), 
         ctx => {
-            console.log('here');
-            console.log(ctx.request.body);
             let user = ctx.state.user,
                 group = ctx.state.group,
-                content = ctx.request.body.content,
+                content = ctx.req.body.content,
                 image = ctx.response;
             let img = ctx.req.file;
             let message = new db.messages({
