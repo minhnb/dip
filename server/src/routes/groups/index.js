@@ -16,9 +16,18 @@ router.use('/', auth.authenticate())
         validator.limitParams(),
         ctx => {
             let user = ctx.state.user,
+                query = ctx.query.query,
+                memberId = ctx.query.member,
                 limit = ctx.query.limit ? parseInt(ctx.query.limit) : 10,
                 offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
-            return db.groups.find({members: user})
+            let groupOpts = {members: user};
+            if (query) {
+                groupOpts['$text'] = {$search: query};
+            }
+            if (memberId) {
+                groupOpts = {$and: [groupOpts, {members: memberId}]};
+            }
+            return db.groups.find(groupOpts)
                 .limit(limit)
                 .skip(offset)
                 .populate('owner')

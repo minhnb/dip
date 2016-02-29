@@ -25,6 +25,7 @@ const msgSchema = new Schema({
 }, {
     timestamps: true
 });
+msgSchema.index({content: 'text'});
 
 
 msgSchema.virtual('messageImageS3Path').get(function() {

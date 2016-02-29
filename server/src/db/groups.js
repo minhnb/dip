@@ -22,5 +22,6 @@ const groupSchema = new Schema({
 }, {
     timestamps: true
 });
+groupSchema.index({name: 'text', description: 'text'});
 
 module.exports = mongoose.model('Group', groupSchema);
