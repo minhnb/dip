@@ -3,27 +3,31 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var cardSchema = require('./subSchemas/creditCard');
+
 var saleSchema = new Schema({
-    state: String,
-    stripe: {
-        id: String,
-        token: String,
-        customerId: String
-    },
-    user: { type: Schema.ObjectId, ref: 'User' },
-    reservation: { type: Schema.ObjectId, ref: 'Reservation' },
-    card: {
-        lastDigits: String,
-        expiration: Date,
+    state: {
         type: String,
-        address: String
+        required: true
+    },
+    stripe: {
+        customerId: {
+            type: String,
+            required: true
+        },
+        cardInfo: {
+            type: cardSchema,
+            required: true
+        }
     },
     error: String,
     amount: Number,
     feeAmount: Number,
-    coupon: { type: Schema.ObjectId, ref: 'Coupon' }
-}, {
-    timestamps: true
+    reservation: {
+        type: Schema.ObjectId,
+        ref: 'Reservation',
+        required: true
+    }
 });
 
 module.exports = mongoose.model('Sale', saleSchema);

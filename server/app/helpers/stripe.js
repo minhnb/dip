@@ -1,8 +1,66 @@
 'use strict';
 
 var config = require('../config');
-var stripe = require('stripe')(config.stripe.key);
+var stripe = require('stripe')(config.stripe.secretKey);
 
 // Place any customization here
 
-module.exports = stripe;
+function addUser(user) {
+    return stripe.customers.create({
+        email: user.email
+    }).then(function (customer) {
+        user.account.stripeId = customer.id;
+        return user.save();
+    });
+}
+
+function addUserCard(user, token, defaultCard) {
+    var p;
+    if (!user.account.stripeId) {
+        p = addUser(user);
+    } else {
+        p = Promise.resolve(user);
+    }
+    return p.then(function (user) {
+        return stripe.customers.createSource(user.account.stripeId, {
+            source: token
+        }).then(function (card) {
+            var userCard = user.account.cards.create({
+                stripeId: card.id,
+                brand: card.brand,
+                last4Digits: card.last4,
+                expMonth: card.exp_month,
+                expYear: card.exp_year,
+                cvcCheck: card.cvc_check,
+                country: card.country,
+                funding: card.funding,
+                fingerprint: card.fingerprint
+            });
+            user.account.cards.push(userCard);
+            if (defaultCard) {
+                user.account.defaultCardId = userCard._id;
+            }
+            return user.save().then(function () {
+                return userCard;
+            });
+        });
+    });
+}
+
+function chargeSale(sale) {
+    return stripe.charges.create({
+        amount: sale.amount,
+        currency: 'usd',
+        capture: true,
+        description: 'Charge on Dip app',
+        customer: sale.stripe.customerId,
+        source: sale.stripe.cardInfo.stripeId
+    });
+}
+
+module.exports = {
+    stripe: stripe,
+    addUser: addUser,
+    addUserCard: addUserCard,
+    chargeSale: chargeSale
+};

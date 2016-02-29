@@ -18,8 +18,20 @@ function convertUser(user, _private) {
         data.createdAt = user.createdAt;
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
+        data.defaultCardId = user.account.defaultCardId;
     }
     return data;
 }
+
+convertUser.reference = function (user) {
+    return {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.firstName + ' ' + user.lastName,
+        username: user.username,
+        picture: user.avatar
+    };
+};
 
 module.exports = convertUser;

@@ -5,7 +5,6 @@ var db = require('./config');
 module.exports = {
     db: db,
     users: require('./users'),
-    devices: require('./devices'),
     activities: require('./activities'),
     announcements: require('./announcements'),
     groups: require('./groups'),
@@ -19,6 +18,7 @@ module.exports = {
     photos: require('./photos'),
     ratings: require('./ratings'),
     reservations: require('./reservations'),
+    sales: require('./sales'),
     coupons: require('./coupons'),
     sessions: require('./sessions'),
     passwordToken: require('./passwordToken')

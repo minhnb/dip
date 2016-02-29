@@ -8,6 +8,10 @@ const inputValidator = require('../../../validators');
 
 const gcm = require('../../../helpers/gcm');
 
+const multer = require('koa-multer');
+
+const s3 = require('../../../helpers/s3');
+
 module.exports = router;
 
 router.get('/',
@@ -30,42 +34,65 @@ router.get('/',
     )
     .post('/',
         inputValidator.messages.addMessage(),
+        multer().single('image'),
         ctx => {
+            console.log('here');
+            console.log(ctx.request.body);
             let user = ctx.state.user,
                 group = ctx.state.group,
-                content = ctx.request.body.content;
+                content = ctx.request.body.content,
+                image = ctx.response;
+            let img = ctx.req.file;
             let message = new db.messages({
                 user: user,
                 group: group,
-                content: content
+                content: content || ''
             });
-            return message.save().then(message => {
-                // TODO: Send push notification to all members
-                ctx.status = 200;
-                ctx.body = {message: entities.message(message)};
 
-                let entityMessage = entities.message(message);
-                let payload = {
-                    data: entityMessage,
-                    notification: {
-                        title: entityMessage.user.fullName,
-                        body: entityMessage.content,
-                        sound: 'default',
-                        badge: 1,
-                        click_action: 'chat'
-                    }
-                };
-                group.members.forEach(member => {
-                    // A user can have multiple phones,
-                    // and so we need to send push notification to all of them just in case
-                    //if (member._id.equals(user._id)) return;
-                    gcm.pushNotification(member, payload)
-                        .then(data => {
-                            console.log('gcm response', data);
-                        })
-                        .catch(err => {
-                            console.error('gcm error', err);
-                        });
+            let p;
+            if(img) {
+                p = s3.upload(message.messageImageS3Path, img.buffer, img.mimeType)
+                .catch(err => {
+                    console.error(err);
+                    ctx.throw(500, 'S3 Error');
+                }).then(data => {
+                    message.media = {
+                        url: data.Location,
+                        contentType: img.mimeType
+                    };
+                });
+            } else {
+                p = Promise.resolve();
+            }
+            return p.then(() => {
+                return message.save().then(message => {
+                    // TODO: Send push notification to all members
+                    ctx.status = 200;
+                    ctx.body = {message: entities.message(message)};
+
+                    let entityMessage = entities.message(message);
+                    let payload = {
+                        data: entityMessage,
+                        notification: {
+                            title: entityMessage.user.fullName,
+                            body: entityMessage.content,
+                            sound: 'default',
+                            badge: 1,
+                            click_action: 'chat'
+                        }
+                    };
+                    group.members.forEach(member => {
+                        // A user can have multiple phones,
+                        // and so we need to send push notification to all of them just in case
+                        //if (member._id.equals(user._id)) return;
+                        gcm.pushNotification(member, payload)
+                            .then(data => {
+                                console.log('gcm response', data);
+                            })
+                            .catch(err => {
+                                console.error('gcm error', err);
+                            });
+                    });
                 });
             });
         }

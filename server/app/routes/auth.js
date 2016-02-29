@@ -18,7 +18,7 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
         ctx.response.status = 200;
         ctx.body = { JWT: token };
     });
-}).post('Sign up', '/signup', validator.userSignup(), function (ctx) {
+}).post('Sign up', '/signup', validator.auth.signup(), function (ctx) {
     var user = new db.users({
         email: ctx.request.body.email.toLowerCase(),
         firstName: ctx.request.body.firstName,
@@ -29,12 +29,7 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
     return user.save().then(function (user) {
         ctx.response.status = 204;
         mailer.welcome(user.email, { name: user.firstName });
-        return stripe.customers.create({
-            email: user.email
-        }).then(function (customer) {
-            user.account.stripeId = customer.id;
-            user.save();
-        });
+        stripe.addUser(user); // Not using return to allow it to process in background
     }).catch(function (err) {
         if (err.code === 11000) {
             // Duplicate key error -- existed email
@@ -42,5 +37,11 @@ router.post('Log in', '/login', auth.login(), function (ctx) {
         } else {
             throw err;
         }
+    });
+}).post('Sign out', '/signout', auth.authenticate(), function (ctx) {
+    var session = ctx.state.session;
+
+    session.remove().exec().then(function (session) {
+        ctx.status = 200;
     });
 });
