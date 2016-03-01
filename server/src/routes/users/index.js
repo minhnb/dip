@@ -11,6 +11,7 @@ const s3 = require('../../helpers/s3');
 
 const multer = require('koa-multer');
 
+const friendRouter = require('./friends');
 const cardRouter = require('./payment_methods');
 
 module.exports = router;
@@ -24,18 +25,12 @@ router
     .get('search user', '/',
         auth.authenticate(),
         ctx => {
-            let user = ctx.state.user,
-                query = ctx.query.query,
-                userOpts = {};
-            if (query) {
+            let query = ctx.query.query,
                 userOpts = {
-                    $text: {$search: query},
                     privateMode: false
                 };
-            } else {
-                userOpts = {
-                    _id: {$in: user.friends}
-                };
+            if (query) {
+                userOpts['$text'] = {$search: query};
             }
             return db.users.find(userOpts)
                 .then(users => {
@@ -43,6 +38,7 @@ router
             });
         }
     )
+    .use('/friends', friendRouter.routes(), friendRouter.allowedMethods())
     .get('get user', '/:username',
         auth.authenticate(['user:read']),
         ctx => {
