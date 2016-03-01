@@ -2,16 +2,18 @@
 
 const convertCard = require('./creditCard');
 
-function convertUser(user, _private) {
+function convertUser(user, currentUser) {
     var data = {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
         gender: user.gender,
-        picture: user.avatar
+        picture: user.avatar,
+        // leave isFriend empty if no currentUser passed in
+        isFriend: currentUser ? currentUser.friends.some(f => f.equals(user._id)) : undefined
     };
-    if (_private) {
+    if (currentUser && currentUser._id.equals(user._id)) {
         data.email = user.email;
         data.dob = user.dob; // ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
         data.phone = user.phone;

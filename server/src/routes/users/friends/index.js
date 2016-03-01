@@ -21,7 +21,7 @@ router.use('/', auth.authenticate())
             }
             return db.users.find(userOpts)
                 .then(users => {
-                    ctx.body = {users: users.map(entities.user)};
+                    ctx.body = {users: users.map(u => entities.user(u, user))};
                 });
         }
     )
