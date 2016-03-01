@@ -25,9 +25,15 @@ router
     .get('search user', '/',
         auth.authenticate(),
         ctx => {
-            let query = ctx.query.query,
+            let user = ctx.state.user,
+                query = ctx.query.query,
                 userOpts = {
-                    privateMode: false
+                    $or: [
+                        {privateMode: false},
+                        {
+                            _id: {$in: user.friends}
+                        }
+                    ]
                 };
             if (query) {
                 userOpts['$text'] = {$search: query};
