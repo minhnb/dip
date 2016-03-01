@@ -40,7 +40,7 @@ router
             }
             return db.users.find(userOpts)
                 .then(users => {
-                ctx.body = {users: users.map(entities.user)};
+                ctx.body = {users: users.map(u => entities.user(u, user))};
             });
         }
     )
@@ -59,7 +59,7 @@ router
                     //ctx.body = {user: null, error: 'Invalid user'};
                     ctx.response.status = 404;
                 } else {
-                    ctx.body = {user: entities.user(user, user._id.equals(ctx.state.user._id))};
+                    ctx.body = {user: entities.user(user, ctx.state.user)};
                 }
             });
         }
