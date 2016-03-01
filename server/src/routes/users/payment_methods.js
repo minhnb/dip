@@ -60,6 +60,24 @@ router.post('add payment', '/',
                 ctx.status = 200;
             });
         }
+    )
+    .delete('Delete card', '/:cardId',
+        auth.authenticate(),
+        ctx => {
+            let cardId = ctx.params.cardId,
+                user = ctx.state.user;
+            let card = user.account.cards.id(cardId);
+            if  (!card) {
+                ctx.throw(404, 'Invalid card id');
+            }
+            if (user.account.defaultCardId.equals(card._id)) {
+                user.account.defaultCardId = null;
+            }
+            card.remove();
+            return user.save().then(user => {
+                ctx.status = 200;
+            });
+        }
     );
 
 
