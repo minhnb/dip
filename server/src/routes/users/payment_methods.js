@@ -70,7 +70,7 @@ router.post('add payment', '/',
             if  (!card) {
                 ctx.throw(404, 'Invalid card id');
             }
-            if (user.account.defaultCardId.equals(card._id)) {
+            if (card._id.equals(user.account.defaultCardId)) {
                 user.account.defaultCardId = null;
             }
             card.remove();
