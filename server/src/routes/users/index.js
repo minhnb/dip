@@ -11,6 +11,7 @@ const s3 = require('../../helpers/s3');
 
 const multer = require('koa-multer');
 
+const friendRouter = require('./friends');
 const cardRouter = require('./payment_methods');
 
 module.exports = router;
@@ -26,23 +27,24 @@ router
         ctx => {
             let user = ctx.state.user,
                 query = ctx.query.query,
-                userOpts = {};
+                userOpts = {
+                    $or: [
+                        {privateMode: false},
+                        {
+                            _id: {$in: user.friends}
+                        }
+                    ]
+                };
             if (query) {
-                userOpts = {
-                    $text: {$search: query},
-                    privateMode: false
-                };
-            } else {
-                userOpts = {
-                    _id: {$in: user.friends}
-                };
+                userOpts['$text'] = {$search: query};
             }
             return db.users.find(userOpts)
                 .then(users => {
-                ctx.body = {users: users.map(entities.user)};
+                ctx.body = {users: users.map(u => entities.user(u, user))};
             });
         }
     )
+    .use('/friends', friendRouter.routes(), friendRouter.allowedMethods())
     .get('get user', '/:username',
         auth.authenticate(['user:read']),
         ctx => {
@@ -57,7 +59,7 @@ router
                     //ctx.body = {user: null, error: 'Invalid user'};
                     ctx.response.status = 404;
                 } else {
-                    ctx.body = {user: entities.user(user, user._id.equals(ctx.state.user._id))};
+                    ctx.body = {user: entities.user(user, ctx.state.user)};
                 }
             });
         }
