@@ -20,11 +20,11 @@ const userSchema = new Schema({
     },
     encryptedPassword: {
         type: String,
-        required: true
+        required: false
     },
     salt: {
         type: String,
-        required: true
+        required: false
     },
     firstName: String,
     lastName: String,

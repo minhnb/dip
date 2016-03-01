@@ -14,9 +14,12 @@ const sessions = require('../db/sessions');
 
 const config = require('../config/index');
 
+const request = require('request');
+
 module.exports = {
     passport: passport,
     login: login,
+    facebookLogin: facebookLogin,
     authenticate: authenticateJwt
 };
 
@@ -78,6 +81,64 @@ function login() {
                 throw ctx.state.error;
             }
         });
+    }
+}
+
+function facebookLogin() {
+    return (ctx, next) => {
+        var request_token_url = "https://graph.facebook.com/me/?access_token=" + ctx.request.body.code;
+        return new Promise((resolve, reject) => {
+            request.get(request_token_url, function(error, response, token) {
+                if (error || response.statusCode !== 200) {
+                    ctx.state.error = response.statusMessage;
+                    reject(ctx.state.error);
+                } else {
+                    let fbUserInfo = JSON.parse(token);
+                    console.log(fbUserInfo);
+                    users.findByEmail(fbUserInfo.email).exec().then(user => {
+                        if (!user) {
+                           let user = new users({
+                               email: fbUserInfo.email,
+                               firstName: fbUserInfo.first_name,
+                               lastName: fbUserInfo.last_name,
+                               gender: fbUserInfo.gender,
+                               facebookId: fbUserInfo.id
+                           });
+
+                           resolve(user.save().then(user => {
+                                ctx.state.user = user;
+                           }));
+
+                        } else {
+                            if(user.facebookId) {
+                                ctx.state.user = user;
+                                resolve(user);
+                            } else {
+                                resolve(user.update({facebookId: fbUserInfo.id}).then(user => {
+                                     ctx.state.user = user;
+                                     resolve(user);
+                                }));
+                            }
+                            
+                        }
+                    }).catch(err => {
+                        ctx.state.error = err;
+                        throw ctx.state.error;
+                    });
+                }
+                
+            })
+        }).then(() => {
+            if (ctx.state.user) {
+                return next();
+            } else {
+                ctx.response.status = 401;
+                //ctx.body = 'Unauthorized';
+                ctx.body = ctx.state.error || 'Unauthorized';
+                throw ctx.state.error;
+            }
+        });
+
     }
 }
 

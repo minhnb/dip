@@ -23,6 +23,16 @@ router
             });
         }
     )
+
+    .post('Facebook Log-in', '/fblogin',
+        auth.facebookLogin(),
+        ctx => {
+            return ctx.state.user.generateJWT().then(token => {
+                ctx.response.status = 200;
+                ctx.body = {JWT: token};
+            });
+        }
+    )
     .post('Sign up', '/signup',
         validator.auth.signup(),
         ctx => {
