@@ -28,6 +28,7 @@ router.post('Request password reset', '/',
                         // Send email
                         mailer.resetPassword(user.email, {
                             name: user.firstName || user.lastName || user.email,
+                            token: token.token,
                             link: url.format({
                                 protocol: 'https',
                                 host: config.baseUrl,
