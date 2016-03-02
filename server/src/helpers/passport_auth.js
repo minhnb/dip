@@ -94,7 +94,6 @@ function facebookLogin() {
                     reject(ctx.state.error);
                 } else {
                     let fbUserInfo = JSON.parse(token);
-                    console.log(fbUserInfo);
                     users.findByEmail(fbUserInfo.email).exec().then(user => {
                         if (!user) {
                            let user = new users({
@@ -113,10 +112,10 @@ function facebookLogin() {
                             if(user.facebookId) {
                                 ctx.state.user = user;
                                 resolve(user);
-                            } else {
-                                resolve(user.update({facebookId: fbUserInfo.id}).then(user => {
-                                     ctx.state.user = user;
-                                     resolve(user);
+                            } else {                                
+                                user.facebookId = fbUserInfo.id;
+                                resolve(user.update({facebookId: fbUserInfo.id}).then(u => {
+                                    ctx.state.user = user;
                                 }));
                             }
                             
