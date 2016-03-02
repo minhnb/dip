@@ -87,6 +87,20 @@ userSchema.pre('save', function(next) {
 userSchema.virtual('username').get(function() {
     return this.email;
 });
+userSchema.virtual('nameOrEmail').get(function() {
+    let arr = [];
+    if (this.firstName) {
+        arr.push(this.firstName);
+    }
+    if (this.lastName) {
+        arr.push(this.lastName);
+    }
+    let name = arr.join(' ');
+    if (!name) {
+        name = this.email;
+    }
+    return name;
+});
 
 /**
  * @properties avatarS3Path

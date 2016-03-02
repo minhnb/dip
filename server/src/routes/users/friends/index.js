@@ -1,8 +1,12 @@
 "use strict";
 
 const router = require('koa-router')();
+const url = require('url');
+
 const db = require('../../../db');
 const entities = require('../../../entities');
+const mailer = require('../../../mailer');
+const config = require('../../../config');
 
 const auth = require('../../../helpers/passport_auth');
 
@@ -48,8 +52,15 @@ router.use('/', auth.authenticate())
                 let added = user.friends.addToSet(friend);
                 if (added.length > 0) {
                     return user.save().then(() => {
-                        // TODO: Send notification to other user
-                        // <Blah Blah> added you as his/her/their friend
+                        mailer.addFriend(friend.email, {
+                            name: friend.firstName,
+                            actor: user,
+                            link: url.format({
+                                protocol: 'https',
+                                host: config.baseUrl,
+                                pathname: `/users/${user._id}`
+                            })
+                        });
                         ctx.status = 200;
                     });
                 } else {
