@@ -20,7 +20,8 @@ router.use('/', auth.authenticate())
         session.device = {
             deviceId: deviceId,
             deviceToken: token,
-            details: details
+            details: details,
+            receiveNotification: true
         };
 
         return session.save().then(session => {
