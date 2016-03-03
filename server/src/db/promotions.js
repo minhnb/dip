@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 const Schema = mongoose.Schema;
 
-const couponSchema = new Schema({
+const promotionSchema = new Schema({
     status: Number,
     code: {
         type: String,
@@ -19,4 +19,4 @@ const couponSchema = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Coupon', couponSchema);
+module.exports = mongoose.model('Promotion', promotionSchema);

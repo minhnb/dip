@@ -20,7 +20,6 @@ router
                 _offers = ctx.request.body.offers,
                 userCardId = ctx.request.body.cardId,
                 expectedPrice = ctx.request.body.price,
-                coupon = ctx.request.body.promotionCode,
                 invites = ctx.request.body.invites;
 
             if (invites && !Array.isArray(invites)) {
@@ -44,111 +43,108 @@ router
                 ctx.throw(400, 'Cvc checking failed');
             }
 
-            let p;
-            if (coupon) {
-                p = db.coupons.findOne({code: coupon}).exec();
-            } else {
-                p = Promise.resolve();
-            }
+            return db.pools.findById(poolId)
+                .exec()
+                .then(pool => {
+                    if (!pool) {
+                        ctx.throw(400, 'Invalid pool');
+                    }
+                    let offerIds = _offers.map(o => o.id);
+                    return db.offers.find({
+                        _id: {$in: offerIds},
+                        pool: pool
+                    }).exec()
+                        .then(offers => {
+                            if (offers.length < _offers.length) {
+                                ctx.throw(400, 'Invalid offer id');
+                            }
 
-            return p.then(coupon => {
-                db.pools.findById(poolId)
-                    .exec()
-                    .then(pool => {
-                        if (!pool) {
-                            ctx.throw(400, 'Invalid pool');
-                        }
-                        let offerIds = _offers.map(o => o.id);
-                        return db.offers.find({
-                            _id: {$in: offerIds},
-                            pool: pool
-                        }).exec()
-                            .then(offers => {
-                                if (offers.length < _offers.length) {
+                            let offerMap = _offers.reduce((obj, offer) => {
+                                obj[offer.id] = offer;
+                                return obj;
+                            }, Object.create({}));
+
+                            let price = 0;
+
+                            offers.forEach(offer => {
+                                let expected = offerMap[offer._id.toString()];
+                                if (!expected) {
                                     ctx.throw(400, 'Invalid offer id');
                                 }
-
-                                let offerMap = _offers.reduce((obj, offer) => {
-                                    obj[offer.id] = offer;
-                                    return obj;
-                                }, Object.create({}));
-
-                                let price = 0;
-
-                                offers.forEach(offer => {
-                                    let expected = offerMap[offer._id.toString()];
-                                    if (!expected) {
-                                        ctx.throw(400, 'Invalid offer id');
-                                    }
-                                    if (expected.count + offer.reservationCount > offer.allotmentCount) {
-                                        ctx.throw(400, 'Overbooking offer');
-                                    }
-                                    if (expected.price != offer.ticket.price) {
-                                        ctx.throw(400, 'Unmatched offer price');
-                                    }
-                                    offer.reservationCount += expected.count;
-
-                                    price += expected.count * offer.ticket.price;
-                                });
-
-                                if (price != expectedPrice) {
-                                    ctx.throw(400, 'Unmatched total price');
+                                if (expected.count + offer.reservationCount > offer.allotmentCount) {
+                                    ctx.throw(400, 'Overbooking offer');
                                 }
+                                if (expected.price != offer.ticket.price) {
+                                    ctx.throw(400, 'Unmatched offer price');
+                                }
+                                offer.reservationCount += expected.count;
 
-                                return Promise.all(offers.map(o => o.save()))
-                                    .then(() => {
-                                        let userReservation = new db.reservations({
-                                            user: {
-                                                ref: user,
-                                                email: user.email,
-                                                firstName: user.firstName,
-                                                lastName: user.lastName
-                                            },
-                                            pool: {
-                                                ref: pool,
-                                                name: pool.name,
-                                                title: pool.title,
-                                                location: pool.location
-                                            },
-                                            price: price,
-                                            offers: offers.map(o => {
-                                                return {
-                                                    ref: o._id,
-                                                    details: o.toObject(),
-                                                    count: offerMap[o._id.toString()].count
-                                                };
-                                            }),
-                                            friends: invites
-                                        });
-                                        if (coupon) {
-                                            userReservation.coupon = {
-                                                ref: coupon,
-                                                details: coupon.toObject()
+                                price += expected.count * offer.ticket.price;
+                            });
+
+                            if (price != expectedPrice) {
+                                ctx.throw(400, 'Unmatched total price');
+                            }
+
+                            return Promise.all(offers.map(o => o.save()))
+                                .then(() => {
+                                    let userReservation = new db.reservations({
+                                        user: {
+                                            ref: user,
+                                            email: user.email,
+                                            firstName: user.firstName,
+                                            lastName: user.lastName
+                                        },
+                                        pool: {
+                                            ref: pool,
+                                            name: pool.name,
+                                            title: pool.title,
+                                            location: pool.location
+                                        },
+                                        price: price,
+                                        offers: offers.map(o => {
+                                            return {
+                                                ref: o._id,
+                                                details: o.toObject(),
+                                                count: offerMap[o._id.toString()].count
                                             };
-                                        }
+                                        }),
+                                        friends: invites
+                                    });
+                                    let p = Promise.resolve();
+                                    if (user.account.balance > 0) {
+                                        let discount = getDiscount(price, user.account.balance);
+                                        user.account.balance -= discount;
+                                        userReservation.promotionDiscount = discount;
+                                        p = user.save();
+                                    }
+                                    return p.then(user => {
                                         return userReservation.save();
-                                    })
-                                    .then(userReservation => {
-                                        let amount = price;
-                                        if (userReservation.coupon) {
-                                            amount = amount - userReservation.coupon.details.amount;
-                                            if (amount < 0) {
-                                                amount = 0;
-                                            }
-                                        }
+                                    });
+                                })
+                                .then(userReservation => {
+                                    let discount = userReservation.promotionDiscount || 0,
+                                        finalAmount = price - discount;
+                                    if (finalAmount > 0) {
                                         let userSale = new db.sales({
                                             state: 'Unpaid',
                                             stripe: {
                                                 customerId: user.account.stripeId,
                                                 cardInfo: userCard.toObject()
                                             },
-                                            amount: amount,
+                                            amount: finalAmount,
                                             reservation: userReservation
                                         });
 
                                         return userSale.save();
-                                    })
-                                    .then(sale => {
+                                    } else {
+                                        return true;
+                                    }
+                                })
+                                .then(sale => {
+                                    if (sale === true) {
+                                        ctx.status = 200;
+                                    } else {
                                         return stripe.chargeSale(sale).then(charge => {
                                             sale.state = charge.status;
                                             return sale.save().then(() => {
@@ -159,10 +155,10 @@ router
                                                 }
                                             });
                                         })
-                                    });
-                            });
-                    });
-            });
+                                    }
+                                });
+                        });
+                });
         }
     )
     .get('get reservations', '/',
@@ -175,3 +171,13 @@ router
                 });
         }
     );
+
+// Final price must either be zero or greater than 50cent (stripe limit)
+function getDiscount(price, balance) {
+    let discount = Math.min(balance, price);
+    if (discount < price && discount > price - 50) {
+        return price - 50;
+    } else {
+        return discount;
+    }
+}

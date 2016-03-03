@@ -45,6 +45,10 @@ const userSchema = new Schema({
     },
     account: {
         stripeId: String,
+        promotions: [{
+            type: Schema.ObjectId,
+            ref: 'Promotion'
+        }],
         balance: {
             type: Number,
             required: true,

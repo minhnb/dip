@@ -12,10 +12,16 @@ const validator = require('../../../helpers/input_validator');
 const s3 = require('../../../helpers/s3');
 
 const cardRouter = require('./payment_methods');
+const promotionRouter = require('./promotions');
 
 module.exports = router;
 
-router.put('update user', '/',
+router.get('get me', '/',
+    ctx => {
+        ctx.body = {user: entities.user(ctx.state.user, ctx.state.user)};
+    }
+)
+.put('update me', '/',
     validator({
         request: {
             body: {
@@ -108,4 +114,5 @@ router.put('update user', '/',
                     });
             }
         }
-    ).use('/payment_methods', cardRouter.routes(), cardRouter.allowedMethods());
+    ).use('/payment_methods', cardRouter.routes(), cardRouter.allowedMethods())
+    .use('/promotions', promotionRouter.routes(), promotionRouter.allowedMethods());
