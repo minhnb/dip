@@ -40,7 +40,7 @@ passport.use(new LocalStrategy(
 passport.use(new JwtStrategy(
     {secretOrKey: config.jwt.key, algorithms: [config.jwt.algorithm], issuer: config.jwt.issuer},
     function(jwt_payload, done) {
-        sessions.find({_id: jwt_payload.jti, user: jwt_payload.sub}, function(err, session) {
+        sessions.findOne({_id: jwt_payload.jti, user: jwt_payload.sub}, function(err, session) {
             if (err) {
                 done(err);
             } else if (!session) {
