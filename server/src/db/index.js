@@ -12,6 +12,7 @@ module.exports = {
     pools: require('./pools'),
     offers: require('./offers'),
     baseOffers: require('./baseOffers'),
+    offerTypes: require('./offerTypes'),
     tickets: require('./tickets'),
     amenityTypes: require('./amenityTypes'),
     photos: require('./photos'),
