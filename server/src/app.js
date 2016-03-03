@@ -33,6 +33,7 @@ const router = require('./routes');
 
 app.use(bodyparser);
 app.use(convert(json()));
+require('koa-qs')(app, 'extended');
 app.use(logger());
 
 app.use(convert(require('koa-static')(`${serverFolder}/public`)));

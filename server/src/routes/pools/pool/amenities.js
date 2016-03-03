@@ -7,18 +7,12 @@ const entities = require('../../../entities');
 const validator = require('../../../validators');
 
 router.get('/',
-    validator.limitParams(),
     ctx => {
-        let pool = ctx.state.pool,
-            limit = ctx.query.limit ? parseInt(ctx.query.limit) : 100,
-            offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
-        return db.amenities.find({pool: pool})
-            .limit(limit)
-            .skip(offset)
-            .populate('type')
+        let pool = ctx.state.pool;
+        return pool.amenities.populate('type')
             .exec()
-            .then(amenities => {
-                ctx.body = {amenities: amenities.map(entities.amenity)};
+            .then(() => {
+                ctx.body = {amenities: pool.amenities.map(entities.amenity)};
             });
     }
 );

@@ -13,7 +13,6 @@ module.exports = {
     offers: require('./offers'),
     baseOffers: require('./baseOffers'),
     tickets: require('./tickets'),
-    amenities: require('./amenities'),
     amenityTypes: require('./amenityTypes'),
     photos: require('./photos'),
     ratings: require('./ratings'),

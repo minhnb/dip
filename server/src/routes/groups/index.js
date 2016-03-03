@@ -17,17 +17,32 @@ router.use('/', auth.authenticate())
         ctx => {
             let user = ctx.state.user,
                 query = ctx.query.query,
-                memberId = ctx.query.member,
                 limit = ctx.query.limit ? parseInt(ctx.query.limit) : 10,
                 offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
-            let groupOpts = {members: user};
+
+            let groupQuery;
             if (query) {
-                groupOpts['$text'] = {$search: query};
+                let userPromise = db.users.find({
+                    $text: {$search: query}
+                }).select('_id').exec();
+
+                groupQuery = userPromise.then(users => {
+                    return db.groups.find({
+                        $and: [
+                            {members: user},
+                            {
+                                $or: [
+                                    {$text: {$search: query}},
+                                    {members: {$in: users}}
+                                ]
+                            }
+                        ]
+                    });
+                });
+            } else {
+                groupQuery = db.groups.find({members: user});
             }
-            if (memberId) {
-                groupOpts = {$and: [groupOpts, {members: memberId}]};
-            }
-            return db.groups.find(groupOpts)
+            return groupQuery.sort({updatedAt: -1})
                 .limit(limit)
                 .skip(offset)
                 .populate('owner')

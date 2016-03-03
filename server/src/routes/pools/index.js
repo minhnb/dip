@@ -41,6 +41,12 @@ router
                 query = query.where('rating.avg').lte(parseFloat(ctx.query.maxRating));
             }
 
+            // Filter on amenities
+            let amenities = ctx.query.amenities;
+            if (amenities && Array.isArray(amenities)) {
+                query = query.where('amenities.type').in(amenities);
+            }
+
             return query.exec()
                 .then(pools => {
                     if (pools.length == 0) {
@@ -62,27 +68,36 @@ router
                         return;
                     }
                     // Filter on offer
-                    let offerOpts = {pool: {$in: pools.map(p => p._id)}};
+                    let offerOpts = [
+                        {pool: {$in: pools.map(p => p._id)}}
+                    ];
                     if (ctx.query.date) {
-                        offerOpts.date = utils.convertDate(ctx.query.date);
+                        offerOpts.push({
+                            date: utils.convertDate(ctx.query.date)
+                        });
                     }
-                    if (ctx.query.startTime) {
-                        let startTime = parseInt(ctx.query.startTime);
-                        offerOpts['duration.startTime'] = {$gte: startTime};
+                    console.log(ctx.query.timeRanges);
+                    if (ctx.query.timeRanges) {
+                        offerOpts.push(filterTimeRanges(ctx.query.timeRanges));
                     }
-                    if (ctx.query.endTime) {
-                        let endTime = parseInt(ctx.query.endTime);
-                        offerOpts['duration.endTime'] = {$lte: endTime};
+                    if (ctx.query.priceRanges) {
+                        offerOpts.push(filterPriceRanges(ctx.query.priceRanges));
                     }
-                    if (ctx.query.minPrice || ctx.query.maxPrice) {
-                        let opts = {};
-                        if (ctx.query.minPrice) opts.$gte = parseFloat(ctx.query.minPrice);
-                        if (ctx.query.maxPrice) opts.$lte = parseFloat(ctx.query.maxPrice);
-                        offerOpts['ticket.price'] = opts;
+                    if (ctx.query.passTypes) {
+                        let types = ctx.query.passTypes,
+                            passOpts = [];
+                        types.forEach(type => {
+                            passOpts.push({'type': type});
+                        });
+                        offerOpts.push({
+                            $or: passOpts
+                        });
                     }
                     return db.offers
                         .aggregate([
-                            {$match: offerOpts},
+                            {
+                                $match: {$and: offerOpts}
+                            },
                             {$group: {
                                 _id: '$pool'
                             }}
@@ -116,3 +131,89 @@ router
         pool.routes(),
         pool.allowedMethods()
     );
+
+function filterTimeRanges(input) {
+    if (!input) return null;
+    if (!Array.isArray(input)) {
+        input = [input];
+    }
+    let timeOpts = [];
+    input.forEach(range => {
+        let startTime, endTime;
+        if (Array.isArray(range)) {
+            startTime = parseInt(range[0]);
+            endTime = parseInt(range[1]);
+        } else {
+            switch (range) {
+                case 'morning':
+                    startTime = 360;
+                    endTime = 600;
+                    break;
+                case 'daytime':
+                    startTime = 600;
+                    endTime = 1020;
+                    break;
+                case 'evening':
+                    startTime = 1020;
+                    endTime = 1260;
+                    break;
+                case 'late':
+                    startTime = 1260;
+                    endTime = 1560;
+                    break;
+                default:
+                    // do nothing
+                    return;
+            }
+        }
+        timeOpts.push({
+            'duration.endTime': {$gte: startTime},
+            'duration.startTime': {$lte: endTime}
+        });
+    });
+    return {
+        $or: timeOpts
+    };
+}
+
+function filterPriceRanges(input) {
+    if (!input) return null;
+    if (!Array.isArray(input)) {
+        input = [input];
+    }
+    let priceOpts = [];
+    input.forEach(range => {
+        let minPrice, maxPrice;
+        if (Array.isArray(range)) {
+            minPrice = parseInt(range[0]);
+            maxPrice = parseInt(range[1]);
+        } else {
+            switch (range) {
+                case '$':
+                    minPrice = 1000;
+                    maxPrice = 2000;
+                    break;
+                case '$$':
+                    minPrice = 2000;
+                    maxPrice = 4000;
+                    break;
+                case '$$$':
+                    minPrice = 4000;
+                    maxPrice = 8000;
+                    break;
+                default:
+                    // do nothing
+                    return;
+            }
+        }
+        priceOpts.push({
+            'ticket.price': {
+                $gte: minPrice,
+                $lte: maxPrice
+            }
+        });
+    });
+    return {
+        $or: priceOpts
+    };
+}
