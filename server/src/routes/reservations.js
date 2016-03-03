@@ -111,32 +111,51 @@ router
                                         }),
                                         friends: invites
                                     });
-                                    return userReservation.save();
+                                    let p = Promise.resolve();
+                                    if (user.account.balance > 0) {
+                                        let discount = getDiscount(price, user.account.balance);
+                                        user.account.balance -= discount;
+                                        userReservation.promotionDiscount = discount;
+                                        p = user.save();
+                                    }
+                                    return p.then(user => {
+                                        return userReservation.save();
+                                    });
                                 })
                                 .then(userReservation => {
-                                    let userSale = new db.sales({
-                                        state: 'Unpaid',
-                                        stripe: {
-                                            customerId: user.account.stripeId,
-                                            cardInfo: userCard.toObject()
-                                        },
-                                        amount: price,
-                                        reservation: userReservation
-                                    });
+                                    let discount = userReservation.promotionDiscount || 0,
+                                        finalAmount = price - discount;
+                                    if (finalAmount > 0) {
+                                        let userSale = new db.sales({
+                                            state: 'Unpaid',
+                                            stripe: {
+                                                customerId: user.account.stripeId,
+                                                cardInfo: userCard.toObject()
+                                            },
+                                            amount: finalAmount,
+                                            reservation: userReservation
+                                        });
 
-                                    return userSale.save();
+                                        return userSale.save();
+                                    } else {
+                                        return true;
+                                    }
                                 })
                                 .then(sale => {
-                                    return stripe.chargeSale(sale).then(charge => {
-                                        sale.state = charge.status;
-                                        return sale.save().then(() => {
-                                            if (charge.status == 'failed') {
-                                                ctx.status = 400;
-                                            } else {
-                                                ctx.status = 200;
-                                            }
-                                        });
-                                    })
+                                    if (sale === true) {
+                                        ctx.status = 200;
+                                    } else {
+                                        return stripe.chargeSale(sale).then(charge => {
+                                            sale.state = charge.status;
+                                            return sale.save().then(() => {
+                                                if (charge.status == 'failed') {
+                                                    ctx.status = 400;
+                                                } else {
+                                                    ctx.status = 200;
+                                                }
+                                            });
+                                        })
+                                    }
                                 });
                         });
                 });
@@ -152,3 +171,13 @@ router
                 });
         }
     );
+
+// Final price must either be zero or greater than 50cent (stripe limit)
+function getDiscount(price, balance) {
+    let discount = Math.min(balance, price);
+    if (discount < price && discount > price - 50) {
+        return price - 50;
+    } else {
+        return discount;
+    }
+}

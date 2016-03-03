@@ -6,7 +6,7 @@ module.exports = router;
 
 const activities = require('./activities');
 const announcements = require('./announcements');
-const coupons = require('./coupons');
+const promotions = require('./promotions');
 const devices = require('./devices');
 const pools = require('./pools');
 const reservations = require('./reservations');
@@ -25,7 +25,7 @@ router.get('index page', '/', ctx => {
 
 router.use('/activities', activities.routes(), activities.allowedMethods());
 router.use('/announcements', announcements.routes(), announcements.allowedMethods());
-router.use('/coupons', coupons.routes(), coupons.allowedMethods());
+router.use('/promotions', promotions.routes(), promotions.allowedMethods());
 router.use('/devices', devices.routes(), devices.allowedMethods());
 router.use('/pools', pools.routes(), pools.allowedMethods());
 router.use('/reservations', reservations.routes(), reservations.allowedMethods());
