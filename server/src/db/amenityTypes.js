@@ -6,6 +6,9 @@ const crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const amenityTypeSchema = new Schema({
+    _id: {
+        type: String
+    },
     name: {
         type: String,
         required: true

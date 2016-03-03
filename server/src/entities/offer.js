@@ -3,17 +3,28 @@
 const amenityEntity = require('./amenity');
 const ticketEntity = require('./ticket');
 
+
+function convertOfferType(type) {
+    return {
+        id: type._id,
+        name: type.name,
+        icon: type.icon
+    }
+}
+
 function convertOffer(offer) {
     var obj = {
         id: offer._id,
         description: offer.description,
         allotmentCount: offer.allotmentCount,
         duration: offer.duration,
-        amenities: offer.amenities.map(amenityEntity),
+        capacity: offer.capacity,
+        amenities: offer.amenities.map(amenityEntity.base),
         ticket: {
             price: offer.ticket.price,
             ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
-        }
+        },
+        type: convertOfferType(offer.type)
     };
 
     if (offer.date) {
@@ -25,5 +36,6 @@ function convertOffer(offer) {
 
     return obj;
 }
+convertOffer.type = convertOfferType;
 
 module.exports = convertOffer;

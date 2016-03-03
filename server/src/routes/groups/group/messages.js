@@ -38,8 +38,7 @@ router.get('/',
         ctx => {
             let user = ctx.state.user,
                 group = ctx.state.group,
-                content = ctx.req.body.content,
-                image = ctx.response;
+                content = ctx.request.body.content || ctx.req.body.content;
             let img = ctx.req.file;
             let message = new db.messages({
                 user: user,
