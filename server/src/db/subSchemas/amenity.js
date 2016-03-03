@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const amenitySchema = new Schema({
     type: {
-        type: Schema.ObjectId,
+        type: String,
         ref: 'AmenityType',
         required: true
     },

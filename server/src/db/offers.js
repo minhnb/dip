@@ -14,7 +14,7 @@ const offerSchema = new Schema({
         ref: 'BaseOffer'
     },
     type: {
-        type: Schema.ObjectId,
+        type: String,
         ref: 'OfferType',
         required: true
     },
@@ -57,7 +57,7 @@ const offerSchema = new Schema({
         required: true
     },
     amenities: [{
-        type: Schema.ObjectId,
+        type: String,
         ref: 'AmenityType'
     }],
     // TODO: Question: What will happen if the pool's owner delete that ticket/pass type?

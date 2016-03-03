@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const baseOfferSchema = new Schema({
     type: {
-        type: Schema.ObjectId,
+        type: String,
         ref: 'OfferType',
         required: true
     },

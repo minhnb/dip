@@ -76,37 +76,12 @@ router
                             date: utils.convertDate(ctx.query.date)
                         });
                     }
+                    console.log(ctx.query.timeRanges);
                     if (ctx.query.timeRanges) {
-                        let timeRanges = ctx.query.timeRanges,
-                            timeOpts = [];
-                        timeRanges.forEach(range => {
-                            let startTime = parseInt(range[0]),
-                                endTime = parseInt(range[1]);
-                            timeOpts.push({
-                                'duration.endTime': {$gte: startTime},
-                                'duration.startTime': {$lte: endTime}
-                            });
-                        });
-                        offerOpts.push({
-                            $or: timeOpts
-                        });
+                        offerOpts.push(filterTimeRanges(ctx.query.timeRanges));
                     }
                     if (ctx.query.priceRanges) {
-                        let priceRanges = ctx.query.priceRanges,
-                            priceOpts = [];
-                        priceRanges.forEach(range => {
-                            let minPrice = parseInt(range[0]),
-                                maxPrice = parseInt(range[1]);
-                            priceOpts.push({
-                                'ticket.price': {
-                                    $gte: minPrice,
-                                    $lte: maxPrice
-                                }
-                            });
-                        });
-                        offerOpts.push({
-                            $or: priceOpts
-                        });
+                        offerOpts.push(filterPriceRanges(ctx.query.priceRanges));
                     }
                     if (ctx.query.passTypes) {
                         let types = ctx.query.passTypes,
@@ -120,7 +95,9 @@ router
                     }
                     return db.offers
                         .aggregate([
-                            {$match: offerOpts},
+                            {
+                                $match: {$and: offerOpts}
+                            },
                             {$group: {
                                 _id: '$pool'
                             }}
@@ -154,3 +131,89 @@ router
         pool.routes(),
         pool.allowedMethods()
     );
+
+function filterTimeRanges(input) {
+    if (!input) return null;
+    if (!Array.isArray(input)) {
+        input = [input];
+    }
+    let timeOpts = [];
+    input.forEach(range => {
+        let startTime, endTime;
+        if (Array.isArray(range)) {
+            startTime = parseInt(range[0]);
+            endTime = parseInt(range[1]);
+        } else {
+            switch (range) {
+                case 'morning':
+                    startTime = 360;
+                    endTime = 600;
+                    break;
+                case 'daytime':
+                    startTime = 600;
+                    endTime = 1020;
+                    break;
+                case 'evening':
+                    startTime = 1020;
+                    endTime = 1260;
+                    break;
+                case 'late':
+                    startTime = 1260;
+                    endTime = 1560;
+                    break;
+                default:
+                    // do nothing
+                    return;
+            }
+        }
+        timeOpts.push({
+            'duration.endTime': {$gte: startTime},
+            'duration.startTime': {$lte: endTime}
+        });
+    });
+    return {
+        $or: timeOpts
+    };
+}
+
+function filterPriceRanges(input) {
+    if (!input) return null;
+    if (!Array.isArray(input)) {
+        input = [input];
+    }
+    let priceOpts = [];
+    input.forEach(range => {
+        let minPrice, maxPrice;
+        if (Array.isArray(range)) {
+            minPrice = parseInt(range[0]);
+            maxPrice = parseInt(range[1]);
+        } else {
+            switch (range) {
+                case '$':
+                    minPrice = 1000;
+                    maxPrice = 2000;
+                    break;
+                case '$$':
+                    minPrice = 2000;
+                    maxPrice = 4000;
+                    break;
+                case '$$$':
+                    minPrice = 4000;
+                    maxPrice = 8000;
+                    break;
+                default:
+                    // do nothing
+                    return;
+            }
+        }
+        priceOpts.push({
+            'ticket.price': {
+                $gte: minPrice,
+                $lte: maxPrice
+            }
+        });
+    });
+    return {
+        $or: priceOpts
+    };
+}

@@ -3,6 +3,15 @@
 const amenityEntity = require('./amenity');
 const ticketEntity = require('./ticket');
 
+
+function convertOfferType(type) {
+    return {
+        id: type._id,
+        name: type.name,
+        icon: type.icon
+    }
+}
+
 function convertOffer(offer) {
     var obj = {
         id: offer._id,
@@ -14,7 +23,8 @@ function convertOffer(offer) {
         ticket: {
             price: offer.ticket.price,
             ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
-        }
+        },
+        type: convertOfferType(offer.type)
     };
 
     if (offer.date) {
@@ -26,5 +36,6 @@ function convertOffer(offer) {
 
     return obj;
 }
+convertOffer.type = convertOfferType;
 
 module.exports = convertOffer;
