@@ -9,9 +9,8 @@ const validator = require('../../../validators');
 router.get('/',
     ctx => {
         let pool = ctx.state.pool;
-        return pool.populate('amenities.type')
-            .exec()
-            .then(() => {
+        return db.pools.populate(pool, {path: 'amenities.type'})
+            .then(pool => {
                 ctx.body = {amenities: pool.amenities.map(entities.amenity)};
             });
     }
