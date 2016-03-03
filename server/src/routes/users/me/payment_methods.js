@@ -2,12 +2,12 @@
 
 const router = require('koa-router')();
 
-const db = require('../../db');
-const entities = require('../../entities');
+const db = require('../../../db');
+const entities = require('../../../entities');
 
-const auth = require('../../helpers/passport_auth');
-const validator = require('../../helpers/input_validator');
-const stripe = require('../../helpers/stripe');
+const auth = require('../../../helpers/passport_auth');
+const validator = require('../../../helpers/input_validator');
+const stripe = require('../../../helpers/stripe');
 
 router.post('add payment', '/',
         auth.authenticate(['user:updatePayment']),
