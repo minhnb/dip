@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const amenitySchema = require('./subSchemas/amenity');
+
 const poolSchema = new Schema({
     propertyCategory: {
         type: Number,
@@ -57,7 +59,8 @@ const poolSchema = new Schema({
         suffix: String
     },
     phone: String,
-    reservable: Boolean
+    reservable: Boolean,
+    amenities: [amenitySchema]
 }, {
     timestamps: true
 });

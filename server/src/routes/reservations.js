@@ -19,7 +19,21 @@ router
                 poolId = ctx.request.body.pool,
                 _offers = ctx.request.body.offers,
                 userCardId = ctx.request.body.cardId,
-                expectedPrice = ctx.request.body.price;
+                expectedPrice = ctx.request.body.price,
+                invites = ctx.request.body.invites;
+
+            if (invites && !Array.isArray(invites)) {
+                ctx.throw(400, 'Invites must be a list');
+            }
+            if (!invites) {
+                invites = [];
+            }
+            let friendSet = new Set(user.friends.map(f => f.toString()));
+            invites.forEach(i => {
+                if (!friendSet.has(i)) {
+                    ctx.throw(400, 'Invitee must be a friend');
+                }
+            });
 
             let userCard = user.account.cards.id(userCardId);
             if (!userCard) {
@@ -94,7 +108,8 @@ router
                                                 details: o.toObject(),
                                                 count: offerMap[o._id.toString()].count
                                             };
-                                        })
+                                        }),
+                                        friends: invites
                                     });
                                     return userReservation.save();
                                 })

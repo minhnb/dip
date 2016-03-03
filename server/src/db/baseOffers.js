@@ -5,6 +5,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const baseOfferSchema = new Schema({
+    type: {
+        type: Schema.ObjectId,
+        ref: 'OfferType',
+        required: true
+    },
+    capacity: {
+        type: Number,
+        required: true,
+        default: 1
+    },
     description: {
         type: String,
         required: true

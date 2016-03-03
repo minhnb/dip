@@ -1,13 +1,18 @@
 'use strict';
 
-function convertAmenity(amenity) {
+function convertBase(base) {
     return {
-        name: amenity.type.name,
-        category: amenity.type.category,
-        icon: amenity.type.icon,
-        details: amenity.details,
-        count: amenity.count
+        name: base.name,
+        category: base.category,
+        icon: base.icon
     }
 }
+
+function convertAmenity(amenity) {
+    let base = convertBase(amenity.type);
+    base.details = amenity.details;
+    return base;
+}
+convertAmenity.base = convertBase;
 
 module.exports = convertAmenity;

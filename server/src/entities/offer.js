@@ -9,7 +9,8 @@ function convertOffer(offer) {
         description: offer.description,
         allotmentCount: offer.allotmentCount,
         duration: offer.duration,
-        amenities: offer.amenities.map(amenityEntity),
+        capacity: offer.capacity,
+        amenities: offer.amenities.map(amenityEntity.base),
         ticket: {
             price: offer.ticket.price,
             ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null

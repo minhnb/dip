@@ -41,6 +41,12 @@ router
                 query = query.where('rating.avg').lte(parseFloat(ctx.query.maxRating));
             }
 
+            // Filter on amenities
+            let amenities = ctx.query.amenities;
+            if (amenities && Array.isArray(amenities)) {
+                query = query.where('amenities.type').in(amenities);
+            }
+
             return query.exec()
                 .then(pools => {
                     if (pools.length == 0) {
@@ -62,23 +68,55 @@ router
                         return;
                     }
                     // Filter on offer
-                    let offerOpts = {pool: {$in: pools.map(p => p._id)}};
+                    let offerOpts = [
+                        {pool: {$in: pools.map(p => p._id)}}
+                    ];
                     if (ctx.query.date) {
-                        offerOpts.date = utils.convertDate(ctx.query.date);
+                        offerOpts.push({
+                            date: utils.convertDate(ctx.query.date)
+                        });
                     }
-                    if (ctx.query.startTime) {
-                        let startTime = parseInt(ctx.query.startTime);
-                        offerOpts['duration.startTime'] = {$gte: startTime};
+                    if (ctx.query.timeRanges) {
+                        let timeRanges = ctx.query.timeRanges,
+                            timeOpts = [];
+                        timeRanges.forEach(range => {
+                            let startTime = parseInt(range[0]),
+                                endTime = parseInt(range[1]);
+                            timeOpts.push({
+                                'duration.endTime': {$gte: startTime},
+                                'duration.startTime': {$lte: endTime}
+                            });
+                        });
+                        offerOpts.push({
+                            $or: timeOpts
+                        });
                     }
-                    if (ctx.query.endTime) {
-                        let endTime = parseInt(ctx.query.endTime);
-                        offerOpts['duration.endTime'] = {$lte: endTime};
+                    if (ctx.query.priceRanges) {
+                        let priceRanges = ctx.query.priceRanges,
+                            priceOpts = [];
+                        priceRanges.forEach(range => {
+                            let minPrice = parseInt(range[0]),
+                                maxPrice = parseInt(range[1]);
+                            priceOpts.push({
+                                'ticket.price': {
+                                    $gte: minPrice,
+                                    $lte: maxPrice
+                                }
+                            });
+                        });
+                        offerOpts.push({
+                            $or: priceOpts
+                        });
                     }
-                    if (ctx.query.minPrice || ctx.query.maxPrice) {
-                        let opts = {};
-                        if (ctx.query.minPrice) opts.$gte = parseFloat(ctx.query.minPrice);
-                        if (ctx.query.maxPrice) opts.$lte = parseFloat(ctx.query.maxPrice);
-                        offerOpts['ticket.price'] = opts;
+                    if (ctx.query.passTypes) {
+                        let types = ctx.query.passTypes,
+                            passOpts = [];
+                        types.forEach(type => {
+                            passOpts.push({'type': type});
+                        });
+                        offerOpts.push({
+                            $or: passOpts
+                        });
                     }
                     return db.offers
                         .aggregate([
