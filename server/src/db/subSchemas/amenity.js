@@ -5,11 +5,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const amenitySchema = new Schema({
-    pool: {
-        type: Schema.ObjectId,
-        ref: 'Pool',
-        required: true
-    },
     type: {
         type: Schema.ObjectId,
         ref: 'AmenityType',
@@ -28,6 +23,4 @@ const amenitySchema = new Schema({
     timestamps: true
 });
 
-const amenityModel = mongoose.model('Amenity', amenitySchema);
-
-module.exports = amenityModel;
+module.exports = amenitySchema;
