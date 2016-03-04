@@ -84,7 +84,9 @@ const userSchema = new Schema({
 userSchema.index({firstName: 'text', lastName: 'text'});
 
 userSchema.pre('save', function(next) {
-    this.dob = utils.convertDate(this.dob);
+    if (this.dob) {
+        this.dob = utils.convertDate(this.dob);
+    }
     next();
 });
 
