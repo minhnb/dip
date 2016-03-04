@@ -49,6 +49,9 @@ router.use('/', auth.authenticate())
                 if (!friend) {
                     ctx.throw(404, 'Invalid user');
                 }
+                if (user._id.equals(friend._id)) {
+                    ctx.throw(400, "Can't add yourself as a friend");
+                }
                 let added = user.friends.addToSet(friend);
                 if (added.length > 0) {
                     return user.save().then(() => {
