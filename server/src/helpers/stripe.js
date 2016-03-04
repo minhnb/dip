@@ -25,24 +25,33 @@ function addUserCard(user, token, defaultCard) {
         return stripe.customers.createSource(user.account.stripeId, {
             source: token
         }).then(card => {
-            var userCard = user.account.cards.create({
-                stripeId: card.id,
-                brand: card.brand,
-                last4Digits: card.last4,
-                expMonth: card.exp_month,
-                expYear: card.exp_year,
-                cvcCheck: card.cvc_check,
-                country: card.country,
-                funding: card.funding,
-                fingerprint: card.fingerprint
-            });
-            user.account.cards.push(userCard);
-            if (defaultCard) {
-                user.account.defaultCardId = userCard._id;
+            if (user.account.cards.some(c => c.fingerprint.equals(card.fingerprint))) {
+                // duplicated card
+                return stripe.customers.deleteCard(user.account.stripeId, card.id).then(() => {});
+            } else {
+                var userCard = user.account.cards.create({
+                    stripeId: card.id,
+                    brand: card.brand,
+                    last4Digits: card.last4,
+                    expMonth: card.exp_month,
+                    expYear: card.exp_year,
+                    cvcCheck: card.cvc_check,
+                    country: card.country,
+                    funding: card.funding,
+                    fingerprint: card.fingerprint
+                });
+                user.account.cards.push(userCard);
+                if (defaultCard) {
+                    user.account.defaultCardId = userCard._id;
+                }
+                return user.save().then(() => userCard);
             }
-            return user.save().then(() => userCard);
         });
     });
+}
+
+function removeUserCard(user, card) {
+    return stripe.customers.deleteCard(user.account.stripeId, card.stripeId);
 }
 
 function chargeSale(sale) {
