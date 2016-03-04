@@ -47,9 +47,9 @@ router.get('get me', '/',
         let postData = ctx.request.body.user,
             user = ctx.state.user;
 
-        if (postData.email !== undefined) {
-            user.email = postData.email.toLowerCase();
-        }
+        //if (postData.email !== undefined) {
+        //    user.email = postData.email.toLowerCase();
+        //}
 
         if (postData.gender !== undefined) {
             user.gender = postData.gender;
