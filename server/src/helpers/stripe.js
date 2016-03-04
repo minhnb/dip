@@ -25,7 +25,7 @@ function addUserCard(user, token, defaultCard) {
         return stripe.customers.createSource(user.account.stripeId, {
             source: token
         }).then(card => {
-            if (user.account.cards.some(c => c.fingerprint.equals(card.fingerprint))) {
+            if (user.account.cards.some(c => c.fingerprint === card.fingerprint)) {
                 // duplicated card
                 return stripe.customers.deleteCard(user.account.stripeId, card.id).then(() => {});
             } else {
