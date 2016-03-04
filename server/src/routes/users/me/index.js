@@ -26,17 +26,10 @@ router.get('get me', '/',
         request: {
             body: {
                 user: {
-                    email: validator.optional(validator.isEmail),
                     dob: validator.optional(validator.isDate()),
                     phone: validator.optional(validator.isNumeric()),
                     gender: validator.optional(validator.isIn('male', 'female', 'na')),
-                    oldPassword: pwd => {
-                        if (pwd !== undefined && !ctx.state.user.checkPassword(pwd)) {
-                            throw new Error('Wrong password');
-                        } else {
-                            return true;
-                        }
-                    },
+                    oldPassword: validator.optional(),
                     newPassword: validator.optional(validator.validatePassword),
                     'private': validator.optional(validator.isBoolean())
                 }
@@ -46,10 +39,6 @@ router.get('get me', '/',
     ctx => {
         let postData = ctx.request.body.user,
             user = ctx.state.user;
-
-        //if (postData.email !== undefined) {
-        //    user.email = postData.email.toLowerCase();
-        //}
 
         if (postData.gender !== undefined) {
             user.gender = postData.gender;
@@ -71,6 +60,10 @@ router.get('get me', '/',
             user.avatar.mediaType = postData.picture.mediaType;
         }
         if (postData.oldPassword !== undefined) {
+            let oldPwd = postData.oldPassword;
+            if (!user.checkPassword(oldPwd)) {
+                ctx.throw(400, 'Wrong password');
+            }
             user.setPassword(postData.newPassword);
         }
         if (postData.private !== undefined) {
