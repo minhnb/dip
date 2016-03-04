@@ -1,11 +1,10 @@
 'use strict';
 
-function convertCoupon(coupon) {
+function convertPromotion(promotion) {
     return {
-        id: coupon._id,
-        code: coupon.code,
-        amount: coupon.amount
+        code: promotion.code,
+        amount: promotion.amount
     };
 }
 
-module.exports = convertCoupon;
+module.exports = convertPromotion;
