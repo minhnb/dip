@@ -8,6 +8,12 @@ const config = require('../config');
 const sender = new gcm.Sender(config.gcm.apiKey);
 
 function pushNotification(user, data) {
+    if (!data.priority) {
+        data.priority = 'high';
+    }
+    if (data.data) {
+        data.contentAvailable = true;
+    }
     var message = new gcm.Message(data);
 
     //message.addNotification({

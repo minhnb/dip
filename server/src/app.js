@@ -51,7 +51,7 @@ app.use((ctx, next) => {
 // Error handling
 app.use((ctx, next) => {
     return next().catch(err => {
-        ctx.response.status = err.status || 400;
+        ctx.response.status = err.status || 500;
         hipchatter.notify('Dip-DevOps',{
             message: err.message,
             color: 'yellow',
@@ -65,14 +65,14 @@ app.use((ctx, next) => {
             // Print stack trace if debug is set to 1 (only for dev/sandbox/testing... env)
             if (ctx.query.debug) {
                 let title = 'Error Debug',
-                    message = err.message || 'Bad Request';
+                    message = err.message || 'Internal Server Error';
                 ctx.render('error', {
                     title: title,
                     message: message,
                     error: err
                 });
             } else {
-                ctx.response.body = err.message || 'Bad Request';
+                ctx.response.body = err.message || 'Internal Server Error';
             }
         } else {
             // If err.expose is true, it means the error is safe to display to the user

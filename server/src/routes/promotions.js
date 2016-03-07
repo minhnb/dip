@@ -8,11 +8,11 @@ const entities = require('../entities');
 
 module.exports = router;
 
-router.get('get coupon', '/:code',
+router.get('get promotion', '/:code',
     auth.authenticate(),
     ctx => {
-        return db.coupons.findById(ctx.params.code).exec().then(data => {
-            ctx.body = {coupon: entities.coupon(data)};
+        return db.promotions.findOne({code: ctx.params.code}).exec().then(data => {
+            ctx.body = {promotion: entities.promotion(data)};
         });
     }
 );

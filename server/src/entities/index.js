@@ -3,7 +3,7 @@
 module.exports = {
     activity: require('./activity'),
     announcement: require('./announcement'),
-    coupon: require('./coupon'),
+    promotion: require('./promotion'),
     userReference: require('./userRef'),
     poolReference: require('./poolRef'),
     pool: require('./pool'),

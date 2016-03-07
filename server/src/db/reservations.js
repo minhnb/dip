@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const offerSchema = require('./offers').schema;
-const couponSchema = require('./coupons').schema;
 
 const reservationSchema = new Schema({
     user: {
@@ -38,6 +37,7 @@ const reservationSchema = new Schema({
         type: Number,
         required: true
     },
+    promotionDiscount: Number,
     offers: [{
         // Question: Can we change a pool's offer?
         ref: {
@@ -55,15 +55,15 @@ const reservationSchema = new Schema({
             default: 1
         }
     }],
-    coupon: {
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Coupon'
-        },
-        details: {
-            type: couponSchema
-        }
-    },
+    //coupon: {
+    //    ref: {
+    //        type: Schema.ObjectId,
+    //        ref: 'Coupon'
+    //    },
+    //    details: {
+    //        type: couponSchema
+    //    }
+    //},
     sale: {
         type: Schema.ObjectId,
         ref: 'Sale'

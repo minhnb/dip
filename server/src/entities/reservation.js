@@ -18,6 +18,7 @@ module.exports = function(reservation) {
             };
         }),
         price: reservation.price,
+        promotionDiscount: reservation.promotionDiscount,
         saleId: reservation.sale
     }
 };

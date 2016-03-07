@@ -45,6 +45,10 @@ const userSchema = new Schema({
     },
     account: {
         stripeId: String,
+        promotions: [{
+            type: Schema.ObjectId,
+            ref: 'Promotion'
+        }],
         balance: {
             type: Number,
             required: true,
@@ -80,7 +84,9 @@ const userSchema = new Schema({
 userSchema.index({firstName: 'text', lastName: 'text'});
 
 userSchema.pre('save', function(next) {
-    this.dob = utils.convertDate(this.dob);
+    if (this.dob) {
+        this.dob = utils.convertDate(this.dob);
+    }
     next();
 });
 
@@ -110,6 +116,9 @@ userSchema.virtual('avatarS3Path').get(function() {
 });
 
 userSchema.statics.findByEmail = function(email, callback) {
+    if (email) {
+        email = email.toLowerCase();
+    }
     return this.findOne({email: email}, callback);
 };
 

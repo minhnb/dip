@@ -76,7 +76,6 @@ router
                             date: utils.convertDate(ctx.query.date)
                         });
                     }
-                    console.log(ctx.query.timeRanges);
                     if (ctx.query.timeRanges) {
                         offerOpts.push(filterTimeRanges(ctx.query.timeRanges));
                     }
