@@ -62,7 +62,7 @@ router
         ctx => {
             let session = ctx.state.session;
 
-            session.remove().exec().then(session => {
+            session.remove().then(session => {
                 ctx.status = 200;
             });
         }
