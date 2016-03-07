@@ -16,7 +16,8 @@ router.put('/',
             .findOne({
                 user: user,
                 pool: pool
-            }).then(userRating => {
+            }).exec()
+            .then(userRating => {
                 if (userRating) {
                     userRating.rating = rating;
                 } else {

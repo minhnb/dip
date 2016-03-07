@@ -116,6 +116,9 @@ userSchema.virtual('avatarS3Path').get(function() {
 });
 
 userSchema.statics.findByEmail = function(email, callback) {
+    if (email) {
+        email = email.toLowerCase();
+    }
     return this.findOne({email: email}, callback);
 };
 
