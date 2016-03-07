@@ -6,6 +6,8 @@ const db = require('../db');
 const entities = require('../entities');
 const inputValidator = require('../validators');
 
+const mailer = require('../mailer');
+
 const stripe = require('../helpers/stripe');
 const auth = require('../helpers/passport_auth');
 module.exports = router;
@@ -125,6 +127,12 @@ router
                                 .then(userReservation => {
                                     let discount = userReservation.promotionDiscount || 0,
                                         finalAmount = price - discount;
+
+                                    ctx.state.userReservation = userReservation;
+
+                                    // ctx.state.userReservation.user = {
+                                    //     firstName: user.firstName
+                                    // };
                                     if (finalAmount > 0) {
                                         let userSale = new db.sales({
                                             state: 'Unpaid',
@@ -143,6 +151,7 @@ router
                                 })
                                 .then(sale => {
                                     if (sale === true) {
+                                        mailer.confirmReservation(user.email, ctx.state.userReservation);
                                         ctx.status = 200;
                                     } else {
                                         return stripe.chargeSale(sale).then(charge => {
@@ -151,6 +160,7 @@ router
                                                 if (charge.status == 'failed') {
                                                     ctx.status = 400;
                                                 } else {
+                                                    mailer.confirmReservation(user.email, ctx.state.userReservation);
                                                     ctx.status = 200;
                                                 }
                                             });

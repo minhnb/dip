@@ -6,6 +6,7 @@ const mailer = require('nodemailer');
 //const sesTransport = require('nodemailer-ses-transport');
 
 const config = require('../config/index');
+const Handlebars = require('handlebars');
 
 const parser = require('./parser');
 
@@ -19,6 +20,15 @@ const transporter = mailer.createTransport({
     pool: true,
     maxMessages: 10,
     rateLimit: 5
+});
+
+Handlebars.registerHelper('hour_convert', function(minute) {
+    var m = minute % 60;
+    var h = (minute-m)/60;
+
+    var HRSMINS = h.toString() + ":" + (m<10?"0":"") + m.toString();
+    console.log(HRSMINS);
+    return HRSMINS;
 });
 
 function sendEmail(recipient, subject, message) {
@@ -69,5 +79,10 @@ module.exports = {
         return getTemplate('addFriend.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, `${data.actor.nameOrEmail} added you as a friend on Dip`))
+    },
+    confirmReservation: (email, data) => {
+        return getTemplate('confirmReservation.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Reservation Confirmation'))
     }
 };
