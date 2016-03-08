@@ -22,7 +22,7 @@ router.use('/', auth.authenticate())
 			let longitude = ctx.request.body.longitude,
 				latitude = ctx.request.body.longitude;
 
-			return geocoder.reverse({lat:45.767, lon:4.833})
+			return geocoder.reverse({lat: latitude, lon: longitude})
 		    .then(function(res) {
 		        console.log(res);
 		        let user = ctx.state.user;
@@ -43,5 +43,5 @@ router.use('/', auth.authenticate())
 		    });
 		}
 	)
-	
+
 module.exports = router;
