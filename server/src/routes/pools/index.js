@@ -47,7 +47,7 @@ router
                     let city = res[0].administrativeLevels.level2long,
                         state = res[0].administrativeLevels.level1long;
                     return db.cities
-                        .findOne({'$or': [{city: city}, {state: state}]})
+                        .findOne({'$and': [{city: city}, {state: state}]})
                         .exec();
                 })
                 .then(city => {
