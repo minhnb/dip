@@ -15,6 +15,7 @@ const users = require('./users');
 const groups = require('./groups');
 
 const resetPassword = require('./resetPassword');
+const wishList = require('./wishList');
 const auth = require('./auth');
 
 router.get('index page', '/', ctx => {
@@ -35,3 +36,4 @@ router.use('/groups', groups.routes(), groups.allowedMethods());
 
 router.use('/resetpassword', resetPassword.routes(), resetPassword.allowedMethods());
 router.use('/auth', auth.routes(), auth.allowedMethods());
+router.use('/wishlist', wishList.routes(), wishList.allowedMethods());

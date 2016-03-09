@@ -11,5 +11,6 @@ module.exports = {
     messages: require('./messages'),
     devices: require('./devices'),
     auth: require('./auth'),
-    resetPassword: require('./resetPassword')
+    resetPassword: require('./resetPassword'),
+    wishList: require('./wishList')
 };
