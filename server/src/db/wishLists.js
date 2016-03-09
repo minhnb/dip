@@ -18,6 +18,11 @@ const wishListsSchema = new Schema({
         type: Date,
         default: Date.now
     }
+    status: {
+        type: String,
+        required: true,
+        enum: ['open', 'pending', 'close']
+    }
 });
 
 const WishListModel = mongoose.model('WishLists', wishListsSchema);

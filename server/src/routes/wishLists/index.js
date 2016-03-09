@@ -31,7 +31,8 @@ router.use('/', auth.authenticate())
 		            location: {
 		            	city: res[0].administrativeLevels.level2long,
 		            	state: res[0].administrativeLevels.level1long
-		            } 
+		            },
+		            status: 'open'
 		        });
 		        return wishlist.save().then(wishlist => {
 		            ctx.response.status = 200;	  

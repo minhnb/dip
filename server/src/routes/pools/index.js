@@ -9,6 +9,11 @@ const auth = require('../../helpers/passport_auth');
 const validator = require('../../validators');
 const utils = require('../../helpers/utils');
 
+var geocoderProvider = 'google';
+var httpAdapter = 'http';
+
+const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
+
 module.exports = router;
 
 router
@@ -31,8 +36,19 @@ router
                     maxDistance: maxDistance,
                     spherical: true
                 };
+
                 query = query.near(geoOptions);
+
+                geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
+                .then(function(res) {
+                    console.log(res);
+                    
+                })
+                .catch(function(err) {
+                    ctx.throw(500, 'Geo Coder Error');
+                });
             }
+
             // Filter on rating
             if (ctx.query.minRating) {
                 query = query.where('rating.avg').gte(parseFloat(ctx.query.minRating));
