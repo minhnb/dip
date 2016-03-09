@@ -17,7 +17,7 @@ const wishListsSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
     status: {
         type: String,
         required: true,

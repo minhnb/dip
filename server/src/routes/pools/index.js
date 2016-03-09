@@ -24,7 +24,7 @@ router
         ctx => {
             // TODO: Move this to either db or controller module
             var query = db.pools.where("active").equals(true);
-
+            var p;
             // Filter on location
             if (ctx.query.longitude && ctx.query.latitude) {
                 let minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
@@ -37,16 +37,23 @@ router
                     spherical: true
                 };
 
-                query = query.near(geoOptions);
-
-                geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
+                //query = query.near(geoOptions);
+                
+                p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
                 .then(function(res) {
-                    console.log(res);
-                    
+                    let city = res[0].administrativeLevels.level2long,
+                        state = res[0].administrativeLevels.level1long;
+                    return db.cities
+                        .findOne({'$or': [{city: city}, {state: state}]})
+                        .exec();
                 })
-                .catch(function(err) {
-                    ctx.throw(500, 'Geo Coder Error');
-                });
+                .then(city => {
+                    if(!city) {
+                        ctx.throw(404, 'Not Support');
+                    }   
+                })
+            } else {
+                p = Promise.resolve();
             }
 
             // Filter on rating
@@ -63,75 +70,77 @@ router
                 query = query.where('amenities.type').in(amenities);
             }
 
-            return query.exec()
-                .then(pools => {
-                    if (pools.length == 0) {
-                        return pools;
-                    }
-                    // Filter on searchKey (aka, name)
-                    if (ctx.query.searchKey) {
-                        return db.pools.find({
-                            _id: {$in: pools},
-                            $text: {$search: ctx.query.searchKey}
-                        }).exec();
-                    } else {
-                        return pools;
-                    }
-                })
-                .then(pools => {
-                    if (pools.length == 0) {
-                        ctx.body = {pools: []};
-                        return;
-                    }
-                    // Filter on offer
-                    let offerOpts = [
-                        {pool: {$in: pools.map(p => p._id)}}
-                    ];
-                    if (ctx.query.date) {
-                        offerOpts.push({
-                            date: utils.convertDate(ctx.query.date)
-                        });
-                    }
-                    if (ctx.query.timeRanges) {
-                        offerOpts.push(filterTimeRanges(ctx.query.timeRanges));
-                    }
-                    if (ctx.query.priceRanges) {
-                        offerOpts.push(filterPriceRanges(ctx.query.priceRanges));
-                    }
-                    if (ctx.query.passTypes) {
-                        let types = ctx.query.passTypes,
-                            passOpts = [];
-                        types.forEach(type => {
-                            passOpts.push({'type': type});
-                        });
-                        offerOpts.push({
-                            $or: passOpts
-                        });
-                    }
-                    return db.offers
-                        .aggregate([
-                            {
-                                $match: {$and: offerOpts}
-                            },
-                            {$group: {
-                                _id: '$pool'
-                            }}
-                        ])
-                        .exec()
-                        .then(data => {
-                            data = data.map(x => x._id.toString());
-                            pools = pools.filter(p => {
-                                return data.indexOf(p._id.toString()) >= 0;
+            return p.then(() => {
+                return query.exec()
+                    .then(pools => {
+                        if (pools.length == 0) {
+                            return pools;
+                        }
+                        // Filter on searchKey (aka, name)
+                        if (ctx.query.searchKey) {
+                            return db.pools.find({
+                                _id: {$in: pools},
+                                $text: {$search: ctx.query.searchKey}
+                            }).exec();
+                        } else {
+                            return pools;
+                        }
+                    })
+                    .then(pools => {
+                        if (pools.length == 0) {
+                            ctx.body = {pools: []};
+                            return;
+                        }
+                        // Filter on offer
+                        let offerOpts = [
+                            {pool: {$in: pools.map(p => p._id)}}
+                        ];
+                        if (ctx.query.date) {
+                            offerOpts.push({
+                                date: utils.convertDate(ctx.query.date)
                             });
-                            if (ctx.query.limit) {
-                                let limit = parseInt(ctx.query.limit);
-                                if (limit > 0) {
-                                    pools.splice(limit);
+                        }
+                        if (ctx.query.timeRanges) {
+                            offerOpts.push(filterTimeRanges(ctx.query.timeRanges));
+                        }
+                        if (ctx.query.priceRanges) {
+                            offerOpts.push(filterPriceRanges(ctx.query.priceRanges));
+                        }
+                        if (ctx.query.passTypes) {
+                            let types = ctx.query.passTypes,
+                                passOpts = [];
+                            types.forEach(type => {
+                                passOpts.push({'type': type});
+                            });
+                            offerOpts.push({
+                                $or: passOpts
+                            });
+                        }
+                        return db.offers
+                            .aggregate([
+                                {
+                                    $match: {$and: offerOpts}
+                                },
+                                {$group: {
+                                    _id: '$pool'
+                                }}
+                            ])
+                            .exec()
+                            .then(data => {
+                                data = data.map(x => x._id.toString());
+                                pools = pools.filter(p => {
+                                    return data.indexOf(p._id.toString()) >= 0;
+                                });
+                                if (ctx.query.limit) {
+                                    let limit = parseInt(ctx.query.limit);
+                                    if (limit > 0) {
+                                        pools.splice(limit);
+                                    }
                                 }
-                            }
-                            ctx.body = {pools: pools.map(entities.pool)};
-                        });
-                });
+                                ctx.body = {pools: pools.map(entities.pool)};
+                            });
+                    });
+            })            
         })
     .use('/:poolId',
         (ctx, next) => {
