@@ -17,7 +17,7 @@ module.exports = router;
 
 router.use('/', auth.authenticate())
 	.post('add wish list', '/',
-		validator.wishLists(),
+		validator.wishList(),
 		ctx => {
 			let longitude = ctx.request.body.longitude,
 				latitude = ctx.request.body.latitude;
@@ -25,7 +25,7 @@ router.use('/', auth.authenticate())
 			return geocoder.reverse({lat: latitude, lon: longitude})
 		    .then(function(res) {
 		        let user = ctx.state.user;
-		        let wishlist = new db.wishLists({
+		        let wishlist = new db.wishList({
 		            user: user,
 		            location: {
 		            	city: res[0].administrativeLevels.level2long,

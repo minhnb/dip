@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const wishListsSchema = new Schema({
+const wishListSchema = new Schema({
     location: {
         city: String,
         state: String
@@ -25,6 +25,6 @@ const wishListsSchema = new Schema({
     }
 });
 
-const WishListModel = mongoose.model('WishLists', wishListsSchema);
+const WishListModel = mongoose.model('WishLists', wishListSchema);
 
 module.exports = WishListModel;

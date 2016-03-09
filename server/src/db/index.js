@@ -22,6 +22,6 @@ module.exports = {
     promotions: require('./promotions'),
     sessions: require('./sessions'),
     passwordToken: require('./passwordToken'),
-    wishLists: require('./wishLists'),
+    wishList: require('./wishList'),
     cities: require('./cities')
 };
