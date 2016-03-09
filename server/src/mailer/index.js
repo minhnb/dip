@@ -69,5 +69,10 @@ module.exports = {
         return getTemplate('addFriend.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, `${data.actor.nameOrEmail} added you as a friend on Dip`))
+    },
+    confirmReservation: (email, data) => {
+        return getTemplate('confirmReservation.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Reservation Confirmation'))
     }
 };
