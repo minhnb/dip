@@ -26,12 +26,15 @@ router
                     maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 8046.72,
                     center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
                 let geoOptions = {
-                    center: center,
+                    center: {
+                        type: 'Point',
+                        coordinates: center
+                    },
                     minDistance: minDistance,
                     maxDistance: maxDistance,
                     spherical: true
                 };
-                query = query.near(geoOptions);
+                query = query.where('coordinates').near(geoOptions);
             }
             // Filter on rating
             if (ctx.query.minRating) {
