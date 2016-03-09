@@ -20,11 +20,10 @@ router.use('/', auth.authenticate())
 		validator.wishLists(),
 		ctx => {
 			let longitude = ctx.request.body.longitude,
-				latitude = ctx.request.body.longitude;
+				latitude = ctx.request.body.latitude;
 
 			return geocoder.reverse({lat: latitude, lon: longitude})
 		    .then(function(res) {
-		        console.log(res);
 		        let user = ctx.state.user;
 		        let wishlist = new db.wishLists({
 		            user: user,
