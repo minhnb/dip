@@ -6,7 +6,6 @@ const mailer = require('nodemailer');
 //const sesTransport = require('nodemailer-ses-transport');
 
 const config = require('../config/index');
-const Handlebars = require('handlebars');
 
 const parser = require('./parser');
 
@@ -20,15 +19,6 @@ const transporter = mailer.createTransport({
     pool: true,
     maxMessages: 10,
     rateLimit: 5
-});
-
-Handlebars.registerHelper('hour_convert', function(minute) {
-    var m = minute % 60;
-    var h = (minute-m)/60;
-
-    var HRSMINS = h.toString() + ":" + (m<10?"0":"") + m.toString();
-    console.log(HRSMINS);
-    return HRSMINS;
 });
 
 function sendEmail(recipient, subject, message) {
