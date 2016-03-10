@@ -39,13 +39,11 @@ router.use('/', auth.authenticate())
 		    })
 		    .then(wishList => {
 	        	if(!wishList) {
-	        		let userArr = [];
-	        		userArr.push(user);
 					var wishList = new db.wishList({
-					    users: userArr,
 					    location: location,
 					    status: 'open'
 					});	
+					wishList.users.addToSet(user);
 	        	} else {
 	        		wishList.users.addToSet(user);
 	        	}
