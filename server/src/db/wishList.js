@@ -9,11 +9,11 @@ const wishListSchema = new Schema({
         city: String,
         state: String
     },
-    user: {
+    users: [{
         type: Schema.ObjectId,
         ref: 'User',
         required: true
-    },
+    }],
     createdAt: {
         type: Date,
         default: Date.now
