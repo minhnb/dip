@@ -47,11 +47,7 @@ router.use('/', auth.authenticate())
 					    status: 'open'
 					});	
 	        	} else {
-	    			if(wishList.users.indexOf(user._id) != -1) {
-						ctx.throw(400, 'User exist') 
-	    			} else {
-	    				wishList.users.push(user);
-	    			}	
+	        		wishList.users.addToSet(user);
 	        	}
 
 	    		return wishList.save().then(() => {
