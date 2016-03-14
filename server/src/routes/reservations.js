@@ -178,11 +178,13 @@ router
                                 })
                                 .then(sale => {
                                     if (sale === true) {
-                                        ctx.state.memberArr.forEach(i => {
-                                            ctx.state.memberMap[i._id].name = i.firstName;
-                                            ctx.state.memberMap[i._id].owner = ctx.state.user;
-                                            mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
-                                        });
+                                        if(ctx.state.memberMap !== {}) {
+                                            ctx.state.memberArr.forEach(i => {
+                                                ctx.state.memberMap[i._id].name = i.firstName;
+                                                ctx.state.memberMap[i._id].owner = ctx.state.user;
+                                                mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
+                                            });
+                                        };
                                         mailer.confirmReservation(user.email, ctx.state.userReservation);
                                         ctx.status = 200;
                                     } else {
@@ -192,11 +194,13 @@ router
                                                 if (charge.status == 'failed') {
                                                     ctx.status = 400;
                                                 } else {
-                                                    ctx.state.memberArr.forEach(i => {
-                                                        ctx.state.memberMap[i._id].name = i.firstName;
-                                                        ctx.state.memberMap[i._id].owner = ctx.state.user;
-                                                        mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
-                                                    });
+                                                    if(ctx.state.memberMap !== {}) {
+                                                        ctx.state.memberArr.forEach(i => {
+                                                            ctx.state.memberMap[i._id].name = i.firstName;
+                                                            ctx.state.memberMap[i._id].owner = ctx.state.user;
+                                                            mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
+                                                        });
+                                                    }
                                                     mailer.confirmReservation(user.email, ctx.state.userReservation);
                                                     ctx.status = 200;
                                                 }
