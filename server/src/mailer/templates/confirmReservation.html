@@ -26,32 +26,29 @@
                                                 <div style="color:#737373;font-family: Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
                                                     <p style="margin:0 0 16px">Hello {{user.firstName}}, We are pleased to inform you that your reservation request has been received and confirmed</p>
                                                     <h2 style="color:#0097A7;display:block;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;margin:16px 0 8px;text-align:left">Your Order</h2>
+                                                    <h4>{{pool.name}} - {{pool.location}} - {{date}}</h4>
                                                     <table cellspacing="0" cellpadding="6" style="width:100%;font-family:'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;color:#737373;border:1px solid #e4e4e4" border="1">
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="3" style="padding:12px">
-                                                                    <h2 style="margin:0;color:#0097A7;display:block;font-family:Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:130%;text-align:left">
-                                                                        {{pool.name}} - {{pool.location}} - {{date}}
-                                                                    </h2></td>
-                                                            </tr>
                                                             <tr>{{#offers}}
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td colspan="2" style="padding:12px">
-                                                                            <h2 style="margin:0;color:#0097A7;display:block;font-size:15px;line-height:130%;text-align:left">
-                                                                                {{details.description}}
-                                                                            </h2>
-                                                                        </td>
-                                                                        <td colspan="2" style="padding:12px">
-                                                                            <h2 style="margin:0;color:#0097A7;display:block;font-size:15px;line-height:130%;text-align:left">
-                                                                                {{details.price}}
-                                                                            </h2>
-                                                                        </td>
+                                                                        <td colspan="3" style="padding:12px">
+                                                                            <h4 style="margin:0">{{details.description}}</h4></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="3" style="padding:12px">
+                                                                        <td style="padding:12px">
                                                                             <h2 style="margin:0;color:#0097A7;display:block;font-size:15px;line-height:130%;text-align:left">
-                                                                                {{hour_convert details.duration.startTime}} -- {{hour_convert details.duration.endTime}}
+                                                                                {{details.type}}
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td style="padding:12px">
+                                                                            <h2 style="margin:0;color:#0097A7;display:block;font-size:15px;line-height:130%;text-align:left">
+                                                                                From {{hour_convert details.duration.startTime}} To {{hour_convert details.duration.endTime}}, {{details.date}}
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td style="padding:12px">
+                                                                            <h2 style="margin:0;color:#0097A7;display:block;font-size:15px;line-height:130%;text-align:left">
+                                                                                {{details.ticket.price}} $
                                                                             </h2>
                                                                         </td>
                                                                     </tr>
@@ -60,21 +57,18 @@
                                                                     <tr>{{#amenities}}
                                                                         <td colspan="2" style="padding:12px">Name: <b><span>{{amenities}}</span></b>
                                                                         </td>
-                                                                        <!-- <td colspan="2" style="padding:12px"><b>{{details.date}}</b>
-                                                                        </td> -->
                                                                     {{/amenities}}</tr>
                                                                 </tbody>
-                                                                
                                                             {{/offers}}</tr>
-                                                            
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
                                                                 <th scope="row" colspan="2" style="text-align:left;border-top-width:4px;color:#737373;border:1px solid #e4e4e4;padding:12px">Total:</th>
-                                                                <td style="text-align:left;border-top-width:4px;color:#737373;border:1px solid #e4e4e4;padding:12px"><span>{{price/100}}</span></td>
+                                                                <td style="text-align:left;border-top-width:4px;color:#737373;border:1px solid #e4e4e4;padding:12px"><span>{{price}} $</span></td>
                                                             </tr>
                                                         </tfoot>
                                                     </table>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
