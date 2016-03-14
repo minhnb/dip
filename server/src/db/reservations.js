@@ -19,10 +19,6 @@ const reservationSchema = new Schema({
         firstName: String,
         lastName: String
     },
-    friends: [{
-        type: Schema.ObjectId,
-        ref: 'User'
-    }],
     pool: {
         ref: {
             type: Schema.ObjectId,
@@ -49,6 +45,10 @@ const reservationSchema = new Schema({
             type: offerSchema,
             required: true
         },
+        members: [{
+            type: Schema.ObjectId,
+            ref: 'User'
+        }],
         count: {
             type: Number,
             required: true,

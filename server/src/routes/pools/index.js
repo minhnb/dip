@@ -51,9 +51,9 @@ router
                         .exec();
                 })
                 .then(city => {
-                    if(!city) {
-                        ctx.throw(404, 'Not Support');
-                    }   
+                    // if(!city) {
+                    //     ctx.throw(404, 'Not Support');
+                    // }   
                 })
             } else {
                 p = Promise.resolve();

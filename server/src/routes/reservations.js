@@ -21,21 +21,24 @@ router
                 poolId = ctx.request.body.pool,
                 _offers = ctx.request.body.offers,
                 userCardId = ctx.request.body.cardId,
-                expectedPrice = ctx.request.body.price,
-                invites = ctx.request.body.invites;
+                expectedPrice = ctx.request.body.price;
 
-            if (invites && !Array.isArray(invites)) {
-                ctx.throw(400, 'Invites must be a list');
-            }
-            if (!invites) {
-                invites = [];
-            }
             let friendSet = new Set(user.friends.map(f => f.toString()));
-            invites.forEach(i => {
-                if (!friendSet.has(i)) {
-                    ctx.throw(400, 'Invitee must be a friend');
+
+            _offers.forEach(i => {
+                if (i.members && !Array.isArray(i.members)) {
+                    ctx.throw(400, 'Invites must be a list');
                 }
-            });
+                if (!i.members) {
+                    i.members = [];
+                }
+                i.members.forEach(j => {
+                    if (!friendSet.has(j)) {
+                        ctx.throw(400, 'Invitee must be a friend');
+                    }
+                })
+            })
+            
 
             let userCard = user.account.cards.id(userCardId);
             if (!userCard) {
@@ -108,10 +111,10 @@ router
                                             return {
                                                 ref: o._id,
                                                 details: o.toObject(),
+                                                members: offerMap[o._id.toString()].members,
                                                 count: offerMap[o._id.toString()].count
                                             };
-                                        }),
-                                        friends: invites
+                                        })
                                     });
                                     let p = Promise.resolve();
                                     if (user.account.balance > 0) {
@@ -125,14 +128,38 @@ router
                                     });
                                 })
                                 .then(userReservation => {
-                                    let discount = userReservation.promotionDiscount || 0,
-                                        finalAmount = price - discount;
-
                                     ctx.state.userReservation = userReservation;
 
-                                    // ctx.state.userReservation.user = {
-                                    //     firstName: user.firstName
-                                    // };
+                                    let memberMap = {};
+                                    userReservation.offers.forEach(i => {
+                                        i.members.forEach(j => {
+                                            if(!memberMap[j] && j != user.id)
+                                                memberMap[j] = {
+                                                    offers: [],
+                                                    pool: {},
+                                                    name: '',
+                                                    owner: {}
+                                                };
+                                            
+                                            if(memberMap[j] && memberMap[j].offers.indexOf(i._id) == -1) {
+                                                memberMap[j].offers.push(i);
+                                                memberMap[j].pool = userReservation.pool;
+                                            }      
+                                        })
+                                    });
+
+                                    var memberArr = Object.keys(memberMap);
+                                    ctx.state.memberMap = memberMap;
+                                    return db.users.find({
+                                        _id: {$in: memberArr}
+                                    }).exec()
+                                    .then(users => {
+                                        ctx.state.memberArr = users;
+                                    })
+                                })
+                                .then(() => {
+                                    let discount = ctx.state.userReservation.promotionDiscount || 0,
+                                        finalAmount = price - discount;
                                     if (finalAmount > 0) {
                                         let userSale = new db.sales({
                                             state: 'Unpaid',
@@ -141,7 +168,7 @@ router
                                                 cardInfo: userCard.toObject()
                                             },
                                             amount: finalAmount,
-                                            reservation: userReservation
+                                            reservation: ctx.state.userReservation
                                         });
 
                                         return userSale.save();
@@ -151,6 +178,11 @@ router
                                 })
                                 .then(sale => {
                                     if (sale === true) {
+                                        ctx.state.memberArr.forEach(i => {
+                                            ctx.state.memberMap[i._id].name = i.firstName;
+                                            ctx.state.memberMap[i._id].owner = ctx.state.user;
+                                            mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
+                                        });
                                         mailer.confirmReservation(user.email, ctx.state.userReservation);
                                         ctx.status = 200;
                                     } else {
@@ -160,6 +192,11 @@ router
                                                 if (charge.status == 'failed') {
                                                     ctx.status = 400;
                                                 } else {
+                                                    ctx.state.memberArr.forEach(i => {
+                                                        ctx.state.memberMap[i._id].name = i.firstName;
+                                                        ctx.state.memberMap[i._id].owner = ctx.state.user;
+                                                        mailer.inviteFriendsReservation(i.email, ctx.state.memberMap[i._id]);
+                                                    });
                                                     mailer.confirmReservation(user.email, ctx.state.userReservation);
                                                     ctx.status = 200;
                                                 }
@@ -191,3 +228,18 @@ function getDiscount(price, balance) {
         return discount;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

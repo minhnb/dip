@@ -74,5 +74,11 @@ module.exports = {
         return getTemplate('confirmReservation.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, 'Reservation Confirmation'))
+    },
+    inviteFriendsReservation: (email, data) => {
+        return getTemplate('inviteFriendsReservation.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Invitation Confirmation'))
     }
+
 };
