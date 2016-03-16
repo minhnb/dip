@@ -92,7 +92,7 @@ function verifyOffers(ctx, next) {
 
     return db.offers.find({
         _id: {$in: offerIds},
-        pool: pool
+        pool: ctx.state.pool
     }).exec()
     .then(offers => {
         if (offers.length < _offers.length) {
