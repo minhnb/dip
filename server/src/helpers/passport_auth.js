@@ -16,6 +16,8 @@ const config = require('../config');
 
 const request = require('request');
 
+const contactDip = require('./contact_dip');
+
 module.exports = {
     passport: passport,
     login: login,
@@ -105,6 +107,7 @@ function facebookLogin() {
                         gender: fbUserInfo.gender,
                         facebookId: fbUserInfo.id
                     });
+                    contactDip.sendMessage(user, 'Welcome to Dip. We hope you will enjoy it here');
                     return user.save();
                 } else if(user.facebookId) {
                     return user;
