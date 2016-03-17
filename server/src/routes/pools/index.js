@@ -28,7 +28,7 @@ router
             // Filter on location
             if (ctx.query.longitude && ctx.query.latitude) {
                 let minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
-                    maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 8046.72,
+                    maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
                     center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
                 let geoOptions = {
                     center: {
