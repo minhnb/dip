@@ -70,7 +70,6 @@ router.use('/', auth.authenticate())
                         }
                         
                     })  
-                    console.log(groups);
                     ctx.body = {groups: groups.map(entities.group)}
                 });
         }
@@ -80,21 +79,36 @@ router.use('/', auth.authenticate())
         ctx => {
             let name = ctx.request.body.name || '',
                 description = ctx.request.body.description || '',
-                members = ctx.request.body.members || [];
-            let group = new db.groups({
-                name: name,
-                description: description,
-                owner: ctx.state.user,
-                members: Array.from(new Set(members.map(m => {
-                    return {member: m.member.toLowerCase()};  
-                })))
-            });
-            //group.members.addToSet({member: ctx.state.user._id});
-
-            return group.save().then(group => {
-                console.log(group);
-                ctx.status = 200;
-                ctx.body = {group: entities.group(group)}
+                members = ctx.request.body.members || [],
+                friends = ctx.state.user.friends;
+            if (!Array.isArray(members)) {
+                ctx.throw(400, 'Members must be an array');
+            }
+            return db.users.find({
+                $and: [
+                    {_id: {$in: members.map(m => m.member)}},
+                    {$or: [
+                        {_id: {$in: friends}},
+                        {privateMode: false}
+                    ]}
+                ]
+            }).then(dbMembers => {
+                if (dbMembers.length < members.length) {
+                    ctx.throw(400, 'Invalid member id');
+                }
+                let group = new db.groups({
+                    name: name,
+                    description: description,
+                    owner: ctx.state.user,
+                    members: dbMembers.map(m => {
+                        return {member: m};
+                    })
+                });
+                group.members.addToSet({member: ctx.state.user});
+                return group.save().then(group => {
+                    ctx.status = 200;
+                    ctx.body = {group: entities.group(group)}
+                });
             });
         }
     )
@@ -121,7 +135,6 @@ router.use('/', auth.authenticate())
         }
     )
     
-
     .use('/:groupId',
         (ctx, next) => {
             return db.groups.findById(ctx.params.groupId)
