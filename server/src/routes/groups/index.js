@@ -144,7 +144,8 @@ router.use('/', auth.authenticate())
                 .then(group => {
                     ctx.state.group = group;
                     if (!ctx.state.user._id.equals(group.owner._id)
-                        && !group.members.some(m => m._id.equals(ctx.state.user._id))) {
+                        && !group.members.some(m => {
+                            m.member._id.equals(ctx.state.user._id)})) {
                         ctx.throw(403); // Access denied
                     } else {
                         return next();
