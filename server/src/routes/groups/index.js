@@ -58,17 +58,34 @@ router.use('/', auth.authenticate())
         ctx => {
             let name = ctx.request.body.name || '',
                 description = ctx.request.body.description || '',
-                members = ctx.request.body.members || [];
-            let group = new db.groups({
-                name: name,
-                description: description,
-                owner: ctx.state.user,
-                members: Array.from(new Set(members.map(m => m.toLowerCase())))
-            });
-            group.members.addToSet(ctx.state.user._id);
-            return group.save().then(group => {
-                ctx.status = 200;
-                ctx.body = {group: entities.group(group)}
+                members = ctx.request.body.members || [],
+                friends = ctx.state.user.friends;
+            if (!Array.isArray(members)) {
+                ctx.throw(400, 'Members must be an array');
+            }
+            return db.users.find({
+                $and: [
+                    {_id: {$in: members}},
+                    {$or: [
+                        {_id: {$in: friends}},
+                        {privateMode: false}
+                    ]}
+                ]
+            }).then(dbMembers => {
+                if (dbMembers.length < members.length) {
+                    ctx.throw(400, 'Invalid member id');
+                }
+                let group = new db.groups({
+                    name: name,
+                    description: description,
+                    owner: ctx.state.user,
+                    members: dbMembers
+                });
+                group.members.addToSet(ctx.state.user);
+                return group.save().then(group => {
+                    ctx.status = 200;
+                    ctx.body = {group: entities.group(group)}
+                });
             });
         }
     )
