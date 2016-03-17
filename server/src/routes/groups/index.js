@@ -102,17 +102,17 @@ router.use('/', auth.authenticate())
         validator.groups.updateGroup(),
         ctx => {
             let group = ctx.request.body.group,
-            members = ctx.request.body.members || [];
+                user = ctx.state.user,
+                lastMessage = ctx.request.body.lastMessage;
             return db.groups.findOne({group: group})
                 .exec()
                 .then(group => {
                     if(group) {
-                        group.members = Array.from(new Set(members.map(m => {
-                            return {
-                                member: m.member.toLowerCase(),
-                                lastMessage: m.lastMessage.toLowerCase()
-                            };  
-                        })))
+                        group.members.forEach(i => {
+                            if(ctx.state.user.equals(i.member)) {
+                                i.lastMessage = lastMessage;
+                            }
+                        })
                         return group.save();
                     } else {
                         ctx.throw(404); // Group not found
