@@ -9,8 +9,11 @@ function convertGroup(group) {
         name: group.name,
         description: group.description,
         image: group.image.url,
-        members: group.members.map(userRef),
-        createdAt: group.createdAt
+        members: group.members.map(m => {
+            return {member: userRef(m.member)}
+        }),
+        createdAt: group.createdAt,
+        unRead: group.unRead
     };
 }
 

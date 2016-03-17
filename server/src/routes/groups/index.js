@@ -33,14 +33,14 @@ router.use('/', auth.authenticate())
                             {
                                 $or: [
                                     {$text: {$search: query}},
-                                    {members: {$in: users}}
+                                    {members: {$elemMatch:{member: {$in: users}}}}
                                 ]
                             }
                         ]
                     });
                 });
             } else {
-                groupQuery = db.groups.find({members: user});
+                groupQuery = db.groups.find({members: {$elemMatch:{member: user}}});
             }
             return groupQuery.sort({updatedAt: -1})
                 .limit(limit)
@@ -49,6 +49,28 @@ router.use('/', auth.authenticate())
                 .populate('members')
                 .exec()
                 .then(groups => {
+                    let lastMessage = null;
+                    groups.forEach(group => {
+                        group.members.forEach(i => {
+                            if(user._id.equals(i.member)) {
+                                lastMessage = i.lastMessage;
+                                return;
+                            }
+                        })
+                        if(lastMessage) {
+                            return db.messages
+                                .findOne({group: group._id})
+                                .sort({createdAt: -1})
+                                .exec()
+                                .then(message => {
+                                    group.unRead = message._id.equals(lastMessage) ? false : true;
+                                })
+                        } else {
+                            group.unRead = false;
+                        }
+                        
+                    })  
+                    console.log(groups);
                     ctx.body = {groups: groups.map(entities.group)}
                 });
         }
@@ -63,15 +85,43 @@ router.use('/', auth.authenticate())
                 name: name,
                 description: description,
                 owner: ctx.state.user,
-                members: Array.from(new Set(members.map(m => m.toLowerCase())))
+                members: Array.from(new Set(members.map(m => {
+                    return {member: m.member.toLowerCase()};  
+                })))
             });
-            group.members.addToSet(ctx.state.user._id);
+            //group.members.addToSet({member: ctx.state.user._id});
+
             return group.save().then(group => {
+                console.log(group);
                 ctx.status = 200;
                 ctx.body = {group: entities.group(group)}
             });
         }
     )
+    .put('/seen',
+        validator.groups.updateGroup(),
+        ctx => {
+            let group = ctx.request.body.group,
+            members = ctx.request.body.members || [];
+            return db.groups.findOne({group: group})
+                .exec()
+                .then(group => {
+                    if(group) {
+                        group.members = Array.from(new Set(members.map(m => {
+                            return {
+                                member: m.member.toLowerCase(),
+                                lastMessage: m.lastMessage.toLowerCase()
+                            };  
+                        })))
+                        return group.save();
+                    } else {
+                        ctx.throw(404); // Group not found
+                    }
+                })
+        }
+    )
+    
+
     .use('/:groupId',
         (ctx, next) => {
             return db.groups.findById(ctx.params.groupId)
