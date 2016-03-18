@@ -49,6 +49,22 @@ const reservationSchema = new Schema({
             type: Schema.ObjectId,
             ref: 'User'
         }],
+        specialOffers: [{
+            ref: {
+                type: String,
+                ref: 'SpecialOfferType',
+                required: true
+            },
+            price: {
+                type: Number,
+                required: true
+            },
+            count: {
+               type: Number,
+               required: true,
+               default: 1 
+            }
+        }],
         count: {
             type: Number,
             required: true,

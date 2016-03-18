@@ -15,6 +15,7 @@ module.exports = {
     offerTypes: require('./offerTypes'),
     tickets: require('./tickets'),
     amenityTypes: require('./amenityTypes'),
+    specialOffers: require('./specialOffers'),
     photos: require('./photos'),
     ratings: require('./ratings'),
     reservations: require('./reservations'),

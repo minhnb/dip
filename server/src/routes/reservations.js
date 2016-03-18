@@ -95,6 +95,7 @@ function verifyOffers(ctx, next) {
         pool: ctx.state.pool
     }).exec()
     .then(offers => {
+        //console.log(offers);
         if (offers.length < _offers.length) {
             ctx.throw(400, 'Invalid offer id');
         }
@@ -105,12 +106,13 @@ function verifyOffers(ctx, next) {
         }, Object.create({}));
 
         let price = 0;
-
         offers.forEach(offer => {
             let expected = offerMap[offer._id.toString()];
+            
             if (!expected) {
                 ctx.throw(400, 'Invalid offer id');
             }
+
             if (expected.count + offer.reservationCount > offer.allotmentCount) {
                 ctx.throw(400, 'Overbooking offer');
             }
@@ -119,7 +121,21 @@ function verifyOffers(ctx, next) {
             }
             offer.reservationCount += expected.count;
 
-            price += expected.count * offer.ticket.price;
+            let specialOfferPrice = 0;
+            if(expected.specialOffers && expected.specialOffers.length > 0) {
+                expected.specialOffers.forEach(s => {
+                    offer.specialOffers.map(o => {
+                        if(s.id == o.type && s.price == o.price) {
+                            specialOfferPrice += (o.price * s.count);
+                        } else if(s.id == o.type && s.price != o.price){
+                            ctx.throw(400, 'Unmatched special offer price');
+                        }
+                    })
+                })
+            }
+            console.log(specialOfferPrice);
+            price += expected.count * (offer.ticket.price + specialOfferPrice);
+            console.log(price);
         });
 
         if (price != expectedPrice) {
