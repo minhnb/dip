@@ -81,11 +81,11 @@ exports.up = function(next) {
         }
     });
     Promise.all(imgPromises).then(imgs => {
-        for (let i = 0; i++; i < amenities.length) {
+        for (let i = 0; i < amenities.length; i++) {
             amenities[i].icon = {
                 url: imgs[i].Location,
                 mediaType: 'image/png'
-            }
+            };
         }
         return db.amenityTypes.collection.insert(amenities, (error, docs) => {
             next(error);
