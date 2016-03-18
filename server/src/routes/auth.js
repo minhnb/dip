@@ -45,7 +45,7 @@ router
             });
             user.setPassword(ctx.request.body.password);
             return user.save().then(user => {
-                contactDip.sendMessage(user, 'Welcome to Dip. We hope you will enjoy it here');
+                contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
                 ctx.response.status = 204;
                 mailer.welcome(user.email, {name: user.firstName});
                 stripe.addUser(user); // Not using return to allow it to process in background

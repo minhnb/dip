@@ -1,10 +1,8 @@
 'use strict';
 
 const db = require('../db');
-const initial = require('../initial');
 
-function sendMessage(user, content) {
-    let dipId = initial.dipChat();
+function sendMessage(user, dipId, content) {
     let userId = user._id.toString();
     return db.groups
         .find({members: {'$all': [dipId, userId]}})
@@ -14,7 +12,7 @@ function sendMessage(user, content) {
                 let name = 'Dip',
                     description = '',
                     members = [dipId, userId];
-                let group = new db.groups({
+                group = new db.groups({
                     name: name,
                     description: description,
                     owner: dipId,

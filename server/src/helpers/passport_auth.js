@@ -107,7 +107,7 @@ function facebookLogin() {
                         gender: fbUserInfo.gender,
                         facebookId: fbUserInfo.id
                     });
-                    contactDip.sendMessage(user, 'Welcome to Dip. We hope you will enjoy it here');
+                    contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
                     return user.save();
                 } else if(user.facebookId) {
                     return user;
