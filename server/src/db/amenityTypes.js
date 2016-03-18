@@ -24,10 +24,6 @@ const amenityTypeSchema = new Schema({
             type: String,
             required: true
         },
-        md5: {
-            type: String,
-            required: true
-        },
         mediaType: {
             type: String,
             required: true

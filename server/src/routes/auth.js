@@ -9,6 +9,7 @@ const validator = require('../validators');
 const mailer = require('../mailer');
 
 const auth = require('../helpers/passport_auth');
+const contactDip = require('../helpers/contact_dip');
 const stripe = require('../helpers/stripe');
 
 module.exports = router;
@@ -44,6 +45,7 @@ router
             });
             user.setPassword(ctx.request.body.password);
             return user.save().then(user => {
+                contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
                 ctx.response.status = 204;
                 mailer.welcome(user.email, {name: user.firstName});
                 stripe.addUser(user); // Not using return to allow it to process in background
