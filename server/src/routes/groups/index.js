@@ -50,28 +50,32 @@ router.use('/', auth.authenticate())
                 .exec()
                 .then(groups => {
                     let lastMessage = null;
-                    groups.forEach(group => {
-                        group.members.forEach(i => {
-                            if(user._id.equals(i.member)) {
-                                lastMessage = i.lastMessage;
-                                return;
-                            }
-                        })
-                        if(lastMessage) {
-                            return db.messages
-                                .findOne({group: group._id})
-                                .sort({createdAt: -1})
-                                .exec()
-                                .then(message => {
-                                    group.unRead = message._id.equals(lastMessage) ? false : true;
-                                })
-                        } else {
-                            group.unRead = false;
-                        }
-                        
+                    let msgPromises = groups.map(group => {
+                        return db.messages
+                            .findOne({group: group._id})
+                            .sort({createdAt: -1})
+                            .exec()
+                            .then(message => {
+                                if(message) {
+                                    let lastMessage = null;
+                                    group.members.forEach(i => {
+                                        if(user._id.equals(i.member) && i.lastMessage) {
+                                            lastMessage = i.lastMessage;
+                                            return;
+                                        }
+                                    })
+                                    group.seen = message._id.equals(lastMessage) ? true : false;
+                                } else {
+                                    group.seen = true;
+                                }
+                                return group;
+                            })
                     })  
-                    ctx.body = {groups: groups.map(entities.group)}
-                });
+                    
+                    return Promise.all(msgPromises).then(groups => {
+                        ctx.body = {groups: groups.map(entities.group)}
+                    });
+                })
         }
     )
     .post('/',
@@ -112,13 +116,14 @@ router.use('/', auth.authenticate())
             });
         }
     )
-    .put('/seen',
-        validator.groups.updateGroup(),
+    .put('/',
+        validator.groups.seenMessage(),
         ctx => {
             let group = ctx.request.body.group,
                 user = ctx.state.user,
                 lastMessage = ctx.request.body.lastMessage;
-            return db.groups.findOne({group: group})
+            console.log(group);
+            return db.groups.findOne({_id: group})
                 .exec()
                 .then(group => {
                     if(group) {
@@ -127,25 +132,28 @@ router.use('/', auth.authenticate())
                                 i.lastMessage = lastMessage;
                             }
                         })
-                        return group.save();
+                        return group.save().then(() => {
+                            ctx.status = 200;
+                        });
+                        
                     } else {
                         ctx.throw(404); // Group not found
                     }
+                    
                 })
         }
     )
     
     .use('/:groupId',
         (ctx, next) => {
+
             return db.groups.findById(ctx.params.groupId)
                 .populate('owner')
-                .populate('members')
                 .exec()
                 .then(group => {
                     ctx.state.group = group;
                     if (!ctx.state.user._id.equals(group.owner._id)
-                        && !group.members.some(m => {
-                            m.member._id.equals(ctx.state.user._id)})) {
+                        && !group.members.some(m => m.member.equals(ctx.state.user._id))) {
                         ctx.throw(403); // Access denied
                     } else {
                         return next();

@@ -13,7 +13,7 @@ function convertGroup(group) {
             return {member: userRef(m.member)}
         }),
         createdAt: group.createdAt,
-        unRead: group.unRead
+        seen: group.seen
     };
 }
 
