@@ -90,7 +90,7 @@ exports.up = function(next) {
         return db.amenityTypes.collection.insert(amenities, (error, docs) => {
             next(error);
         });
-    });
+    }).catch(next);
 };
 
 exports.down = function(next) {
