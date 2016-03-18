@@ -39,13 +39,11 @@ exports.up = function(next) {
         }
     });
     return Promise.all(imgPromises).then(imgs => {
-        for (let i = 0; i++; i < offers.length) {
-            if (imgs[i]) {
-                offers[i].icon = {
-                    url: imgs[i].Location,
-                    mediaType: 'image/png'
-                }
-            }
+        for (let i = 0; i < offers.length; i++) {
+            offers[i].icon = {
+                url: imgs[i].Location,
+                mediaType: 'image/png'
+            };
         }
         return db.offerTypes.collection.insert(offers, (error, docs) => {
             next(error);
