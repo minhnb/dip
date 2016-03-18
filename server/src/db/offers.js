@@ -63,7 +63,8 @@ const offerSchema = new Schema({
     specialOffers: [{
         type: {
             type: Schema.ObjectId,
-            ref: 'SpecialOffers'
+            ref: 'SpecialOffers',
+            required: true
         },
         price: {
             type: Number,

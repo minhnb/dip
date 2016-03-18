@@ -95,7 +95,6 @@ function verifyOffers(ctx, next) {
         pool: ctx.state.pool
     }).exec()
     .then(offers => {
-        //console.log(offers);
         if (offers.length < _offers.length) {
             ctx.throw(400, 'Invalid offer id');
         }
@@ -133,9 +132,7 @@ function verifyOffers(ctx, next) {
                     })
                 })
             }
-            console.log(specialOfferPrice);
             price += expected.count * (offer.ticket.price + specialOfferPrice);
-            console.log(price);
         });
 
         if (price != expectedPrice) {
