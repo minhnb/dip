@@ -2,6 +2,7 @@
 
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 const rootFolder = path.normalize(__dirname + '/../../..');
 
@@ -11,7 +12,6 @@ dotenv.load({
 
 const db = require('../db');
 const s3 = require('../helpers/s3');
-const fs = require('fs');
 
 exports.up = function(next) {
     let offers = [
@@ -30,7 +30,7 @@ exports.up = function(next) {
     ];
 
     let imgPromises = offers.map(offer => {
-        let file_path = `assets/offer-${offer._id}.png`;
+        let file_path = path.join(__dirname, `assets/offer-${offer._id}.png`);
         try {
             let data = fs.readFileSync(file_path);
             return s3.upload(`offer/${offer._id}`, data, 'image/png');
