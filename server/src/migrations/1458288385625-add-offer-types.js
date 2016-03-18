@@ -33,9 +33,9 @@ exports.up = function(next) {
         let file_path = `assets/offer-${offer._id}.png`;
         try {
             let data = fs.readFileSync(file_path);
-            return s3.upload(`amenity/${offer._id}`, data, 'image/png');
+            return s3.upload(`offer/${offer._id}`, data, 'image/png');
         } catch (err) {
-            return Promise.resolve(false);
+            return Promise.reject(err);
         }
     });
     return Promise.all(imgPromises).then(imgs => {
@@ -50,7 +50,7 @@ exports.up = function(next) {
         return db.offerTypes.collection.insert(offers, (error, docs) => {
             next(error);
         });
-    });
+    }).catch(next);
 };
 
 exports.down = function(next) {
