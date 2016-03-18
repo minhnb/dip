@@ -105,7 +105,7 @@ app.use(router.routes(), router.allowedMethods());
 
 // Fetch dip account before exporting
 let adminEmail = 'admin@thedipapp.com';
-db.users.findByEmail(adminEmail).exec.then(admin => {
+db.users.findByEmail(adminEmail).exec().then(admin => {
     if (!admin) {
         console.error(`Couldn't find admin account ${adminEmail}`);
         process.exit(1);
