@@ -5,18 +5,21 @@ const db = require('../db');
 function sendMessage(user, dipId, content) {
     let userId = user._id.toString();
     return db.groups
-        .find({members: {'$all': [dipId, userId]}})
+        .findOne({members: {'$all': [dipId, userId]}})
         .exec()
         .then(group => {
-            if(!group || group.length == 0) {
+            if(!group) {
                 let name = 'Dip',
                     description = '',
                     members = [dipId, userId];
+                members.map(m => {
+                    m => m.toLowerCase();
+                })
                 group = new db.groups({
                     name: name,
                     description: description,
                     owner: dipId,
-                    members: Array.from(new Set(members.map(m => m.toLowerCase())))
+                    members: members
                 });
                 return group.save().then(group => {
                     let message = new db.messages({
@@ -24,10 +27,14 @@ function sendMessage(user, dipId, content) {
                         group: group,
                         content: content || ''
                     });
-                    return message.save();
+                    return message.save().then(() => {
+                        return group;
+                    });
                 });
+            } else {
+                return group;
             }
-        })      
+        })    
 }
 
 module.exports = {

@@ -6,6 +6,7 @@ const db = require('../../db');
 const validator = require('../../validators');
 const entities = require('../../entities');
 const auth = require('../../helpers/passport_auth');
+const contactDip = require('../../helpers/contact_dip');
 
 const groupRouter = require('./group');
 
@@ -87,6 +88,17 @@ router.use('/', auth.authenticate())
                     ctx.body = {group: entities.group(group)}
                 });
             });
+        }
+    )
+    .post('/contactdip',
+        ctx => {
+            let contactDipPromise;
+            let user = ctx.state.user;
+            contactDipPromise = contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
+            return contactDipPromise.then(group => {   
+                ctx.status = 200;
+                ctx.body = {groupId: group._id}
+            })
         }
     )
     .use('/:groupId',
