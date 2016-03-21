@@ -18,7 +18,7 @@ module.exports = {
                             // TODO: Consideration: Switch to koa-validate for a more-minimal lib
                             // (minimal in the sense that it only provides validator functions
                             //    and doesn't get in the way of how/what we want to do with it)
-                            if (!validator.isMongoId()(m.member).value) {
+                            if (!validator.isMongoId()(m).value) {
                                 throw new Error('Invalid member id');
                             }
                         });

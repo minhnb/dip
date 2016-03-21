@@ -43,9 +43,11 @@ router.use('/', auth.authenticate())
             if (!Array.isArray(members)) {
                 ctx.throw(400, 'Members must be an array');
             }
-            return db.users.find({
+            members = new Set(members);
+            members.add(ctx.state.user.id);
+            return db.users.fi =nd({
                 $and: [
-                    {_id: {$in: members.map(m => m.member)}},
+                    {_id: {$in: Array.from(members)}},
                     {$or: [
                         {_id: {$in: friends}},
                         {privateMode: false}
@@ -55,7 +57,6 @@ router.use('/', auth.authenticate())
                 if (dbMembers.length < members.length) {
                     ctx.throw(400, 'Invalid member id');
                 }
-                dbMembers.addToSet(ctx.state.user);
                 let group = new db.groups({
                     name: name,
                     description: description,
