@@ -12,7 +12,9 @@ module.exports = router;
 router.get('/',
         ctx => {
             let group = ctx.state.group;
-            ctx.body = {members: group.members.map(entities.userReference)};
+            return group.populate('members.ref').execPopulate().then(() => {
+                ctx.body = {members: group.members.map(m => entities.userReference(m.ref))};
+            });
         }
     )
     .post('/',
@@ -20,12 +22,16 @@ router.get('/',
         inputValidator.members.addMember(),
         ctx => {
             let userId = ctx.request.body.user,
-                group = ctx.state.group;
-            group.depopulate('members');
-            group.members.addToSet(userId);
-            return group.save().then(() => {
+                group = ctx.state.group,
+                member = group.findMember(userId);
+            if (!member) {
+                group.members.push({ref: userId});
+                return group.save().then(() => {
+                    ctx.status = 204;
+                });
+            } else {
                 ctx.status = 204;
-            });
+            }
         }
     )
     .delete('/:memberId',
@@ -40,11 +46,15 @@ router.get('/',
                 // The path /groups/group_id/members are for members' management only
                 ctx.throw(400, "Couldn't remove yourself");
             } else {
-                group.depopulate('members');
-                group.members.pull(userId);
-                return group.save().then(() => {
-                    ctx.status = 204;
-                });
+                let member = group.findMember(userId);
+                if (member) {
+                    member.remove();
+                    return group.save().then(() => {
+                        ctx.status = 204;
+                    });
+                } else {
+                    ctx.status = 204; // Appropriate status code?
+                }
             }
         }
     );

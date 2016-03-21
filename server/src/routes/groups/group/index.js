@@ -14,7 +14,15 @@ module.exports = router;
 
 router.get('/',
         ctx => {
-            ctx.body = {group: entities.group(ctx.state.group)};
+            let group = ctx.state.group;
+            return group.populate('owner')
+                .populate('members.ref')
+                .execPopulate()
+                .then(() => {
+                    return group.populateLastMessage().then(() => {
+                        ctx.body = {group: entities.group(group)};
+                    });
+                });
         }
     )
     .put('/',
@@ -40,14 +48,13 @@ router.get('/',
         ctx => {
             let user = ctx.state.user,
                 group = ctx.state.group;
-            if (user._id.equals(group.owner ? group.owner._id : null)) {
+            if (user._id.equals(group.owner)) {
                 // Delete group
                 return group.remove().then(() => {
                     ctx.status = 204;
                 });
             } else {
-                group.depopulate('members');
-                group.members.pull(user);
+                group.currentMember.remove();
                 return group.save().then(() => {
                     ctx.status = 204;
                 });
@@ -61,4 +68,16 @@ router.get('/',
     .use('/messages',
         messageRouter.routes(),
         messageRouter.allowedMethods()
+    )
+    .put('/seen',
+        inputValidator.groups.seenMessage(),
+        ctx => {
+            let group = ctx.state.group,
+                currentMember = group.currentMember;
+
+            currentMember.lastMessage = ctx.request.body.lastMessage;
+            return group.save().then(() => {
+                ctx.status = 200;
+            });
+        }
     );
