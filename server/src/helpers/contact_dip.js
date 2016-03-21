@@ -5,10 +5,15 @@ const db = require('../db');
 function sendMessage(user, dipId, content) {
     let userId = user._id.toString();
     return db.groups
-        .find({members: {'$all': [dipId, userId]}})
+        .findOne({
+            'members.ref': {'$all': [dipId, userId]},
+            members: {
+                $size: 2
+            }
+        })
         .exec()
         .then(group => {
-            if(!group || group.length == 0) {
+            if(!group) {
                 let name = 'Dip',
                     description = '',
                     members = [dipId, userId];
@@ -16,18 +21,24 @@ function sendMessage(user, dipId, content) {
                     name: name,
                     description: description,
                     owner: dipId,
-                    members: Array.from(new Set(members.map(m => m.toLowerCase())))
+                    members: members.map(m => {
+                        return {ref: m};
+                    })
                 });
                 return group.save().then(group => {
                     let message = new db.messages({
                         user: user,
                         group: group,
-                        content: content || ''
+                        content: content || 'Welcome to Dip. We hope you will enjoy it here'
                     });
-                    return message.save();
+                    return message.save().then(() => {
+                        return group;
+                    });
                 });
+            } else {
+                return group;
             }
-        })      
+        });
 }
 
 module.exports = {
