@@ -17,40 +17,20 @@ router.use('/', auth.authenticate())
         validator.limitParams(),
         ctx => {
             let user = ctx.state.user,
-                query = ctx.query.query,
-                limit = ctx.query.limit ? parseInt(ctx.query.limit) : 10,
-                offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
+                query = ctx.query.query;
 
-            let groupQuery;
-            if (query) {
-                let userPromise = db.users.find({
-                    $text: {$search: query}
-                }).select('_id').exec();
-
-                groupQuery = userPromise.then(users => {
-                    return db.groups.find({
-                        $and: [
-                            {members: user},
-                            {
-                                $or: [
-                                    {$text: {$search: query}},
-                                    {members: {$in: users}}
-                                ]
-                            }
-                        ]
-                    });
-                });
-            } else {
-                groupQuery = db.groups.find({members: user});
-            }
-            return groupQuery.sort({updatedAt: -1})
-                .limit(limit)
-                .skip(offset)
-                .populate('owner')
-                .populate('members')
-                .exec()
+            return db.groups.findGroups(user, query)
+                .then(db.groups.populateLastMessage)
                 .then(groups => {
-                    ctx.body = {groups: groups.map(entities.group)}
+                    groups.forEach(group => {
+                        group.currentMember = group.findMember(user);
+                    });
+                    return db.groups.populate(groups, [
+                        {path: 'owner'},
+                        {path: 'members.ref'}
+                    ]);
+                }).then(groups => {
+                    ctx.body = {groups: groups.map(entities.group)};
                 });
         }
     )
@@ -64,9 +44,11 @@ router.use('/', auth.authenticate())
             if (!Array.isArray(members)) {
                 ctx.throw(400, 'Members must be an array');
             }
-            return db.users.find({
+            members = new Set(members);
+            members.add(ctx.state.user.id);
+            return db.users.fi =nd({
                 $and: [
-                    {_id: {$in: members}},
+                    {_id: {$in: Array.from(members)}},
                     {$or: [
                         {_id: {$in: friends}},
                         {privateMode: false}
@@ -80,9 +62,10 @@ router.use('/', auth.authenticate())
                     name: name,
                     description: description,
                     owner: ctx.state.user,
-                    members: dbMembers
+                    members: dbMembers.map(m => {
+                        return {ref: m};
+                    })
                 });
-                group.members.addToSet(ctx.state.user);
                 return group.save().then(group => {
                     ctx.status = 200;
                     ctx.body = {group: entities.group(group)}
@@ -103,16 +86,17 @@ router.use('/', auth.authenticate())
     )
     .use('/:groupId',
         (ctx, next) => {
+
             return db.groups.findById(ctx.params.groupId)
-                .populate('owner')
-                .populate('members')
                 .exec()
                 .then(group => {
-                    ctx.state.group = group;
-                    if (!ctx.state.user._id.equals(group.owner._id)
-                        && !group.members.some(m => m._id.equals(ctx.state.user._id))) {
+                    let user = ctx.state.user,
+                        currentMember = group.findMember(user);
+                    if (!user._id.equals(group.owner) && !currentMember) {
                         ctx.throw(403); // Access denied
                     } else {
+                        ctx.state.group = group;
+                        group.currentMember = currentMember;
                         return next();
                     }
                 });

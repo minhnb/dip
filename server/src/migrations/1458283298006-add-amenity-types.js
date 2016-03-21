@@ -10,10 +10,11 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const db = require('../db');
+const connection = require('../db/config');
 const s3 = require('../helpers/s3');
 
 exports.up = function(next) {
+    let now = new Date();
     let amenities = [
         {
             _id: 'sauna',
@@ -71,6 +72,10 @@ exports.up = function(next) {
             category: 'fare'
         }
     ];
+    amenities.forEach(amenity => {
+        amenity.createdAt = now;
+        amenity.updatedAt = now;
+    });
     let imgPromises = amenities.map(amenity => {
         let file_path = path.join(__dirname, `assets/amenity-${amenity._id}.png`);
         try {
@@ -87,8 +92,9 @@ exports.up = function(next) {
                 mediaType: 'image/png'
             };
         }
-        return db.amenityTypes.collection.insert(amenities, (error, docs) => {
-            next(error);
+
+        return connection.db.collection('amenitytypes', (error, collection) => {
+            collection.insert(amenities, next);
         });
     }).catch(next);
 };

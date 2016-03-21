@@ -9,20 +9,28 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const db = require('../db');
+const connection = require('../db/config');
 
 exports.up = function(next) {
-    let admin = new db.users({
+    let now = new Date();
+    let admin = {
         firstName: 'Dip',
         gender: 'na',
-        email: 'admin@thedipapp.com'
+        email: 'admin@thedipapp.com',
+        account: {
+            balance: 0
+        },
+        privateMode: false,
+        createdAt: now,
+        updatedAt: now
+    };
+    connection.db.collection('users', (error, collection) => {
+        collection.insert(admin, next);
     });
-    admin.save(err => {
-        next(err);
-    });
-    //next();
 };
 
 exports.down = function(next) {
-    db.users.remove({email: 'admin@thedipapp.com'}).exec().then(() => next());
+    connection.db.collection('users', (error, collection) => {
+        collection.remove({email: 'admin@thedipapp.com'}, next);
+    });
 };
