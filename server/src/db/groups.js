@@ -67,6 +67,7 @@ groupSchema.methods.populateLastMessage = function() {
 };
 
 groupSchema.methods.findMember = function(memberId) {
+    memberId = memberId._id || memberId;
     return this.members.find(m => m.ref.equals(memberId));
 };
 
