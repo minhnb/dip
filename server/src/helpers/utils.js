@@ -18,7 +18,7 @@ function convertCardExpireDate(year, month) {
 }
 
 function checkGroupOwner(ctx, next) {
-    if (ctx.state.user && ctx.state.user._id.equals(ctx.state.group.owner._id)) {
+    if (ctx.state.user && ctx.state.user._id.equals(ctx.state.group.owner)) {
         return next();
     } else {
         ctx.throw(403); // access denied

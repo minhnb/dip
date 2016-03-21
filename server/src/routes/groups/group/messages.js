@@ -78,11 +78,11 @@ router.get('/',
                             click_action: 'chat'
                         }
                     };
-                    group.members.forEach(member => {
+                    group.members.forEach(i => {
                         // A user can have multiple phones,
                         // and so we need to send push notification to all of them just in case
                         //if (member._id.equals(user._id)) return;
-                        gcm.pushNotification(member, payload)
+                        gcm.pushNotification(i.ref, payload)
                             .then(data => {
                                 console.log('gcm response', data);
                             })
