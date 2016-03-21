@@ -43,8 +43,9 @@ const reservationSchema = new Schema({
         },
         details: { // Copy offer details here for record keeping
             type: offerSchema,
-            required: true
+            required: true     
         },
+
         members: [{
             type: Schema.ObjectId,
             ref: 'User'

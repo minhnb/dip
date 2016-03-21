@@ -69,6 +69,10 @@ const offerSchema = new Schema({
         price: {
             type: Number,
             required: true
+        },
+        count: {
+            type: Number,
+            required: false
         }
     }],
     // TODO: Question: What will happen if the pool's owner delete that ticket/pass type?

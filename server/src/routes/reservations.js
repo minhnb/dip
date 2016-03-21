@@ -177,6 +177,17 @@ function createReservation(ctx, next) {
             },
             price: price,
             offers: offers.map(o => {
+                if(offerMap[o._id.toString()].specialOffers) {
+                    let specialOfferMap = offerMap[o._id.toString()].specialOffers.reduce((obj, specialOffer) => {
+                    obj[specialOffer.id] = specialOffer;
+                        return obj;
+                    }, Object.create({}));
+                    
+                    o.specialOffers.map(so => {
+                        so.count = specialOfferMap[so.type.toString()].count;
+                    });
+                }
+                
                 return {
                     ref: o._id,
                     details: o.toObject(),
