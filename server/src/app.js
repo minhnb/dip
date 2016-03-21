@@ -29,6 +29,7 @@ dotenv.load({
 const app = new Koa();
 
 const config = require('./config');
+const db = require('./db');
 const router = require('./routes');
 
 app.use(bodyparser);
@@ -82,9 +83,6 @@ app.use((ctx, next) => {
     });
 });
 
-// This is clean and nice, but we couldn't modify it to our needs
-// Considering create a simple error-template for dev env and do it ourselves
-//app.use(convert(error()));
 process.on('uncaughtException', function(err) {
     hipchatter.notify('Dip-DevOps',{
         message: `Error: ${err} - Enviroment: ${process.env.NODE_ENV}`,
@@ -104,5 +102,16 @@ app.use(auth.passport.initialize());
 
 // response
 app.use(router.routes(), router.allowedMethods());
+
+// Fetch dip account before exporting
+let adminEmail = 'admin@thedipapp.com';
+db.users.findByEmail(adminEmail).exec().then(admin => {
+    if (!admin) {
+        console.error(`Couldn't find admin account ${adminEmail}`);
+        process.exit(1);
+    } else {
+        app.context.dipId = admin._id;
+    }
+});
 
 module.exports = app;
