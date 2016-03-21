@@ -16,66 +16,21 @@ router.use('/', auth.authenticate())
         validator.limitParams(),
         ctx => {
             let user = ctx.state.user,
-                query = ctx.query.query,
-                limit = ctx.query.limit ? parseInt(ctx.query.limit) : 10,
-                offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
+                query = ctx.query.query;
 
-            let groupQuery;
-            if (query) {
-                let userPromise = db.users.find({
-                    $text: {$search: query}
-                }).select('_id').exec();
-
-                groupQuery = userPromise.then(users => {
-                    return db.groups.find({
-                        $and: [
-                            {members: user},
-                            {
-                                $or: [
-                                    {$text: {$search: query}},
-                                    {members: {$elemMatch:{member: {$in: users}}}}
-                                ]
-                            }
-                        ]
-                    });
-                });
-            } else {
-                groupQuery = db.groups.find({members: {$elemMatch:{member: user}}});
-            }
-            return groupQuery.sort({updatedAt: -1})
-                .limit(limit)
-                .skip(offset)
-                .populate('owner')
-                .populate('members')
-                .exec()
+            return db.groups.findGroups(user, query)
+                .then(db.groups.populateLastMessage)
                 .then(groups => {
-                    let lastMessage = null;
-                    let msgPromises = groups.map(group => {
-                        return db.messages
-                            .findOne({group: group._id})
-                            .sort({createdAt: -1})
-                            .exec()
-                            .then(message => {
-                                if(message) {
-                                    let lastMessage = null;
-                                    group.members.forEach(i => {
-                                        if(user._id.equals(i.member) && i.lastMessage) {
-                                            lastMessage = i.lastMessage;
-                                            return;
-                                        }
-                                    })
-                                    group.seen = message._id.equals(lastMessage) ? true : false;
-                                } else {
-                                    group.seen = true;
-                                }
-                                return group;
-                            })
-                    })  
-                    
-                    return Promise.all(msgPromises).then(groups => {
-                        ctx.body = {groups: groups.map(entities.group)}
+                    groups.forEach(group => {
+                        group.currentMember = group.findMember(user);
                     });
-                })
+                    return db.groups.populate(groups, [
+                        {path: 'owner'},
+                        {path: 'members.ref'}
+                    ]);
+                }).then(groups => {
+                    ctx.body = {groups: groups.map(entities.group)};
+                });
         }
     )
     .post('/',
@@ -100,15 +55,15 @@ router.use('/', auth.authenticate())
                 if (dbMembers.length < members.length) {
                     ctx.throw(400, 'Invalid member id');
                 }
+                dbMembers.addToSet(ctx.state.user);
                 let group = new db.groups({
                     name: name,
                     description: description,
                     owner: ctx.state.user,
                     members: dbMembers.map(m => {
-                        return {member: m};
+                        return {ref: m};
                     })
                 });
-                group.members.addToSet({member: ctx.state.user});
                 return group.save().then(group => {
                     ctx.status = 200;
                     ctx.body = {group: entities.group(group)}
@@ -116,46 +71,19 @@ router.use('/', auth.authenticate())
             });
         }
     )
-    .put('/',
-        validator.groups.seenMessage(),
-        ctx => {
-            let group = ctx.request.body.group,
-                user = ctx.state.user,
-                lastMessage = ctx.request.body.lastMessage;
-            console.log(group);
-            return db.groups.findOne({_id: group})
-                .exec()
-                .then(group => {
-                    if(group) {
-                        group.members.forEach(i => {
-                            if(ctx.state.user.equals(i.member)) {
-                                i.lastMessage = lastMessage;
-                            }
-                        })
-                        return group.save().then(() => {
-                            ctx.status = 200;
-                        });
-                        
-                    } else {
-                        ctx.throw(404); // Group not found
-                    }
-                    
-                })
-        }
-    )
-    
     .use('/:groupId',
         (ctx, next) => {
 
             return db.groups.findById(ctx.params.groupId)
-                .populate('owner')
                 .exec()
                 .then(group => {
-                    ctx.state.group = group;
-                    if (!ctx.state.user._id.equals(group.owner._id)
-                        && !group.members.some(m => m.member.equals(ctx.state.user._id))) {
+                    let user = ctx.state.user,
+                        currentMember = group.findMember(user);
+                    if (!user._id.equals(group.owner) && !currentMember) {
                         ctx.throw(403); // Access denied
                     } else {
+                        ctx.state.group = group;
+                        group.currentMember = currentMember;
                         return next();
                     }
                 });

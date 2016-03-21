@@ -31,8 +31,7 @@ module.exports = {
     seenMessage: () => validator({
         request: {
             body: {
-                lastMessage: validator.isMongoId(),
-                group: validator.isMongoId()
+                lastMessage: validator.isMongoId()
             }
         }
     }),
