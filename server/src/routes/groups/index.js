@@ -46,7 +46,7 @@ router.use('/', auth.authenticate())
             }
             members = new Set(members);
             members.add(ctx.state.user.id);
-            return db.users.fi =nd({
+            return db.users.find({
                 $and: [
                     {_id: {$in: Array.from(members)}},
                     {$or: [
