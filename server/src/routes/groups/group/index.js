@@ -14,11 +14,14 @@ module.exports = router;
 
 router.get('/',
         ctx => {
-            return ctx.state.group.populate('owner')
+            let group = ctx.state.group;
+            return group.populate('owner')
                 .populate('members.ref')
                 .execPopulate()
                 .then(() => {
-                    ctx.body = {group: entities.group(ctx.state.group)};
+                    return group.populateLastMessage().then(() => {
+                        ctx.body = {group: entities.group(group)};
+                    });
                 });
         }
     )
@@ -67,7 +70,7 @@ router.get('/',
         messageRouter.allowedMethods()
     )
     .put('/seen',
-        inputValidator.seenMessage(),
+        inputValidator.groups.seenMessage(),
         ctx => {
             let group = ctx.state.group,
                 currentMember = group.currentMember;
