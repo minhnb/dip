@@ -1,11 +1,10 @@
 Dip.iml
 .idea
+.migrate
 server/node_modules
 server/app
 client/node_modules
 /npm-debug.log
 server/.gulp-cache
-
-npm-debug.log
 
 npm-debug.log

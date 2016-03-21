@@ -27,7 +27,7 @@ function pushNotification(user, data) {
         .exec()
         .then(sessions => {
             let devices = sessions.reduce((arr, session) => {
-                if (session.device) {
+                if (session.device && session.device.deviceToken) {
                     arr.push(session.device);
                 }
                 return arr;
