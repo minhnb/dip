@@ -50,6 +50,7 @@ router.use('/', auth.authenticate())
                 $and: [
                     {_id: {$in: Array.from(members)}},
                     {$or: [
+                        {_id: ctx.state.user},
                         {_id: {$in: friends}},
                         {privateMode: false}
                     ]}
