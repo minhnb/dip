@@ -10,6 +10,7 @@ function convertUser(user, currentUser) {
         username: user.username,
         gender: user.gender,
         picture: user.avatar,
+        facebookId: user.facebookId ? user.facebookId : null,
         // leave isFriend empty if no currentUser passed in
         isFriend: currentUser ? currentUser.friends.some(f => f.equals(user._id)) : undefined
     };
