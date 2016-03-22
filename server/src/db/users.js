@@ -41,6 +41,10 @@ const userSchema = new Schema({
     locale: String,
     avatar: {
         url: {type: String},
+        provider: {
+            type: String,
+            enum: ['facebook', 'dip']
+        },
         mediaType: {type: String}
     },
     account: {

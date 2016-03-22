@@ -3,6 +3,10 @@
 const convertCard = require('./creditCard');
 
 function convertUser(user, currentUser) {
+    let facebookGraphAPI = 'https://graph.facebook.com/';
+    if(user.avatar.provider == 'facebook' && user.facebookId) {
+        user.avatar.url = facebookGraphAPI + user.facebookId + '/picture?width=300&height=300';
+    }
     var data = {
         id: user._id,
         firstName: user.firstName,
@@ -10,11 +14,11 @@ function convertUser(user, currentUser) {
         username: user.username,
         gender: user.gender,
         picture: user.avatar,
-        facebookId: user.facebookId ? user.facebookId : null,
         // leave isFriend empty if no currentUser passed in
         isFriend: currentUser ? currentUser.friends.some(f => f.equals(user._id)) : undefined
     };
     if (currentUser && currentUser._id.equals(user._id)) {
+        data.facebookId = user.facebookId ? user.facebookId : undefined;
         data.email = user.email;
         data.dob = user.dob; // ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
         data.phone = user.phone;
