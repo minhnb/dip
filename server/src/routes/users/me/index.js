@@ -31,7 +31,10 @@ router.get('get me', '/',
                     gender: validator.optional(validator.isIn(['male', 'female', 'na'])),
                     oldPassword: validator.optional(),
                     newPassword: validator.optional(validator.validatePassword),
-                    'private': validator.optional(validator.isBoolean())
+                    'private': validator.optional(validator.isBoolean()),
+                    picture: {
+                        provider: validator.optional(validator.isIn(['facebook', 'dip']))
+                    }
                 }
             }
         }
@@ -59,6 +62,9 @@ router.get('get me', '/',
         if (postData.picture && postData.picture.url) {
             user.avatar.url = postData.picture.url;
             user.avatar.mediaType = postData.picture.mediaType;
+        }
+        if (postData.picture && postData.picture.provider) {
+            user.avatar.provider = postData.picture.provider;
         }
         if (postData.oldPassword !== undefined) {
             let oldPwd = postData.oldPassword;
