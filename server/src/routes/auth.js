@@ -41,7 +41,8 @@ router
                 email: ctx.request.body.email.toLowerCase(),
                 firstName: ctx.request.body.firstName,
                 lastName: ctx.request.body.lastName,
-                gender: ctx.request.body.gender
+                gender: ctx.request.body.gender,
+                phone: ctx.request.body.phone ? ctx.request.body.phone : null
             });
             user.setPassword(ctx.request.body.password);
             return user.save().then(user => {
