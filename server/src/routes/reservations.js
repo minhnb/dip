@@ -93,7 +93,9 @@ function verifyOffers(ctx, next) {
     return db.offers.find({
         _id: {$in: offerIds},
         pool: ctx.state.pool
-    }).exec()
+    })
+    .populate('specialOffers')
+    .exec()
     .then(offers => {
         if (offers.length < _offers.length) {
             ctx.throw(400, 'Invalid offer id');
@@ -120,19 +122,25 @@ function verifyOffers(ctx, next) {
             }
             offer.reservationCount += expected.count;
 
-            let specialOfferPrice = 0;
-            if(expected.specialOffers && expected.specialOffers.length > 0) {
-                expected.specialOffers.forEach(s => {
-                    offer.specialOffers.map(o => {
-                        if(s.id == o.type && s.price == o.price) {
-                            specialOfferPrice += (o.price * s.count);
-                        } else if(s.id == o.type && s.price != o.price){
-                            ctx.throw(400, 'Unmatched special offer price');
-                        }
-                    })
-                })
+            if (!verifySpecialOffers(expected, offer)) {
+                ctx.throw(400, 'Invalid special offer');
             }
-            price += expected.count * (offer.ticket.price + specialOfferPrice);
+            let specialOfferPrice = expected.specialOffers.reduce((total, sOffer) => {
+                return total + sOffer.price * sOffer.count;
+            }, 0);
+            //if(expected.specialOffers && expected.specialOffers.length > 0) {
+            //    expected.specialOffers.forEach(s => {
+            //        offer.specialOffers.map(o => {
+            //            if(s.id == o.id && s.price == o.price) {
+            //                specialOfferPrice += (o.price * s.count);
+            //            } else if(s.id == o.type && s.price != o.price){
+            //                ctx.throw(400, 'Unmatched special offer price');
+            //            }
+            //        })
+            //    });
+            //}
+            price += expected.count * offer.ticket.price;
+            price += specialOfferPrice;
         });
 
         if (price != expectedPrice) {
@@ -144,6 +152,20 @@ function verifyOffers(ctx, next) {
         ctx.state.offerMap = offerMap;
         return Promise.all(offers.map(o => o.save())).then(next);
     });
+}
+
+function verifySpecialOffers(userOffer, offer) {
+    let length = userOffer.specialOffers.length;
+    for (let i = 0; i < length; i++) {
+        let userSubOffer = userOffer.specialOffers[i];
+        let subOffer = offer.specialOffers.id(userSubOffer.id);
+        if (!subOffer || subOffer.price != userSubOffer.price
+            || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
+            || userSubOffer.count <= 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Final price must either be zero or greater than 50cent (stripe limit)
@@ -177,22 +199,25 @@ function createReservation(ctx, next) {
             },
             price: price,
             offers: offers.map(o => {
-                if(offerMap[o._id.toString()].specialOffers) {
-                    let specialOfferMap = offerMap[o._id.toString()].specialOffers.reduce((obj, specialOffer) => {
-                    obj[specialOffer.id] = specialOffer;
-                        return obj;
-                    }, Object.create({}));
-                    
-                    o.specialOffers.map(so => {
-                        so.count = specialOfferMap[so.type.toString()].count;
-                    });
+                let userOffer = offerMap[o.id],
+                    specialOffers = [];
+                if(userOffer.specialOffers) {
+                    specialOffers = userOffer.specialOffers.reduce((arr, userSubOffer) => {
+                        arr.push({
+                            ref: userSubOffer.id,
+                            details: o.specialOffers.id(userSubOffer.id).toObject(),
+                            count: userSubOffer.count
+                        });
+                    }, []);
                 }
-                
+
+                o.depopulate('specialOffers');
                 return {
                     ref: o._id,
                     details: o.toObject(),
-                    members: offerMap[o._id.toString()].members,
-                    count: offerMap[o._id.toString()].count
+                    members: userOffer.members,
+                    count: userOffer.count,
+                    specialOffers: specialOffers
                 };
             })
         });

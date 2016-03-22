@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const specialOffersSchema = new Schema({
-    offer: {
+    pool: {
         type: Schema.ObjectId,
-        ref: 'Offer',
+        ref: 'Pool',
         required: true
     },
     name: {
@@ -18,12 +18,11 @@ const specialOffersSchema = new Schema({
         type: String,
         required: true
     },
-    count: {
+    price: {
         type: Number,
-        required: true,
-        default: 1
+        required: true
     }
 }, {
     timestamps: true
 });
-module.exports = mongoose.model('SpecialOffers', specialOffersSchema);
+module.exports = mongoose.model('SpecialOffer', specialOffersSchema);

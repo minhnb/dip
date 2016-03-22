@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const offerSchema = require('./offers').schema;
+const specialOfferSchema = require('./specialOffers').schema;
 
 const reservationSchema = new Schema({
     user: {
@@ -43,18 +44,32 @@ const reservationSchema = new Schema({
         },
         details: { // Copy offer details here for record keeping
             type: offerSchema,
-            required: true     
+            required: true
         },
-
-        members: [{
-            type: Schema.ObjectId,
-            ref: 'User'
-        }],
         count: {
             type: Number,
             required: true,
             default: 1
-        }
+        },
+        specialOffers: [{
+            ref: {
+                type: Schema.ObjectId,
+                ref: 'SpecialOffers'
+            },
+            details: {
+                type: specialOfferSchema,
+                required: true
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 1
+            }
+        }],
+        members: [{
+            type: Schema.ObjectId,
+            ref: 'User'
+        }]
     }],
     //coupon: {
     //    ref: {

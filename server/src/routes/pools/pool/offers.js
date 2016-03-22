@@ -19,7 +19,7 @@ router.get('/',
             })
             .populate('type')
             .populate('amenities')
-            .populate('specialOffers.type')
+            .populate('specialOffers')
             .populate('ticket.ref')
             .exec()
             .then(offers => {

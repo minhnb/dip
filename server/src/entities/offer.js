@@ -21,7 +21,7 @@ function convertOffer(offer) {
         duration: offer.duration,
         capacity: offer.capacity,
         amenities: offer.amenities.map(amenityEntity.base),
-        specialOffers: specialOfferEntity(offer.specialOffers),
+        specialOffers: offer.specialOffers.map(specialOfferEntity),
         ticket: {
             price: offer.ticket.price,
             ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
