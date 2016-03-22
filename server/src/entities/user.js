@@ -5,7 +5,6 @@ const convertCard = require('./creditCard');
 function convertUser(user, currentUser) {
     let facebookGraphAPI = 'https://graph.facebook.com/';
     if(user.avatar.provider == 'facebook' && user.facebookId) {
-        console.log('here');
         user.avatar.url = facebookGraphAPI + user.facebookId + '/picture?width=300&height=300';
     }
     var data = {
