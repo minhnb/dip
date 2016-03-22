@@ -18,7 +18,7 @@ function convertUser(user, currentUser) {
         isFriend: currentUser ? currentUser.friends.some(f => f.equals(user._id)) : undefined
     };
     if (currentUser && currentUser._id.equals(user._id)) {
-        data.facebookId = user.facebookId ? user.facebookId : null;
+        data.facebookId = user.facebookId ? user.facebookId : undefined;
         data.email = user.email;
         data.dob = user.dob; // ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
         data.phone = user.phone;

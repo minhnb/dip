@@ -104,6 +104,7 @@ router.get('get me', '/',
                     }).then(data => {
                         user.avatar.url = data.Location;
                         user.avatar.contentType = img.mimeType;
+                        user.avatar.provider = 'dip';
                         return user.save().then(() => {
                             ctx.status = 200;
                             ctx.body = {
