@@ -10,7 +10,7 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const connection = require('../db/config');
+const connectionPromise = require('./db');
 const s3 = require('../helpers/s3');
 
 exports.up = function(next) {
@@ -50,12 +50,18 @@ exports.up = function(next) {
                 mediaType: 'image/png'
             };
         }
-        return connection.db.collection('offertypes', (error, collection) => {
-            collection.insert(offers, next);
+        return connectionPromise.then(connection => {
+            return connection.db.collection('offertypes', (error, collection) => {
+                collection.insert(offers, next);
+            });
         });
     }).catch(next);
 };
 
 exports.down = function(next) {
-  next();
+    connectionPromise.then(connection => {
+        return connection.db.collection('offertypes', (error, collection) => {
+            collection.remove({}, next);
+        });
+    });
 };
