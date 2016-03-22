@@ -9,7 +9,9 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const connection = require('../db/config');
+const connectionPromise = require('./db');
+
+//sleep(1000);
 
 exports.up = function(next) {
     let now = new Date();
@@ -24,13 +26,17 @@ exports.up = function(next) {
         createdAt: now,
         updatedAt: now
     };
-    connection.db.collection('users', (error, collection) => {
-        collection.insert(admin, next);
+    connectionPromise.then(connection => {
+        connection.db.collection('users', (error, collection) => {
+            collection.insert(admin, next);
+        });
     });
 };
 
 exports.down = function(next) {
-    connection.db.collection('users', (error, collection) => {
-        collection.remove({email: 'admin@thedipapp.com'}, next);
+    connectionPromise.then(connection => {
+        connection.db.collection('users', (error, collection) => {
+            collection.remove({email: 'admin@thedipapp.com'}, next);
+        });
     });
 };

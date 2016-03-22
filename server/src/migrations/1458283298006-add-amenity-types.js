@@ -10,7 +10,7 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const connection = require('../db/config');
+const connectionPromise = require('./db');
 const s3 = require('../helpers/s3');
 
 exports.up = function(next) {
@@ -93,13 +93,18 @@ exports.up = function(next) {
             };
         }
 
-        return connection.db.collection('amenitytypes', (error, collection) => {
-            collection.insert(amenities, next);
+        return connectionPromise.then(connection => {
+            connection.db.collection('amenitytypes', (error, collection) => {
+                collection.insert(amenities, next);
+            });
         });
     }).catch(next);
 };
 
 exports.down = function(next) {
-    // Remove amenities?
-    next();
+    connectionPromise.then(connection => {
+        connection.db.collection('amenitytypes', (error, collection) => {
+            collection.remove({}, next);
+        });
+    });
 };
