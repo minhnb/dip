@@ -28,7 +28,7 @@ router.get('get me', '/',
                 user: {
                     dob: validator.optional(validator.isDate()),
                     phone: validator.optional(validator.isNumeric()),
-                    gender: validator.optional(validator.isIn('male', 'female', 'na')),
+                    gender: validator.optional(validator.isIn(['male', 'female', 'na'])),
                     oldPassword: validator.optional(),
                     newPassword: validator.optional(validator.validatePassword),
                     'private': validator.optional(validator.isBoolean())
@@ -37,6 +37,7 @@ router.get('get me', '/',
         }
     }),
     ctx => {
+        // console.log(ctx.request.body.user);
         let postData = ctx.request.body.user,
             user = ctx.state.user;
 
