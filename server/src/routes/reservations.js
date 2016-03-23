@@ -156,15 +156,20 @@ function verifyOffers(ctx, next) {
 
 function verifySpecialOffers(userOffer, offer) {
     let length = userOffer.specialOffers.length;
+    let specialOffersMap = offer.specialOffers.map((obj, sOffer) => {
+        obj[sOffer.id] = sOffer;
+        return obj;
+    }, Object.create({}));
     for (let i = 0; i < length; i++) {
         let userSubOffer = userOffer.specialOffers[i];
-        let subOffer = offer.specialOffers.id(userSubOffer.id);
+        let subOffer = specialOffersMap[userSubOffer.id];
         if (!subOffer || subOffer.price != userSubOffer.price
             || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
             || userSubOffer.count <= 0) {
             return false;
         }
     }
+    offer.specialOffersMap = specialOffersMap;
     return true;
 }
 
@@ -205,7 +210,7 @@ function createReservation(ctx, next) {
                     specialOffers = userOffer.specialOffers.reduce((arr, userSubOffer) => {
                         arr.push({
                             ref: userSubOffer.id,
-                            details: o.specialOffers.id(userSubOffer.id).toObject(),
+                            details: o.specialOffersMap[userSubOffer.id].toObject(),
                             count: userSubOffer.count
                         });
                         return arr;
