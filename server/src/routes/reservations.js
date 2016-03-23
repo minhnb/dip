@@ -155,21 +155,25 @@ function verifyOffers(ctx, next) {
 }
 
 function verifySpecialOffers(userOffer, offer) {
-    let length = userOffer.specialOffers.length;
-    let specialOffersMap = offer.specialOffers.map((obj, sOffer) => {
-        obj[sOffer.id] = sOffer;
-        return obj;
-    }, Object.create({}));
-    for (let i = 0; i < length; i++) {
-        let userSubOffer = userOffer.specialOffers[i];
-        let subOffer = specialOffersMap[userSubOffer.id];
-        if (!subOffer || subOffer.price != userSubOffer.price
-            || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
-            || userSubOffer.count <= 0) {
-            return false;
+    if(userOffer.specialOffers) {
+        let length = userOffer.specialOffers.length;
+        let specialOffersMap = offer.specialOffers.reduce((obj, sOffer) => {
+            obj[sOffer.id] = sOffer;
+            return obj;
+        }, Object.create({}));
+        for (let i = 0; i < length; i++) {
+            let userSubOffer = userOffer.specialOffers[i];
+            let subOffer = specialOffersMap[userSubOffer.id];
+            if (!subOffer || subOffer.price != userSubOffer.price
+                || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
+                || userSubOffer.count <= 0) {
+                return false;
+            }
         }
+        offer.specialOffersMap = specialOffersMap;
+    } else {
+        userOffer.specialOffers = [];
     }
-    offer.specialOffersMap = specialOffersMap;
     return true;
 }
 
