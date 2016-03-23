@@ -53,7 +53,7 @@ function checkInput(ctx, next) {
             i.members = [];
         }
         i.members.forEach(j => {
-            if (!friendSet.has(j) && !user.id.equals(j)) {
+            if (!friendSet.has(j) && !user._id.equals(j)) {
                 ctx.throw(400, 'Invitee must be a friend');
             }
         })
