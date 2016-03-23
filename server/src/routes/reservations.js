@@ -208,6 +208,7 @@ function createReservation(ctx, next) {
                             details: o.specialOffers.id(userSubOffer.id).toObject(),
                             count: userSubOffer.count
                         });
+                        return arr;
                     }, []);
                 }
 
