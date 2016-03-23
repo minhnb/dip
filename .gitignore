@@ -1,6 +1,7 @@
 Dip.iml
 .idea
 .migrate
+.DS_Store
 server/node_modules
 server/app
 client/node_modules
