@@ -93,7 +93,9 @@ function verifyOffers(ctx, next) {
     return db.offers.find({
         _id: {$in: offerIds},
         pool: ctx.state.pool
-    }).exec()
+    })
+    .populate('specialOffers')
+    .exec()
     .then(offers => {
         if (offers.length < _offers.length) {
             ctx.throw(400, 'Invalid offer id');
@@ -105,12 +107,13 @@ function verifyOffers(ctx, next) {
         }, Object.create({}));
 
         let price = 0;
-
         offers.forEach(offer => {
             let expected = offerMap[offer._id.toString()];
+            
             if (!expected) {
                 ctx.throw(400, 'Invalid offer id');
             }
+
             if (expected.count + offer.reservationCount > offer.allotmentCount) {
                 ctx.throw(400, 'Overbooking offer');
             }
@@ -119,7 +122,25 @@ function verifyOffers(ctx, next) {
             }
             offer.reservationCount += expected.count;
 
+            if (!verifySpecialOffers(expected, offer)) {
+                ctx.throw(400, 'Invalid special offer');
+            }
+            let specialOfferPrice = expected.specialOffers.reduce((total, sOffer) => {
+                return total + sOffer.price * sOffer.count;
+            }, 0);
+            //if(expected.specialOffers && expected.specialOffers.length > 0) {
+            //    expected.specialOffers.forEach(s => {
+            //        offer.specialOffers.map(o => {
+            //            if(s.id == o.id && s.price == o.price) {
+            //                specialOfferPrice += (o.price * s.count);
+            //            } else if(s.id == o.type && s.price != o.price){
+            //                ctx.throw(400, 'Unmatched special offer price');
+            //            }
+            //        })
+            //    });
+            //}
             price += expected.count * offer.ticket.price;
+            price += specialOfferPrice;
         });
 
         if (price != expectedPrice) {
@@ -131,6 +152,29 @@ function verifyOffers(ctx, next) {
         ctx.state.offerMap = offerMap;
         return Promise.all(offers.map(o => o.save())).then(next);
     });
+}
+
+function verifySpecialOffers(userOffer, offer) {
+    if(userOffer.specialOffers) {
+        let length = userOffer.specialOffers.length;
+        let specialOffersMap = offer.specialOffers.reduce((obj, sOffer) => {
+            obj[sOffer.id] = sOffer;
+            return obj;
+        }, Object.create({}));
+        for (let i = 0; i < length; i++) {
+            let userSubOffer = userOffer.specialOffers[i];
+            let subOffer = specialOffersMap[userSubOffer.id];
+            if (!subOffer || subOffer.price != userSubOffer.price
+                || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
+                || userSubOffer.count <= 0) {
+                return false;
+            }
+        }
+        offer.specialOffersMap = specialOffersMap;
+    } else {
+        userOffer.specialOffers = [];
+    }
+    return true;
 }
 
 // Final price must either be zero or greater than 50cent (stripe limit)
@@ -164,11 +208,26 @@ function createReservation(ctx, next) {
             },
             price: price,
             offers: offers.map(o => {
+                let userOffer = offerMap[o.id],
+                    specialOffers = [];
+                if(userOffer.specialOffers) {
+                    specialOffers = userOffer.specialOffers.reduce((arr, userSubOffer) => {
+                        arr.push({
+                            ref: userSubOffer.id,
+                            details: o.specialOffersMap[userSubOffer.id].toObject(),
+                            count: userSubOffer.count
+                        });
+                        return arr;
+                    }, []);
+                }
+
+                o.depopulate('specialOffers');
                 return {
                     ref: o._id,
                     details: o.toObject(),
-                    members: offerMap[o._id.toString()].members,
-                    count: offerMap[o._id.toString()].count
+                    members: userOffer.members,
+                    count: userOffer.count,
+                    specialOffers: specialOffers
                 };
             })
         });
