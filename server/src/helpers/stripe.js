@@ -50,6 +50,10 @@ function addUserCard(user, token, defaultCard) {
     });
 }
 
+function setDefaultUserCard(user, card) {
+    return stripe.customers.update(user.account.stripeId, {default_source: card.stripeId});
+}
+
 function removeUserCard(user, card) {
     return stripe.customers.deleteCard(user.account.stripeId, card.stripeId);
 }
@@ -113,5 +117,6 @@ module.exports = {
     chargeSale: chargeSale,
     cancelSubscription: cancelSubscription,
     createPlan: createPlan,
-    updatePlan: updatePlan
+    updatePlan: updatePlan,
+    setDefaultUserCard: setDefaultUserCard
 };

@@ -68,6 +68,7 @@ router.use('/', auth.authenticate())
         }	
     )
 	.put('/',
+        utils.isAdmin,
         validator({
             request: {
                 body: {
