@@ -12,7 +12,7 @@ module.exports = {
     }),
     removeMember: () => validator({
         params: {
-            id: validator.isMongoId()
+            memberId: validator.isMongoId()
         }
     })
 };
