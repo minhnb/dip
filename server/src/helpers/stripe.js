@@ -93,11 +93,25 @@ function cancelSubscription(user, currentSubscription) {
     })
 }
 
+function createPlan(plan) {
+    return stripe.plans.create(plan)
+    .then(plan => plan)
+}
+
+function updatePlan(planId, name) {
+    return stripe.plans.update(planId, {
+      name: name
+    })
+    .then(plan => plan)
+}
+
 module.exports = {
     stripe: stripe,
     addUser: addUser,
     addUserCard: addUserCard,
     createSubscription: createSubscription,
     chargeSale: chargeSale,
-    cancelSubscription: cancelSubscription
+    cancelSubscription: cancelSubscription,
+    createPlan: createPlan,
+    updatePlan: updatePlan
 };

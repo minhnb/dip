@@ -2,19 +2,13 @@
 
 const router = require('koa-router')();
 
-var geocoderProvider = 'google';
-var httpAdapter = 'http';
-
-const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
-
 const db = require('../../db');
-const entities = require('../../entities');
 
 const auth = require('../../helpers/passport_auth');
 const inputValidator = require('../../validators');
 const validator = require('../../helpers/input_validator');
 const config = require('../../config');
-const stripe = require('stripe')(config.stripe.secretKey);
+const stripe = require('../../helpers/stripe');
 
 
 module.exports = router;
@@ -31,26 +25,27 @@ router.use('/', auth.authenticate())
 				intervalCount = ctx.request.body.intervalCount,
                 planId = ctx.request.body.planId || name.split(' ').join('_').toLowerCase();
 
-            return stripe.plans.create({
-                    amount: amount,
-                    interval: interval,
-                    name: name,
-                    currency: 'usd',
-                    id: planId
-                })
-                .then(plan => {
+            let plan = {
+                amount: amount,
+                interval: interval,
+                name: name,
+                currency: 'usd',
+                id: planId
+            }
+            return stripe.createPlan(plan)
+                .then(data => {
                     let membershipType = new db.membershipTypes({
-                        name: plan.name,
+                        name: data.name,
                         description: description,
-                        amount: plan.amount,
-                        interval: plan.interval,
-                        intervalCount: plan.interval_count,
-                        planId: plan.id
+                        amount: data.amount,
+                        interval: data.interval,
+                        intervalCount: data.interval_count,
+                        planId: data.id
                     });
                     return membershipType.save().then(() => {
                         ctx.status = 200
                     })  
-                })			
+                })		
 		}		
 	)
 	.get('/',
@@ -96,9 +91,7 @@ router.use('/', auth.authenticate())
                             type.description = msType.description
                         }
                         //Updates the name of a plan. Other plan details (price, interval, etc.) are, by design, not editable.
-                        return stripe.plans.update(planId, {
-                          name: type.name
-                        })
+                        return stripe.updatePlan(planId, name)
                         .then(() => {
                             return type.save().then(() => {
                                 ctx.status = 200;
