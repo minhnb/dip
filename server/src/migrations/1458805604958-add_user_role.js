@@ -23,15 +23,7 @@ exports.up = function(next) {
             		role: {$exists: false},
             		email: {$ne: 'admin@thedipapp.com'}
             	}, {$set: {'role' : 'user' }}, () => {
-            		collection.find({email: 'admin@thedipapp.com'}).toArray((error, user) => {
-            			if(error) {
-            				next(error);
-            			} else {
-            				let admin = user[0];
-            				admin.role = 'admin';
-            				collection.save(admin, next);
-            			}
-            		})
+            		collection.findAndModify({email: 'admin@thedipapp.com'}, {$set: {role: 'admin'}}, next)
             	})	
             }	          	
         });
