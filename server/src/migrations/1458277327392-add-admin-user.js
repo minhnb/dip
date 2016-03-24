@@ -23,6 +23,7 @@ exports.up = function(next) {
             balance: 0
         },
         privateMode: false,
+        role: 'admin',
         createdAt: now,
         updatedAt: now
     };
