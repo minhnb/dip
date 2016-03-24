@@ -22,10 +22,18 @@ exports.up = function(next) {
             	collection.updateMany({ 
             		role: {$exists: false},
             		email: {$ne: 'admin@thedipapp.com'}
-            	}, {$set: {'role' : 'user' }})
-            	next();
-            }
-           	
+            	}, {$set: {'role' : 'user' }}, () => {
+            		collection.find({email: 'admin@thedipapp.com'}).toArray((error, user) => {
+            			if(error) {
+            				next(error);
+            			} else {
+            				let admin = user[0];
+            				admin.role = 'admin';
+            				collection.save(admin, next);
+            			}
+            		})
+            	})	
+            }	          	
         });
     });
 };
@@ -37,10 +45,8 @@ exports.down = function(next) {
         		next(error);
         	} else {
         		collection.updateMany({ 
-        			role: {$exists: true},
-        			email: {$ne: 'admin@thedipapp.com'}
-        		}, {$set: {'role' : undefined }})
-        		next();
+        			role: {$exists: true}
+        		}, {$unset: {'role' : '' }}, next)	
         	}
         });
     });
