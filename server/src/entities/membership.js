@@ -7,6 +7,7 @@ function convertMembership(subscription, defaultSubscription) {
     }, Object.create({}));
 
     return {
+    	id: subscriptionMap[defaultSubscription]._id,
         type: subscriptionMap[defaultSubscription].type
     }
 }
