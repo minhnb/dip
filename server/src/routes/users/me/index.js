@@ -13,6 +13,7 @@ const s3 = require('../../../helpers/s3');
 
 const cardRouter = require('./payment_methods');
 const promotionRouter = require('./promotions');
+const membershipRoute = require('./membership');
 
 module.exports = router;
 
@@ -116,4 +117,5 @@ router.get('get me', '/',
             }
         }
     ).use('/payment_methods', cardRouter.routes(), cardRouter.allowedMethods())
-    .use('/promotions', promotionRouter.routes(), promotionRouter.allowedMethods());
+    .use('/promotions', promotionRouter.routes(), promotionRouter.allowedMethods())
+    .use('/membership', membershipRoute.routes(), membershipRoute.allowedMethods());

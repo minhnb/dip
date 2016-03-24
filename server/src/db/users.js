@@ -9,6 +9,7 @@ const utils = require('../helpers/utils');
 
 const Schema = mongoose.Schema;
 const cardSchema = require('./subSchemas/creditCard');
+const membershipSchema = require('./subSchemas/membership');
 const sessions = require('./sessions');
 
 const userSchema = new Schema({
@@ -58,6 +59,8 @@ const userSchema = new Schema({
             required: true,
             default: 0
         },
+        subscriptions: [membershipSchema],
+        defaultSubscription: Schema.ObjectId,
         cards: [cardSchema],
         defaultCardId: Schema.ObjectId
     },

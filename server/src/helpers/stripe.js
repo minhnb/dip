@@ -65,9 +65,39 @@ function chargeSale(sale) {
     });
 }
 
+function createSubscription(user, plan) {
+    return stripe.customers.createSubscription(
+        user.account.stripeId, 
+        {
+            plan: plan.planId
+        })
+    .then(data => {
+        var subscription = user.account.subscriptions.create({
+            type: plan._id,
+            customer: data.customer,
+            subscription: data.id
+        });
+        user.account.subscriptions.push(subscription);
+        user.account.defaultSubscription = subscription._id;
+        return user.save().then(() => user.account);
+    })
+}
+
+function cancelSubscription(user, currentSubscription) {
+    return stripe.customers.cancelSubscription(
+        user.account.stripeId,
+        currentSubscription.subscription)
+    .then(data => {
+        user.account.defaultSubscription = undefined;
+        return user.save().then(user => user.account);
+    })
+}
+
 module.exports = {
     stripe: stripe,
     addUser: addUser,
     addUserCard: addUserCard,
-    chargeSale: chargeSale
+    createSubscription: createSubscription,
+    chargeSale: chargeSale,
+    cancelSubscription: cancelSubscription
 };

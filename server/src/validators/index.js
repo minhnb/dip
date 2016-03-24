@@ -12,5 +12,6 @@ module.exports = {
     devices: require('./devices'),
     auth: require('./auth'),
     resetPassword: require('./resetPassword'),
-    wishList: require('./wishList')
+    wishList: require('./wishList'),
+    membershipTypes: require('./membershipTypes')
 };
