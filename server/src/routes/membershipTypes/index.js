@@ -9,12 +9,14 @@ const inputValidator = require('../../validators');
 const validator = require('../../helpers/input_validator');
 const config = require('../../config');
 const stripe = require('../../helpers/stripe');
+const utils = require('../../helpers/utils');
 
 
 module.exports = router;
 
 router.use('/', auth.authenticate())
 	.post('add membership type', '/',
+        utils.isAdmin,
 		inputValidator.membershipTypes(),
 		ctx => {
 
