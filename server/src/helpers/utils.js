@@ -25,9 +25,18 @@ function checkGroupOwner(ctx, next) {
     }
 }
 
+function isAdmin(ctx, next) {
+    if(ctx.state.user && ctx.state.user.role == 'admin') {
+        return next();
+    } else{
+        ctx.throw(401);
+    }
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
     convertCardExpireDate: convertCardExpireDate,
-    checkGroupOwner: checkGroupOwner
+    checkGroupOwner: checkGroupOwner,
+    isAdmin: isAdmin
 };

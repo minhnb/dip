@@ -81,7 +81,13 @@ const userSchema = new Schema({
     friends: [{
         type: Schema.ObjectId,
         ref: 'User'
-    }]
+    }],
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        require: true,
+        default: 'user'
+    }
 }, {
     timestamps: true
 });
