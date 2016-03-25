@@ -1,0 +1,2322 @@
+[
+  {
+    "name": "Ace Hotel Downtown LA",
+    "city": "Los Angeles",
+    "url": "http://www.acehotel.com",
+    "fullAddress": "929 S Broadway, Los Angeles, CA 90015",
+    "phone": "(213) 623-3233",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Airtel Plaza Hotel and Conference Center",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7277 Valjean Ave., Van Nuys, Los Angeles, CA 91406",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Alhambra Inn",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "2451 West Main Street, Alhambra, CA 91801",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Americas Best Value Inn - Hollywood/Los Angeles",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5265 W. Sunset Blvd, Los Angeles, CA 90027",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Americas Best Value Inn & Suites Granada Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "15543 Rinaldi Street, Los Angeles, CA 91344",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Andaz West Hollywood",
+    "city": "West Hollywood",
+    "url": "http://westhollywood.andaz.hyatt.com/en/hotel/home.html",
+    "fullAddress": "8401 Sunset Boulevard, West Hollywood, CA 90069",
+    "phone": "(323) 656-1234",
+    "chair": 15,
+    "daybed": "",
+    "cabana": 4
+  },
+  {
+    "name": "Angels Motel",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "6623 S Rosemead Blvd, Pico Rivera, CA 90660",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Avalon Hotel Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9400 West Olympic Blvd, Beverly Hills, CA 90212",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Azul Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "10740 Santa Monica Boulevard, Los Angeles, CA 90025",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "B.W. Plus Orlando Gateway Hotel",
+    "city": "",
+    "url": "",
+    "fullAddress": "7299 Universal Boulevard, Orlando, FL 32819",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Banyan Harbor Resort",
+    "city": "",
+    "url": "",
+    "fullAddress": "3411 Wilcox Road, Lihue, Hawaii 96766",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Canoga Park Motor Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "20122 Vanowen Street, Los Angeles, CA 91306",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Hollywood Plaza Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2011 North Highland Ave., Hollywood, Los Angeles, CA 90068-3238",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Los Angeles Worldport Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1402 West Pacific Coast Highway, Los Angeles, CA 90744",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Monterey Park Inn",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "420 Atlantic Blvd., Monterey Park, CA 91754",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Pasadena Inn",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "3570 East Colorado Boulevard, Pasadena, CA 91107-3846",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Pasadena Royale",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "3600 East Colorado Blvd., Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus Carriage Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5525 Sepulveda Boulevard, Los Angeles, CA 91411",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus Eagle Rock Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2911 Colorado Boulevard, Los Angeles, CA 90041",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus Hollywood Hills Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6141 Franklin Avenue, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus Media Center Inn & Suites",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "3910 Riverside Drive, Burbank, CA 91505",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus San Pedro Hotel & Suites",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "111 South Gaffey Street, San Pedro, Los Angeles, CA 90731",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Plus Sunset Plaza Hotel",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8400 Sunset Blvd, West Hollywood, CA 90069-1910",
+    "phone": "",
+    "chair": 12,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Royal Palace Inn & Suites",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2528 South Sepulveda Boulevard, Los Angeles, CA 90064",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Best Western Woodland Hills Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21830 Ventura Blvd., Los Angeles, CA 91364",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Beverly Hills Plaza Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "10300 Wilshire Blvd, Los Angeles, CA 90024",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Beverly Laurel Motor Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8018 Beverly Blvd, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Beverly Wilshire Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9500 Wilshire Boulevard, Rodeo Dr., Beverly Hills, CA 90212",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Burbank Extended Stay Inn",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "2021 West Olive Ave., Burbank, CA 91506",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Burbank Inn & Suites",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "180 West Alameda Avenue, Burbank, CA 91502",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Cal Mar Hotel Suites",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "220 California Ave., Santa Monica, CA 90403",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Casa del Mar",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1910 Ocean Way, Santa Monica, CA 90405",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Chamberlain West Hollywood",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "1000 Westmount Drive, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": 16,
+    "daybed": "",
+    "cabana": 4
+  },
+  {
+    "name": "Chateau Marmont",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8221 Sunset Blvd., West Hollywood, CA",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Clarion Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "3241 Cahuenga Boulevard, Los Angeles, CA 90068",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn & Suites Bell Gardens",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "7330 Eastern Ave, Bell Gardens, CA 90201",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn & Suites Near Universal-N. Hollywood- Burbank",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6147 Lankershim Boulevard, North Hollywood, Los Angeles, CA 91606",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn Near Hollywood Walk of Fame",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7051 Sunset Boulevard, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn Near Old Town Pasadena - Eagle Rock",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2300 Colorado Blvd, Los Angeles, CA 90041",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn Near Pasadena Civic Auditorium",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "2462 E. Colorado Blvd., Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn Near Warner Center",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "20157 Ventura Blvd., Woodland Hills, Los Angeles, CA 91364",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Comfort Inn Santa Monica",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "2815 Santa Monica Blvd, Santa Monica, CA 90404",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Coral Sands Motel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1730 North Western Ave., Hollywood, Los Angeles, CA 90027",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Courtyard by Marriott Los Angeles Old Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "180 North Fair Oaks Avenue, Pasadena, CA 91103",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Courtyard by Marriott Los Angeles Westside",
+    "city": "Culver City",
+    "url": "",
+    "fullAddress": "6333 Bristol Parkway, Culver City, CA 90230",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Courtyard by Marriott Los Angeles Woodland Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21101 Ventura Blvd, Woodland Hills, Los Angeles, CA 91364",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Courtyard Los Angeles LA LIVE",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "901 W Olympic Blvd, Los Angeles, CA 90015",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Courtyard Los Angeles Sherman Oaks",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "15433 Ventura Boulevard, Sherman Oaks, Los Angeles, CA 91403",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Crowne Plaza Beverly Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "150 S Beverly Dr, Los Angeles, CA 90035",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Crowne Plaza Los Angeles Commerce Casino",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "6121 East Telegraph Road, Commerce, CA 90040",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Crowne Plaza Los Angeles Harbor Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "601 S. Palos Verdes Street, San Pedro, Los Angeles, CA 90731",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Crowne Plaza Los Angeles International Airport Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5985 W. Century Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Custom Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8639 Lincoln Blvd, Westchester, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Days Inn Glendale",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "450 West Pioneer Drive, I-134 & Pacific Ave., Glendale, CA 91203",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Days Inn Hollywood/Universal Studios",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7023 Sunset Boulevard, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "DoubleTree by Hilton Hotel Los Angeles Commerce",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "5757 Telegraph Road, Commerce, CA 90040",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "DoubleTree by Hilton Hotel San Pedro",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2800 Via Cabrillo Marina, Los Angeles, CA 90731",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "DoubleTree by Hilton Los Angeles Westside",
+    "city": "Culver City",
+    "url": "",
+    "fullAddress": "6161 West Centinela Avenue, Culver City, CA 90230-3200",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "DoubleTree Los Angeles/Rosemead",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "888 Montebello Blvd, Rosemead, CA 91770",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "DoubleTree Suites by Hilton Santa Monica",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1707 Fourth Street, Santa Monica, CA 90401-3310",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Econo Lodge",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "1437 E. Colorado St., Glendale, CA 91205",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Embassy Suites LAX North",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9801 Airport Boulevard, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Embassy Suites Los Angeles/Glendale",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "800 N Central Ave, Glendale, CA 91203",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Fairmont Miramar Hotel & Bungalows",
+    "city": "Santa Monica",
+    "url": "http://www.fairmont.com/santa-monica/",
+    "fullAddress": "101 Wilshire Blvd., Santa Monica, CA 90401",
+    "phone": "(310) 576-7777",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Farmer's Daughter Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "115 S. Fairfax Ave., Los Angeles, CA 90036",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Four Points by Sheraton Los Angeles International Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9750 Airport Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Four Points by Sheraton Los Angeles Westside",
+    "city": "Culver City",
+    "url": "",
+    "fullAddress": "5990 Green Valley Circle, Culver City, CA 90230",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Four Seasons Hotel Los Angeles",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "300 S Doheny Dr, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Glen Capri Inn & Suites",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "326 East Colorado Street, Glendale, CA 91205",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Good Nite Inn Sylmar",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "12835 Encinitas Road, Los Angeles, CA 91342",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Grafton on Sunset",
+    "city": "West Hollywood",
+    "url": "http://www.graftononsunset.com/",
+    "fullAddress": "8462 W Sunset Blvd, West Hollywood, CA 90069-1935",
+    "phone": "(323) 654-4600",
+    "chair": 19,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hampton Inn & Suites Los Angeles/Burbank Airport",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "7501 North Glenoaks Boulevard, Burbank, CA 91504",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hampton Inn & Suites Los Angeles/Sherman Oaks",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5638 Sepulveda Blvd, Los Angeles, CA 91411",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Harbor Court Hotel",
+    "city": "San Francisco",
+    "url": "http://www.harborcourthotel.com/",
+    "fullAddress": "165 Steuart Street, San Francisco CA 94105",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Highlands Gardens Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7047 Franklin Ave., Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Garden Inn Denver Airport",
+    "city": "",
+    "url": "",
+    "fullAddress": "16475 East 40th Circle Aurora, CO 80011",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Garden Inn Los Angeles/Hollywood",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2005 North Highland Avenue, Los Angeles, CA 90068",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Garden Inn Los Angeles/Montebello",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "801 Via San Clemente, Montebello, CA 90640",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Los Angeles Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5711 West Century Boulevard, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Los Angeles North/Glendale & Executive Meeting Center",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "100 West Glenoaks Boulevard, Glendale, CA 91202",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Los Angeles/San Gabriel",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "225 West Valley Boulevard, San Gabriel, CA 91776",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Los Angeles/Universal City",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "555 Universal Hollywood Dr, Los Angeles, CA 91608-1001",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hilton Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "168 South Los Robles Avenue, Pasadena, CA 91101",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Burbank",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "150 E. Angeleno Avenue, Burbank, CA 91502",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express Hotel & Suites Hollywood Walk of Fame",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1921 North Highland Avenue, Hollywood, Los Angeles, CA 90068",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express Hotel & Suites Pasadena Colorado Blvd",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "3500 East Colorado Blvd, Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express Los Angeles - LAX Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8620 Airport Boulevard, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express Los Angeles Downtown West",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "611 South Westlake Ave/I-10, Wilshire Blvd./6th St., Los Angeles, CA 90057",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express North Hollywood - Burbank",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "11350 Burbank Blvd., Los Angeles, CA 91601",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Express Van Nuys",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8244 Orion Ave, Los Angeles, CA 91406",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Holiday Inn Los Angeles International Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9901 La Cienega Boulevard, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hollywood City Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1615 N. Western Ave., Hollywood, Los Angeles, CA 90027-4807",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hollywood Downtowner Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5601 Hollywood Boulevard, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hollywood Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1160 North Vermont Avenue, Hollywood, Los Angeles, CA 90029",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hollywood Orchid Suites",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1753 Orchid Ave, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hollywood Roosevelt Hotel - A Thompson Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7000 Hollywood Boulevard, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Amarano",
+    "city": "",
+    "url": "",
+    "fullAddress": "322 North Pass Avenue � Burbank, CA 91505",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Angeleno",
+    "city": "Los Angeles",
+    "url": "http://www.hotelangeleno.com/",
+    "fullAddress": "170 North Church Lane, Los Angeles, CA 90049",
+    "phone": "(310) 476-6411",
+    "chair": 9,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Bel-Air",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "701 Stone Canyon Rd., Los Angeles, CA 90077",
+    "phone": "",
+    "chair": 50,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Figueroa",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "939 South Figueroa Street, Los Angeles, CA 90015",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Le Reve Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "3321 E. Colorado Boulevard, Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Modera",
+    "city": "",
+    "url": "",
+    "fullAddress": "515 SW Clay Street, Portland, Oregon 97201",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Normandy",
+    "city": "Downtown",
+    "url": "",
+    "fullAddress": "605 South Normandie Avenue, Los Angeles, CA 90005",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Palomar Los Angeles - Westwood - Kimpton",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "10740 Wilshire Blvd at Selby Ave, Los Angeles, CA 90024",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Shangri-La Santa Monica",
+    "city": "Santa Monica",
+    "url": "http://shangrila-hotel.com",
+    "fullAddress": "1301 Ocean Avenue, Santa Monica, CA 90401",
+    "phone": "(310) 394-2791",
+    "chair": "",
+    "daybed": "",
+    "cabana": 4
+  },
+  {
+    "name": "Hotel Solaire",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1710 West 7th Street, Los Angeles, CA 90017",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hotel Triton",
+    "city": "",
+    "url": "",
+    "fullAddress": "342 Grant Avenue, San Francisco, CA 94108",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Howard Johnson Inn & Suites Reseda",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1901 West Olympic Boulevard, Los Angeles, CA 90006",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Howard Johnson Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "1599 East Colorado Blvd., Pasadena, CA 91106",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Hyatt Regency Century Plaza",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2025 Ave of the Stars, Los Angeles, CA 90067",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "InterContinental Los Angeles Century City",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2151 Avenue of the Stars, Los Angeles, CA 90067",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Jackson Hole Lodge",
+    "city": "",
+    "url": "",
+    "fullAddress": "420 W. Broadway, Jackson Hole, Wyoming 83001",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "JW Marriott Hotel Los Angeles at LA Live",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "900 West Olympic Boulevard, Los Angeles, CA 90015",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "JW Marriott Santa Monica Le Merigot",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1740 Ocean Avenue, Santa Monica, CA 90401",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Knights Inn Woodland Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21706 Ventura Boulevard, Woodland Hills, Los Angeles, CA 91364",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "L'Ermitage Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9291 Burton Way, Beverly Hills, CA 90210",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "La Quinta Inn & Suites LAX",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5249 West Century Boulevard, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Le Meridien Delfina Santa Monica",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "530 Pico Boulevard, Santa Monica, CA 90405",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Le Montrose Suite Hotel",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "900 Hammond Street, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Le Parc Suite Hotel",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "733 North West Knoll Drive, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Lincoln Plaza Hotel",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "123 South Lincoln Avenue, Monterey Park, CA 91755",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Loews Hollywood Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1755 N Highland Ave, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Loews Santa Monica Beach Hotel",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1700 Ocean Ave., Santa Monica, CA 90401",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Los Angeles Airport Marriott",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5855 West Century Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Los Angeles Marriott Burbank Aiport",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "2500 North Hollywood Way, Burbank, CA 91505-1019",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Luxe Sunset Boulevard Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "11461 Sunset Boulevard, Los Angeles, CA 90049",
+    "phone": "",
+    "chair": 47,
+    "daybed": "",
+    "cabana": 4
+  },
+  {
+    "name": "Magic Castle Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7025 Franklin Avenue, Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Malibu Motel",
+    "city": "Malibu",
+    "url": "",
+    "fullAddress": "22541 Pacific Coast Highway, Malibu, CA 90265",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Marin Suites Hotel",
+    "city": "",
+    "url": "",
+    "fullAddress": "45 Tamal Vista Blvd., Corte Madera, CA 94925",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Mikado Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "12600 Riverside Drive, North Hollywood, Los Angeles, CA 91607",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Millennium Biltmore Hotel Los Angeles",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "506 South Grand Avenue, Los Angeles, CA 90071",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Mondrian Los Angeles Hotel",
+    "city": "West Hollywood",
+    "url": "https://www.morganshotelgroup.com/mondrian/mondrian-los-angeles",
+    "fullAddress": "8440 Sunset Boulevard, West Hollywood, CA 90069",
+    "phone": "(323) 650-8999",
+    "chair": 45,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Montage Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "225 N Canon Dr, Beverly Hills, CA 90210",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Mosaic Hotel Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "125 Spalding Dr, Beverly Hills, CA 90212",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Motel 6 Los Angeles Rosemead",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "1001 South San Gabriel Blvd, SR 60/Pomona Freeway at the San Gabriel Blvd exit, Rosemead, CA 91770",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Motel 6 Los Angeles Sylmar",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "12775 Encinitas Avenue, I-5/Golden State Freeway at Roxford Street, Los Angeles, CA 91342",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Mr. C Beverly Hills",
+    "city": "Los Angeles",
+    "url": "http://www.mrchotels.com/",
+    "fullAddress": "1224 Beverwill Drive, Los Angeles, CA 90035",
+    "phone": "(877) 334-5623",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Oceana Beach Club Hotel",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "849 Ocean Avenue, Santa Monica, CA 90403",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "OLS Hotels & Resorts (Office)",
+    "city": "",
+    "url": "",
+    "fullAddress": "16000 Ventura Boulevard, Suite 1010 Encino, CA 91436",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Omni Los Angeles at California Plaza",
+    "city": "Los Angeles",
+    "url": "https://www.omnihotels.com/hotels/los-angeles-california-plaza",
+    "fullAddress": "251 S Olive St, Los Angeles, CA 90012",
+    "phone": "(213) 617-3300",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Park Plaza Lodge Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6001 West 3rd Street, Los Angeles, CA 90036",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Pasadena Inn",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "400 South Arroyo Parkway, Pasadena, CA 91105",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Petit Ermitage",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8822 Cynthia St, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Plantation Hale Suites",
+    "city": "",
+    "url": "",
+    "fullAddress": "525 Aleka Loop, Kapaa, Kauai, HI 96746",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Quality Inn & Suites Montebello",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "7709 Telegraph Rd, Montebello, CA 90640",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Quality Inn Hollywood",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1520 North La Brea Avenue, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Radisson Hotel Chatsworth",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9777 Topanga Canyon Boulevard, Los Angeles, CA 91311",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Radisson Midtown at USC",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "3540 S Figueroa St, Los Angeles, CA 90007",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Ramada Chatsworth",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21340 Devonshire Street, Los Angeles, CA 91311",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Ramada Commerce/Los Angeles",
+    "city": "Near East Los Angeles",
+    "url": "",
+    "fullAddress": "7272 Gage Avenue, Commerce, CA 90040",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Ramada Los Angeles/Downtown West",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1901 West Olympic Boulevard, Los Angeles, CA 90006",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Ramada Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "2156 E Colorado Blvd, Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Ramada Plaza West Hollywood Hotel & Suites",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8585 Santa Monica Boulevard, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": 17,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Renaissance Los Angeles Airport Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9620 Airport Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Residence Inn Burbank Downtown",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "321 S First Street, Burbank, CA 91502",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Residence Inn Los Angeles LA Live",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "901 West Olympic Boulevard, Los Angeles, CA 90015",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "River's Edge Hotel & Spa",
+    "city": "",
+    "url": "",
+    "fullAddress": "0455 SW Hamilton Ct, Portland, OR 97239",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Rodeway Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "777 N. Vine Street, Los Angeles, CA 90038",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Rodeway Inn Convention Center",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1904 W Olympic Blvd, Los Angeles, CA 90006",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Rodeway Inn Hollywood",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6826 Sunset Blvd., Hollywood, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Rodeway Inn Regalodge",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "200 W. Colorado St., Glendale, CA 91204",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Royal Palace Westwood Hotel",
+    "city": "",
+    "url": "",
+    "fullAddress": "1052 Tiverton Ave � Los Angeles, CA 90024",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Rubix Hollywood Apartments",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1714 N. McCadden Place, Los Angeles, CA 90028",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Safari Inn",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "1911 West Olive Avenue, Burbank, CA 91506",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Saga Motor Hotel",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "1633 East Colorado Blvd., Pasadena, CA 91106",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Saharan Motor Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7212 Sunset Blvd., Los Angeles, CA 90046",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "San Vicente Inn (Bungalows)",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "845 N San Vicente Blvd, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sea Rock Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "14032 S. Vermont Ave., Los Angeles, CA 90247",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sheraton Gateway Los Angeles",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6101 W. Century Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sheraton Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "303 East Cordova Street, Pasadena, CA 91101",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sheraton Universal Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "333 Universal Hollywood Drive, Los Angeles, CA 91608",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Shore Hotel",
+    "city": "Santa Monica",
+    "url": "http://www.shorehotel.com/",
+    "fullAddress": "1515 Ocean Avenue, Santa Monica, CA 90401",
+    "phone": "(310) 458-1515",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Shutters on the Beach",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1 Pico Blvd., Santa Monica, CA 90405",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "http://www.sixtyhotels.com/beverly-hills/",
+    "fullAddress": "9360 Wilshire Boulevard, Beverly Hills, CA 90212",
+    "phone": "(310) 273-1400",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "SLS Hotel at Beverly Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "465 South La Cienega Boulevard, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sofitel Los Angeles at Beverly Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8555 Beverly Blvd, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sportsmen's Lodge Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "12825 Ventura Boulevard, Studio City, Los Angeles, CA 91604",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "St. George Motor Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "19454 Ventura Boulevard, Los Angeles, CA 91356",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Staybridge Suites Chatsworth",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21902 Lassen Street, Los Angeles, CA 91311",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Studio 6 Van Nuys",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "13561 Sherman Way, I-170 & Sherman Way Exit, Los Angeles, CA 91405",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Studio City Courtyard Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "2933 Ventura Boulevard, Coldwater Canyon Studio City, Los Angeles, CA 91604",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sunburst Spa & Suites Motel",
+    "city": "Culver City",
+    "url": "",
+    "fullAddress": "3900 Sepulveda Boulevard, Culver City, CA 90230",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sunset Marquis",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "1200 Alta Loma Rd, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": 53,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Sunset Towers Hotel",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8358 Sunset Boulevard, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": 14,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Super 8 Canoga Park",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7631 Topanga Canyon Blvd, Los Angeles, CA 91304",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Super 8 Commerce/LA",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "7810 East Telegraph Road, Commerce, CA 90040-3237",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Super 8 Los Angeles Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "9250 Airport Blvd., Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Super 8 Los Angeles/Culver City",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "12664 W. Washington Blvd., Los Angeles, CA 90066",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Super 8 Pasadena/LA",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "2863 East Colorado Boulevard, San Gabriel East Colorado Blvd, Pasadena, CA 91107",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Tangerine Hotel",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "3901 W Riverside Drive, Burbank, CA 91505",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Tarzana Inn",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "19170 Ventura Boulevard, Los Angeles, CA 91356",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Beverly Hills Hotel",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9641 Sunset Blvd, Beverly Hills, CA 90210-2938",
+    "phone": "",
+    "chair": 130,
+    "daybed": "",
+    "cabana": 11
+  },
+  {
+    "name": "The Beverly Hilton",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9876 Wilshire Blvd, Beverly Hills, CA 90210",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The BLVD Hotel & Suites",
+    "city": "Los Angeles",
+    "url": "http://www.blvdhollywood.com/",
+    "fullAddress": "2010 North Highland Avenue, Hollywood, Los Angeles, CA 90068-3239",
+    "phone": "(323) 874-4300",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The BLVD Hotel and Spa",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "10730 Ventura Blvd, Studio City, Los Angeles, CA 91604",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Carriage House",
+    "city": "",
+    "url": "",
+    "fullAddress": "105 East Harmon Avenue, Las Vegas, NV 89109",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Concourse Hotel at Los Angeles Airport - A Hyatt Affiliate",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6225 W. Century Blvd., Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Dixie Hollywood",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5410 Hollywood Boulevard, Hollywood, Los Angeles, CA 90027",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Garland",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "4222 Vineland Avenue, Los Angeles, CA 91602",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Georgian",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "1415 Ocean Avenue Santa Monica, CA 90401",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Hotel Wilshire, a Kimpton Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "6317 Wilshire Boulevard, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The LA Hotel Downtown",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "333 S Figueroa St, Los Angeles, CA 90071",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Langham Huntington Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "1401 South Oak Knoll Ave, Pasadena, CA 91106",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Line",
+    "city": "Los Angeles",
+    "url": "http://www.thelinehotel.com/",
+    "fullAddress": "3515 Wilshire Blvd., Los Angeles, CA 90010",
+    "phone": "(213) 381-7411",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Line",
+    "city": "",
+    "url": "",
+    "fullAddress": "30 West 26th StreetNew York NY 10010Telephone",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The London West Hollywood",
+    "city": "West Hollywood",
+    "url": "http://www.thelondonwesthollywood.com/",
+    "fullAddress": "1020 North San Vicente Boulevard, West Hollywood, CA 90069",
+    "phone": "(310) 854-1111",
+    "chair": 45,
+    "daybed": "",
+    "cabana": 4
+  },
+  {
+    "name": "The Los Angeles Athletic Club",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "431 W. Seventh Street, Los Angeles, CA 9001",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Moment Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "7370 West Sunset Boulevard, Los Angeles, CA 90046",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Orlando Hotel",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "8384 West 3rd St, Los Angeles, CA 90048",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "city": "Beverly Hills",
+    "url": "",
+    "fullAddress": "9882 South Santa Monica Blvd, Beverly Hills, CA 90212",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Ritz-Carlton Los Angeles",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "900 West Olympic Blvd., Los Angeles, CA 90015",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Standard Downtown LA",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "550 S Flower St, Los Angeles, CA 90071",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Standard Hollywood",
+    "city": "West Hollywood",
+    "url": "",
+    "fullAddress": "8300 Sunset Boulevard, At Sweetzer, West Hollywood, CA 90069",
+    "phone": "",
+    "chair": 31,
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Westin Bonaventure Hotel & Suites",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "404 South Figueroa Street, Los Angeles, CA 90071",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Westin Los Angeles Airport",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5400 W. Century Blvd., Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "The Westin Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "191 N Los Robles, Pasadena, CA 91101",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Town Center Inn",
+    "city": "East Los Angeles",
+    "url": "",
+    "fullAddress": "705 N. San Gabriel Blvd., Rosemead, CA 91770",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Travelodge Burbank-Glendale",
+    "city": "Burbank",
+    "url": "",
+    "fullAddress": "1112 North Hollywood Way, Burbank, CA 91505",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Travelodge Hollywood-Vermont/Sunset",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "1401 North Vermont Avenue, Hollywood, Los Angeles, CA 90027",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Travelodge Hotel at LAX",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "5547 W. Century Blvd, Los Angeles, CA 90045",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Travelodge Sylmar/Magic Mountain",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "14955 Roxford St, Sylmar, Los Angeles, CA 91342",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "UCLA Guest House",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "330 Charles E. Young Drive East, Los Angeles, CA 90095-1466",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Vagabond Inn Executive Pasadena",
+    "city": "Pasadena",
+    "url": "",
+    "fullAddress": "1203 East Colorado Boulevard, Pasadena, CA 91106-1843",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Vagabond Inn Glendale",
+    "city": "Glendale",
+    "url": "",
+    "fullAddress": "120 W Colorado St., Glendale, CA 91204",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Vagabond Inn Los Angeles at USC",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "3101 S. Figueroa st, Los Angeles, CA 90007",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Vagabond Inn San Pedro",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "215 South Gaffey St., Los Angeles, CA 90731",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Viceroy Santa Monica",
+    "city": "Santa Monica",
+    "url": "http://www.viceroyhotelsandresorts.com/en/santamonica",
+    "fullAddress": "1819 Ocean Avenue, Santa Monica, CA 90401",
+    "phone": "(310) 260-7500",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Villa Graziadio Executive Center at Pepperdine University",
+    "city": "Malibu",
+    "url": "",
+    "fullAddress": "24255 Pacific Coast Highway, Malibu, CA 90263",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "W Hollywood",
+    "city": "Los Angeles",
+    "url": "http://www.whollywoodhotel.com/",
+    "fullAddress": "6250 Hollywood Blvd, Hollywood, Los Angeles, CA 90028",
+    "phone": "(323) 798-1300",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "W Los Angeles - Westwood",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "930 Hilgard Avenue, Los Angeles, CA 90024",
+    "phone": "",
+    "chair": 31,
+    "daybed": "",
+    "cabana": 11
+  },
+  {
+    "name": "Warner Center Marriott Woodland Hills",
+    "city": "Los Angeles",
+    "url": "",
+    "fullAddress": "21850 Oxnard Street, Woodland Hills, Los Angeles, CA 91367",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  },
+  {
+    "name": "Wyndham Santa Monica at The Pier",
+    "city": "Santa Monica",
+    "url": "",
+    "fullAddress": "120 Colorado Avenue, Santa Monica, CA 90401",
+    "phone": "",
+    "chair": "",
+    "daybed": "",
+    "cabana": ""
+  }
+]
