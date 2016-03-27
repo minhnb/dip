@@ -11,6 +11,7 @@ module.exports = {
     offer: require('./offer'),
     amenity: require('./amenity'),
     user: require('./user'),
+    membership: require('./membership'),
     session: require('./session'),
     creditCard: require('./creditCard'),
     reservation: require('./reservation'),

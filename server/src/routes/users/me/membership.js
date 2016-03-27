@@ -32,24 +32,31 @@ router.post('add membership', '/',
             }
             
             return db.membershipTypes.findById(type)
-                .exec()
-                .then(plan => {
-                    if(!plan) {
-                        ctx.throw(404, 'plan not found');
-                    }
-                    return stripe.createSubscription(user, plan).then(data => {
-                        if(!data) {
-                            ctx.throw(400, 'stripe error');
-                        }
-                        ctx.response.status = 200;
-                        ctx.response.body = {
-                            membership: convertMembership(data.subscriptions, data.defaultSubscription)
-                        }
-                    })
-                })
+            .exec()
+            .then(plan => {
+                if(!plan) {
+                    ctx.throw(404, 'plan not found');
+                }
+                return stripe.createSubscription(user, plan)
+                .then(data => {
+                    var subscription = user.account.subscriptions.create({
+                        type: plan,
+                        customer: data.customer,
+                        subscription: data.id
+                    });
+                    user.account.subscriptions.push(subscription);
+                    user.account.defaultSubscription = subscription._id;
+                    return user.save().then(() => subscription);
+                });
+            }).then(subscription => {
+                ctx.response.status = 200;
+                ctx.response.body = {
+                    membership: convertMembership(subscription)
+                };
+            });
         }
     )
-    .post('cancel membership', '/:subscriptionId/cancel',
+    .delete('cancel membership', '/:subscriptionId',
         auth.authenticate(),
         validator({
             params: {
@@ -57,31 +64,28 @@ router.post('add membership', '/',
             }
         }),
         ctx => {
-            let user = ctx.state.user;
-            let subscriptionId = ctx.params.subscriptionId;
-            let subscriptionMap = user.account.subscriptions.reduce((obj, subscription) => {
-                obj[subscription.id] = subscription;
-                return obj;
-            }, Object.create({}));
-            if(!subscriptionMap[subscriptionId]) {
-                throw(400, 'invalid membership')
+            let user = ctx.state.user,
+                subscriptionId = ctx.params.subscriptionId,
+                defaultSubscriptionId = user.account.defaultSubscription;
+            if(!defaultSubscriptionId || !defaultSubscriptionId.equals(subscriptionId)) {
+                ctx.throw(400, 'invalid membership');
             }
-            return db.membershipTypes.findById(subscriptionMap[subscriptionId].type)
+            let subscription = user.account.subscriptions.id(defaultSubscriptionId);
+
+            return db.membershipTypes.findById(subscription.type)
             .exec()
             .then(plan => {
                 if(!plan) {
                     ctx.throw(404, 'Plan not found');
                 }
-                return stripe.cancelSubscription(user, subscriptionMap[subscriptionId]).then(subscription => {
-                    if(!subscription) {
-                        ctx.throw(400, 'stripe error');
-                    }
-                    ctx.response.status = 200;
-                })
-            })
-
+                return stripe.cancelSubscription(user, subscription);
+            }).then(data => {
+                user.account.defaultSubscription = undefined;
+                return user.save();
+            }).then(user => {
+                ctx.response.status = 200;
+            });
         }
-    )
-
+    );
 
 module.exports = router;

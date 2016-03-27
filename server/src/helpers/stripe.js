@@ -74,39 +74,21 @@ function createSubscription(user, plan) {
         user.account.stripeId, 
         {
             plan: plan.planId
-        })
-    .then(data => {
-        var subscription = user.account.subscriptions.create({
-            type: plan._id,
-            customer: data.customer,
-            subscription: data.id
         });
-        user.account.subscriptions.push(subscription);
-        user.account.defaultSubscription = subscription._id;
-        return user.save().then(() => user.account);
-    })
 }
 
 function cancelSubscription(user, currentSubscription) {
-    return stripe.customers.cancelSubscription(
-        user.account.stripeId,
-        currentSubscription.subscription)
-    .then(data => {
-        user.account.defaultSubscription = undefined;
-        return user.save().then(user => user.account);
-    })
+    return stripe.customers.cancelSubscription(user.account.stripeId, currentSubscription.subscription);
 }
 
 function createPlan(plan) {
-    return stripe.plans.create(plan)
-    .then(plan => plan)
+    return stripe.plans.create(plan);
 }
 
 function updatePlan(planId, name) {
     return stripe.plans.update(planId, {
-      name: name
-    })
-    .then(plan => plan)
+        name: name
+    });
 }
 
 module.exports = {

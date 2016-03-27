@@ -3,6 +3,7 @@
 const router = require('koa-router')();
 
 const db = require('../../db');
+const entities = require('../../entities');
 
 const auth = require('../../helpers/passport_auth');
 const inputValidator = require('../../validators');
@@ -19,36 +20,34 @@ router.use('/', auth.authenticate())
         utils.isAdmin,
 		inputValidator.membershipTypes(),
 		ctx => {
-
 			let name = ctx.request.body.name,
 				description = ctx.request.body.description || '',
 				amount = ctx.request.body.amount,
 				interval = ctx.request.body.interval,
 				intervalCount = ctx.request.body.intervalCount,
                 planId = ctx.request.body.planId || name.split(' ').join('_').toLowerCase();
-
             let plan = {
                 amount: amount,
                 interval: interval,
                 name: name,
                 currency: 'usd',
                 id: planId
-            }
+            };
             return stripe.createPlan(plan)
-                .then(data => {
-                    let membershipType = new db.membershipTypes({
-                        name: data.name,
-                        description: description,
-                        amount: data.amount,
-                        interval: data.interval,
-                        intervalCount: data.interval_count,
-                        planId: data.id
-                    });
-                    return membershipType.save().then(() => {
-                        ctx.status = 200
-                    })  
-                })		
-		}		
+            .then(data => {
+                let membershipType = new db.membershipTypes({
+                    name: data.name,
+                    description: description,
+                    amount: data.amount,
+                    interval: data.interval,
+                    intervalCount: data.interval_count,
+                    planId: data.id
+                });
+                return membershipType.save();
+            }).then(() => {
+                ctx.status = 200
+            });
+		}
 	)
 	.get('/',
         inputValidator.limitParams(),
@@ -62,10 +61,10 @@ router.use('/', auth.authenticate())
                 .skip(offset)
                 .exec()
                 .then(types => {
-                	ctx.status = 200;
-                    ctx.body = types;
+                    ctx.status = 200;
+                    ctx.body = types.map(entities.membership.type);
                 });
-        }	
+        }
     )
 	.put('/',
         utils.isAdmin,
@@ -80,11 +79,10 @@ router.use('/', auth.authenticate())
             }
         }),
         ctx => {
-
             return db.membershipTypes.findOne({_id: ctx.request.body.typeId})
             	.exec()
             	.then(type => {
-            		if(type) {
+            		if (type) {
                         let planId = type.planId;
                         let msType = ctx.request.body;
                         if(msType.name !== undefined) {
@@ -99,12 +97,12 @@ router.use('/', auth.authenticate())
                             return type.save().then(() => {
                                 ctx.status = 200;
                             })
-                        })
-            		}else {
+                        });
+            		} else {
             			ctx.throw(404, 'membership type not found');
             		}
-            	})
-        }	
-    )
+            	});
+        }
+    );
 
 module.exports = router;

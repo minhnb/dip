@@ -28,7 +28,7 @@ function convertUser(user, currentUser) {
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
         data.defaultCardId = user.account.defaultCardId;
-        data.membership = (user.account.subscriptions.length > 0 && user.account.defaultSubscription) ? convertMembership(user.account.subscriptions, user.account.defaultSubscription) : undefined;
+        data.membership = user.account.defaultSubscription ? convertMembership(user.account.subscriptions.id(user.account.defaultSubscription)) : undefined;
         data.private = user.privateMode;
     }
     return data;
