@@ -24,6 +24,7 @@ exports.up = function(next) {
     fs.readFile(file_path, 'utf8', function (err, data) {
         if (err) throw err;
         var pools = JSON.parse(data);
+        console.info('Read pool data');
         continuing(pool => {
             pool.coordinates = [];
             pool.address = {
@@ -48,6 +49,7 @@ exports.up = function(next) {
                 return pool;
             });
         }, pools, 0, 1).then(pools => {
+            console.info('got geo information');
             let imgPromises = pools.map(pool => {
                 pool.tmpName = pool.name.replace(/ /g, "_").toLowerCase();
                 let img_path = path.join(__dirname, `assets/pools/${pool.tmpName}.jpg`);
@@ -60,6 +62,7 @@ exports.up = function(next) {
                 }
             });
             return Promise.all(imgPromises).then(imgs => {
+                console.info('uploaded pool images');
                 //append img url
                 for (let i = 0; i < pools.length; i++) {
                     if (imgs[i] !== undefined) {
@@ -105,6 +108,7 @@ exports.up = function(next) {
                     delete pool.tmpName;
                     delete pool.fullAddress;
                 });
+                console.info('begin inserting pool');
                 return connectionPromise.then(connection => {
                     connection.db.collection('pools', (error, collection) => {
                         collection.insert(pools, next);
