@@ -60,7 +60,9 @@ router.post('add payment', '/',
                 user.account.defaultCardId = card._id;
             }
             return user.save().then(user => {
-                ctx.status = 200;
+                return stripe.setDefaultUserCard(user, card).then(() => {
+                    ctx.status = 200;
+                }) 
             });
         }
     )

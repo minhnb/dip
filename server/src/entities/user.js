@@ -1,6 +1,8 @@
 'use strict';
 
 const convertCard = require('./creditCard');
+const convertMembership = require('./membership');
+
 
 function convertUser(user, currentUser) {
     let facebookGraphAPI = 'https://graph.facebook.com/';
@@ -26,6 +28,7 @@ function convertUser(user, currentUser) {
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
         data.defaultCardId = user.account.defaultCardId;
+        data.membership = user.account.defaultSubscription ? convertMembership(user.account.subscriptions.id(user.account.defaultSubscription)) : undefined;
         data.private = user.privateMode;
     }
     return data;

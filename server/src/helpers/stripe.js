@@ -50,6 +50,10 @@ function addUserCard(user, token, defaultCard) {
     });
 }
 
+function setDefaultUserCard(user, card) {
+    return stripe.customers.update(user.account.stripeId, {default_source: card.stripeId});
+}
+
 function removeUserCard(user, card) {
     return stripe.customers.deleteCard(user.account.stripeId, card.stripeId);
 }
@@ -65,9 +69,36 @@ function chargeSale(sale) {
     });
 }
 
+function createSubscription(user, plan) {
+    return stripe.customers.createSubscription(
+        user.account.stripeId, 
+        {
+            plan: plan.planId
+        });
+}
+
+function cancelSubscription(user, currentSubscription) {
+    return stripe.customers.cancelSubscription(user.account.stripeId, currentSubscription.subscription);
+}
+
+function createPlan(plan) {
+    return stripe.plans.create(plan);
+}
+
+function updatePlan(planId, name) {
+    return stripe.plans.update(planId, {
+        name: name
+    });
+}
+
 module.exports = {
     stripe: stripe,
     addUser: addUser,
     addUserCard: addUserCard,
-    chargeSale: chargeSale
+    createSubscription: createSubscription,
+    chargeSale: chargeSale,
+    cancelSubscription: cancelSubscription,
+    createPlan: createPlan,
+    updatePlan: updatePlan,
+    setDefaultUserCard: setDefaultUserCard
 };
