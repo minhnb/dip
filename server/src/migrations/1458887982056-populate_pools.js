@@ -22,7 +22,9 @@ const jsonfile = require('jsonfile');
 exports.up = function(next) {
     let file_path = path.join(__dirname, `assets/pools.json`);
     fs.readFile(file_path, 'utf8', function (err, data) {
-        if (err) throw err;
+        if (err) {
+            return next(err);
+        }
         var pools = JSON.parse(data);
         console.info('Read pool data');
         continuing(pool => {
@@ -115,7 +117,7 @@ exports.up = function(next) {
                     });
                 });
             });
-        })
+        }).catch(next);
     });
 };
 
