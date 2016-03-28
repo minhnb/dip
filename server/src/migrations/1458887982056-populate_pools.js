@@ -18,7 +18,6 @@ var httpAdapter = 'https';
 
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 //sleep(1000);
-const jsonfile = require('jsonfile');
 exports.up = function(next) {
     let file_path = path.join(__dirname, `assets/pools.json`);
     fs.readFile(file_path, 'utf8', function (err, data) {
