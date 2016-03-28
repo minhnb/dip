@@ -27,7 +27,7 @@ function sendMessage(user, dipId, content) {
                 });
                 return group.save().then(group => {
                     let message = new db.messages({
-                        user: user,
+                        user: dipId,
                         group: group,
                         content: content || 'Welcome to Dip. We hope you will enjoy it here'
                     });
