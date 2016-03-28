@@ -48,6 +48,9 @@ exports.up = function(next) {
 
                 let tmpAddArr = pool.fullAddress.split(" ");
                 pool.address.postalCode = tmpAddArr[tmpAddArr.length -1];
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => resolve(pool), 1000);
+                });
                 return pool;
             });
         }, pools, 0, 1).then(pools => {
