@@ -50,7 +50,6 @@ exports.up = function(next) {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => resolve(pool), 1000);
                 });
-                return pool;
             });
         }, pools, 0, 1).then(pools => {
             console.info('got geo information');
