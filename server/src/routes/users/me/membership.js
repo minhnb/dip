@@ -56,16 +56,18 @@ router.post('add membership', '/',
             });
         }
     )
-    .delete('cancel membership', '/:subscriptionId',
+    .delete('cancel membership', '/',
         auth.authenticate(),
         validator({
-            params: {
-                subscriptionId: validator.isMongoId()
+            request: {
+                body: {
+                    subscriptionId: validator.isMongoId()
+                }
             }
         }),
         ctx => {
             let user = ctx.state.user,
-                subscriptionId = ctx.params.subscriptionId,
+                subscriptionId = ctx.query.body.subscriptionId,
                 defaultSubscriptionId = user.account.defaultSubscription;
             if(!defaultSubscriptionId || !defaultSubscriptionId.equals(subscriptionId)) {
                 ctx.throw(400, 'invalid membership');
