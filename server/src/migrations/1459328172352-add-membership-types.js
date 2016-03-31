@@ -19,7 +19,7 @@ exports.up = function(next) {
     let types = [
         {
             name: 'Litte Dipper',
-            amount: 300,
+            amount: 3000,
             interval: 'month',
             intervalCount: 1,
             description: '$45 Dip Credit'
@@ -27,7 +27,7 @@ exports.up = function(next) {
         },
         {
             name: 'Big Dipper',
-            amount: 600,
+            amount: 6000,
             interval: 'month',
             intervalCount: 1,
             description: '$100 Dip Credit'
@@ -35,7 +35,7 @@ exports.up = function(next) {
         },
         {
             name: 'Dip Regular',
-            amount: 1250,
+            amount: 12500,
             interval: 'month',
             intervalCount: 1,
             description: '$250 Dip Credit'
