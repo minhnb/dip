@@ -42,9 +42,9 @@ exports.up = function(next) {
             planId: 'dip_regular'
         }
     ];
-    types.forEach(amenity => {
-        amenity.createdAt = now;
-        amenity.updatedAt = now;
+    types.forEach(type => {
+        type.createdAt = now;
+        type.updatedAt = now;
     });
 
     let membershipPromise = types.map(type => {

@@ -66,31 +66,26 @@ router.use('/', auth.authenticate())
                 });
         }
     )
-	.put('/',
+	.put('/:typeId',
         utils.isAdmin,
         validator({
-            request: {
-                body: {
-                	typeId: validator.isMongoId(),
-                	amount: validator.optional(validator.isInt()),
-                    dipCredit: validator.optional(validator.isInt()),
-                	interval: validator.optional(validator.isIn(['day', 'week', 'month'])),
-                	intervalCount: validator.optional(validator.isInt())
-                }
+            params: {
+                typeId: validator.isMongoId()
             }
         }),
         ctx => {
-            return db.membershipTypes.findOne({_id: ctx.request.body.typeId})
+            let typeId = ctx.params.typeId
+            return db.membershipTypes.findOne({_id: typeId})
             	.exec()
             	.then(type => {
             		if (type) {
                         let planId = type.planId;
-                        let msType = ctx.request.body;
-                        if(msType.name !== undefined) {
-                            type.name = msType.name
+                        if(ctx.request.body.name) {
+                            type.name = ctx.request.body.name
                         }
+
                         //Updates the name of a plan. Other plan details (price, interval, etc.) are, by design, not editable.
-                        return stripe.updatePlan(planId, name)
+                        return stripe.updatePlan(planId, ctx.request.body.name)
                         .then(() => {
                             return type.save().then(() => {
                                 ctx.status = 200;
