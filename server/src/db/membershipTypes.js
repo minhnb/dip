@@ -10,8 +10,8 @@ const membershipTypeSchema = new Schema({
         type: String,
         require: true
     },
-    description: {
-        type: String,
+    dipCredit: {
+        type: Number,
         require: true
     },
     amount: {

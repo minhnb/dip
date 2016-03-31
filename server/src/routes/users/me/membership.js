@@ -35,17 +35,19 @@ router.post('add membership', '/',
             .exec()
             .then(plan => {
                 if(!plan) {
-                    ctx.throw(404, 'plan not found');
+                    ctx.tthrow(404, 'plan not found');
                 }
                 return stripe.createSubscription(user, plan)
                 .then(data => {
                     var subscription = user.account.subscriptions.create({
                         type: plan,
-                        customer: data.customer,
                         subscription: data.id
                     });
                     user.account.subscriptions.push(subscription);
                     user.account.defaultSubscription = subscription._id;
+
+                    
+                    user.account.balance += plan.dipCredit;
                     return user.save().then(() => subscription);
                 });
             }).then(subscription => {

@@ -22,24 +22,24 @@ exports.up = function(next) {
             amount: 3000,
             interval: 'month',
             intervalCount: 1,
-            description: '$45 Dip Credit'
-            planId: 'little_dipper'
+            dipCredit: 4500,
+            planId: 'little_dipper_test1'
         },
         {
             name: 'Big Dipper',
             amount: 6000,
             interval: 'month',
             intervalCount: 1,
-            description: '$100 Dip Credit'
-            planId: 'big_dipper'
+            dipCredit: 10000,
+            planId: 'big_dipper_test1'
         },
         {
             name: 'Dip Regular',
             amount: 12500,
             interval: 'month',
             intervalCount: 1,
-            description: '$250 Dip Credit'
-            planId: 'dip_regular'
+            dipCredit: 25000,
+            planId: 'dip_regular_test1'
         }
     ];
     types.forEach(amenity => {
