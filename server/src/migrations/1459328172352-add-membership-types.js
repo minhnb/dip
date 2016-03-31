@@ -18,25 +18,28 @@ exports.up = function(next) {
     let now = new Date();
     let types = [
         {
-            name: 'Big',
-            amount: 120,
+            name: 'Litte Dipper',
+            amount: 300,
             interval: 'month',
             intervalCount: 1,
-            planId: 'big_plan'
+            description: '$45 Dip Credit'
+            planId: 'little_dipper'
         },
         {
-            name: 'Little',
-            amount: 90,
+            name: 'Big Dipper',
+            amount: 600,
             interval: 'month',
             intervalCount: 1,
-            planId: 'little_plan'
+            description: '$100 Dip Credit'
+            planId: 'big_dipper'
         },
         {
-            name: 'Regular',
-            amount: 60,
+            name: 'Dip Regular',
+            amount: 1250,
             interval: 'month',
             intervalCount: 1,
-            planId: 'regular_plan'
+            description: '$250 Dip Credit'
+            planId: 'dip_regular'
         }
     ];
     types.forEach(amenity => {
