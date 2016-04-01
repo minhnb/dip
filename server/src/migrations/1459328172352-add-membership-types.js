@@ -47,44 +47,56 @@ exports.up = function(next) {
         type.updatedAt = now;
     });
 
-    let membershipPromise = types.map(type => {
-    	let plan = {
-    	    amount: type.amount,
-    	    interval: type.interval,
-    	    name: type.name,
-    	    currency: 'usd',
-    	    id: type.planId
-    	};
-    	try {
-    	    return stripe.createPlan(plan).then(() => { 
-    	    	let file_path = path.join(__dirname, `assets/membership/${type.planId}.png`);
-    	    	try {
-    	    	    let data = fs.readFileSync(file_path);
-    	    	    return s3.upload(`membership/${type.planId}`, data, 'image/png');
-    	    	} catch (err) {
-    	    	    return Promise.reject(err);
-    	    	}
-    	    })
-    	} catch (err) {
-    	    return Promise.reject(err);
-    	}
-
-    	
+    let checkPlans = types.map(type => {
+        return stripe.retrievePlan(type.planId).then(plan => {
+            return stripe.deletePlan(plan.id)
+            .catch(err => {
+                return Promise.resolve();
+            })
+        })
+        .catch(err => {
+            return Promise.resolve();
+        })
     })
-    Promise.all(membershipPromise).then(imgs => {
-        for (let i = 0; i < types.length; i++) {
-            types[i].icon = {
-                url: imgs[i].Location,
-                mediaType: 'image/png'
-            };
-        }
 
-        return connectionPromise.then(connection => {
-            connection.db.collection('membershiptypes', (error, collection) => {
-                collection.insert(types, next);
+    Promise.all(checkPlans).then(() => {
+        let membershipPromise = types.map(type => {
+            let plan = {
+                amount: type.amount,
+                interval: type.interval,
+                name: type.name,
+                currency: 'usd',
+                id: type.planId
+            };
+            try {    
+                return stripe.createPlan(plan).then(() => { 
+                    let file_path = path.join(__dirname, `assets/membership/${type.planId}.png`);
+                    try {
+                        let data = fs.readFileSync(file_path);
+                        return s3.upload(`membership/${type.planId}`, data, 'image/png');
+                    } catch (err) {
+                        return Promise.reject(err);
+                    }
+                })
+            } catch (err) {
+                return Promise.reject(err);
+            }     
+        })
+        Promise.all(membershipPromise).then(imgs => {
+            for (let i = 0; i < types.length; i++) {
+                types[i].icon = {
+                    url: imgs[i].Location,
+                    mediaType: 'image/png'
+                };
+            }
+
+            return connectionPromise.then(connection => {
+                connection.db.collection('membershiptypes', (error, collection) => {
+                    collection.insert(types, next);
+                });
             });
-        });
-    }).catch(next);
+        }).catch(next);
+    })
 };
 
 exports.down = function(next) {
