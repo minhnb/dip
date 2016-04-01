@@ -90,6 +90,15 @@ function updatePlan(planId, name) {
         name: name
     });
 }
+function retrievePlan(plan) {
+    return stripe.plans.retrieve(plan);
+    // return stripe.plans.list().then(data => {
+    //     console.log(data);
+    // })
+}
+function deletePlan(plan) {
+    return stripe.plans.del(plan);
+}
 
 module.exports = {
     stripe: stripe,
@@ -100,5 +109,7 @@ module.exports = {
     cancelSubscription: cancelSubscription,
     createPlan: createPlan,
     updatePlan: updatePlan,
-    setDefaultUserCard: setDefaultUserCard
+    setDefaultUserCard: setDefaultUserCard,
+    retrievePlan: retrievePlan,
+    deletePlan: deletePlan
 };
