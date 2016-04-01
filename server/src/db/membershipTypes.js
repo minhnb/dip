@@ -10,8 +10,8 @@ const membershipTypeSchema = new Schema({
         type: String,
         require: true
     },
-    description: {
-        type: String,
+    dipCredit: {
+        type: Number,
         require: true
     },
     amount: {
@@ -33,6 +33,16 @@ const membershipTypeSchema = new Schema({
         type: Number,
         require: true,
         default: 1
+    },
+    icon: {
+        url: {
+            type: String
+            // required: true
+        },
+        mediaType: {
+            type: String
+            // required: true
+        }
     }
 
 }, {

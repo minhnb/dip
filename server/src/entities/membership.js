@@ -11,7 +11,7 @@ function convertMembershipType(membershipType) {
     return {
         id: membershipType._id,
         name: membershipType.name,
-        description: membershipType.description,
+        dipCredit: membershipType.dipCredit,
         amount: membershipType.amount,
         interval: membershipType.interval,
         intervalCount: membershipType.intervalCount

@@ -21,7 +21,7 @@ router.use('/', auth.authenticate())
 		inputValidator.membershipTypes(),
 		ctx => {
 			let name = ctx.request.body.name,
-				description = ctx.request.body.description || '',
+				dipCredit = ctx.request.body.dipCredit,
 				amount = ctx.request.body.amount,
 				interval = ctx.request.body.interval,
 				intervalCount = ctx.request.body.intervalCount,
@@ -37,7 +37,7 @@ router.use('/', auth.authenticate())
             .then(data => {
                 let membershipType = new db.membershipTypes({
                     name: data.name,
-                    description: description,
+                    dipCredit: dipCredit,
                     amount: data.amount,
                     interval: data.interval,
                     intervalCount: data.interval_count,
@@ -66,33 +66,26 @@ router.use('/', auth.authenticate())
                 });
         }
     )
-	.put('/',
+	.put('/:typeId',
         utils.isAdmin,
         validator({
-            request: {
-                body: {
-                	typeId: validator.isMongoId(),
-                	amount: validator.optional(validator.isInt()),
-                	interval: validator.optional(validator.isIn(['day', 'week', 'month'])),
-                	intervalCount: validator.optional(validator.isInt())
-                }
+            params: {
+                typeId: validator.isMongoId()
             }
         }),
         ctx => {
-            return db.membershipTypes.findOne({_id: ctx.request.body.typeId})
+            let typeId = ctx.params.typeId
+            return db.membershipTypes.findOne({_id: typeId})
             	.exec()
             	.then(type => {
             		if (type) {
                         let planId = type.planId;
-                        let msType = ctx.request.body;
-                        if(msType.name !== undefined) {
-                            type.name = msType.name
+                        if(ctx.request.body.name) {
+                            type.name = ctx.request.body.name
                         }
-                        if(msType.description !== undefined) {
-                            type.description = msType.description
-                        }
+
                         //Updates the name of a plan. Other plan details (price, interval, etc.) are, by design, not editable.
-                        return stripe.updatePlan(planId, name)
+                        return stripe.updatePlan(planId, ctx.request.body.name)
                         .then(() => {
                             return type.save().then(() => {
                                 ctx.status = 200;

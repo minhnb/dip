@@ -41,11 +41,13 @@ router.post('add membership', '/',
                 .then(data => {
                     var subscription = user.account.subscriptions.create({
                         type: plan,
-                        customer: data.customer,
                         subscription: data.id
                     });
                     user.account.subscriptions.push(subscription);
                     user.account.defaultSubscription = subscription._id;
+
+                    //temporary
+                    user.account.balance += plan.dipCredit;
                     return user.save().then(() => subscription);
                 });
             }).then(subscription => {
@@ -56,18 +58,12 @@ router.post('add membership', '/',
             });
         }
     )
-    .delete('cancel membership', '/:subscriptionId',
+    .delete('cancel membership', '/',
         auth.authenticate(),
-        validator({
-            params: {
-                subscriptionId: validator.isMongoId()
-            }
-        }),
         ctx => {
             let user = ctx.state.user,
-                subscriptionId = ctx.params.subscriptionId,
                 defaultSubscriptionId = user.account.defaultSubscription;
-            if(!defaultSubscriptionId || !defaultSubscriptionId.equals(subscriptionId)) {
+            if(!defaultSubscriptionId) {
                 ctx.throw(400, 'invalid membership');
             }
             let subscription = user.account.subscriptions.id(defaultSubscriptionId);
