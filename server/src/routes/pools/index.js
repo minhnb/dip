@@ -94,6 +94,10 @@ router
                             ctx.body = {pools: []};
                             return;
                         }
+                        if(!ctx.query.date && !ctx.query.timeRanges && !ctx.query.priceRanges && !ctx.query.passTypes) {
+                            ctx.body = {pools: pools.map(entities.pool)};
+                            return; 
+                        }
                         // Filter on offer
                         let offerOpts = [
                             {pool: {$in: pools.map(p => p._id)}}

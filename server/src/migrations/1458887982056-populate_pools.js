@@ -35,6 +35,7 @@ exports.up = function(next) {
                 postalCode: 0,
                 country: 'US'
             };
+            pool.active = true;
             return geocoder.geocode(pool.fullAddress)
             .then(data => {
                 pool.address.street = pool.fullAddress.split(",")[0];
