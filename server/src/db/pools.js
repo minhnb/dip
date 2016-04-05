@@ -59,6 +59,7 @@ const poolSchema = new Schema({
         suffix: String
     },
     phone: String,
+    roomService: String,
     reservable: Boolean,
     amenities: [amenitySchema]
 }, {
