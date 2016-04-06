@@ -45,9 +45,6 @@ router.post('add membership', '/',
                     });
                     user.account.subscriptions.push(subscription);
                     user.account.defaultSubscription = subscription._id;
-
-                    //temporary
-                    user.account.balance += plan.dipCredit;
                     return user.save().then(() => subscription);
                 });
             }).then(subscription => {

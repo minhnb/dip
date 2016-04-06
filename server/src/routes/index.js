@@ -18,6 +18,7 @@ const resetPassword = require('./resetPassword');
 const wishList = require('./wishList');
 const auth = require('./auth');
 const membershipTypes = require('./membershipTypes');
+const hooks = require('./hooks');
 
 router.get('index page', '/', ctx => {
     ctx.render('index', {
@@ -39,3 +40,4 @@ router.use('/resetpassword', resetPassword.routes(), resetPassword.allowedMethod
 router.use('/auth', auth.routes(), auth.allowedMethods());
 router.use('/wishlist', wishList.routes(), wishList.allowedMethods());
 router.use('/plans', membershipTypes.routes(), membershipTypes.allowedMethods());
+router.use('/hooks', hooks.routes(), hooks.allowedMethods());
