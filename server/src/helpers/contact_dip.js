@@ -14,7 +14,7 @@ function sendMessage(user, dipId, content) {
         .exec()
         .then(group => {
             if(!group) {
-                let name = 'Dip',
+                let name = 'Support',
                     description = '',
                     members = [dipId, userId];
                 group = new db.groups({

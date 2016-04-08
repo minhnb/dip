@@ -44,6 +44,9 @@ module.exports = {
         domain: process.env.MAIL_DOMAIN,
         address: process.env.MAIL_ADDRESS
     },
+    admin: {
+        email: process.env.ADMIN_EMAIL
+    },
     gcm: {
         apiKey: process.env.GCM_KEY,
         senderId: process.env.GCM_ID

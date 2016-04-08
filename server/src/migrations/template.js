@@ -9,12 +9,28 @@ dotenv.load({
     path: `${rootFolder}/.env`
 });
 
-const db = require('../db');
+const connectionPromise = require('./db');
 
 exports.up = function(next) {
-    next();
+    connectionPromise.then(connection => {
+        connection.db.collection('users', (error, collection) => {
+            if (error) {
+                next(error);
+            } else {
+                next();
+            }
+        });
+    });
 };
 
 exports.down = function(next) {
-    next();
+    connectionPromise.then(connection => {
+        connection.db.collection('users', (error, collection) => {
+            if(error) {
+                next(error);
+            } else {
+                next();
+            }
+        });
+    });
 };
