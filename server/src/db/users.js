@@ -62,7 +62,11 @@ const userSchema = new Schema({
         subscriptions: [membershipSchema],
         defaultSubscription: Schema.ObjectId,
         cards: [cardSchema],
-        defaultCardId: Schema.ObjectId
+        defaultCardId: Schema.ObjectId,
+        refCode: {
+            type: String,
+            require: true
+        }
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{
@@ -167,6 +171,9 @@ userSchema.methods.generateJWT = function() {
         });
     });
 };
+userSchema.methods.setRefCode = function(code) {
+    this.account.refCode = code;
+}
 
 /**
  * @class

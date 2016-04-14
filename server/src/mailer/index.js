@@ -79,6 +79,15 @@ module.exports = {
         return getTemplate('inviteFriendsReservation.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, 'Invitation Confirmation'))
+    },
+    shareDip: (email, data) => {
+        return getTemplate('shareDip.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Invitation'))
+    },
+    confirmDipShare: (email, data) => {
+        return getTemplate('confirmDipShare.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Congratulation'))
     }
-
 };

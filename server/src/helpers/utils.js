@@ -2,6 +2,7 @@
 
 const randomstring = require('randomstring');
 const dateformat = require('dateformat');
+const md5 = require('md5');
 
 function generateRandomToken(length) {
     return randomstring.generate(length);
@@ -33,10 +34,18 @@ function isAdmin(ctx, next) {
     }
 }
 
+function generateMemberCode(prefix, codeLength) {
+    let timestamp = Date.now();
+    let hash = md5(prefix.concat(timestamp));
+    let code = hash.substr(hash.length - codeLength, codeLength);
+    return code;
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
     convertCardExpireDate: convertCardExpireDate,
     checkGroupOwner: checkGroupOwner,
-    isAdmin: isAdmin
+    isAdmin: isAdmin,
+    generateMemberCode: generateMemberCode
 };

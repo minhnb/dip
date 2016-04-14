@@ -30,6 +30,7 @@ function convertUser(user, currentUser) {
         data.defaultCardId = user.account.defaultCardId;
         data.membership = user.account.defaultSubscription ? convertMembership(user.account.subscriptions.id(user.account.defaultSubscription)) : undefined;
         data.private = user.privateMode;
+        data.refCode = user.account.refCode;
     }
     return data;
 }
