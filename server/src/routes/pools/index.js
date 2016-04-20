@@ -23,33 +23,24 @@ router
         validator.offers(),
         ctx => {
             // TODO: Move this to either db or controller module
-            var query;
+            var query = db.pools.where("active").equals(true);
             var p;
             // Filter on location
             if (ctx.query.longitude && ctx.query.latitude) {
-                let maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
+                let minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
+                    maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
                     center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
-                //let geoOptions = {
-                //    center: {
-                //        type: 'Point',
-                //        coordinates: center
-                //    },
-                //    maxDistance: maxDistance,
-                //    spherical: true
-                //};
+                let geoOptions = {
+                    center: {
+                        type: 'Point',
+                        coordinates: center
+                    },
+                    minDistance: minDistance,
+                    maxDistance: maxDistance,
+                    spherical: true
+                };
 
-                query = db.pools.find({
-                    active: true,
-                    coordinates: {
-                        $nearSphere: {
-                            $geometry: {
-                                type: 'Point',
-                                coordinates: center
-                            },
-                            $maxDistance: maxDistance
-                        }
-                    }
-                });
+                query = query.where('coordinates').near(geoOptions);
                 
                 p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
                 .then(function(res) {
@@ -65,9 +56,6 @@ router
                     // }   
                 })
             } else {
-                query = db.pools.find({
-                    active: true
-                });
                 p = Promise.resolve();
             }
 
