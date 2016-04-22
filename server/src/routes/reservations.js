@@ -31,6 +31,7 @@ router
         ctx => {
             return db.reservations
                 .find({'user.ref': ctx.state.user})
+                .populate('offers.details.specialOffers')
                 .exec()
                 .then(reservations => {
                     ctx.body = {reservations: reservations.map(entities.reservation)};
