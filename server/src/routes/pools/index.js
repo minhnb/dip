@@ -24,6 +24,7 @@ router
         ctx => {
             // TODO: Move this to either db or controller module
             var query = db.pools.where("active").equals(true);
+                query = query.where('reservable').equals(true);
             var p;
             // Filter on location
             if (ctx.query.longitude && ctx.query.latitude) {
