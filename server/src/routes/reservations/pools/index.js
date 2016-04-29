@@ -40,10 +40,6 @@ router
                     path: 'offers.members',
                     model: db.users
                 })
-                .populate({
-                    path: 'offers.details.type',
-                    model: db.offers
-                })
                 .exec()
                 .then(reservations => {
                     ctx.body = {reservations: reservations.map(entities.reservation)};

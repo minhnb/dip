@@ -31,9 +31,12 @@ router
                 .find({'user.ref': ctx.state.user, type: 'Event'})
                 .populate({
                     path: 'event.ref',
-                    model: db.events
+                    model: db.events,
+                    populate: {
+                        path: 'pool',
+                        model: db.pools
+                    }
                 })
-                .populate('pool.ref')
                 .exec()
                 .then(reservations => {
                     ctx.body = {reservations: reservations.map(entities.eventReservation)};

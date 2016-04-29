@@ -33,10 +33,6 @@ router
                     path: 'offers.members',
                     model: db.users
                 })
-                .populate({
-                    path: 'offers.details.type',
-                    model: db.offers
-                })
                 .exec()
                 .then(reservations => {
                 	responseData.pools = reservations.map(entities.reservation);
@@ -47,9 +43,12 @@ router
             	.find({'user.ref': ctx.state.user, type: 'Event'})    
             	.populate({
                     path: 'event.ref',
-                    model: db.events
+                    model: db.events,
+                    populate: {
+                        path: 'pool',
+                        model: db.pools
+                    }
                 })
-                .populate('pool.ref')
             	.exec()
             	.then(reservations => {
             		responseData.events = reservations.map(entities.eventReservation);

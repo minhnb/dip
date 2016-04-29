@@ -10,7 +10,7 @@ module.exports = function(reservation) {
         lastName: reservation.user.lastName,
         userId: reservation.user.ref,
         event: event(reservation.event.ref),
-        pool: event(reservation.pool.ref),
+        // pool: event(reservation.pool.ref),
         price: reservation.price
     }
 };
