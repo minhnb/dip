@@ -4,7 +4,6 @@ const amenityEntity = require('./amenity');
 const ticketEntity = require('./ticket');
 const specialOfferEntity = require('./specialOffer');
 
-
 function convertOfferType(type) {
     return {
         id: type._id,

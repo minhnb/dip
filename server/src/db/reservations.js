@@ -3,10 +3,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const offerSchema = require('./offers').schema;
-const specialOfferSchema = require('./specialOffers').schema;
-
-const reservationSchema = new Schema({
+const ReservationSchema = new Schema({
+    type: {
+        type: String,
+        required: true,
+        enum: ['Pool', 'Event']
+    },
     user: {
         ref: {
             type: Schema.ObjectId,
@@ -34,58 +36,14 @@ const reservationSchema = new Schema({
         type: Number,
         required: true
     },
-    promotionDiscount: Number,
-    offers: [{
-        // Question: Can we change a pool's offer?
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Offer',
-            required: true
-        },
-        details: { // Copy offer details here for record keeping
-            type: offerSchema,
-            required: true
-        },
-        count: {
-            type: Number,
-            required: true,
-            default: 1
-        },
-        specialOffers: [{
-            ref: {
-                type: Schema.ObjectId,
-                ref: 'SpecialOffers'
-            },
-            details: {
-                type: specialOfferSchema,
-                required: true
-            },
-            count: {
-                type: Number,
-                required: true,
-                default: 1
-            }
-        }],
-        members: [{
-            type: Schema.ObjectId,
-            ref: 'User'
-        }]
-    }],
-    //coupon: {
-    //    ref: {
-    //        type: Schema.ObjectId,
-    //        ref: 'Coupon'
-    //    },
-    //    details: {
-    //        type: couponSchema
-    //    }
-    //},
     sale: {
         type: Schema.ObjectId,
         ref: 'Sale'
-    }
+    },
+    promotionDiscount: Number
 }, {
-    timestamps: true
+    timestamps: true,
+    discriminatorKey: 'type'
 });
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+module.exports = mongoose.model('Reservation', ReservationSchema);

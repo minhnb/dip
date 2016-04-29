@@ -89,5 +89,10 @@ module.exports = {
         return getTemplate('confirmDipShare.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, 'Congratulation'))
+    },
+    confirmEventReservation: (email, data) => {
+        return getTemplate('confirmEventReservation.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Event Confirmation'))
     }
 };

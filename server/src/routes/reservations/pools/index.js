@@ -2,14 +2,15 @@
 
 const router = require('koa-router')();
 
-const db = require('../db');
-const entities = require('../entities');
-const inputValidator = require('../validators');
+const db = require('../../../db');
+const entities = require('../../../entities');
+const inputValidator = require('../../../validators');
 
-const mailer = require('../mailer');
 
-const stripe = require('../helpers/stripe');
-const auth = require('../helpers/passport_auth');
+const mailer = require('../../../mailer');
+
+const stripe = require('../../../helpers/stripe');
+const auth = require('../../../helpers/passport_auth');
 module.exports = router;
 
 router
@@ -29,9 +30,20 @@ router
     )
     .get('get reservations', '/',
         ctx => {
-            return db.reservations
-                .find({'user.ref': ctx.state.user})
-                .populate('offers.details.specialOffers')
+            return db.poolReservations
+                .find({'user.ref': ctx.state.user, type: 'Pools'})
+                .populate({
+                    path: 'offers.details.specialOffers',
+                    model: db.specialOffers
+                })
+                .populate({
+                    path: 'offers.members',
+                    model: db.users
+                })
+                .populate({
+                    path: 'offers.details.type',
+                    model: db.offers
+                })
                 .exec()
                 .then(reservations => {
                     ctx.body = {reservations: reservations.map(entities.reservation)};
@@ -194,7 +206,7 @@ function createReservation(ctx, next) {
         price = ctx.state.price,
         offers = ctx.state.offers,
         offerMap = ctx.state.offerMap,
-        userReservation = new db.reservations({
+        userReservation = new db.poolReservations({
             user: {
                 ref: user,
                 email: user.email,

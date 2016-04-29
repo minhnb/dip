@@ -26,5 +26,9 @@ module.exports = {
     wishList: require('./wishList'),
     cities: require('./cities'),
     membershipTypes: require('./membershipTypes'),
-    refs: require('./refs')
+    refs: require('./refs'),
+    events: require('./events'),
+    eventReservations: require('./eventReservations'),
+    poolReservations: require('./poolReservations')
+
 };

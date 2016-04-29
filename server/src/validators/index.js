@@ -13,5 +13,6 @@ module.exports = {
     auth: require('./auth'),
     resetPassword: require('./resetPassword'),
     wishList: require('./wishList'),
-    membershipTypes: require('./membershipTypes')
+    membershipTypes: require('./membershipTypes'),
+    events: require('./events')
 };

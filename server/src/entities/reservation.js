@@ -2,6 +2,7 @@
 
 const user = require('./user');
 const offer = require('./offer');
+const userRef = require('./userRef');
 
 module.exports = function(reservation) {
     return {
@@ -14,7 +15,8 @@ module.exports = function(reservation) {
         offers: reservation.offers.map(o => {
             return {
                 details: offer(o.details),
-                count: o.count
+                count: o.count,
+                members: o.members.map(userRef)
             };
         }),
         price: reservation.price,
