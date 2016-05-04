@@ -180,12 +180,11 @@ function createReservation(ctx, next) {
                     p = user.save();
                 }
                 ctx.state.eventReservation = eventReservation;
-            })
-            return p.then(() => {
-                return eventReservation.save()
+                return p.then(() => {
+                    return eventReservation.save()   
+                })
                 .then(next);
             })
-
 }
 
 // Final price must either be zero or greater than 50cent (stripe limit)

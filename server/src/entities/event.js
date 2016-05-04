@@ -3,7 +3,6 @@
 const pool = require('./pool');
 
 function convertEvent(event, user) {
-    console.log(event);
     return {
         id: event._id,
         title: event.title,
