@@ -22,9 +22,7 @@ const hooks = require('./hooks');
 const resources = require('./resources');
 
 router.get('index page', '/', ctx => {
-    ctx.render('index', {
-        title: 'Hello World Koa!'
-    });
+    ctx.throw(401);
 });
 
 router.use('/activities', activities.routes(), activities.allowedMethods());
