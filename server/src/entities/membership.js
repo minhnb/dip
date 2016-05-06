@@ -14,7 +14,9 @@ function convertMembershipType(membershipType) {
         dipCredit: membershipType.dipCredit,
         amount: membershipType.amount,
         interval: membershipType.interval,
-        intervalCount: membershipType.intervalCount
+        intervalCount: membershipType.intervalCount,
+        description: membershipType.description,
+        icon: membershipType.icon
     };
 }
 

@@ -28,6 +28,10 @@ const membershipTypeSchema = new Schema({
         enum: ['day', 'week', 'month', 'year'],
         require: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     //The number of intervals between each subscription billing
     intervalCount: {
         type: Number,
