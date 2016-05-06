@@ -16,7 +16,16 @@ module.exports = function(reservation) {
             return {
                 details: offer(o.details),
                 count: o.count,
-                members: o.members.map(userRef)
+                members: o.members.map(userRef),
+                specialOffers: o.specialOffers.map(so => {
+                    return {
+                        id: so.details._id,
+                        name: so.details.name,
+                        description: so.details.details,
+                        price: so.details.price,
+                        count: so.count
+                    }
+                })
             };
         }),
         price: reservation.price,

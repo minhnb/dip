@@ -32,10 +32,10 @@ router
         ctx => {
             return db.poolReservations
                 .find({'user.ref': ctx.state.user, type: 'Pools'})
-                .populate({
-                    path: 'offers.details.specialOffers',
-                    model: db.specialOffers
-                })
+                // .populate({
+                //     path: 'offers.details.specialOffers',
+                //     model: db.specialOffers
+                // })
                 .populate({
                     path: 'offers.members',
                     model: db.users
