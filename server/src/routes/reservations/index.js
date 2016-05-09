@@ -26,10 +26,6 @@ router
         	let getPoolReservations = db.reservations
                 .find({'user.ref': ctx.state.user, type: 'Pool'})
                 .populate({
-                    path: 'offers.details.specialOffers',
-                    model: db.specialOffers
-                })
-                .populate({
                     path: 'offers.members',
                     model: db.users
                 })
