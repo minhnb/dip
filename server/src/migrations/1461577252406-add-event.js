@@ -16,7 +16,7 @@ const s3 = require('../helpers/s3');
 exports.up = function(next) {
     connectionPromise.then(connection => {
         connection.db.collection('pools', (error, collection) => {
-            collection.find({'name': 'Shangrila Pool'}).toArray((error, pools) => {
+            collection.find({'name': 'Hotel Shangri-La Santa Monica'}).toArray((error, pools) => {
                 if (error) {
                     next(error);
                 } else {

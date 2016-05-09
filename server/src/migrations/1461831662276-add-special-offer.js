@@ -15,7 +15,7 @@ const connectionPromise = require('./db');
 exports.up = function(next) {
     connectionPromise.then(connection => {
         connection.db.collection('pools', (error, collection) => {
-            collection.find({'name': 'Shangrila Pool'}).toArray((error, pools) => {
+            collection.find({'name': 'Hotel Shangri-La Santa Monica'}).toArray((error, pools) => {
                 if (error) {
                     next(error);
                 } else {
