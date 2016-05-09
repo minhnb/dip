@@ -15,7 +15,7 @@ module.exports = {
     offerTypes: require('./offerTypes'),
     tickets: require('./tickets'),
     amenityTypes: require('./amenityTypes'),
-    specialOffers: require('./specialOffers'),
+    addons: require('./addons'),
     photos: require('./photos'),
     ratings: require('./ratings'),
     reservations: require('./reservations'),
@@ -29,6 +29,7 @@ module.exports = {
     refs: require('./refs'),
     events: require('./events'),
     eventReservations: require('./eventReservations'),
-    poolReservations: require('./poolReservations')
-
+    poolReservations: require('./poolReservations'),
+    specialOffers: require('./specialOffers'),
+    specialOfferReservations: require('./specialOfferReservations')
 };

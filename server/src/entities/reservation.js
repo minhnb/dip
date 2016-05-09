@@ -17,7 +17,7 @@ module.exports = function(reservation) {
                 details: offer(o.details),
                 count: o.count,
                 members: o.members.map(userRef),
-                specialOffers: o.specialOffers.map(so => {
+                addons: o.addons.map(so => {
                     return {
                         id: so.details._id,
                         name: so.details.name,

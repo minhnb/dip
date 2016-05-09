@@ -2,6 +2,7 @@
 const router = require('koa-router')();
 const pools = require('./pools');
 const events = require('./events');
+const specialOffers = require('./specialOffers');
 
 const db = require('../../db');
 const entities = require('../../entities');
@@ -19,6 +20,10 @@ router
     .use('/events',
         events.routes(),
         events.allowedMethods()
+    )
+    .use('/offers',
+        specialOffers.routes(),
+        specialOffers.allowedMethods()
     )
     .get('get reservations', '/',
         ctx => {
@@ -50,8 +55,15 @@ router
             		responseData.events = reservations.map(entities.eventReservation);
             		return;
             	})
+            let getSpecialOfferReservation = db.reservations
+                .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})    
+                .exec()
+                .then(reservations => {
+                    responseData.specialOffers = reservations.map(entities.specialOfferReservation);
+                    return;
+                })
 
-            return Promise.all([getPoolReservations, getEventReservation]).then(() => {
+            return Promise.all([getPoolReservations, getEventReservation, getSpecialOfferReservation]).then(() => {
             	ctx.body = responseData;
             })
         }

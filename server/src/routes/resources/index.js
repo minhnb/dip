@@ -23,6 +23,7 @@ router
         getNearestPools,
         getPools,
         getEvents,
+        getSpecialOffers,
         response
     )
     .get('get pools', '/pools',
@@ -34,6 +35,10 @@ router
         getNearestPools,
         getEvents,
         response
+    )
+    .get('get special offers', '/offers',
+        getNearestPools,
+        getSpecialOffers
     )
     .use('/pools/:poolId',
         (ctx, next) => {
@@ -61,7 +66,19 @@ router
         event.routes(), 
         event.allowedMethods()
     )
-    
+    .use('/specialOffers/:specialOfferId', 
+        (ctx, next) => {
+            let id = ctx.params.specialOfferId;
+            return db.specialOffers.findById(id)
+                .exec()
+                .then(data => {
+                    ctx.state.specialOffer = data;
+                    return next();
+                });
+        },
+        event.routes(), 
+        event.allowedMethods()
+    )
 
 function getNearestPools(ctx, next) {
     // TODO: Move this to either db or controller module
@@ -84,7 +101,6 @@ function getNearestPools(ctx, next) {
         };
 
         query = query.where('coordinates').near(geoOptions);
-        
         // p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
         // .then(function(res) {
         //     let city = res[0].administrativeLevels.level2long,
@@ -225,9 +241,20 @@ function getEvents(ctx, next) {
     })
 }
 
-// function getOffers(ctx, next) {
+function getSpecialOffers(ctx, next) {
+    let poolIds = ctx.state.poolIds;
+    let query = db.specialOffers.where("active").equals(true);
+    return query
+    .find({'pools.ref': {$in: poolIds}})
+    .populate('pools.ref')
+    .exec()
+    .then(specialOffers => {
+        ctx.state.specialOffers = specialOffers.map(entities.specialOffers);
+        ctx.body = ctx.state.specialOffers;
+        return next();
+    })
+}
 
-// }
 
 function response(ctx) {
     ctx.state.responseData = {};
@@ -236,6 +263,9 @@ function response(ctx) {
     }
     if(ctx.state.events) {
         ctx.state.responseData.events = ctx.state.events
+    }
+    if(ctx.state.specialOffers) {
+        ctx.state.responseData.specialOffers = ctx.state.specialOffers
     }
     ctx.body = ctx.state.responseData;
 }

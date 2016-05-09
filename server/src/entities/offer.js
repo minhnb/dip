@@ -2,7 +2,7 @@
 
 const amenityEntity = require('./amenity');
 const ticketEntity = require('./ticket');
-const specialOfferEntity = require('./specialOffer');
+const addonsEntity = require('./addons');
 
 function convertOfferType(type) {
     return {
@@ -20,7 +20,7 @@ function convertOffer(offer) {
         duration: offer.duration,
         capacity: offer.capacity,
         amenities: offer.amenities.map(amenityEntity.base),
-        specialOffers: offer.specialOffers.map(specialOfferEntity),
+        addons: offer.addons.map(addonsEntity),
         ticket: {
             price: offer.ticket.price,
             ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null

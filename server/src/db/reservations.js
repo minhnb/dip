@@ -7,7 +7,7 @@ const ReservationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['Pool', 'Event']
+        enum: ['Pool', 'Event', 'SpecialOffer']
     },
     user: {
         ref: {
@@ -21,16 +21,6 @@ const ReservationSchema = new Schema({
         },
         firstName: String,
         lastName: String
-    },
-    pool: {
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Pool',
-            required: true
-        },
-        name: String,
-        title: String,
-        location: String
     },
     price: {
         type: Number,

@@ -32,10 +32,6 @@ router
         ctx => {
             return db.poolReservations
                 .find({'user.ref': ctx.state.user, type: 'Pools'})
-                // .populate({
-                //     path: 'offers.details.specialOffers',
-                //     model: db.specialOffers
-                // })
                 .populate({
                     path: 'offers.members',
                     model: db.users
@@ -103,7 +99,7 @@ function verifyOffers(ctx, next) {
         _id: {$in: offerIds},
         pool: ctx.state.pool
     })
-    .populate('specialOffers')
+    .populate('addons')
     .exec()
     .then(offers => {
         if (offers.length < _offers.length) {
@@ -134,8 +130,8 @@ function verifyOffers(ctx, next) {
             if (!verifySpecialOffers(expected, offer)) {
                 ctx.throw(400, 'Invalid special offer');
             }
-            let specialOfferPrice = expected.specialOffers.reduce((total, sOffer) => {
-                return total + sOffer.price * sOffer.count;
+            let addonPrice = expected.addons.reduce((total, addon) => {
+                return total + addon.price * addon.count;
             }, 0);
             //if(expected.specialOffers && expected.specialOffers.length > 0) {
             //    expected.specialOffers.forEach(s => {
@@ -149,7 +145,7 @@ function verifyOffers(ctx, next) {
             //    });
             //}
             price += expected.count * offer.ticket.price;
-            price += specialOfferPrice;
+            price += addonPrice;
         });
 
         if (price != expectedPrice) {
@@ -164,24 +160,24 @@ function verifyOffers(ctx, next) {
 }
 
 function verifySpecialOffers(userOffer, offer) {
-    if(userOffer.specialOffers) {
-        let length = userOffer.specialOffers.length;
-        let specialOffersMap = offer.specialOffers.reduce((obj, sOffer) => {
-            obj[sOffer.id] = sOffer;
+    if(userOffer.addons) {
+        let length = userOffer.addons.length;
+        let addonsMap = offer.addons.reduce((obj, addons) => {
+            obj[addons.id] = addons;
             return obj;
         }, Object.create({}));
         for (let i = 0; i < length; i++) {
-            let userSubOffer = userOffer.specialOffers[i];
-            let subOffer = specialOffersMap[userSubOffer.id];
+            let userSubOffer = userOffer.addons[i];
+            let subOffer = addonsMap[userSubOffer.id];
             if (!subOffer || subOffer.price != userSubOffer.price
                 || isNaN(userSubOffer.count) || (userSubOffer.count !== parseInt(userSubOffer.count, 10))
                 || userSubOffer.count <= 0) {
                 return false;
             }
         }
-        offer.specialOffersMap = specialOffersMap;
+        offer.addonsMap = addonsMap;
     } else {
-        userOffer.specialOffers = [];
+        userOffer.addons = [];
     }
     return true;
 }
@@ -218,25 +214,25 @@ function createReservation(ctx, next) {
             price: price,
             offers: offers.map(o => {
                 let userOffer = offerMap[o.id],
-                    specialOffers = [];
-                if(userOffer.specialOffers) {
-                    specialOffers = userOffer.specialOffers.reduce((arr, userSubOffer) => {
+                    addons = [];
+                if(userOffer.addons) {
+                    addons = userOffer.addons.reduce((arr, userSubOffer) => {
                         arr.push({
                             ref: userSubOffer.id,
-                            details: o.specialOffersMap[userSubOffer.id].toObject(),
+                            details: o.addonsMap[userSubOffer.id].toObject(),
                             count: userSubOffer.count
                         });
                         return arr;
                     }, []);
                 }
 
-                o.depopulate('specialOffers');
+                o.depopulate('addons');
                 return {
                     ref: o._id,
                     details: o.toObject(),
                     members: userOffer.members,
                     count: userOffer.count,
-                    specialOffers: specialOffers
+                    addons: addons
                 };
             })
         });

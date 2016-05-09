@@ -4,10 +4,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const offerSchema = require('./offers').schema;
-const specialOfferSchema = require('./specialOffers').schema;
+const addonSchema = require('./addons').schema;
 const Reservation = require('./reservations');
 
 const poolReservationSchema = new Schema({
+    pool: {
+        ref: {
+            type: Schema.ObjectId,
+            ref: 'Pool',
+            required: true
+        },
+        name: String,
+        title: String,
+        location: String
+    },
     offers: [{
         // Question: Can we change a pool's offer?
         ref: {
@@ -24,13 +34,13 @@ const poolReservationSchema = new Schema({
             required: true,
             default: 1
         },
-        specialOffers: [{
+        addons: [{
             ref: {
                 type: Schema.ObjectId,
-                ref: 'SpecialOffers'
+                ref: 'Addon'
             },
             details: {
-                type: specialOfferSchema,
+                type: addonSchema,
                 required: true
             },
             count: {

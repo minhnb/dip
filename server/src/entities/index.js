@@ -19,5 +19,7 @@ module.exports = {
     group: require('./group'),
     message: require('./message'),
     event: require('./event'),
-    eventReservation: require('./eventReservation')
+    eventReservation: require('./eventReservation'),
+    specialOffers: require('./specialOffers'),
+    specialOfferReservation: require('./specialOfferReservation')
 };

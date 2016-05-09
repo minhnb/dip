@@ -94,5 +94,10 @@ module.exports = {
         return getTemplate('confirmEventReservation.html')
             .then(parser.bind(undefined, data))
             .then(sendEmail.bind(undefined, email, 'Event Confirmation'))
+    },
+    confirmSpecialOfferReservation: (email, data) => {
+        return getTemplate('confirmSpecialOfferReservation.html')
+            .then(parser.bind(undefined, data))
+            .then(sendEmail.bind(undefined, email, 'Offer Confirmation'))
     }
 };

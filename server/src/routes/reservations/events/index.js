@@ -153,11 +153,6 @@ function createReservation(ctx, next) {
                 ref: event,
                 title: event.title
             },
-            pool: {
-                ref: pool,
-                name: pool.name,
-                location: pool.location
-            },
             count: quantities,
             price: price
         })
@@ -170,7 +165,6 @@ function createReservation(ctx, next) {
                 e.members.addToSet(user);
                 return e.save();
             })
-            
             .then(() => {
                 let p = Promise.resolve();
                 if (user.account.balance > 0 && price > 0) {
