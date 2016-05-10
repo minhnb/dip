@@ -93,7 +93,7 @@ router
                 }).catch(err => {
                     if (err.code === 11000) {
                         // Duplicate key error -- existed email
-                        ctx.throw(400, "Email existed");
+                        ctx.throw(409, "Email existed");
                     } else {
                         throw err;
                     }

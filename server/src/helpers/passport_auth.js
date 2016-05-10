@@ -77,7 +77,7 @@ function login() {
             if (ctx.state.user) {
                 return next();
             } else {
-                ctx.throw(401, ctx.state.error || 'Unauthorized');
+                ctx.throw(400, ctx.state.error || 'Bad Request');
             }
         });
     }
