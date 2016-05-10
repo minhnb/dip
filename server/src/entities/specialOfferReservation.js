@@ -12,9 +12,13 @@ module.exports = function(reservation) {
                 id: offer._id,
                 name: offer.name,
                 location: offer.location,
-                price: offer.price,
-                date: offer.date,
-                count: offer.count,
+                slots: offer.slots.map(slot => {
+                    return {
+                        date: slot.date,
+                        count: slot.count,
+                        total: slot.total
+                    }
+                }),
                 duration: offer.duration
             }
         })
