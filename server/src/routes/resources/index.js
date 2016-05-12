@@ -4,6 +4,7 @@ const router = require('koa-router')();
 const db = require('../../db');
 const pool = require('./pool');
 const event = require('./event');
+const specialOffer = require('./specialOffer');
 const entities = require('../../entities');
 
 const auth = require('../../helpers/passport_auth');
@@ -38,7 +39,8 @@ router
     )
     .get('get special offers', '/offers',
         getNearestPools,
-        getSpecialOffers
+        getSpecialOffers,
+        response
     )
     .use('/pools/:poolId',
         (ctx, next) => {
@@ -66,7 +68,7 @@ router
         event.routes(), 
         event.allowedMethods()
     )
-    .use('/specialOffers/:specialOfferId', 
+    .use('/offers/:specialOfferId', 
         (ctx, next) => {
             let id = ctx.params.specialOfferId;
             return db.specialOffers.findById(id)
@@ -76,8 +78,8 @@ router
                     return next();
                 });
         },
-        event.routes(), 
-        event.allowedMethods()
+        specialOffer.routes(), 
+        specialOffer.allowedMethods()
     )
 
 function getNearestPools(ctx, next) {
@@ -242,7 +244,7 @@ function getEvents(ctx, next) {
 }
 
 function getSpecialOffers(ctx, next) {
-    let poolIds = ctx.state.poolIds;
+    let poolIds = ctx.state.nearestPools.map(pool => pool.id);
     let query = db.specialOffers.where("active").equals(true);
     return query
     .find({'pools.ref': {$in: poolIds}})
@@ -250,7 +252,6 @@ function getSpecialOffers(ctx, next) {
     .exec()
     .then(specialOffers => {
         ctx.state.specialOffers = specialOffers.map(entities.specialOffers);
-        ctx.body = ctx.state.specialOffers;
         return next();
     })
 }
