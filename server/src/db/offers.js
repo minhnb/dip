@@ -66,15 +66,19 @@ const offerSchema = new Schema({
     }],
     // TODO: Question: What will happen if the pool's owner delete that ticket/pass type?
     // Would all the offers using that ticket be deleted as well? What about base-offers?
-    ticket: {
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Ticket'
-        },
-        price: {
-            type: Number,
-            required: true
-        }
+    // ticket: {
+    //     ref: {
+    //         type: Schema.ObjectId,
+    //         ref: 'Ticket'
+    //     },
+    //     price: {
+    //         type: Number,
+    //         required: true
+    //     }
+    // },
+    price: {
+        type: Number,
+        required: true
     }
 }, {
     timestamps: true

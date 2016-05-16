@@ -8,52 +8,54 @@ const addonSchema = require('./addons').schema;
 const Reservation = require('./reservations');
 
 const poolReservationSchema = new Schema({
-    pool: {
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Pool',
-            required: true
-        },
-        name: String,
-        title: String,
-        location: String
-    },
-    offers: [{
-        // Question: Can we change a pool's offer?
-        ref: {
-            type: Schema.ObjectId,
-            ref: 'Offer',
-            required: true
-        },
-        details: { // Copy offer details here for record keeping
-            type: offerSchema,
-            required: true
-        },
-        count: {
-            type: Number,
-            required: true,
-            default: 1
-        },
-        addons: [{
+    details: {
+        pool: {
             ref: {
                 type: Schema.ObjectId,
-                ref: 'Addon'
+                ref: 'Pool',
+                required: true
             },
-            details: {
-                type: addonSchema,
+            name: String,
+            title: String,
+            location: String
+        },
+        offers: [{
+            // Question: Can we change a pool's offer?
+            ref: {
+                type: Schema.ObjectId,
+                ref: 'Offer',
                 required: true
             },
             count: {
                 type: Number,
                 required: true,
                 default: 1
+            },
+            addons: [{
+                ref: {
+                    type: Schema.ObjectId,
+                    ref: 'Addon'
+                },
+                price: {
+                    type: Number,
+                    required: true
+                },
+                count: {
+                    type: Number,
+                    required: true,
+                    default: 1
+                }
+            }],
+            members: [{
+                type: Schema.ObjectId,
+                ref: 'User'
+            }],
+            price: {
+                type: Number,
+                required: true
             }
-        }],
-        members: [{
-            type: Schema.ObjectId,
-            ref: 'User'
         }]
-    }]
+    }
     //coupon: {
     //    ref: {
     //        type: Schema.ObjectId,

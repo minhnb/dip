@@ -33,8 +33,16 @@ router
             return db.poolReservations
                 .find({'user.ref': ctx.state.user, type: 'Pools'})
                 .populate({
-                    path: 'offers.members',
+                    path: 'details.offers.members',
                     model: db.users
+                })
+                .populate({
+                    path: 'details.offers.addons.ref',
+                    model: db.addons
+                })
+                .populate({
+                    path: 'details.offers.ref',
+                    model: db.offers
                 })
                 .exec()
                 .then(reservations => {
@@ -122,7 +130,7 @@ function verifyOffers(ctx, next) {
             if (expected.count + offer.reservationCount > offer.allotmentCount) {
                 ctx.throw(400, 'Overbooking offer');
             }
-            if (expected.price != offer.ticket.price) {
+            if (expected.price != offer.price) {
                 ctx.throw(400, 'Unmatched offer price');
             }
             offer.reservationCount += expected.count;
@@ -144,7 +152,7 @@ function verifyOffers(ctx, next) {
             //        })
             //    });
             //}
-            price += expected.count * offer.ticket.price;
+            price += expected.count * offer.price;
             price += addonPrice;
         });
 
@@ -205,36 +213,37 @@ function createReservation(ctx, next) {
                 firstName: user.firstName,
                 lastName: user.lastName
             },
-            pool: {
-                ref: pool,
-                name: pool.name,
-                title: pool.title,
-                location: pool.location
-            },
-            price: price,
-            offers: offers.map(o => {
-                let userOffer = offerMap[o.id],
-                    addons = [];
-                if(userOffer.addons) {
-                    addons = userOffer.addons.reduce((arr, userSubOffer) => {
-                        arr.push({
-                            ref: userSubOffer.id,
-                            details: o.addonsMap[userSubOffer.id].toObject(),
-                            count: userSubOffer.count
-                        });
-                        return arr;
-                    }, []);
-                }
+            details: {
+                pool: {
+                    ref: pool,
+                    name: pool.name,
+                    title: pool.title,
+                    location: pool.location
+                },
+                offers: offers.map(o => {
+                    let userOffer = offerMap[o.id],
+                        addons = [];
+                    if(userOffer.addons) {
+                        addons = userOffer.addons.reduce((arr, userSubOffer) => {
+                            arr.push({
+                                ref: userSubOffer.id,
+                                count: userSubOffer.count,
+                                price: userSubOffer.price
+                            });
+                            return arr;
+                        }, []);
+                    };
+                    return {
+                        ref: o._id,
+                        members: userOffer.members,
+                        count: userOffer.count,
+                        addons: addons,
+                        price: o.price
+                    };
+                })
 
-                o.depopulate('addons');
-                return {
-                    ref: o._id,
-                    details: o.toObject(),
-                    members: userOffer.members,
-                    count: userOffer.count,
-                    addons: addons
-                };
-            })
+            },
+            price: price
         });
     let p = Promise.resolve();
     if (user.account.balance > 0) {
@@ -313,7 +322,7 @@ function populateMembers(ctx, next) {
     let user = ctx.state.user,
         userReservation = ctx.state.reservation;
     let memberMap = {};
-    userReservation.offers.forEach(offer => {
+    userReservation.details.offers.forEach(offer => {
         offer.members.forEach(member => {
             if (!memberMap[member] && !user._id.equals(member)) {
                 memberMap[member] = {

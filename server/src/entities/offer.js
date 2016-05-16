@@ -21,10 +21,11 @@ function convertOffer(offer) {
         capacity: offer.capacity,
         amenities: offer.amenities.map(amenityEntity.base),
         addons: offer.addons.map(addonsEntity),
-        ticket: {
-            price: offer.ticket.price,
-            ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
-        },
+        // ticket: {
+        //     price: offer.ticket.price,
+        //     ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
+        // },
+        price: offer.price,
         type: convertOfferType(offer.type)
     };
 
