@@ -5,6 +5,7 @@ const db = require('../../db');
 const pool = require('./pool');
 const event = require('./event');
 const specialOffer = require('./specialOffer');
+const hotel = require('./hotel');
 const entities = require('../../entities');
 
 const auth = require('../../helpers/passport_auth');
@@ -22,9 +23,10 @@ router
     .use('/', auth.authenticate())
     .get('get resources', '/',
         getNearestPools,
-        getPools,
+        // getPools,
         getEvents,
         getSpecialOffers,
+        getHotels,
         response
     )
     .get('get pools', '/pools',
@@ -40,6 +42,10 @@ router
     .get('get special offers', '/offers',
         getNearestPools,
         getSpecialOffers,
+        response
+    )
+    .get('get hotels', '/hotels',
+        getHotels,
         response
     )
     .use('/pools/:poolId',
@@ -80,6 +86,20 @@ router
         },
         specialOffer.routes(), 
         specialOffer.allowedMethods()
+    )
+    .use('/hotels/:hotelId', 
+        (ctx, next) => {
+            let id = ctx.params.hotelId;
+            return db.hotels.findById(id)
+                .populate('services.pools.ref')
+                .exec()
+                .then(data => {
+                    ctx.state.hotel = data;
+                    return next();
+                });
+        },
+        hotel.routes(), 
+        hotel.allowedMethods()
     )
 
 function getNearestPools(ctx, next) {
@@ -256,17 +276,49 @@ function getSpecialOffers(ctx, next) {
     })
 }
 
+function getHotels(ctx, next) {
+    let query = db.hotels.where("active").equals(true);
+        query = query.where('reservable').equals(true);
+    if (ctx.query.longitude && ctx.query.latitude) {
+        let minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
+            maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
+            center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
+        let geoOptions = {
+            center: {
+                type: 'Point',
+                coordinates: center
+            },
+            minDistance: minDistance,
+            maxDistance: maxDistance,
+            spherical: true
+        };
+
+        query = query.where('coordinates').near(geoOptions);
+
+    } 
+    return query
+    .populate('services.pools.ref')
+    .exec()
+    .then(hotels => {
+        ctx.state.hotels = hotels.map(entities.hotel);
+        return next();
+    })
+}
+
 
 function response(ctx) {
     ctx.state.responseData = {};
-    if(ctx.state.pools) {
-        ctx.state.responseData.pools = ctx.state.pools
-    }
+    // if(ctx.state.pools) {
+    //     ctx.state.responseData.pools = ctx.state.pools
+    // }
     if(ctx.state.events) {
         ctx.state.responseData.events = ctx.state.events
     }
     if(ctx.state.specialOffers) {
         ctx.state.responseData.specialOffers = ctx.state.specialOffers
+    }
+    if(ctx.state.hotels) {
+        ctx.state.responseData.hotels = ctx.state.hotels
     }
     ctx.body = ctx.state.responseData;
 }

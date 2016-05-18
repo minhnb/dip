@@ -3,6 +3,7 @@ const router = require('koa-router')();
 const pools = require('./pools');
 const events = require('./events');
 const specialOffers = require('./specialOffers');
+const hotels = require('./hotels');
 
 const db = require('../../db');
 const entities = require('../../entities');
@@ -25,20 +26,24 @@ router
         specialOffers.routes(),
         specialOffers.allowedMethods()
     )
+    .use('/hotels',
+        hotels.routes(),
+        hotels.allowedMethods()
+    )
     .get('get reservations', '/',
         ctx => {
         	let responseData = {};
-        	let getPoolReservations = db.reservations
-                .find({'user.ref': ctx.state.user, type: 'Pool'})
-                .populate({
-                    path: 'offers.members',
-                    model: db.users
-                })
-                .exec()
-                .then(reservations => {
-                	responseData.pools = reservations.map(entities.reservation);
-                    return;
-                });
+        	// let getPoolReservations = db.reservations
+         //        .find({'user.ref': ctx.state.user, type: 'Pool'})
+         //        .populate({
+         //            path: 'offers.members',
+         //            model: db.users
+         //        })
+         //        .exec()
+         //        .then(reservations => {
+         //        	responseData.pools = reservations.map(entities.reservation);
+         //            return;
+         //        });
 
             let getEventReservation = db.reservations
             	.find({'user.ref': ctx.state.user, type: 'Event'})    
@@ -62,8 +67,27 @@ router
                     responseData.specialOffers = reservations.map(entities.specialOfferReservation);
                     return;
                 })
+            let getHotelReservation = db.reservations
+                .find({'user.ref': ctx.state.user, type: 'Hotel'})  
+                .populate({
+                    path: 'hotel.ref',
+                    model: db.hotels
+                })
+                .populate({
+                    path: 'services.pools.offers.ref',
+                    model: db.offers
+                })
+                .populate({
+                    path: 'services.pools.offers.addons.ref',
+                    model: db.addons
+                })  
+                .exec()
+                .then(reservations => {
+                    responseData.hotels = reservations.map(entities.hotelReservation);
+                    return;
+                })
 
-            return Promise.all([getPoolReservations, getEventReservation, getSpecialOfferReservation]).then(() => {
+            return Promise.all([getHotelReservation, getEventReservation, getSpecialOfferReservation]).then(() => {
             	ctx.body = responseData;
             })
         }

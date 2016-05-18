@@ -2,6 +2,7 @@
 
 module.exports = {
     activity: require('./activity'),
+    addon: require('./addon'),
     announcement: require('./announcement'),
     promotion: require('./promotion'),
     userReference: require('./userRef'),
@@ -21,5 +22,7 @@ module.exports = {
     event: require('./event'),
     eventReservation: require('./eventReservation'),
     specialOffers: require('./specialOffers'),
-    specialOfferReservation: require('./specialOfferReservation')
+    specialOfferReservation: require('./specialOfferReservation'),
+    hotel: require('./hotel'),
+    hotelReservation: require('./hotelReservation')
 };
