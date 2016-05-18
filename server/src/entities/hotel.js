@@ -22,7 +22,7 @@ function convertHotel(hotel) {
         services: {
             pools: hotel.services.pools.map(p => {
                 return {
-                    pool: pool(p.ref)
+                    pool: p.ref ? pool(p.ref) : undefined
                 }
             })
         }

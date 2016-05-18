@@ -37,13 +37,14 @@ const hotelSchema = new Schema({
     phone: String,
     roomService: String,
     reservable: Boolean,
-    amenities: [amenitySchema],
+    amenities: [String],
     services: {
         pools: [{
             ref: {
                 type: Schema.ObjectId,
-                ref: 'Pool',
-            }    
+                ref: 'Pool'
+            },
+            policy: String    
         }]
     }
 }, {

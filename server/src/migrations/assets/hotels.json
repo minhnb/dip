@@ -1,0 +1,572 @@
+[
+  {
+    "name": "Petit Ermitage",
+    "fullAddress": "8822 Cynthia St, West Hollywood, CA 90069",
+    "url": "http://www.petitermitage.com/home/",
+    "phone": "310-896-4254",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Laundry Service , Restaurant , Spa , Bar , Gym , Pets allowed",
+    "instagram": "@petitermitage",
+    "policy": "Annual Membership"
+  },
+  {
+    "name": "The Beverly Hilton",
+    "fullAddress": "9876 Wilshire Blvd, Beverly Hills, CA 90210",
+    "url": "http://www.beverlyhilton.com/",
+    "phone": "310-274-7777",
+    "roomService": "",
+    "amenityList": "Outdoor pool, Bar, Spa services, Fitness Center, Business center, Dry Cleaning",
+    "instagram": "@beverlyhilton",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "fullAddress": "9882 S Santa Monica Blvd, Beverly Hills, CA 90212",
+    "url": "http://beverlyhills.peninsula.com/en/default",
+    "phone": "310-551-2888",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Pets Allowed, Spa, Restaurant, Jacuzzi, Gym, Bar",
+    "instagram": "@thepeninsulabh",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "Mosaic Hotel Beverly Hills",
+    "fullAddress": "125 S Spalding Dr, Beverly Hills, CA 90212",
+    "url": "http://mosaichotel.com/",
+    "phone": "310-278-0303",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@mosaichotel",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "Sunset Marquis",
+    "fullAddress": "1200 Alta Loma Rd, West Hollywood, CA 90069",
+    "url": "http://sunsetmarquis.com/",
+    "phone": "310-657-1333",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa, Bar , Restaurant , Pets Allowed ,",
+    "instagram": "@sunsetmarquis",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "Luxe Sunset Boulevard Hotel",
+    "fullAddress": "11461 Sunset Blvd, Los Angeles, CA 90049",
+    "url": "http://www.luxehotels.com/sunset",
+    "phone": "310-476-6571",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Restuarant , Bar ,   Pets allowed, Free Parking , Laundry Service",
+    "instagram": "@luxesunsetblvdhotel",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "The London West Hollywood",
+    "fullAddress": "1020 N San Vicente Blvd, West Hollywood, CA 90069",
+    "url": "http://www.thelondonwesthollywood.com/",
+    "phone": "310-854-1111",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "#thelondonwesthollywood",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "Montage Beverly Hills",
+    "fullAddress": "225 N Canon Dr, Beverly Hills, CA 90210",
+    "url": "https://www.montagehotels.com/beverlyhills/",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@montagebh",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "fullAddress": "9360 Wilshire Blvd, Beverly Hills, CA 90212",
+    "url": "http://www.sixtyhotels.com/beverly-hills/",
+    "phone": "310-273-1400",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Business center",
+    "instagram": "@sixtyhotels",
+    "policy": "Cabanas Only"
+  },
+  {
+    "name": "Hotel Shangri-La",
+    "fullAddress": "1301 Ocean Avenue, Santa Monica, CA 90401",
+    "url": "http://shangrila-hotel.com",
+    "phone": "(310) 394-2791",
+    "roomService": "x2015",
+    "amenityList": "Outdoor Pool, Poolside Bar, Chairs, Daybeds, Cabanas, Outdoor Fireplace, Full Bar, Spa",
+    "instagram": "@hotelshangrila",
+    "policy": "Dip Partner"
+  },
+  {
+    "name": "Ace Hotel Downtown LA",
+    "fullAddress": "929 South Broadway, Los Angeles, CA 90015",
+    "url": "http://www.acehotel.com/losangeles",
+    "phone": "(213) 623-3233",
+    "roomService": "",
+    "amenityList": "Cool Pool, Poolside Dining/Drinks, Near Nightly Entertainment",
+    "instagram": "@acedtla",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "The Standard Downtown LA",
+    "fullAddress": "550 S. Flower St,Los Angeles, CA 90071",
+    "url": "http://www.standardhotels.com/la/properties/downtown-la",
+    "phone": "213-892-8080",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "#thestandarddtla",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "The Standard Hollywood",
+    "fullAddress": "8300 Sunset Blvd, West Hollywood, CA 90069",
+    "url": "http://www.standardhotels.com/la/properties/hollywood",
+    "phone": "323-650-9090",
+    "roomService": "",
+    "amenityList": "Pool",
+    "instagram": "#thestandardhollywood",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Sportsmen's Lodge Hotel",
+    "fullAddress": "12825 Ventura Blvd, Studio City, CA 91604",
+    "url": "http://www.sportsmenlodge.com",
+    "phone": "818-769-4700",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Business Center, Dry Cleaning",
+    "instagram": "@sportmenslodge",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Sunset Towers Hotel",
+    "fullAddress": "8358 Sunset Blvd, Los Angeles, CA 90069",
+    "url": "http://www.sunsettowerhotel.com/",
+    "phone": "323-654-7100",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Bar , Pets Allowed",
+    "instagram": "#sunsettowershotel",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Custom Hotel",
+    "fullAddress": "8639 Lincoln Blvd, Los Angeles, CA 90045",
+    "url": "http://www.jdvhotels.com/hotels/california/los-angeles-hotels/custom-hotel/",
+    "phone": "310-645-0400",
+    "roomService": "",
+    "amenityList": "restaurant, Outdoor Pool, Business Center , Gym, Bar, Laundry Service,",
+    "instagram": "@customhotel",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Mondrian Los Angeles Hotel",
+    "fullAddress": "8440 Sunset Boulevard, Los Angeles, CA 90069",
+    "url": "https://www.morganshotelgroup.com/mondrian/mondrian-los-angeles",
+    "phone": "323-650-8999",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Dry Cleaning",
+    "instagram": "@mondrianhotels",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Hollywood Roosevelt Hotel - A Thompson Hotel",
+    "fullAddress": "7000 Hollywood Blvd, Los Angeles, CA 90028",
+    "url": "http://www.thehollywoodroosevelt.com/",
+    "phone": "323-856-1970",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@thehollywoodroosevelt",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "Hotel Wilshire",
+    "fullAddress": "6317 Wilshire Blvd, Los Angeles, CA 90048",
+    "url": "http://theroofonwilshire.com/",
+    "phone": "323-852-6002",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Business Center, Dry Cleaning",
+    "instagram": "#theroofonwilshire",
+    "policy": "Non-hotel guests can access the swimming pool."
+  },
+  {
+    "name": "The BLVD Hotel & Suites",
+    "fullAddress": "2010 N Highland Ave, Hollywood, CA 90068",
+    "url": "http://www.blvdhollywood.com/",
+    "phone": "(323) 874-4300",
+    "roomService": "none",
+    "amenityList": "Outdoor Pool, Concierge Service, Business Center, Dry Cleaning Services",
+    "instagram": "#blvdhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The BLVD Hotel and Spa",
+    "fullAddress": "10730 Ventura Blvd, Studio City, CA 91604",
+    "url": "http://www.blvdstudiocity.com/",
+    "phone": "818-623-9100",
+    "roomService": "x0",
+    "amenityList": "Indoor Pool,Bar, Restaurant, Poet /Poem Store",
+    "instagram": "@blvdhotel_spa",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Georgian",
+    "fullAddress": "1415 Ocean Ave, Santa Monica, CA 90401",
+    "url": "www.georgianhotel.com/",
+    "phone": "(310) 395-9945",
+    "roomService": "",
+    "amenityList": "Business Center, Dry Cleaning",
+    "instagram": "@georgianhotelsm",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Moment Hotel",
+    "fullAddress": "7370 Sunset Blvd, Hollywood, CA 90046",
+    "url": "www.themomenthotel.com/",
+    "phone": "(323) 822-5030",
+    "roomService": "",
+    "amenityList": "room service, bars : beer and wine only",
+    "instagram": "#themomenthotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hollywood Hotel",
+    "fullAddress": "1160 N Vermont Ave, Los Angeles, CA 90029",
+    "url": "http://www.hollywoodhotel.net/",
+    "phone": "323-315-1800",
+    "roomService": "",
+    "amenityList": "Pool , Bar, Concierge Services, Fitness Center, Public Transportation friendly",
+    "instagram": "#hollywoodhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Bel-Air",
+    "fullAddress": "701 Stone Canyon Rd, Los Angeles, CA 90077",
+    "url": "https://www.dorchestercollection.com/en/los-angeles/hotel-bel-air/",
+    "phone": "310-472-1211",
+    "roomService": "",
+    "amenityList": "Pool, no jacuzzi , some room jacuzzi. Bar, and Restaurant, live entertainment",
+    "instagram": "@hotelbelair",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Beverly Hills Hotel",
+    "fullAddress": "9641 Sunset Boulevard, Beverly Hills, CA 90210",
+    "url": "https://www.dorchestercollection.com/en/los-angeles/the-beverly-hills-hotel/",
+    "phone": "310-276-2251",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Concierge, Chauffeur Services, Restaurants, Spa and Fitness",
+    "instagram": "@bevhillshotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Casa del Mar",
+    "fullAddress": "1910 Ocean Way, Santa Monica, CA 90405",
+    "url": "https://www.hotelcasadelmar.com/",
+    "phone": "310-581-5533",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Jacuzzi, Bar, Restaurant, Business Center, Spa, Gym, Pets Allowed",
+    "instagram": "@hotelcasadelmar",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Shutters on the Beach",
+    "fullAddress": "1 Pico Blvd, Santa Monica, CA 90405",
+    "url": "https://www.shuttersonthebeach.com/",
+    "phone": "310-458-0030",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@shuttersca",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Fairmont Miramar Hotel & Bungalows",
+    "fullAddress": "101 Wilshire Blvd, Santa Monica, CA 90401",
+    "url": "http://www.fairmont.com/santa-monica/",
+    "phone": "310-576-7777",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "#fairmontmiramarhotelandbungalows",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Andaz West Hollywood",
+    "fullAddress": "8401 Sunset Blvd, West Hollywood, CA 90069",
+    "url": "http://westhollywood.andaz.hyatt.com/en/hotel/home.html",
+    "phone": "323-656-1234",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Bar, Restaurant, Gym, Business Center, Pets Allowed",
+    "instagram": "@andazweho",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Burbank Inn & Suites",
+    "fullAddress": "180 W Alameda Ave, Burbank, CA 91502",
+    "url": "http://www.burbankinn.net/",
+    "phone": "818-842-1114",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Business Center",
+    "instagram": "#burbankinn",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Cal Mar Hotel Suites",
+    "fullAddress": "220 California Ave, Santa Monica, CA 90403",
+    "url": "http://www.calmarhotel.com/",
+    "phone": "310-395-5555",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Garden",
+    "instagram": "#calmarhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Coral Sands Motel",
+    "fullAddress": "1730 N Western Ave, Los Angeles, CA 90027",
+    "url": "http://www.coralsands-la.com/",
+    "phone": "323-467-5141",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Jacuzzi",
+    "instagram": "#coralsandsmotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Farmer's Daughter Hotel",
+    "fullAddress": "115 S Fairfax Ave, Los Angeles, CA 90036",
+    "url": "http://farmersdaughterhotel.com/",
+    "phone": "323-937-3930",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Business Center, Bar, ATM",
+    "instagram": "@farmersdaughterhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Mikado Hotel",
+    "fullAddress": "12600 Riverside Dr, North Hollywood, CA 91607",
+    "url": "http://www.mikadohotels.com/",
+    "phone": "818-763-9141",
+    "roomService": "",
+    "amenityList": "Outdoor Pool, Garden, Jacuzzi, Free Self-Parking",
+    "instagram": "#mikadohotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Mr. C Beverly Hills",
+    "fullAddress": "1224 Beverwil Dr, Los Angeles, CA 90035",
+    "url": "http://www.mrchotels.com/",
+    "phone": "877-334-5623",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@mrcbeverlyhills",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Oceana Beach Club Hotel",
+    "fullAddress": "849 Ocean Ave, Santa Monica, CA 90403",
+    "url": "http://www.hoteloceanasantamonica.com/",
+    "phone": "310-393-0486",
+    "roomService": "",
+    "amenityList": "Pool, Fitness Center,  Business Center",
+    "instagram": "@oceanabeachclubhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Pasadena Inn",
+    "fullAddress": "400 S Arroyo Pkwy, Pasadena, CA 91105",
+    "url": "http://www.oldpasadenainn.com/",
+    "phone": "626-795-8401",
+    "roomService": "",
+    "amenityList": "Outside Pool , Free Parking, Laundry Service, Business Center,",
+    "instagram": "#pasadenainn",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Dixie Hollywood",
+    "fullAddress": "5410 Hollywood Blvd, Hollywood, CA 90027",
+    "url": "http://www.dixiehollywoodhotel.com/",
+    "phone": "323-463-7171",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Bar , Restaurant , Pets Allowed , Laundry Service, Free Self-Parking",
+    "instagram": "#thedixiehollywood",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "San Vicente Inn & Bungalows",
+    "fullAddress": "845 N San Vicente Blvd, West Hollywood, CA 90069",
+    "url": "http://www.sanvicentebungalows.com/",
+    "phone": "310-854-6915",
+    "roomService": "",
+    "amenityList": "Indoor Pool , Business Center, Free Parking , Pets Allowed ,",
+    "instagram": "@sanvicente_inn",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Hotel Wilshire, a Kimpton Hotel",
+    "fullAddress": "6317 Wilshire Blvd, Los Angeles, CA 90048",
+    "url": "http://www.hotelwilshire.com/",
+    "phone": "323-852-6000",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Bar ,  Restaurant , Business Center , Laundry Service,",
+    "instagram": "#thehotelwilshire",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Angeleno",
+    "fullAddress": "170 N Church Ln, Los Angeles, CA 90049",
+    "url": "http://www.hotelangeleno.com/",
+    "phone": "310-476-6411",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Bar , Restuarant , Business Center ,",
+    "instagram": "@hotelangeleno",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Loews Hollywood Hotel",
+    "fullAddress": "1755 Highland Ave, Los Angeles, CA 90028",
+    "url": "https://www.loewshotels.com/hollywood-hotel",
+    "phone": "323-856-1200",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Restuarant , Bar ,  Pets allowed, Free Parking , Laundry Service ,",
+    "instagram": "@loews_hollywood",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Loews Santa Monica Beach Hotel",
+    "fullAddress": "1700 Ocean Ave, Santa Monica, CA 90401",
+    "url": "http://www.santamonicaloewshotel.com/",
+    "phone": "310-458-6700",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Restuarant , Bar ,  Pets allowed, Free Parking , Laundry Service ,",
+    "instagram": "@loewssmbeach",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Garland",
+    "fullAddress": "4222 Vineland Ave, North Hollywood, CA 91602",
+    "url": "http://www.thegarland.com/",
+    "phone": "818-980-8000",
+    "roomService": "",
+    "amenityList": "Outdoor Pool , Spa , Hot Tub ,  Restuarant , Bar ,",
+    "instagram": "@thegarland",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Chamberlain West Hollywood",
+    "fullAddress": "1000 Westmount Dr, West Hollywood, CA 90069",
+    "url": "http://www.chamberlainwesthollywood.com/",
+    "phone": "310-657-7400",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Dry Cleaning",
+    "instagram": "#chamberlainwesthollywood",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Grafton on Sunset",
+    "fullAddress": "8462 Sunset Blvd, West Hollywood, CA 90069",
+    "url": "http://www.graftononsunset.com/",
+    "phone": "323-654-4600",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Dry Cleaning",
+    "instagram": "@graftononsunset",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Omni Los Angeles at California Plaza",
+    "fullAddress": "251 S Olive St, Los Angeles, CA 90012",
+    "url": "https://www.omnihotels.com/hotels/los-angeles-california-plaza",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@omnihotels",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "SLS Hotel at Beverly Hills",
+    "fullAddress": "465 S. La Cienega Blvd. Los Angeles, CA 90048",
+    "url": "http://slshotels.com/beverlyhills/",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@slshotelbeverlyhills",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The LA Hotel Downtown",
+    "fullAddress": "333 South Figueroa Street, Los Angeles, California 90071",
+    "url": "http://www.thelahotel.com/",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center",
+    "instagram": "#thelahoteldowntown",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "W Hollywood",
+    "fullAddress": "6250 Hollywood Blvd, Hollywood. CA 90028",
+    "url": "http://www.starwoodhotels.com/whotels/property/overview/index.html?propertyID=1789&language=en_US",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center",
+    "instagram": "@whollywoodhotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "W Los Angeles - West Beverly Hills",
+    "fullAddress": "930 Hilgard Avenue, Los Angeles, CA 90024",
+    "url": "http://www.starwoodhotels.com/whotels/property/overview/index.html?propertyID=97518&language=en_US",
+    "phone": "",
+    "roomService": "",
+    "amenityList": "Pool, Spa, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@wlosangeles",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Line",
+    "fullAddress": "3515 Wilshire Blvd, Los Angeles, CA 90010",
+    "url": "http://www.thelinehotel.com/",
+    "phone": "213-381-7411",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Business center",
+    "instagram": "@thelinehotel",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Avalon Hotel Beverly Hills",
+    "fullAddress": "9400 W Olympic Blvd, Beverly Hills, CA 90212",
+    "url": "http://www.avalon-hotel.com/beverly-hills",
+    "phone": "310-277-5221",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Dry Cleaning",
+    "instagram": "#avalonhotelbeverlyhills",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Viceroy Santa Monica",
+    "fullAddress": "1819 Ocean Ave, Santa Monica, CA 90401",
+    "url": "http://www.viceroyhotelsandresorts.com/en/santamonica",
+    "phone": "310-657-7400",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "@viceroysm",
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Figueroa",
+    "fullAddress": "939 South Figueroa Street, Los Angeles, CA 90015",
+    "url": "http://www.hotelfigueroa.com/",
+    "phone": "213-627-8971",
+    "roomService": "",
+    "amenityList": "Pool, Bar, Fitness Center, Dry Cleaning",
+    "instagram": "@hotelfigueroa",
+    "policy": "Pool currently closed for renovation."
+  },
+  {
+    "name": "Millennium Biltmore Hotel Los Angeles",
+    "fullAddress": "506 S Grand Ave, Los Angeles, CA 90071",
+    "url": "https://www.millenniumhotels.com/en/los-angeles/millennium-biltmore-hotel-los-angeles/",
+    "phone": "213-624-1011",
+    "roomService": "",
+    "amenityList": "Indoor Pool, Bar, Fitness Center, Business Center, Dry Cleaning",
+    "instagram": "#millenniumbiltmorehotellosangeles",
+    "policy": 0
+  }
+]

@@ -61,7 +61,17 @@ const poolSchema = new Schema({
     phone: String,
     roomService: String,
     reservable: Boolean,
-    amenities: [amenitySchema]
+    amenities: [{
+        type: String,
+        count: {
+            type: Number,
+            default: 0
+        },
+        details: [{
+            label: String,
+            price: String
+        }]
+    }]
 }, {
     timestamps: true
 });

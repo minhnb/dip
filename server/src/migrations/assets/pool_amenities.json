@@ -1,0 +1,119 @@
+[{
+    "name": "The Beverly Hilton",
+    "daybed": "",
+    "cabana": 0,
+    "cabanaPrice": [{
+        "label": "F&B Minimum",
+        "price": "$350" 
+    }] 
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "daybed": "",
+    "cabana": 12,
+    "cabanaPrice": [{
+        "label": "",
+        "price": "$400" 
+    }] 
+  },
+  {
+    "name": "Mosaic Hotel Beverly Hills",
+    "daybed": "",
+    "cabana": 4,
+    "cabanaPrice": [{
+        "label": "",
+        "price": "FREE" 
+    }] 
+  },
+  {
+    "name": "Luxe Sunset Boulevard Hotel",
+    "daybed": "",
+    "cabana": 4,
+    "cabanaPrice": [{
+        "label": "Mon-Thurs",
+        "price": "$75" 
+    },
+    {
+        "label": "Fri-Sat",
+        "price": "$150" 
+    }]
+  },
+  {
+    "name": "The London West Hollywood",
+    "daybed": "",
+    "cabana": 4,
+    "cabanaPrice": [{
+        "label": "Reservation",
+        "price": "$300-$400" 
+    },
+    {
+        "label": "F&B Minimum",
+        "price": "$350-$450" 
+    }]
+  },
+  {
+    "name": "Montage Beverly Hills",
+    "daybed": "",
+    "cabana": 8,
+    "cabanaPrice": [{
+        "label": "weekdays",
+        "price": "$350" 
+    },
+    {
+        "label": "weekend",
+        "price": "$450" 
+    }]
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "daybed": "",
+    "cabana": 0,
+    "cabanaPrice": [{
+        "label": "Reservation",
+        "price": "$200-$400" 
+    },
+    {
+        "label": "F&B Minimum",
+        "price": "$250-$450" 
+    }]
+  },
+  {
+    "name": "Custom Hotel",
+    "daybed": "",
+    "cabana": 5,
+    "cabanaPrice": [{
+        "label": "",
+        "price": "$250" 
+    }]
+  },
+  {
+    "name": "W Hollywood",
+    "daybed": 0,
+    "cabana": 0,
+    "cabanaPrice": [{
+        "label": "F&B Minimum",
+        "price": "$1000" 
+    }],
+    "daybedPrice": [{
+        "label": "F&B Minimum",
+        "price": "$150 - $300" 
+    }]
+  },
+  {
+    "name": "W Los Angeles - Westwood",
+    "daybed": "",
+    "cabana": 11,
+    "cabanaPrice": [{
+        "label": "F&B Minimum",
+        "price": "$150-$300" 
+    }]
+  },
+  {
+    "name": "Mondrian Los Angeles Hotel",
+    "daybed": 0,
+    "cabana": "",
+    "daybedPrice": [{
+        "label": "",
+        "price": "$400"     
+    }]
+  }]
