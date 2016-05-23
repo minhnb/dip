@@ -21,7 +21,8 @@ const groupSchema = new Schema({
     members: [{
         ref: {
             type: Schema.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            index: true
         },
         lastMessage: {
             type: Schema.ObjectId,
