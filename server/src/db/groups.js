@@ -43,7 +43,7 @@ groupSchema.statics.findGroups = function(user, query) {
         }).select('_id').exec();
 
         groupQuery = userPromise.then(users => {
-            return this.find({
+            return {
                 $and: [
                     {'members.ref': user},
                     {
@@ -53,12 +53,12 @@ groupSchema.statics.findGroups = function(user, query) {
                         ]
                     }
                 ]
-            });
+            };
         });
     } else {
-        groupQuery = Promise.resolve(this.find({'members.ref': user}));
+        groupQuery = Promise.resolve({'members.ref': user});
     }
-    return groupQuery.then(query => query.sort({updatedAt: -1}).exec());
+    return groupQuery.then(query => this.find(query).sort({updatedAt: -1}).exec());
 };
 
 groupSchema.statics.populateLastMessage = populateLastMessage;
