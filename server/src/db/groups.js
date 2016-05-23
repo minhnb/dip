@@ -55,9 +55,9 @@ groupSchema.statics.findGroups = function(user, query) {
             });
         });
     } else {
-        groupQuery = this.find({'members.ref': user});
+        groupQuery = Promise.resolve(this.find({'members.ref': user}));
     }
-    return groupQuery.sort({updatedAt: -1}).exec();
+    return groupQuery.then(query => query.sort({updatedAt: -1}).exec());
 };
 
 groupSchema.statics.populateLastMessage = populateLastMessage;
