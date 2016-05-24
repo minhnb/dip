@@ -50,5 +50,9 @@ module.exports = {
     gcm: {
         apiKey: process.env.GCM_KEY,
         senderId: process.env.GCM_ID
+    },
+    facebook: {
+        appId: process.env.FB_APP_ID,
+        secretId: process.env.FB_SECRET_ID
     }
 };

@@ -13,8 +13,9 @@ const users = require('../db').users;
 const sessions = require('../db').sessions;
 
 const config = require('../config');
+const crypto = require('crypto');
 
-const request = require('request');
+const request = require('request-promise');
 
 const contactDip = require('./contact_dip');
 
@@ -84,20 +85,11 @@ function login() {
 }
 
 function facebookLogin() {
-    return (ctx, next) => {
-        var request_token_url = "https://graph.facebook.com/me/?access_token=" + ctx.request.body.code;
-        return new Promise((resolve, reject) => {
-            request.get(request_token_url, function (error, response, token) {
-                if (error || response.statusCode !== 200) {
-                    error = error || response.statusMessage;
-                    error.expose = true; // Mark error as safe to display to user
-                    reject(error);
-                } else {
-                    let fbUserInfo = JSON.parse(token);
-                    resolve(fbUserInfo);
-                }
-            })
-        }).then(fbUserInfo => {
+    return (ctx, next) => { 
+        let code = ctx.request.body.code;
+        let hash = crypto.createHmac('sha256', config.facebook.secretId).update(code).digest('hex');
+        let request_user_info_url = "https://graph.facebook.com/me?access_token=" + code + "&appsecret_proof=" + hash;
+        return request(request_user_info_url).then(fbUserInfo => {
             return users.findByEmail(fbUserInfo.email).exec().then(user => {
                 if (!user) {
                     user = new users({
