@@ -90,10 +90,12 @@ function facebookLogin() {
         let hash = crypto.createHmac('sha256', config.facebook.secretId).update(code).digest('hex');
         let request_user_info_url = "https://graph.facebook.com/me?access_token=" + code + "&appsecret_proof=" + hash;
         return request(request_user_info_url).then(fbUserInfo => {
+            if(!fbUserInfo.email && !ctx.request.body.email) ctx.throw(400, 'Missing Email');
+            let email = ctx.request.body.email.toLowerCase();
             return users.findByEmail(fbUserInfo.email).exec().then(user => {
                 if (!user) {
                     user = new users({
-                        email: fbUserInfo.email,
+                        email: fbUserInfo.email || email,
                         firstName: fbUserInfo.first_name,
                         lastName: fbUserInfo.last_name,
                         gender: fbUserInfo.gender,
