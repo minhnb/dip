@@ -72,7 +72,7 @@ router
         (ctx, next) => {
             let id = ctx.params.hotelId;
             return db.hotels.findById(id)
-                .populate('services.ref')
+                .populate('services')
                 .exec()
                 .then(data => {
                     ctx.state.hotel = data;
