@@ -46,9 +46,12 @@ router.use('/', auth.authenticate())
             members = Array.from(new Set(members));
 
             return db.groups.findGroupMembers(members)
-                .then(db.groups.populateLastMessage)
-                .then(groups => {
-                    let group = groups[0];
+                .then(group => {
+                    if (!group) {
+                        ctx.throw(404, 'No existed group');
+                    } else return group.populateLastMessage();
+                })
+                .then(group => {
                     group.currentMember = group.findMember(user);
                     return db.groups.populate(group, [
                         {path: 'owner'},
