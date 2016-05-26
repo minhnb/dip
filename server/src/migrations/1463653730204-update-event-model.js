@@ -21,7 +21,7 @@ exports.up = function(next) {
                     next(error);
                 } else {
                     let shangrilaHotel = pools[0];
-                    let shangrilaPool = shangrilaHotel.services[0].ref;
+                    let shangrilaPool = shangrilaHotel.services[0];
                     connection.db.collection('events', (error, collection) => {
                         collection.find({}).toArray((error, events) => {
                             if (error) {
@@ -53,7 +53,7 @@ exports.down = function(next) {
                     next(error);
                 } else {
                     let p = events.map(event => {
-                    	event.pool = mongoose.Types.ObjectId(event.host._id);
+                    	event.pool = mongoose.Types.ObjectId(event.host);
                     	delete event.hotel;
                     	delete event.host;
                     	collection.save(event);
