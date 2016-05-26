@@ -5,36 +5,43 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const specialOfferSchema = new Schema({
-    pools: [{
+    hotels: [{
         ref: {
             type: Schema.ObjectId,
-            ref: 'Pool',
-            required: true
+            ref: 'Hotel',
+            required: true,
         },
-        days: [{
-            type: Number,
-            enum: [0, 1, 2, 3, 4, 5, 6] // Monday is one...Sunday is 0
-        }],
-        startDay: String,
-        endDay: String,
-        duration: {
-            startTime: {
+        hosts: [{
+            ref: {
+                type: Schema.ObjectId,
+                ref: 'HotelService',
+                required: true
+            },
+            days: [{
+                type: Number,
+                enum: [0, 1, 2, 3, 4, 5, 6] // Monday is one...Sunday is 0
+            }],
+            startDay: String,
+            endDay: String,
+            duration: {
+                startTime: {
+                    type: Number,
+                    required: true
+                },
+                endTime: {
+                    type: Number,
+                    required: true
+                }
+            },
+            allotmentCount: {
                 type: Number,
                 required: true
             },
-            endTime: {
-                type: Number,
-                required: true
+            reservationCount: {
+                type: Schema.Types.Mixed,
+                required: false
             }
-        },
-        allotmentCount: {
-            type: Number,
-            required: true
-        },
-        reservationCount: {
-            type: Schema.Types.Mixed,
-            required: false
-        }
+        }]
     }],
     name: {
         type: String,

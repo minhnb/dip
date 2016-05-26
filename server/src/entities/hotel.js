@@ -1,6 +1,6 @@
 'use strict';
 
-const pool = require('./pool');
+const hotelService = require('./hotelService');
 
 function convertHotel(hotel) {
     return {
@@ -19,13 +19,10 @@ function convertHotel(hotel) {
         phone: hotel.phone,
         roomService: hotel.roomService,
         reservable: hotel.reservable,
-        services: {
-            pools: hotel.services.pools.map(p => {
-                return {
-                    pool: p.ref ? pool(p.ref) : undefined
-                }
-            })
-        }
+        services: hotel.services.filter(Boolean).map(s => {
+           return hotelService(s);
+        }),
+        amenities: hotel.amenities
     }
 }
 

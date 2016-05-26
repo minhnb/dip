@@ -38,15 +38,10 @@ const hotelSchema = new Schema({
     roomService: String,
     reservable: Boolean,
     amenities: [String],
-    services: {
-        pools: [{
-            ref: {
-                type: Schema.ObjectId,
-                ref: 'Pool'
-            },
-            policy: String    
-        }]
-    }
+    services: [{
+        type: Schema.ObjectId,
+        ref: 'HotelService'
+    }]
 }, {
     timestamps: true
 });

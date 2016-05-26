@@ -70,12 +70,12 @@ exports.up = function(next) {
 				                country: 'US'
 				            };
 				            hotel.active = true;
-				            hotel.reservable = true;
+				            hotel.reservable = false;
 				            return geocoder.geocode(hotel.fullAddress)
 				            .then(data => {
 				                hotel.address.street = hotel.fullAddress.split(",")[0];
-				                hotel.address.city = hotel.city;
 				                if(data.length > 0) {
+				                	hotel.address.city = data[0].city;
 				                    hotel.address.state = data[0].administrativeLevels.level1short;
 				                    hotel.coordinates.push(data[0].longitude);
 				                    hotel.coordinates.push(data[0].latitude);
@@ -116,12 +116,8 @@ exports.up = function(next) {
 				                hotels.map(hotel => {
 				                    //append pool policy
 				                    hotel.amenities = hotel.amenityList.split(',');
-				                    hotel.services = {pools: []}
-				                    hotel.services.pools.push({
-				                    	policy: hotel.policy,
-				                    	ref: poolMap[hotel.name] ? mongoose.Types.ObjectId(poolMap[hotel.name]) : undefined
-				                    });
-				               
+				                    hotel.services = []
+				                    hotel.services.push(poolMap[hotel.name] ? mongoose.Types.ObjectId(poolMap[hotel.name]) : undefined)				               
 				                    delete hotel.tmpName;
 				                    delete hotel.fullAddress;
 				                    delete hotel.policy;

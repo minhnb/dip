@@ -18,12 +18,12 @@ router
     .post('add reservation', '/',
         checkInput,
         verifyHotel,
-        verifyPools,
-        verifyOffers,
+        verifyServices,
+        verifyRequestServices,
+        createSubReservation,
         createReservation,
         createSale,
         chargeSale,
-        sendEmails,
         ctx => {
             ctx.status = 200;
         }
@@ -37,12 +37,16 @@ router
                     model: db.hotels
                 })
                 .populate({
-                    path: 'services.pools.offers.ref',
-                    model: db.offers
-                })
-                .populate({
-                    path: 'services.pools.offers.addons.ref',
-                    model: db.addons
+                    path: 'services',
+                    model: db.hotelSubReservations,
+                    populate: [{
+                        path: 'offers.ref',
+                        model: db.offers   
+                    },
+                    {
+                        path: 'offers.addons.ref',
+                        model: db.addons, 
+                    }]
                 })
                 .exec()
                 .then(reservations => {
@@ -56,11 +60,7 @@ function checkInput(ctx, next) {
         userCardId = ctx.request.body.cardId;
     if(!ctx.request.body.services) ctx.throw(400, 'Invalid services');
     if(!ctx.request.body.hotel) ctx.throw(400, 'Missing hotel id');
-    if(ctx.request.body.services.pools) {
-        if(!Array.isArray(ctx.request.body.services.pools)) ctx.throw(400, 'Pools must be an array');
-        ctx.state.pools = ctx.request.body.services.pools;
-        ctx.state.poolIds = ctx.state.pools.map(pool => pool.id);
-    }
+    if(!Array.isArray(ctx.request.body.services)) ctx.throw(400, 'Services must be an array');
 
     let userCard = user.account.cards.id(userCardId);
     if (!userCard) {
@@ -71,14 +71,13 @@ function checkInput(ctx, next) {
     }
 
     ctx.state.userCard = userCard;
+    ctx.state.serviceIds = ctx.request.body.services.map(service => service.id);
     return next();
 }
 
 function verifyHotel(ctx, next) {
-    let poolIds = ctx.state.poolIds;
-    return db.hotels.findOne({_id: ctx.request.body.hotel,
-        'services.pools.ref': {$in: poolIds}
-    })
+    let serviceIds = ctx.state.serviceIds;
+    return db.hotels.findOne({_id: ctx.request.body.hotel})
     .exec()
     .then(hotel => {
         if(!hotel) ctx.throw(400, 'Invalid hotel');
@@ -87,81 +86,100 @@ function verifyHotel(ctx, next) {
     })
 }
 
-function verifyPools(ctx, next) {
-    let poolIds = ctx.state.poolIds;
-    return db.pools.find({_id: {$in: poolIds}})
+function verifyServices(ctx, next) {
+    let serviceIds = ctx.state.serviceIds;
+    return db.hotelServices.find({_id: {$in: serviceIds}})
     .exec()
-    .then(pools => {
-        if(pools.length < poolIds.length) ctx.throw(400, 'Invalid Pool');
-        ctx.state.poolMap = pools.reduce((obj, pool) => {
-            obj[pool.id] = pool;
-            return obj;
-        }, Object.create({}));
+    .then(services => {
+        if(services.length < serviceIds.length) ctx.throw(400, 'Invalid Services');
         return next();
     });
 }
 
-function verifyOffers(ctx, next) {
-    let pools = ctx.state.pools;
-    let price = 0;
-    let expectedPrice = ctx.request.body.price;
-    let offerMap = {};
-    let p = pools.map(pool => {
-        let _offers = pool.offers;
-        let offerIds = _offers.map(o => o.id);
-        return db.offers.find({
-            _id: {$in: offerIds},
-            pool: pool.id
+function verifyRequestServices(ctx, next) {
+    let userServices = ctx.request.body.services,
+        serviceIds = ctx.state.serviceIds;
+    ctx.state.price = 0;
+    ctx.state.offerMap = {};
+
+    return db.hotelServices
+    .find({_id: {$in: serviceIds}})
+    .exec()
+    .then(services => {
+        let serviceMap = services.reduce((obj, service) => {
+            obj[service.id] = service;
+            return obj;
+        }, Object.create({}));
+        ctx.state.serviceMap = serviceMap;
+        let p = userServices.map(service => {
+            return verifyOffers(ctx, () => {}, service.offers);
         })
-        .populate('addons')
-        .exec()
-        .then(offers => {
-            if (offers.length < _offers.length) ctx.throw(400, 'Invalid offer id');
-            let baseOfferMap = offers.reduce((obj, offer) => {
-                obj[offer.id] = offer;
-                return obj;
-            }, Object.create({}));
-            let _offerMap = _offers.reduce((obj, offer) => {
-                obj[offer.id] = offer;
-                obj[offer.id].data = baseOfferMap[offer.id];
-                return obj;
-            }, Object.create({}));
+        ctx.state.userServices = userServices;
+        return Promise.all(p).then(next);
+    })    
+}
 
-            ctx.state.offers = offers;
-            offers.forEach(offer => {
-                let expected = _offerMap[offer._id.toString()];
-                
-                if (!expected) {
-                    ctx.throw(400, 'Invalid offer id');
-                }
 
-                if(!expected.count) ctx.throw(400, 'Missing quantities');
-                if(expected.count < 0) ctx.throw(400, 'quantities must be large then zero');
+function verifyOffers(ctx, next, offers) {
+    let _offers = offers,
+        offerIds = _offers.map(offer => offer.id);
+    return db.offers.find({_id: {$in: offerIds}})
+    .populate('addons')
+    .exec()
+    .then(offers => {
+        if (offers.length < _offers.length) ctx.throw(400, 'Invalid offer id');
+        let baseOfferMap = offers.reduce((obj, offer) => {
+            obj[offer.id] = offer;
+            return obj;
+        }, Object.create({}));
+        let _offerMap = _offers.reduce((obj, offer) => {
+            obj[offer.id] = offer;
+            obj[offer.id].data = baseOfferMap[offer.id];
+            return obj;
+        }, Object.create({}));
 
-                if (expected.count + offer.reservationCount > offer.allotmentCount) {
-                    ctx.throw(400, 'Overbooking offer');
-                }
-                offer.reservationCount += expected.count;
+        let p = offers.map(offer => {
+            let expected = _offerMap[offer._id.toString()],
+                price = 0;
+            if (!expected) {
+                ctx.throw(400, 'Invalid offer id');
+            }
 
-                if (!verifySpecialOffers(expected, offer)) {
-                    ctx.throw(400, 'Invalid special offer');
-                }
-                let addonPrice = expected.addons.reduce((total, addon) => {
-                    return total + addon.price * addon.count;
-                }, 0);
-                price += expected.count * offer.price;
-                price += addonPrice;
-            });
-            offerMap = Object.assign(offerMap, _offerMap);
-            return Promise.all(offers.map(o => o.save()));
+            if(!expected.count) ctx.throw(400, 'Missing quantities');
+            if(expected.count < 0) ctx.throw(400, 'quantities must be large then zero');
+
+            if (expected.count + offer.reservationCount > offer.allotmentCount) {
+                ctx.throw(400, 'Overbooking offer');
+            }
+            if (expected.price != offer.price) {
+                ctx.throw(400, 'Unmatched offer price');
+            }
+
+            offer.reservationCount += expected.count;
+
+            if (!verifySpecialOffers(expected, offer)) {
+                ctx.throw(400, 'Invalid special offer');
+            }
+            let addonPrice = expected.addons.reduce((total, addon) => {
+                return total + addon.price * addon.count;
+            }, 0);
+            price += expected.count * offer.price;
+            price += addonPrice;
+
+            ctx.state.price += price;
+            return offer.save();
+        });
+        return Promise.all(p).then(() => {
+            ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
+            let expectedPrice = ctx.request.body.price;
+            if (ctx.state.price != expectedPrice) {
+                ctx.throw(400, 'Unmatched total price');
+            }
+            return next();
         })
-    })
-    return Promise.all(p).then(() => {
-        ctx.state.price = price;
-        ctx.state.offerMap = offerMap;
-        return next();  
     })
 }
+
 
 function verifySpecialOffers(userOffer, offer) {
     if(userOffer.addons) {
@@ -196,13 +214,58 @@ function getDiscount(price, balance) {
     }
 }
 
+function createSubReservation(ctx, next) {
+    let userServices = ctx.state.userServices,
+        offerMap = ctx.state.offerMap,
+        serviceMap = ctx.state.serviceMap,
+        serviceIds = [];
+        let p = userServices.map(s => { 
+            // console.log(s);
+            let service = new db.hotelSubReservations({
+                service: {
+                    ref: s.id,
+                    type: serviceMap[s.id].type,
+                    name: serviceMap[s.id].name,
+                    title: serviceMap[s.id].title,
+                    location: serviceMap[s.id].location
+                },
+                offers: s.offers.map(o => {
+                    let userOffer = offerMap[o.id],
+                    addons = [];
+                    if(userOffer.addons) {
+                        addons = userOffer.addons.reduce((arr, userSubOffer) => {
+                            arr.push({
+                                ref: userSubOffer.id,
+                                count: userSubOffer.count,
+                                price: userSubOffer.price
+                            });
+                            return arr;
+                        }, []);
+                    };
+                    return {
+                        ref: o.id,
+                        members: userOffer.members,
+                        count: userOffer.count,
+                        addons: addons,
+                        price: userOffer.data.price
+                    };
+                })
+            });
+            return service.save().then(res => {
+                serviceIds.push(res._id);
+            });
+    });
+    return Promise.all(p).then(() => {
+        ctx.state.userServiceIds = serviceIds;
+        return next();
+    })
+}
+
 function createReservation(ctx, next) {
     let user = ctx.state.user,
-        pools = ctx.state.pools,
+        serviceIds = ctx.state.userServiceIds,
         hotel = ctx.state.hotel,
-        poolMap = ctx.state.poolMap,
         price = ctx.state.price,
-        offerMap = ctx.state.offerMap,
         userReservation = new db.hotelReservations({
             user: {
                 ref: user,
@@ -216,39 +279,7 @@ function createReservation(ctx, next) {
                 details: hotel.details,
                 location: hotel.location
             },
-            services: {
-                pools: pools.map(p => {
-                    return {
-                        pool: {
-                            ref: p.id,
-                            name: poolMap[p.id].name,
-                            title: poolMap[p.id].title,
-                            location: poolMap[p.id].location
-                        },
-                        offers: p.offers.map(offer => {
-                            let userOffer = offerMap[offer.id],
-                                addons = [];
-                            if(userOffer.addons) {
-                                addons = userOffer.addons.reduce((arr, userSubOffer) => {
-                                    arr.push({
-                                        ref: userSubOffer.id,
-                                        count: userSubOffer.count,
-                                        price: userSubOffer.price
-                                    });
-                                    return arr;
-                                }, []);
-                            };
-                            return {
-                                ref: offer.id,
-                                members: userOffer.members,
-                                count: userOffer.count,
-                                addons: addons,
-                                price: userOffer.data.price
-                            };
-                        })
-                    }  
-                })
-            },
+            services: serviceIds,
             price: price
         });
     let p = Promise.resolve();
@@ -308,14 +339,4 @@ function chargeSale(ctx, next) {
 }
 
 function sendEmails(ctx, next) {
-    let hotelReservations = JSON.parse(JSON.stringify(ctx.state.reservation)),
-            offerMap = ctx.state.offerMap,
-            user = ctx.state.user;
-    hotelReservations.services.pools.map(pool => {      
-        pool.offers.map(offer => {
-            offer.data = offerMap[offer.ref].data
-        })
-    })
-    mailer.confirmHotelReservation(user.email, hotelReservations);
-    return next();
 }

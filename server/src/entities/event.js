@@ -1,6 +1,6 @@
 'use strict';
 
-const pool = require('./pool');
+const hotelService = require('./hotelService');
 
 function convertEvent(event, user) {
     return {
@@ -12,7 +12,8 @@ function convertEvent(event, user) {
         instagram: event.instagram,
         url: event.url,
         duration: event.duration,
-        pool: pool(event.pool),
+        hotel: event.hotel,
+        host: hotelService(event.host),
         email: event.email,
         price: event.price,
         date: event.date,

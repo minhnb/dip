@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Reservation = require('./reservations');
+const Reservation = require('../../reservations');
 
 const EventReservationSchema = new Schema({
     event: {

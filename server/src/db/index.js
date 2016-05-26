@@ -28,10 +28,12 @@ module.exports = {
     membershipTypes: require('./membershipTypes'),
     refs: require('./refs'),
     events: require('./events'),
-    eventReservations: require('./eventReservations'),
-    poolReservations: require('./poolReservations'),
     specialOffers: require('./specialOffers'),
-    specialOfferReservations: require('./specialOfferReservations'),
     hotels: require('./hotels'),
-    hotelReservations: require('./hotelReservations')
+    hotelServices: require('./hotel_services'),
+    poolServices: require('./hotel_services/pool'),
+    eventReservations: require('./reservations/event'),
+    specialOfferReservations: require('./reservations/special_offer'),
+    hotelReservations: require('./reservations/hotel'),
+    hotelSubReservations: require('./reservations/hotel/services')
 };

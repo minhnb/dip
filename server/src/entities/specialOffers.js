@@ -1,6 +1,7 @@
 'use strict';
 
-const pool = require('./pool');
+const hotelService = require('./hotelService');
+const hotel = require('./hotel');
 
 function convertSpecialOffer(offer) {
     return {
@@ -13,15 +14,25 @@ function convertSpecialOffer(offer) {
         email: offer.email,
         duration: offer.duration,
         price: offer.price,
-        pools: offer.pools.map(p => {
+        hotels: offer.hotels.map(hotel => {
             return {
-                pool: pool(p.ref),
-                allotmentCount: p.allotmentCount,
-                startDay: p.startDay,
-                endDay: p.endDay,
-                duration: p.duration,
-                days: p.days
-            }  
+                hotel: {
+                    id: hotel.ref._id,
+                    name: hotel.ref.name,
+                    details: hotel.ref.details,
+                    location: hotel.ref.location,
+                    address: hotel.ref.address
+                },
+                hosts: hotel.hosts.map(host => {
+                    return {
+                        host: hotelService(host.ref),
+                        days: host.days,
+                        duration: host.duration,
+                        allotmentCount: host.allotmentCount,
+                        reservationCount: host.reservationCount
+                    }    
+                })
+            }   
         })
     }
 }

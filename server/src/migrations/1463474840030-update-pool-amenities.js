@@ -30,7 +30,7 @@ exports.up = function(next) {
 	                if (error) {
 	                    next(error);
 	                } else {
-	                    pools.map(pool => {
+	                    let p = pools.map(pool => {
 	                    	pool.amenities = [];
 	                    	if (poolMap[pool.name].daybed != '') {
 	                    	    pool.amenities.push({
@@ -48,7 +48,9 @@ exports.up = function(next) {
 	                    	}
 	                    	collection.save(pool);
 	                    })
-	                    next();
+	                    Promise.all(p).then(() => {
+                            next();
+                        })
 	                }
 	            });
 	        });
@@ -68,11 +70,13 @@ exports.down = function(next) {
     	return connectionPromise.then(connection => {
         connection.db.collection('pools', (error, collection) => {
             collection.find({'name': {$in: poolNames}}).toArray((error, pools) => {
-            	pools.map(pool => {
+            	let p = pools.map(pool => {
             		pool.amenities = [];
             		collection.save(pool);
             	})
-            	next();
+            	Promise.all(p).then(() => {
+                    next();
+                })
             })
         });
     });

@@ -3,8 +3,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const specialOfferSchema = require('./specialOffers').schema;
-const Reservation = require('./reservations');
+const specialOfferSchema = require('../../specialOffers').schema;
+const Reservation = require('../../reservations');
 
 const specialOfferReservationSchema = new Schema({
     name: String,

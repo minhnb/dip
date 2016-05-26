@@ -49,9 +49,14 @@ const eventSchema = new Schema({
     instagram: String,
     url: String,
     email: String,
-    pool: {
+    hotel: {
         type: Schema.ObjectId,
-        ref: 'Pool',
+        ref: 'Hotel',
+        required: true
+    },
+    host: {
+        type: Schema.ObjectId,
+        ref: 'HotelService',
         required: true
     },
     date: {

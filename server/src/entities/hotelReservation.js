@@ -8,35 +8,33 @@ module.exports = function(reservation) {
         id: reservation._id,
         type: reservation.type,
         hotel: {
-            id: reservation.hotel._id,
+            id: reservation.hotel.ref._id,
             name: reservation.hotel.name,
             description: reservation.hotel.description,
             location: reservation.hotel.location
         },
-        services: {
-            pools: reservation.services.pools.map(data => {
-                return {
-                    pool: data.pool,
-                    offers: data.offers.map(offer => {
-                        return {
-                            ref: offerEntity(offer.ref),
-                            price: offer.price,
-                            count: offer.count,
-                            addons: offer.addons.map(addon => {
-                                return {
-                                    ref: addonEntity(addon.ref),
-                                    count: addon.count,
-                                    price: addon.price
-                                }
-                                
-                            })
-                        }
-                        
-                    })
-                }
-                
-            })
-        },
+        services: reservation.services.map(s => {
+            return {
+                id: s._id,
+                type: s.service.type,
+                name: s.service.name,
+                location: s.service.location,
+                offers: s.offers.map(offer => {
+                    return {
+                        ref: offerEntity(offer.ref),
+                        price: offer.price,
+                        count: offer.count,
+                        addons: offer.addons.map(addon => {
+                            return {
+                                ref: addonEntity(addon.ref),
+                                count: addon.count,
+                                price: addon.price
+                            }         
+                        })
+                    }
+                })
+            }
+        }),
         price: reservation.price
     }
 };

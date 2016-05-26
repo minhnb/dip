@@ -1,6 +1,5 @@
 "use strict";
 const router = require('koa-router')();
-const pools = require('./pools');
 const events = require('./events');
 const specialOffers = require('./specialOffers');
 const hotels = require('./hotels');
@@ -14,10 +13,6 @@ module.exports = router;
 
 router
     .use('/', auth.authenticate())
-    .use('/pools',
-        pools.routes(),
-        pools.allowedMethods()
-    )
     .use('/events',
         events.routes(),
         events.allowedMethods()
@@ -33,26 +28,14 @@ router
     .get('get reservations', '/',
         ctx => {
         	let responseData = {};
-        	// let getPoolReservations = db.reservations
-         //        .find({'user.ref': ctx.state.user, type: 'Pool'})
-         //        .populate({
-         //            path: 'offers.members',
-         //            model: db.users
-         //        })
-         //        .exec()
-         //        .then(reservations => {
-         //        	responseData.pools = reservations.map(entities.reservation);
-         //            return;
-         //        });
-
             let getEventReservation = db.reservations
             	.find({'user.ref': ctx.state.user, type: 'Event'})    
             	.populate({
                     path: 'event.ref',
                     model: db.events,
                     populate: {
-                        path: 'pool',
-                        model: db.pools
+                        path: 'host',
+                        model: db.hotelServices
                     }
                 })
             	.exec()
@@ -62,6 +45,14 @@ router
             	})
             let getSpecialOfferReservation = db.reservations
                 .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})    
+                .populate({
+                    path: 'details.ref',
+                    model: db.specialOffers,
+                    populate: {
+                        path: 'hosts.ref',
+                        model: db.hotelServices
+                    }
+                })
                 .exec()
                 .then(reservations => {
                     responseData.specialOffers = reservations.map(entities.specialOfferReservation);
@@ -74,13 +65,17 @@ router
                     model: db.hotels
                 })
                 .populate({
-                    path: 'services.pools.offers.ref',
-                    model: db.offers
+                    path: 'services',
+                    model: db.hotelSubReservations,
+                    populate: [{
+                        path: 'offers.ref',
+                        model: db.offers   
+                    },
+                    {
+                        path: 'offers.addons.ref',
+                        model: db.addons, 
+                    }]
                 })
-                .populate({
-                    path: 'services.pools.offers.addons.ref',
-                    model: db.addons
-                })  
                 .exec()
                 .then(reservations => {
                     responseData.hotels = reservations.map(entities.hotelReservation);
