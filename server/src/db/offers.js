@@ -28,9 +28,19 @@ const offerSchema = new Schema({
         required: true,
         default: 'New Offer'
     },
-    pool: {
+    // pool: {
+    //     type: Schema.ObjectId,
+    //     ref: 'Pool',
+    //     required: true
+    // },
+    service: {
         type: Schema.ObjectId,
-        ref: 'Pool',
+        ref: 'HotelService',
+        required: true
+    },
+    hotel: {
+        type: Schema.ObjectId,
+        ref: 'Hotel',
         required: true
     },
     date: {
