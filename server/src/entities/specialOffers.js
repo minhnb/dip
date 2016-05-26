@@ -14,26 +14,25 @@ function convertSpecialOffer(offer) {
         email: offer.email,
         duration: offer.duration,
         price: offer.price,
-        hotels: offer.hotels.map(hotel => {
-            return {
-                hotel: {
-                    id: hotel.ref._id,
-                    name: hotel.ref.name,
-                    details: hotel.ref.details,
-                    location: hotel.ref.location,
-                    address: hotel.ref.address
-                },
-                hosts: hotel.hosts.map(host => {
-                    return {
-                        host: hotelService(host.ref),
-                        days: host.days,
-                        duration: host.duration,
-                        allotmentCount: host.allotmentCount,
-                        reservationCount: host.reservationCount
-                    }    
-                })
-            }   
-        })
+        hosts: offer.hotels.reduce((arr, hotel) => {
+            return arr.concat(hotel.hosts.map(host => {
+                return {
+                    hotel: {
+                        id: hotel.ref._id,
+                        name: hotel.ref.name,
+                        details: hotel.ref.details,
+                        location: hotel.ref.location,
+                        address: hotel.ref.address
+                    }, 
+                    host: hotelService(host.ref),
+                    days: host.days,
+                    duration: host.duration,
+                    allotmentCount: host.allotmentCount,
+                    reservationCount: host.reservationCount
+
+                }
+            }));
+        }, [])
     }
 }
 
