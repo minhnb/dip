@@ -34,6 +34,31 @@ router.use('/', auth.authenticate())
                 });
         }
     )
+    .get('/searchmembers',
+        validator.limitParams(),
+        ctx => {
+            let user = ctx.state.user,
+                members = ctx.query.members;
+
+            if (!Array.isArray(members)) members = [members];
+            members.push(user.id);
+
+            members = Array.from(new Set(members));
+
+            return db.groups.findGroupMembers(members)
+                .then(db.groups.populateLastMessage)
+                .then(groups => {
+                    let group = groups[0];
+                    group.currentMember = group.findMember(user);
+                    return db.groups.populate(group, [
+                        {path: 'owner'},
+                        {path: 'members.ref'}
+                    ]);
+                }).then(group => {
+                    ctx.body = {group: entities.group(group)};
+                });
+        }
+    )
     .post('/',
         validator.groups.addGroup(),
         ctx => {

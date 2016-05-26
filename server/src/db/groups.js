@@ -61,6 +61,13 @@ groupSchema.statics.findGroups = function(user, query) {
     return groupQuery.then(query => this.find(query).sort({updatedAt: -1}).exec());
 };
 
+groupSchema.statics.findGroupMembers = function(members) {
+    return this.find({
+        'members.ref': {$all: members.map(Schema.ObjectId)},
+        'members': {$size: members.length}
+    }).sort({updatedAt: -1}).limit(1).exec();
+};
+
 groupSchema.statics.populateLastMessage = populateLastMessage;
 
 groupSchema.methods.populateLastMessage = function() {

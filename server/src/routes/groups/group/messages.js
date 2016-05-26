@@ -64,6 +64,8 @@ router.get('/',
             return p.then(() => {
                 return message.save().then(message => {
                     // TODO: Send push notification to all members
+                    group.updatedAt = new Date();
+                    group.save();
                     ctx.status = 200;
                     ctx.body = {message: entities.message(message)};
 
