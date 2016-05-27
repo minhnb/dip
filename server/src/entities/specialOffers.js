@@ -24,7 +24,7 @@ function convertSpecialOffer(offer) {
                         location: hotel.ref.location,
                         address: hotel.ref.address
                     }, 
-                    host: hotelService(host.ref),
+                    host: hotelService(host),
                     days: host.days,
                     duration: host.duration,
                     allotmentCount: host.allotmentCount,

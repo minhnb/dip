@@ -46,12 +46,12 @@ router
             let getSpecialOfferReservation = db.reservations
                 .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})    
                 .populate({
-                    path: 'details.ref',
-                    model: db.specialOffers,
-                    populate: {
-                        path: 'hosts.ref',
-                        model: db.hotelServices
-                    }
+                    path: 'specialOffer.ref',
+                    model: db.specialOffers
+                })
+                .populate({
+                    path: 'offers.ref',
+                    model: db.offers
                 })
                 .exec()
                 .then(reservations => {

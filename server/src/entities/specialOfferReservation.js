@@ -1,25 +1,19 @@
 'use strict';
 
 const event = require('./event');
+const offerEntity = require('./offer');
 
 module.exports = function(reservation) {
     return {
         id: reservation._id,
-        name: reservation.name,
+        name: reservation.specialOffer.name,
         price: reservation.price,
-        details: reservation.details.offers.map(offer => {
+        type: reservation.type,
+        offers: reservation.offers.map(offer => {
             return {
-                id: offer._id,
-                name: offer.name,
-                location: offer.location,
-                slots: offer.slots.map(slot => {
-                    return {
-                        date: slot.date,
-                        count: slot.count,
-                        total: slot.total
-                    }
-                }),
-                duration: offer.duration
+                ref: offerEntity(offer.ref),
+                count: offer.count,
+                price: offer.price
             }
         })
     }

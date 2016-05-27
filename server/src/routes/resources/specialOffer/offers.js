@@ -19,10 +19,9 @@ router.get('/',
         return db.offers.find({
                 service: mongoose.Types.ObjectId(service),
                 days: day,
-                type: 'pass'
+                type: 'specialOfferPass'
             })
             .populate('type')
-            .populate('addons')
             .exec()
             .then(offers => {
                 ctx.body = {offers: offers.map(entities.offer)};

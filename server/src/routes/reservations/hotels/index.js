@@ -1,6 +1,7 @@
 "use strict";
 
 const router = require('koa-router')();
+const moment = require('moment');
 
 const db = require('../../../db');
 const entities = require('../../../entities');
@@ -145,17 +146,31 @@ function verifyOffers(ctx, next, offers) {
                 ctx.throw(400, 'Invalid offer id');
             }
 
+            if(!expected.date) ctx.throw(400, 'Missing offer date');
+            
+            let startDay = moment().weekday(),
+                startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
+                next7Days = moment(startDate).add(7, 'days').format('YYYY-MM-DD'),
+                reservDate = expected.date,
+                reservDay = moment(reservDate).weekday();
+
+            if(baseOfferMap[offer.id].days.indexOf(reservDay) == -1 || moment(reservDate) < moment() || moment(reservDate) > moment(next7Days) || moment(offer.dueDay) < moment(reservDate) || moment(offer.startDate) > moment(reservDate)) ctx.throw(400, 'Not serve');
+
+            if(baseOfferMap[offer.id].reservationCount[reservDate] && baseOfferMap[offer.id].reservationCount[reservDate] + expected.count > baseOfferMap[offer.id].allotmentCount) ctx.throw(400, 'Over booking'); 
+
+            if(offer.reservationCount[reservDate]) {
+                offer.reservationCount[reservDate] += expected.count
+            } else {
+                offer.reservationCount[reservDate] = expected.count
+            }
+            offer.markModified('reservationCount');
+
             if(!expected.count) ctx.throw(400, 'Missing quantities');
             if(expected.count < 0) ctx.throw(400, 'quantities must be large then zero');
 
-            if (expected.count + offer.reservationCount > offer.allotmentCount) {
-                ctx.throw(400, 'Overbooking offer');
-            }
             if (expected.price != offer.price) {
                 ctx.throw(400, 'Unmatched offer price');
             }
-
-            offer.reservationCount += expected.count;
 
             if (!verifySpecialOffers(expected, offer)) {
                 ctx.throw(400, 'Invalid special offer');

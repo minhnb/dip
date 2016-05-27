@@ -47,6 +47,18 @@ const offerSchema = new Schema({
         type: String,
         required: true
     },
+    days: [{
+        type: Number,
+        enum: [0, 1, 2, 3, 4, 5, 6] // Monday is one...Sunday is 0
+    }],
+    startDay: {
+        type: String,
+        required: true
+    },
+    dueDay: {
+        type: String,
+        required: true
+    },
     duration: {
         startTime: {
             type: Number,
@@ -57,10 +69,14 @@ const offerSchema = new Schema({
             required: true
         }
     },
+    // reservationCount: {
+    //     type: Number,
+    //     required: true,
+    //     default: 0
+    // },
     reservationCount: {
-        type: Number,
-        required: true,
-        default: 0
+        type: Schema.Types.Mixed,
+        required: false
     },
     allotmentCount: {
         type: Number,

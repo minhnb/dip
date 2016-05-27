@@ -135,7 +135,7 @@ function getSpecialOffers(ctx, next) {
         model: db.hotels
     })
     .populate({
-        path: 'hotels.hosts.ref',
+        path: 'hotels.hosts',
         model: db.hotelServices
     })
     .exec()

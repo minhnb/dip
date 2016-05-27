@@ -7,39 +7,30 @@ const specialOfferSchema = require('../../specialOffers').schema;
 const Reservation = require('../../reservations');
 
 const specialOfferReservationSchema = new Schema({
-    name: String,
-    details: {
+    specialOffer: {
         ref: {
             type: Schema.ObjectId,
             ref: 'SpecialOffer',
             required: true
         },
-        offers: [{
-            pool: {
-                type: Schema.ObjectId,
-                ref: 'Pool',
-                required: true
-            },
-            name: String,
-            location: String,
-            duration: {
-                startTime: {
-                    type: Number,
-                    required: true
-                },
-                endTime: {
-                    type: Number,
-                    required: true
-                }
-            },
-            slots: [{
-                date: String,
-                count: Number,
-                total: Number
-            }],
-            price: Number
-        }]
-    }
+        name: String
+    },
+    offers: [{
+        ref: {
+            type: Schema.ObjectId,
+            ref: 'Offer',
+            required: true
+        },
+        count: {
+            type: Number,
+            required: true,
+            default: 1
+        },
+        price: {
+            type: Number,
+            required: true
+        }
+    }]
 }, {
     timestamps: true,
     discriminatorKey: 'type'

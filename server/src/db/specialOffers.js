@@ -12,35 +12,9 @@ const specialOfferSchema = new Schema({
             required: true,
         },
         hosts: [{
-            ref: {
-                type: Schema.ObjectId,
-                ref: 'HotelService',
-                required: true
-            },
-            days: [{
-                type: Number,
-                enum: [0, 1, 2, 3, 4, 5, 6] // Monday is one...Sunday is 0
-            }],
-            startDay: String,
-            endDay: String,
-            duration: {
-                startTime: {
-                    type: Number,
-                    required: true
-                },
-                endTime: {
-                    type: Number,
-                    required: true
-                }
-            },
-            allotmentCount: {
-                type: Number,
-                required: true
-            },
-            reservationCount: {
-                type: Schema.Types.Mixed,
-                required: false
-            }
+            type: Schema.ObjectId,
+            ref: 'HotelService',
+            required: true
         }]
     }],
     name: {

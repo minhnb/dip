@@ -15,12 +15,14 @@ module.exports = router;
 router
     .use('/', auth.authenticate())
     .post('add reservation', '/',
-        validateInput,
-        validateOffers,
+        checkInput,
+        verifySpecialOffer,
+        verifyServices,
+        verifyRequestServices,
         createReservation,
         createSale,
         chargeSale,
-        sendEmail,
+        // sendEmail,
         ctx => {
             ctx.status = 200;
         }
@@ -29,6 +31,14 @@ router
         ctx => {
             return db.reservations
             .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})
+            .populate({
+                path: 'specialOffer.ref',
+                model: db.specialOffers
+            })
+            .populate({
+                path: 'offers.ref',
+                model: db.offers
+            })
             .exec()
             .then(reservations => {
                 ctx.body = {reservations: reservations.map(entities.specialOfferReservation)};
@@ -36,161 +46,143 @@ router
         }
     );
 
-function validateInput(ctx, next) {
-    if(!ctx.request.body.offerId) ctx.throw(400, 'Missing Offer Id');
-    if(!ctx.request.body.pools) ctx.throw(400, 'Missing Pools');
-    if(!Array.isArray(ctx.request.body.pools)) ctx.throw(400, 'Pools must be an array');
-    if(!ctx.request.body.cardId) ctx.throw(400, 'Missing cardId');
-    //verify usercard
-    let userCardId = ctx.request.body.cardId;
-    let userCard = ctx.state.user.account.cards.id(userCardId);
+function checkInput(ctx, next) {
+    let user = ctx.state.user,
+        userCardId = ctx.request.body.cardId;
+    if(!ctx.request.body.services) ctx.throw(400, 'Invalid services');
+    if(!ctx.request.body.offerId) ctx.throw(400, 'Missing offer id');
+    if(!Array.isArray(ctx.request.body.services)) ctx.throw(400, 'Services must be an array');
+
+    let userCard = user.account.cards.id(userCardId);
     if (!userCard) {
         ctx.throw(400, 'Invalid card id');
     }
     if (!userCard.passCvc) {
         ctx.throw(400, 'Cvc checking failed');
     }
-    ctx.state.userCard = userCard;
 
-    let pools = ctx.request.body.pools;
-    pools.forEach(pool => {
-        if(!pool.id) ctx.throw(400, 'Missing pool id');
-        if(!Array.isArray(pool.slots)) ctx.throw(400, 'slots must be an array');
-        pool.slots.forEach(slot => {
-            if(!slot.date) ctx.throw(400, 'Missing date');
-            let quantities = parseInt(slot.quantities);
-            if(!quantities) ctx.throw(400, 'Missing quantities');
-            if(quantities < 0) ctx.throw(400, 'quantities must be large then zero');
-        })
-    })
-    let poolIds = ctx.request.body.pools.map(pool => pool.id);
-    
-    return db.pools.find({_id: {$in: poolIds}})
-    .exec()
-    .then(pools => {
-        if(pools.length !== poolIds.length) ctx.throw(400, 'Invalid Pool');
-        ctx.state.poolIds = poolIds;
-        ctx.state.pools = ctx.request.body.pools;
-        return next();
-    })
+    ctx.state.userCard = userCard;
+    ctx.state.serviceIds = ctx.request.body.services.map(service => service.id);
+    return next();
 }
 
-function validateOffers(ctx, next) {
-    let offerId = ctx.request.body.offerId;
+function verifySpecialOffer(ctx, next) {
+    let serviceIds = ctx.state.serviceIds,
+        offerId = ctx.request.body.offerId;
     return db.specialOffers
     .findOne({
         _id: offerId,
-        'pools.ref': {$all: ctx.state.poolIds}
+        'hotels.hosts': {$all: ctx.state.serviceIds}
     })
-    .populate('pools.ref')
+    .populate('hotels.hosts')
     .exec()
     .then(offer => {
         if(!offer) ctx.throw(400, 'Invalid offer');
         ctx.state.offer = offer;
-        let pools = offer.pools;
-
-        let poolMap = pools.reduce((obj, pool) => {
-            obj[pool.ref.id] = pool;
-            return obj;
-        }, Object.create({}));
-
-        let price = 0;
-        let startDay = moment().weekday();
-        let startDate = moment().weekday(startDay).format('YYYY-MM-DD');
-        let next7Days = moment(startDate).add(7, 'days').format('YYYY-MM-DD');
-        ctx.state.pools.map(pool => {
-            pool.slots.map(slot => {
-                let reservDate = slot.date;
-                let reservDay = moment(reservDate).weekday();
-                if(poolMap[pool.id].days.indexOf(reservDay) == -1 || reservDate < moment() || reservDay > next7Days) ctx.throw(400, 'Not serve');
-                if(poolMap[pool.id].reservationCount[reservDate] && poolMap[pool.id].reservationCount[reservDate] + slot.quantities > poolMap[pool.id].allotmentCount) ctx.throw(400, 'Over booking'); 
-                price += offer.price * slot.quantities;
-            }); 
-            
-        });
-
-        ctx.state.price = price;
-        ctx.state.poolMap = poolMap;
         return next();
     })
 }
 
-function createReservation(ctx, next) {
-    let user = ctx.state.user,
-        offer = ctx.state.offer,
-        poolMap = ctx.state.poolMap,
-        price = ctx.state.price,
-        pools = ctx.state.pools;
-
-
-    let userOffers = pools.map(pool => {
-        return {
-            pool: pool.id,
-            name: poolMap[pool.id].ref.name,
-            location: poolMap[pool.id].ref.location,
-            duration: poolMap[pool.id].duration,
-            slots: pool.slots.map(slot => {
-                return {
-                    date: slot.date,
-                    count: slot.quantities,
-                    total: offer.price * slot.quantities
-                }
-            }),
-            price: price
-        };
-
-    });
-    let specialOfferResevation = new db.specialOfferReservations({
-        name: offer.name,
-        user: {
-            ref: user,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName
-        },
-        details: {
-            ref: offer,
-            offers: userOffers,
-        },
-        price: price
-    });
-
-    return db.specialOffers.findOne({_id: offer})
+function verifyServices(ctx, next) {
+    let serviceIds = ctx.state.serviceIds;
+    return db.hotelServices.find({_id: {$in: serviceIds}})
     .exec()
-    .then(offer => {
-        offer.pools.map(pool => {
-            pools.map(userPool => {
-                if(pool.ref == userPool.id) {
-                    userPool.slots.map(slot => {
-                        let date = slot.date;
-                        let quantities = slot.quantities;
-                        if(pool.reservationCount[date]) {
-                            pool.reservationCount[date] += quantities
-                        } else {
-                            pool.reservationCount[date] = quantities
-                        }
-                        pool.markModified('reservationCount');
-                    })
-                }
-            })
-        });
-        return offer.save().then(() => {
-            let p = Promise.resolve();
-            if (user.account.balance > 0) {
-                let discount = getDiscount(price, user.account.balance);
-                user.account.balance -= discount;
-                specialOfferResevation.promotionDiscount = discount;
-                p = user.save();
+    .then(services => {
+        if(services.length < serviceIds.length) ctx.throw(400, 'Invalid Services');
+        return next();
+    });
+}
+
+function verifyRequestServices(ctx, next) {
+    let userServices = ctx.request.body.services,
+        serviceIds = ctx.state.serviceIds;
+    ctx.state.price = 0;
+    ctx.state.offerMap = {};
+
+    return db.hotelServices
+    .find({_id: {$in: serviceIds}})
+    .exec()
+    .then(services => {
+        let serviceMap = services.reduce((obj, service) => {
+            obj[service.id] = service;
+            return obj;
+        }, Object.create({}));
+        ctx.state.serviceMap = serviceMap;
+        let p = userServices.map(service => {
+            return verifyOffers(ctx, () => {}, service.offers);
+        })
+        ctx.state.userServices = userServices;
+        return Promise.all(p).then(next);
+    })    
+}
+
+
+function verifyOffers(ctx, next, offers) {
+    let _offers = offers,
+        offerIds = _offers.map(offer => offer.id);
+    return db.offers.find({_id: {$in: offerIds}})
+    .exec()
+    .then(offers => {
+        if (offers.length < _offers.length) ctx.throw(400, 'Invalid offer id');
+        let baseOfferMap = offers.reduce((obj, offer) => {
+            obj[offer.id] = offer;
+            return obj;
+        }, Object.create({}));
+        let _offerMap = _offers.reduce((obj, offer) => {
+            obj[offer.id] = offer;
+            obj[offer.id].data = baseOfferMap[offer.id];
+            return obj;
+        }, Object.create({}));
+
+        let p = offers.map(offer => {
+            let expected = _offerMap[offer._id.toString()],
+                price = 0;
+            if (!expected) {
+                ctx.throw(400, 'Invalid offer id');
+            }
+            if(!expected.date) ctx.throw(400, 'Missing offer date');
+           
+
+            let startDay = moment().weekday(),
+                startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
+                next7Days = moment(startDate).add(7, 'days').format('YYYY-MM-DD'),
+                reservDate = expected.date,
+                reservDay = moment(reservDate).weekday();
+
+            if(baseOfferMap[offer.id].days.indexOf(reservDay) == -1 || moment(reservDate) < moment() || moment(reservDate) > moment(next7Days) || moment(offer.dueDay) < moment(reservDate) || moment(offer.startDate) > moment(reservDate)) ctx.throw(400, 'Not serve');
+
+            if(baseOfferMap[offer.id].reservationCount[reservDate] && baseOfferMap[offer.id].reservationCount[reservDate] + expected.count > baseOfferMap[offer.id].allotmentCount) ctx.throw(400, 'Over booking'); 
+
+            if(!expected.count) ctx.throw(400, 'Missing quantities');
+            if(expected.count < 0) ctx.throw(400, 'quantities must be large then zero');
+            if (expected.price != offer.price) {
+                ctx.throw(400, 'Unmatched offer price');
             }
 
-            ctx.state.specialOfferResevation = specialOfferResevation;
-            return p.then(user => {
-                return specialOfferResevation.save();
-            }).then(next);
+            if(offer.reservationCount[reservDate]) {
+                offer.reservationCount[reservDate] += expected.count
+            } else {
+                offer.reservationCount[reservDate] = expected.count
+            }
+            offer.markModified('reservationCount');
+
+            price += expected.count * offer.price;
+
+            ctx.state.price += price;
+            return offer.save();
         });
+        return Promise.all(p).then(() => {
+            ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
+            let expectedPrice = ctx.request.body.price;
+            if (ctx.state.price != expectedPrice) {
+                ctx.throw(400, 'Unmatched total price');
+            }
+            return next();
+        })
     })
 }
 
+// Final price must either be zero or greater than 50cent (stripe limit)
 function getDiscount(price, balance) {
     let discount = Math.min(balance, price);
     if (discount < price && discount > price - 50) {
@@ -200,10 +192,54 @@ function getDiscount(price, balance) {
     }
 }
 
+
+function createReservation(ctx, next) {
+    let user = ctx.state.user,
+        offer = ctx.state.offer,
+        price = ctx.state.price,
+        offerMap = ctx.state.offerMap,
+        userServices = ctx.state.userServices,
+        userReservation = new db.specialOfferReservations({
+            user: {
+                ref: user,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName
+            },
+            specialOffer: {
+                ref: offer,
+                name: offer.name
+            },
+            offers: userServices.reduce((arr, service) => {
+                return arr.concat(service.offers.map(o => {
+                    return {
+                        ref: o.id,
+                        count: offerMap[o.id].count,
+                        price: offerMap[o.id].data.price,
+                        service: service.id
+                    }
+                }));
+            }, []),
+            price: price
+        });
+    let p = Promise.resolve();
+    if (user.account.balance > 0) {
+        let discount = getDiscount(price, user.account.balance);
+        user.account.balance -= discount;
+        userReservation.promotionDiscount = discount;
+        p = user.save();
+    }
+
+    ctx.state.reservation = userReservation;
+    return p.then(user => {
+        return userReservation.save();
+    }).then(next);
+}
+
 function createSale(ctx, next) {
     let user = ctx.state.user,
         userCard = ctx.state.userCard,
-        discount = ctx.state.specialOfferResevation.promotionDiscount || 0,
+        discount = ctx.state.reservation.promotionDiscount || 0,
         price = ctx.state.price,
         finalAmount = price - discount,
         p;
@@ -215,7 +251,7 @@ function createSale(ctx, next) {
                 cardInfo: userCard.toObject()
             },
             amount: finalAmount,
-            reservation: ctx.state.specialOfferResevation
+            reservation: ctx.state.reservation
         });
 
         ctx.state.sale = userSale;
@@ -242,7 +278,5 @@ function chargeSale(ctx, next) {
     return p.then(next);
 }
 
-function sendEmail(ctx, next) {
-    mailer.confirmSpecialOfferReservation(ctx.state.user.email, ctx.state.specialOfferResevation);
-    return next();
+function sendEmails(ctx, next) {
 }
