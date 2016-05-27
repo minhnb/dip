@@ -26,6 +26,10 @@ const specialOfferReservationSchema = new Schema({
             required: true,
             default: 1
         },
+        date: {
+            type: String,
+            required: true
+        },
         price: {
             type: Number,
             required: true

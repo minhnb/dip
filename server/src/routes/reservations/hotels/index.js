@@ -261,6 +261,7 @@ function createSubReservation(ctx, next) {
                         ref: o.id,
                         members: userOffer.members,
                         count: userOffer.count,
+                        date: userOffer.date,
                         addons: addons,
                         price: userOffer.data.price
                     };

@@ -29,11 +29,8 @@ function convertOffer(offer) {
         type: convertOfferType(offer.type)
     };
 
-    if (offer.date) {
-        obj.date = offer.date;
-    }
     if (offer.reservationCount) {
-        obj.reservationCount = offer.reservationCount;
+        obj.reservationCount = offer.reservationCount[offer.date] ? offer.reservationCount[offer.date]: 0;
     }
 
     return obj;

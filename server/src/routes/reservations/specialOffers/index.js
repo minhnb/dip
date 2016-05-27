@@ -216,6 +216,7 @@ function createReservation(ctx, next) {
                         ref: o.id,
                         count: offerMap[o.id].count,
                         price: offerMap[o.id].data.price,
+                        date: offerMap[o.id].date,
                         service: service.id
                     }
                 }));

@@ -25,6 +25,9 @@ router.get('/',
             .populate('addons')
             .exec()
             .then(offers => {
+                offers.forEach(offer => {
+                    offer.date = date
+                });
                 ctx.body = {offers: offers.map(entities.offer)};
             });
     });

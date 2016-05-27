@@ -29,6 +29,10 @@ const hotelSubReservationSchema = new Schema({
             required: true,
             default: 1
         },
+        date: {
+            type: String,
+            required: true
+        },
         addons: [{
             ref: {
                 type: Schema.ObjectId,
