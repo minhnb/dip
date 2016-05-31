@@ -16,7 +16,7 @@ router
     .post('add reservation', '/',
         validateInput,
         verifyEvent,
-        verifyPool,
+        verifyService,
         createReservation,
         createSale,
         chargeSale,
@@ -33,8 +33,8 @@ router
                     path: 'event.ref',
                     model: db.events,
                     populate: {
-                        path: 'pool',
-                        model: db.pools
+                        path: 'host',
+                        model: db.hotelServices
                     }
                 })
                 .exec()
@@ -71,7 +71,7 @@ function verifyEvent(ctx, next) {
     let expectedPrice = ctx.request.body.price;
     let quantities = ctx.state.quantities;
     return db.events.findOne({_id: eventId})
-    .populate('pool')
+    .populate('host')
     .exec()
     .then(event => {
         if(!event) ctx.throw(404, 'Event not found');
@@ -125,13 +125,13 @@ function verifyEvent(ctx, next) {
     })
 }
 
-function verifyPool(ctx, next) {
-    let poolId = ctx.state.event.pool._id;
-    return db.pools.findOne({_id: poolId})
+function verifyService(ctx, next) {
+    let hostId = ctx.state.event.host._id;
+    return db.hotelServices.findOne({_id: hostId})
     .exec()
-    .then(pool => {
-        if(!pool) ctx.throw(404, 'Pool not found');
-        ctx.state.pool = pool;
+    .then(service => {
+        if(!service) ctx.throw(404, 'Service not found');
+        ctx.state.service = service;
         return next();
     })
 }
@@ -140,7 +140,7 @@ function createReservation(ctx, next) {
     let user = ctx.state.user,
         price = ctx.state.price,
         event  = ctx.state.event,
-        pool = ctx.state.pool,
+        service = ctx.state.service,
         quantities = ctx.state.quantities,
         eventReservation = new db.eventReservations({
             user: {

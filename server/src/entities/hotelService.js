@@ -4,7 +4,6 @@ function convertService(service) {
     return {
         id: service._id,
         type: service.type,
-
         name: service.name,
         instagram: service.instagram,
         location: service.location,

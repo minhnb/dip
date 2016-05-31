@@ -30,6 +30,11 @@ const specialOfferReservationSchema = new Schema({
             type: String,
             required: true
         },
+        service: {
+            type: Schema.ObjectId,
+            ref: 'HotelService',
+            required: true
+        },
         price: {
             type: Number,
             required: true

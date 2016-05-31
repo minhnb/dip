@@ -53,6 +53,10 @@ router
                     path: 'offers.ref',
                     model: db.offers
                 })
+                .populate({
+                    path: 'offers.service',
+                    model: db.hotelServices,
+                })
                 .exec()
                 .then(reservations => {
                     responseData.specialOffers = reservations.map(entities.specialOfferReservation);

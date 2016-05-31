@@ -1,7 +1,7 @@
 'use strict';
 
 const event = require('./event');
-const pool = require('./pool');
+const service = require('./hotelService');
 
 module.exports = function(reservation) {
     return {
@@ -10,8 +10,14 @@ module.exports = function(reservation) {
         firstName: reservation.user.firstName,
         lastName: reservation.user.lastName,
         userId: reservation.user.ref,
-        event: event(reservation.event.ref),
-        pool: pool(reservation.event.ref.pool),
+        event: {
+            id: reservation.event.ref._id,
+            title: reservation.event.ref.title,
+            description: reservation.event.ref.description,
+            date: reservation.event.ref.date,
+            duration: reservation.event.ref.duration
+        },
+        host: service(reservation.event.ref.host),
         price: reservation.price,
         count: reservation.count
     }

@@ -39,6 +39,10 @@ router
                 path: 'offers.ref',
                 model: db.offers
             })
+            .populate({
+                path: 'offers.service',
+                model: db.hotelServices,
+            })
             .exec()
             .then(reservations => {
                 ctx.body = {reservations: reservations.map(entities.specialOfferReservation)};
