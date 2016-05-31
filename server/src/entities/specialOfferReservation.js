@@ -13,6 +13,7 @@ module.exports = function(reservation) {
             return {
                 ref: offerEntity(offer.ref),
                 count: offer.count,
+                date: offer.date,
                 price: offer.price
             }
         })

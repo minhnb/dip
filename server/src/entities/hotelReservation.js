@@ -24,6 +24,7 @@ module.exports = function(reservation) {
                         ref: offerEntity(offer.ref),
                         price: offer.price,
                         count: offer.count,
+                        date: offer.date,
                         addons: offer.addons.map(addon => {
                             return {
                                 ref: addonEntity(addon.ref),
