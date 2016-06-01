@@ -2,6 +2,7 @@
 
 const router = require('koa-router')();
 const moment = require('moment');
+const timezone = require('moment-timezone');
 
 const db = require('../../../db');
 const entities = require('../../../entities');
@@ -126,6 +127,7 @@ function verifyOffers(ctx, next, offers) {
         offerIds = _offers.map(offer => offer.id);
     return db.offers.find({_id: {$in: offerIds}})
     .populate('addons')
+    .populate('hotel')
     .exec()
     .then(offers => {
         if (offers.length < _offers.length) ctx.throw(400, 'Invalid offer id');
@@ -151,18 +153,23 @@ function verifyOffers(ctx, next, offers) {
             let startDay = moment().weekday(),
                 startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
                 next7Days = moment(startDate).add(7, 'days').format('YYYY-MM-DD'),
-                reservDate = expected.date,
-                reservDay = moment(reservDate).weekday();
+                reservDay = moment(expected.date).weekday(),
+                reservDate = moment(expected.date).format('YYYY-MM-DD'),
+                offerTime = moment.tz(reservDate, offer.hotel.address.timezone).add(moment.duration(offer.duration.startTime/60, 'hours'));
+                
+            if(baseOfferMap[offer.id].days.indexOf(reservDay) == -1 || 
+                offerTime < moment().tz(offer.hotel.address.timezone) || 
+                moment(reservDate) > moment(next7Days) || 
+                moment(offer.dueDay) < moment(reservDate) || 
+                moment(offer.startDay) > moment(reservDate)) ctx.throw(400, 'Not serve');
 
-            if(baseOfferMap[offer.id].days.indexOf(reservDay) == -1 || moment(reservDate) < moment() || moment(reservDate) > moment(next7Days) || moment(offer.dueDay) < moment(reservDate) || moment(offer.startDate) > moment(reservDate)) ctx.throw(400, 'Not serve');
+            if(baseOfferMap[offer.id].reservationCount[reservDate] && 
+                baseOfferMap[offer.id].reservationCount[reservDate] + expected.count > baseOfferMap[offer.id].allotmentCount) 
+                    ctx.throw(400, 'Over booking'); 
 
-            if(baseOfferMap[offer.id].reservationCount[reservDate] && baseOfferMap[offer.id].reservationCount[reservDate] + expected.count > baseOfferMap[offer.id].allotmentCount) ctx.throw(400, 'Over booking'); 
-
-            if(offer.reservationCount[reservDate]) {
-                offer.reservationCount[reservDate] += expected.count
-            } else {
+            offer.reservationCount[reservDate] ? 
+                offer.reservationCount[reservDate] += expected.count : 
                 offer.reservationCount[reservDate] = expected.count
-            }
             offer.markModified('reservationCount');
 
             if(!expected.count) ctx.throw(400, 'Missing quantities');

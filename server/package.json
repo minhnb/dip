@@ -38,6 +38,7 @@
     "merge-descriptors": "^1.0.1",
     "migrate": "^0.2.2",
     "moment": "2.13.0",
+    "moment-timezone": "^0.5.4",
     "mongoose": "^4.3.4",
     "node-gcm": "^0.14.0",
     "node-geocoder": "3.8.0",
