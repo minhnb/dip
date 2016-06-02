@@ -36,30 +36,13 @@ const groupSchema = new Schema({
 });
 groupSchema.index({name: 'text', description: 'text'});
 
-groupSchema.statics.findGroups = function(user, query) {
-    let groupQuery;
-    if (query) {
-        let userPromise = userModel.find({
-            $text: {$search: query}
-        }).select('_id').exec();
-
-        groupQuery = userPromise.then(users => {
-            return {
-                $and: [
-                    {'members.ref': user},
-                    {
-                        $or: [
-                            {$text: {$search: query}},
-                            {'members.ref': {$in: users}}
-                        ]
-                    }
-                ]
-            };
-        });
-    } else {
-        groupQuery = Promise.resolve({'members.ref': user});
-    }
-    return groupQuery.then(query => this.find(query).sort({updatedAt: -1}).exec());
+groupSchema.statics.findGroups = function(user, from) {
+    let conditions = {};
+    conditions['members.ref'] = user;
+    if(from) conditions['updatedAt'] = {$gt: new Date(from).toISOString()};
+    return this.find(conditions)
+    .sort({updatedAt: -1})
+    .exec();
 };
 
 groupSchema.statics.findGroupMembers = function(members) {

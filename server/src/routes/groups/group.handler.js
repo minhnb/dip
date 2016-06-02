@@ -115,9 +115,8 @@ exports.contactDip = ctx => {
 
 exports.getGroups = ctx => {
     let user = ctx.state.user,
-        query = ctx.query.query;
-
-    return db.groups.findGroups(user, query)
+        from = ctx.query.from;
+    return db.groups.findGroups(user, from)
         .then(groups => {
             groups.forEach(group => {
                 group.currentMember = group.findMember(user);

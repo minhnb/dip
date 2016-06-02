@@ -72,9 +72,14 @@ exports.createMessage = function(ctx, next) {
 exports.getMessages = ctx => {
     let group = ctx.state.group,
         limit = ctx.query.limit ? parseInt(ctx.query.limit) : 20,
-        offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0;
+        offset = ctx.query.offset ? parseInt(ctx.query.offset) : 0,
+        from = ctx.query.from,
+        conditions = {};
 
-    return db.messages.find({group: group})
+    conditions['group'] = group;
+    if(from) conditions['updatedAt'] = {$gt: new Date(from).toISOString()};
+    
+    return db.messages.find(conditions)
         .sort({createdAt: -1})
         .limit(limit)
         .skip(offset)
