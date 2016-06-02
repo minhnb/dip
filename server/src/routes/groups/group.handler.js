@@ -113,6 +113,44 @@ exports.contactDip = ctx => {
     })
 };
 
+exports.addGroup = ctx => {
+    let name = ctx.request.body.name || '',
+        description = ctx.request.body.description || '',
+        members = ctx.request.body.members || [],
+        friends = ctx.state.user.friends;
+    if (!Array.isArray(members) || members.length == 0) {
+        ctx.throw(400, 'Members must be an array');
+    }
+    members = new Set(members);
+    members.add(ctx.state.user.id);
+    return db.users.find({
+        $and: [
+            {_id: {$in: Array.from(members)}},
+            {$or: [
+                {_id: ctx.state.user},
+                {_id: {$in: friends}},
+                {privateMode: false}
+            ]}
+        ]
+    }).then(dbMembers => {
+        if (dbMembers.length < members.length) {
+            ctx.throw(400, 'Invalid member id');
+        }
+        let group = new db.groups({
+            name: name,
+            description: description,
+            owner: ctx.state.user,
+            members: dbMembers.map(m => {
+                return {ref: m};
+            })
+        });
+        return group.save().then(group => {
+            ctx.status = 200;
+            ctx.body = {group: entities.group(group)}
+        });
+    });
+};
+
 exports.getGroups = ctx => {
     let user = ctx.state.user,
         from = ctx.query.from;
