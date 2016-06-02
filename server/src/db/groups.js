@@ -29,7 +29,8 @@ const groupSchema = new Schema({
             ref: 'Message'
         }
         
-    }]
+    }],
+    lastMessage: Schema.ObjectId
 }, {
     timestamps: true
 });
