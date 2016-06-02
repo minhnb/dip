@@ -192,6 +192,14 @@ exports.getGroup = ctx => {
         });
 };
 
+exports.leaveGroup = ctx => {
+    let group = ctx.state.group;
+    group.currentMember.remove();
+    return group.save().then(() => {
+        ctx.status = 204;
+    });
+};
+
 exports.deleteMember = ctx => {
     let userId = ctx.params.memberId,
         group = ctx.state.group;

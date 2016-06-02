@@ -15,8 +15,10 @@ router.use('/', auth.authenticate())
     .post('/', groupHandler.addGroup) // @deprecated
     .post('/contactdip', groupHandler.contactDip)
     .get('/:groupId', groupHandler.authenticateGroup, groupHandler.getGroup)
+    .delete('/:groupId', groupHandler.authenticateGroup, groupHandler.leaveGroup) // @deprecated
     .get('/:groupId/messages', groupHandler.authenticateGroup, messageHandler.getMessages)
-    .get('/:groupId/members', groupHandler.authenticateGroup, groupHandler.getMembers)
-    .put('/:groupId/seen', groupHandler.authenticateGroup, groupHandler.updateSeen)
     .post('/:groupId/messages', groupHandler.authenticateGroup, messageHandler.createMessage) // @deprecated
+    .get('/:groupId/members', groupHandler.authenticateGroup, groupHandler.getMembers)
+    .post('/:groupId/members', groupHandler.authenticateGroup, groupHandler.addMember) // @deprecated
+    .put('/:groupId/seen', groupHandler.authenticateGroup, groupHandler.updateSeen)
     .post('/messages', groupHandler.createOrAuthenticateGroup, messageHandler.createMessage);
