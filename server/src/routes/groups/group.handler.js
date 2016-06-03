@@ -25,7 +25,7 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
 
     let user = ctx.state.user;
     try {
-        let members = ctx.request.body.members || JSON.parse(ctx.req.body.members)
+        var members = ctx.request.body.members || JSON.parse(ctx.req.body.members)
     } catch (err) {
         ctx.throw(400, 'invalid members')
     };
