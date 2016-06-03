@@ -1,7 +1,6 @@
 'use strict';
 
 const db = require('../../db');
-const multer = require('koa-multer');
 const entities = require('../../entities');
 
 const gcm = require('../../helpers/gcm');

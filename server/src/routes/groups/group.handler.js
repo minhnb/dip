@@ -23,8 +23,12 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
 	        });
     }
 
-    let user = ctx.state.user,
-        members = ctx.request.body.members;
+    let user = ctx.state.user;
+    try {
+        let members = ctx.request.body.members || JSON.parse(ctx.req.body.members)
+    } catch (err) {
+        ctx.throw(400, 'invalid members')
+    };
     if(!members) ctx.throw(400, 'Missing members');
     if (!Array.isArray(members)) {
         ctx.throw(400, 'Members must be an array');
