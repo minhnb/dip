@@ -161,7 +161,8 @@ exports.getGroups = ctx => {
             });
             return db.groups.populate(groups, [
                 {path: 'owner'},
-                {path: 'members.ref'}
+                {path: 'members.ref'},
+                {path: 'lastMessage'}
             ]);
         }).then(groups => {
             let conversationName = '';
@@ -180,6 +181,7 @@ exports.getGroup = ctx => {
     let group = ctx.state.group;
     return group.populate('owner')
         .populate('members.ref')
+        .populate('lastMessage')
         .execPopulate()
         .then(() => {
             let conversationName = '';
