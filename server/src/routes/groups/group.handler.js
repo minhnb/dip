@@ -168,10 +168,12 @@ exports.getGroups = ctx => {
             let conversationName = '';
             groups.map(group => {
                 group.members.map(member => {
-                    let fullName = member.ref.firstName + ' ' + member.ref.lastName;
-                    conversationName += fullName + ', ';
+                    if(!member.ref.equals(group.owner)) {
+                        let fullName = member.ref.firstName + ' ' + member.ref.lastName;
+                        conversationName += fullName + ', ';
+                    }  
                 })
-                group.name = conversationName.substr(0, conversationName.length - 2);
+                group.name = group.name ? group.name : conversationName.substr(0, conversationName.length - 2);
             })
             ctx.body = {groups: groups.map(entities.group)};
         });
@@ -186,10 +188,12 @@ exports.getGroup = ctx => {
         .then(() => {
             let conversationName = '';
             group.members.map(member => {
-                let fullName = member.ref.firstName + ' ' + member.ref.lastName;
-                conversationName += fullName + ', ';
+                if(!member.ref.equals(group.owner)) {
+                    let fullName = member.ref.firstName + ' ' + member.ref.lastName;
+                    conversationName += fullName + ', ';
+                }
             })
-            group.name = conversationName.substr(0, conversationName.length - 2);
+            group.name = group.name ? group.name : conversationName.substr(0, conversationName.length - 2);
             ctx.body = {group: entities.group(group)};
         });
 };
