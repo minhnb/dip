@@ -12,6 +12,7 @@ function convertGroup(group) {
         image: group.image.url,
         members: group.members.map(m => userRef(m.ref)),
         createdAt: group.createdAt,
+        updatedAt: group.updatedAt,
         seen: !group.lastMessage || (currentMember && group.lastMessage._id.equals(currentMember.lastMessage)),
         lastMessage: group.lastMessage.content
     };
@@ -24,6 +25,7 @@ convertGroup.reference = function(group) {
         name: group.name,
         image: group.image.url,
         createdAt: group.createdAt,
+        updatedAt: group.updatedAt,
         seen: !group.lastMessage || (currentMember && group.lastMessage._id.equals(currentMember.lastMessage)),
         lastMessage: group.lastMessage.content
     };
