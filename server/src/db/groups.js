@@ -42,7 +42,7 @@ groupSchema.index({name: 'text', description: 'text'});
 groupSchema.statics.findGroups = function(user, from) {
     let conditions = {};
     conditions['members.ref'] = user;
-    if(from) conditions['updatedAt'] = {$gt: new Date(from).toISOString()};
+    if(from) conditions['updatedAt'] = {$gte: new Date(from).toISOString()};
     return this.find(conditions)
     .sort({updatedAt: -1})
     .exec();
