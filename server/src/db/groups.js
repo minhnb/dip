@@ -30,7 +30,10 @@ const groupSchema = new Schema({
         }
         
     }],
-    lastMessage: Schema.ObjectId
+    lastMessage: {
+        type: Schema.ObjectId,
+        ref: 'Message'
+    }
 }, {
     timestamps: true
 });

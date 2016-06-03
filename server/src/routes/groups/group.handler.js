@@ -23,8 +23,12 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
 	        });
     }
 
-    let user = ctx.state.user,
-        members = ctx.request.body.members;
+    let user = ctx.state.user;
+    try {
+        var members = ctx.request.body.members || JSON.parse(ctx.req.body.members)
+    } catch (err) {
+        ctx.throw(400, 'invalid members')
+    };
     if(!members) ctx.throw(400, 'Missing members');
     if (!Array.isArray(members)) {
         ctx.throw(400, 'Members must be an array');
@@ -161,16 +165,19 @@ exports.getGroups = ctx => {
             });
             return db.groups.populate(groups, [
                 {path: 'owner'},
-                {path: 'members.ref'}
+                {path: 'members.ref'},
+                {path: 'lastMessage'}
             ]);
         }).then(groups => {
             let conversationName = '';
             groups.map(group => {
                 group.members.map(member => {
-                    let fullName = member.ref.firstName + ' ' + member.ref.lastName;
-                    conversationName += fullName + ', ';
+                    if(!member.ref.equals(group.owner)) {
+                        let fullName = member.ref.firstName || '' + ' ' + member.ref.lastName || '';
+                        conversationName += fullName + ', ';
+                    }  
                 })
-                group.name = conversationName.substr(0, conversationName.length - 2);
+                group.name = group.name ? group.name : conversationName.substr(0, conversationName.length - 2);
             })
             ctx.body = {groups: groups.map(entities.group)};
         });
@@ -180,14 +187,17 @@ exports.getGroup = ctx => {
     let group = ctx.state.group;
     return group.populate('owner')
         .populate('members.ref')
+        .populate('lastMessage')
         .execPopulate()
         .then(() => {
             let conversationName = '';
             group.members.map(member => {
-                let fullName = member.ref.firstName + ' ' + member.ref.lastName;
-                conversationName += fullName + ', ';
+                if(!member.ref.equals(group.owner)) {
+                    let fullName = member.ref.firstName || '' + ' ' + member.ref.lastName || '';
+                    conversationName += fullName + ', ';
+                }
             })
-            group.name = conversationName.substr(0, conversationName.length - 2);
+            group.name = group.name ? group.name : conversationName.substr(0, conversationName.length - 2);
             ctx.body = {group: entities.group(group)};
         });
 };

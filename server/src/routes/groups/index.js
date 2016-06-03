@@ -1,7 +1,7 @@
 'use strict';
 
 const router = require('koa-router')();
-
+const multer = require('koa-multer');
 const db = require('../../db');
 const auth = require('../../helpers/passport_auth');
 
@@ -21,4 +21,4 @@ router.use('/', auth.authenticate())
     .get('/:groupId/members', groupHandler.authenticateGroup, groupHandler.getMembers)
     .post('/:groupId/members', groupHandler.authenticateGroup, groupHandler.addMember) // @deprecated
     .put('/:groupId/seen', groupHandler.authenticateGroup, groupHandler.updateSeen)
-    .post('/messages', groupHandler.createOrAuthenticateGroup, messageHandler.createMessage);
+    .post('/messages', multer().single('image'), groupHandler.createOrAuthenticateGroup, messageHandler.createMessage);
