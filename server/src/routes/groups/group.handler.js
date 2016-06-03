@@ -6,7 +6,7 @@ const contactDipHelper = require('../../helpers/contact_dip');
 
 
 exports.createOrAuthenticateGroup = function(ctx, next) {
-	let group = ctx.request.body.group;
+	let group = ctx.request.body.group || ctx.req.body.group;
     if(group) {
 	    return db.groups.findById(group)
 	        .exec()
