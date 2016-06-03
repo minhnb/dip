@@ -169,7 +169,7 @@ exports.getGroups = ctx => {
             groups.map(group => {
                 group.members.map(member => {
                     if(!member.ref.equals(group.owner)) {
-                        let fullName = member.ref.firstName + ' ' + member.ref.lastName;
+                        let fullName = member.ref.firstName || '' + ' ' + member.ref.lastName || '';
                         conversationName += fullName + ', ';
                     }  
                 })
@@ -189,7 +189,7 @@ exports.getGroup = ctx => {
             let conversationName = '';
             group.members.map(member => {
                 if(!member.ref.equals(group.owner)) {
-                    let fullName = member.ref.firstName + ' ' + member.ref.lastName;
+                    let fullName = member.ref.firstName || '' + ' ' + member.ref.lastName || '';
                     conversationName += fullName + ', ';
                 }
             })
