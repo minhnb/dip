@@ -186,7 +186,6 @@ exports.getGroups = ctx => {
 exports.getGroup = ctx => {
     let group = ctx.state.group;
     return group.populate('owner')
-        .sort({updatedAt: -1})
         .populate('members.ref')
         .populate('lastMessage')
         .execPopulate()
