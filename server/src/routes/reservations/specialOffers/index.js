@@ -1,8 +1,7 @@
 "use strict";
 
 const router = require('koa-router')();
-const moment = require('moment');
-const timezone = require('moment-timezone');
+const moment = require('moment-timezone');
 
 const db = require('../../../db');
 const inputValidator = require('../../../validators');
