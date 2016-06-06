@@ -169,8 +169,8 @@ exports.getGroups = ctx => {
                 {path: 'lastMessage'}
             ]);
         }).then(groups => {
-            let conversationName = '';
             groups.map(group => {
+                let conversationName = '';
                 group.members.map(member => {
                     if(!member.ref.equals(group.owner)) {
                         let fullName = member.ref.firstName || '' + ' ' + member.ref.lastName || '';
