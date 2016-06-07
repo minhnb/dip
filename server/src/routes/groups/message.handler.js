@@ -77,7 +77,6 @@ exports.getMessages = ctx => {
 
     conditions['group'] = group;
     if(from) conditions['updatedAt'] = {$gte: new Date(from).toISOString()};
-    
     return db.messages.find(conditions)
         .sort({createdAt: -1})
         .limit(limit)

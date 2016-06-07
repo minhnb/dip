@@ -24,7 +24,8 @@ const hotelSchema = new Schema({
         state: String,
         postalCode: String,
         country: String,
-        timezone: String
+        timezone: String,
+        neighborhood: String
     },
     coordinates: {
         type: [Number],
