@@ -26,6 +26,14 @@ const ReservationSchema = new Schema({
         type: Number,
         required: true
     },
+    beforeTax: {
+        type: Number,
+        required: true
+    },
+    tax: {
+        type: Number,
+        required: true
+    },
     sale: {
         type: Schema.ObjectId,
         ref: 'Sale'

@@ -54,5 +54,6 @@ module.exports = {
     facebook: {
         appId: process.env.FB_APP_ID,
         secretId: process.env.FB_SECRET_ID
-    }
+    },
+    taxPercent: parseFloat(process.env.TAX_PERCENT)
 };

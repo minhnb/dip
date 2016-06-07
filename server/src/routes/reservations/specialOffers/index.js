@@ -8,6 +8,7 @@ const inputValidator = require('../../../validators');
 const entities = require('../../../entities');
 const mailer = require('../../../mailer');
 const stripe = require('../../../helpers/stripe');
+const config = require('../../../config');
 
 const auth = require('../../../helpers/passport_auth');
 module.exports = router;
@@ -100,7 +101,7 @@ function verifyServices(ctx, next) {
 function verifyRequestServices(ctx, next) {
     let userServices = ctx.request.body.services,
         serviceIds = ctx.state.serviceIds;
-    ctx.state.price = 0;
+    ctx.state.beforeTax = 0;
     ctx.state.offerMap = {};
 
     return db.hotelServices
@@ -180,15 +181,18 @@ function verifyOffers(ctx, next, offers) {
 
             price += expected.count * offer.price;
 
-            ctx.state.price += price;
+            ctx.state.beforeTax += price;
             return offer.save();
         });
         return Promise.all(p).then(() => {
             ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
             let expectedPrice = ctx.request.body.price;
-            if (ctx.state.price != expectedPrice) {
+            if (ctx.state.beforeTax != expectedPrice) {
                 ctx.throw(400, 'Unmatched total price');
             }
+            let taxPercent = config.taxPercent;
+            ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
+            ctx.state.price = ctx.state.tax + ctx.state.beforeTax;
             return next();
         })
     })
@@ -209,6 +213,8 @@ function createReservation(ctx, next) {
     let user = ctx.state.user,
         offer = ctx.state.offer,
         price = ctx.state.price,
+        tax = ctx.state.tax,
+        beforeTax = ctx.state.beforeTax,
         offerMap = ctx.state.offerMap,
         userServices = ctx.state.userServices,
         userReservation = new db.specialOfferReservations({
@@ -233,7 +239,9 @@ function createReservation(ctx, next) {
                     }
                 }));
             }, []),
-            price: price
+            price: price,
+            tax: tax,
+            beforeTax: beforeTax
         });
     let p = Promise.resolve();
     if (user.account.balance > 0) {

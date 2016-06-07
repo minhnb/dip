@@ -7,6 +7,7 @@ const inputValidator = require('../../../validators');
 const entities = require('../../../entities');
 const mailer = require('../../../mailer');
 const stripe = require('../../../helpers/stripe');
+const config = require('../../../config');
 
 const auth = require('../../../helpers/passport_auth');
 module.exports = router;
@@ -120,7 +121,7 @@ function verifyEvent(ctx, next) {
                 // }    
         }
         ctx.state.event = event;
-        ctx.state.price = event.price * quantities;
+        ctx.state.beforeTax = event.price * quantities;
         return next();
     })
 }
@@ -138,10 +139,17 @@ function verifyService(ctx, next) {
 
 function createReservation(ctx, next) {
     let user = ctx.state.user,
-        price = ctx.state.price,
         event  = ctx.state.event,
         service = ctx.state.service,
         quantities = ctx.state.quantities,
+        taxPercent = config.taxPercent,
+        beforeTax = ctx.state.beforeTax;
+
+    ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
+    ctx.state.price = ctx.state.tax + ctx.state.beforeTax;
+
+    let price = ctx.state.price,
+        tax = ctx.state.tax,
         eventReservation = new db.eventReservations({
             user: {
                 ref: user,
@@ -154,7 +162,9 @@ function createReservation(ctx, next) {
                 title: event.title
             },
             count: quantities,
-            price: price
+            price: price,
+            tax: tax,
+            beforeTax: beforeTax
         })
 
         return db.events.findOne({_id: event._id})
