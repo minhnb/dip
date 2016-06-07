@@ -37,13 +37,6 @@ module.exports = {
         s3Bucket: process.env.S3_BUCKET,
         s3Version: process.env.S3_API_VERSION
     },
-    email: {
-        server: process.env.MAIL_HOST,
-        user: process.env.MAIL_USER,
-        password: process.env.MAIL_PASS,
-        domain: process.env.MAIL_DOMAIN,
-        address: process.env.MAIL_ADDRESS
-    },
     admin: {
         email: process.env.ADMIN_EMAIL
     },
@@ -54,6 +47,11 @@ module.exports = {
     facebook: {
         appId: process.env.FB_APP_ID,
         secretId: process.env.FB_SECRET_ID
+    },
+    email: {
+        apiKey: process.env.MANDRILL_API_KEY,
+        name: process.env.MAIL_NAME,
+        address: process.env.MAIL_ADDRESS
     },
     taxPercent: parseFloat(process.env.TAX_PERCENT)
 };

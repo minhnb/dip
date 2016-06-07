@@ -1,108 +1,37 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const mailer = require('nodemailer');
-//const sesTransport = require('nodemailer-ses-transport');
-
 const config = require('../config/index');
+const mandrill = require('mandrill-api/mandrill');
+const mandrill_client = new mandrill.Mandrill(config.email.apiKey);
 
-const parser = require('./parser');
-
-const transporter = mailer.createTransport({
-    host: config.email.server,
-    secure: true,
-    auth: {
-        user: config.email.user,
-        pass: config.email.password
-    },
-    pool: true,
-    maxMessages: 10,
-    rateLimit: 5
-});
-
-function sendEmail(recipient, subject, message) {
+function sendEmail(recipients, subject, options, data) {
     return new Promise((resolve, reject) => {
-        transporter.sendMail({
-            from: config.email.address,
-            to: recipient,
-            subject: subject,
-            html: message
-        }, (error, info) => {
-            if (error) {
-                console.error(__filename, 'Email sending error', error);
-                reject(error);
-            } else {
-                resolve(info);
-            }
-        });
-    });
-}
+        let name = config.email.name,
+            from = config.email.address,
+            message = {
+                "subject": subject,
+                "from_email": from,
+                "from_name": name
+            };
 
-const emailTemplateRoot = path.join(__dirname, 'templates');
-
-function getTemplate(name) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path.join(emailTemplateRoot, name), 'utf-8', (err, source) => {
-            if (err) {
-                console.error(__filename, 'getTemplate.readFile error', err);
-                reject(err);
-            } else {
-                resolve(source);
-            }
-        });
-    });
+        recipients.map(email => email.type = 'to');
+        message.to = recipients;
+        if(data) message.global_merge_vars = data;
+        options.message = message;
+        mandrill_client.messages.sendTemplate(options, resolve, reject);
+    });    
 }
 
 module.exports = {
-    resetPassword: (email, data) => {
-        return getTemplate('resetPassword.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Reset Password'))
-    },
-    welcome: (email, data) => {
-        return getTemplate('welcome.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Welcome to Dip'))
-    },
-    addFriend: (email, data) => {
-        return getTemplate('addFriend.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, `${data.actor.nameOrEmail} added you as a friend on Dip`))
-    },
-    confirmReservation: (email, data) => {
-        return getTemplate('confirmReservation.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Reservation Confirmation'))
-    },
-    inviteFriendsReservation: (email, data) => {
-        return getTemplate('inviteFriendsReservation.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Invitation Confirmation'))
-    },
-    shareDip: (email, data) => {
-        return getTemplate('shareDip.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Invitation'))
-    },
-    confirmDipShare: (email, data) => {
-        return getTemplate('confirmDipShare.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Congratulation'))
-    },
-    confirmEventReservation: (email, data) => {
-        return getTemplate('confirmEventReservation.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Event Confirmation'))
-    },
-    confirmSpecialOfferReservation: (email, data) => {
-        return getTemplate('confirmSpecialOfferReservation.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Offer Confirmation'))
-    },
-    confirmHotelReservation: (email, data) => {
-        return getTemplate('confirmHotelReservation.html')
-            .then(parser.bind(undefined, data))
-            .then(sendEmail.bind(undefined, email, 'Offer Confirmation'))
+    welcome: (recipients) => {
+        let options = {
+            template_name: 'welcome-to-dip',
+            template_content: [{
+                name: 'name',
+                content: 'Welcome'
+            }]
+        },
+        subject = 'Welcome to Dip!';
+        return sendEmail(recipients, subject, options, null)
     }
 };

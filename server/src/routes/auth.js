@@ -65,7 +65,10 @@ router
                 return user.save().then(user => {
                     contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
                     ctx.response.status = 204;
-                    mailer.welcome(user.email, {name: user.firstName});
+                    mailer.welcome([{
+                        email: user.email,
+                        name: user.firstName && user.lastName ? user.firstName + " " + user.lastName : user.email
+                    }]);
                     stripe.addUser(user); // Not using return to allow it to process in background
                     return user;
                 }).then(user => {
@@ -83,8 +86,8 @@ router
                             return ref.save().then(() => {
                                 referer.account.balance += 2000; 
                                 return referer.save().then(() => {
-                                    mailer.confirmDipShare(referer.email, {owner: referer.firstName, member: user.email});
-                                    mailer.confirmDipShare(user.email, {owner: user.firstName, member: user.email});
+                                    // mailer.confirmDipShare(referer.email, {owner: referer.firstName, member: user.email});
+                                    // mailer.confirmDipShare(user.email, {owner: user.firstName, member: user.email});
                                 });
                             })                          
                         })

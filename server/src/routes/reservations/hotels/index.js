@@ -13,6 +13,7 @@ const mailer = require('../../../mailer');
 const stripe = require('../../../helpers/stripe');
 const auth = require('../../../helpers/passport_auth');
 const config = require('../../../config');
+
 module.exports = router;
 
 router
@@ -26,6 +27,7 @@ router
         createReservation,
         createSale,
         chargeSale,
+        // sendEmails,
         ctx => {
             ctx.status = 200;
         }

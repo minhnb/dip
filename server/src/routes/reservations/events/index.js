@@ -21,7 +21,7 @@ router
         createReservation,
         createSale,
         chargeSale,
-        sendEmail,
+        // sendEmail,
         ctx => {
             ctx.status = 200;
         }

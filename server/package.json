@@ -34,6 +34,7 @@
     "koa-validate": "^0.2.11",
     "koa-views": "^3.1.0",
     "lodash.merge": "^3.3.2",
+    "mandrill-api": "^1.0.45",
     "md5": "2.1.0",
     "merge-descriptors": "^1.0.1",
     "migrate": "^0.2.2",

@@ -26,18 +26,18 @@ router.post('Request password reset', '/',
                     });
                     return token.save().then(token => {
                         // Send email
-                        mailer.resetPassword(user.email, {
-                            name: user.firstName || user.lastName || user.email,
-                            token: token.token,
-                            link: url.format({
-                                protocol: 'https',
-                                host: config.baseUrl,
-                                pathname: '/resetpassword',
-                                query: {
-                                    token: token.token
-                                }
-                            })
-                        });
+                        // mailer.resetPassword(user.email, {
+                        //     name: user.firstName || user.lastName || user.email,
+                        //     token: token.token,
+                        //     link: url.format({
+                        //         protocol: 'https',
+                        //         host: config.baseUrl,
+                        //         pathname: '/resetpassword',
+                        //         query: {
+                        //             token: token.token
+                        //         }
+                        //     })
+                        // });
                     });
                 }
             });
