@@ -35,7 +35,7 @@ router
     .get('get reservations', '/',
         ctx => {
             return db.hotelReservations
-                .find({'user.ref': ctx.state.user, type: 'Hotel'})
+                .find({'user.ref': ctx.state.user, type: 'HotelReservation'})
                 .populate({
                     path: 'hotel.ref',
                     model: db.hotels

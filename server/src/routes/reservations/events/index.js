@@ -29,7 +29,7 @@ router
     .get('get reservations', '/',
         ctx => {
             return db.reservations
-                .find({'user.ref': ctx.state.user, type: 'Event'})
+                .find({'user.ref': ctx.state.user, type: 'EventReservation'})
                 .populate({
                     path: 'event.ref',
                     model: db.events,
@@ -58,7 +58,7 @@ function validateInput(ctx, next) {
     return db.eventReservations.findOne({
         'user.ref': ctx.state.user,
         'event.ref': ctx.request.body.eventId,
-        'type': 'Event'
+        'type': 'EventReservation'
     })
     .exec()
     .then(event => {

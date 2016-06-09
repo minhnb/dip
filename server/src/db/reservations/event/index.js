@@ -23,7 +23,7 @@ const EventReservationSchema = new Schema({
     discriminatorKey: 'type'
 });
 
-var EventReservations = Reservation.discriminator('Event',
+var EventReservations = Reservation.discriminator('EventReservation',
   EventReservationSchema);
 
 module.exports = EventReservations;

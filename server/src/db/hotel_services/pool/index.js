@@ -12,7 +12,7 @@ const poolServiceSchema = new Schema({
     discriminatorKey: 'type'
 });
 
-var PoolServices = hotelServices.discriminator('Pool',
+var PoolServices = hotelServices.discriminator('PoolService',
   poolServiceSchema);
 
 module.exports = PoolServices;

@@ -31,7 +31,7 @@ router
     .get('get reservations', '/',
         ctx => {
             return db.reservations
-            .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})
+            .find({'user.ref': ctx.state.user, type: 'SpecialOfferReservation'})
             .populate({
                 path: 'specialOffer.ref',
                 model: db.specialOffers

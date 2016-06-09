@@ -45,7 +45,7 @@ const specialOfferReservationSchema = new Schema({
     discriminatorKey: 'type'
 });
 
-var specialOfferReservation = Reservation.discriminator('SpecialOffer',
+var specialOfferReservation = Reservation.discriminator('SpecialOfferReservation',
   specialOfferReservationSchema);
 
 

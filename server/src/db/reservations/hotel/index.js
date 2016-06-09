@@ -28,7 +28,7 @@ const hotelReservationSchema = new Schema({
     discriminatorKey: 'type'
 });
 
-var HotelReservations = Reservation.discriminator('Hotel',
+var HotelReservations = Reservation.discriminator('HotelReservation',
   hotelReservationSchema);
 
 

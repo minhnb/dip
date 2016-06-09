@@ -29,7 +29,7 @@ router
         ctx => {
         	let responseData = {};
             let getEventReservation = db.reservations
-            	.find({'user.ref': ctx.state.user, type: 'Event'})    
+            	.find({'user.ref': ctx.state.user, type: 'EventReservation'})    
             	.populate({
                     path: 'event.ref',
                     model: db.events,
@@ -44,7 +44,7 @@ router
             		return;
             	})
             let getSpecialOfferReservation = db.reservations
-                .find({'user.ref': ctx.state.user, type: 'SpecialOffer'})    
+                .find({'user.ref': ctx.state.user, type: 'SpecialOfferReservation'})    
                 .populate({
                     path: 'specialOffer.ref',
                     model: db.specialOffers
@@ -63,7 +63,7 @@ router
                     return;
                 })
             let getHotelReservation = db.reservations
-                .find({'user.ref': ctx.state.user, type: 'Hotel'})  
+                .find({'user.ref': ctx.state.user, type: 'HotelReservation'})  
                 .populate({
                     path: 'hotel.ref',
                     model: db.hotels
