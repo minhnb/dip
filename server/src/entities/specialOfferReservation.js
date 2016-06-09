@@ -8,7 +8,7 @@ module.exports = function(reservation) {
         id: reservation._id,
         name: reservation.specialOffer.name,
         price: reservation.price,
-        type: reservation.type,
+        type: reservation.type.slice(0, reservation.type.length - 11),
         offers: reservation.offers.map(offer => {
             return {
                 ref: offerEntity(offer.ref),

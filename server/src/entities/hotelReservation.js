@@ -6,7 +6,7 @@ const addonEntity = require('./addon');
 module.exports = function(reservation) {
     return {
         id: reservation._id,
-        type: reservation.type,
+        type: reservation.type.slice(0, reservation.type.length - 11),
         hotel: {
             id: reservation.hotel.ref._id,
             name: reservation.hotel.name,
@@ -16,7 +16,7 @@ module.exports = function(reservation) {
         services: reservation.services.map(s => {
             return {
                 id: s._id,
-                type: s.service.type,
+                type: s.service.type.slice(0, s.service.type.length - 7),
                 name: s.service.name,
                 location: s.service.location,
                 offers: s.offers.map(offer => {
