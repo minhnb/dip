@@ -18,8 +18,8 @@ router.post('Request password reset', '/',
             .exec()
             .then(user => {
                 // We don't let user know whether the email exists or not
-                ctx.status = 204;
                 if (user) {
+                    ctx.status = 204;
                     let token = new db.passwordToken({
                         user: user,
                         token: db.passwordToken.generateToken()
@@ -39,6 +39,8 @@ router.post('Request password reset', '/',
                         //     })
                         // });
                     });
+                } else {
+                    ctx.status = 400;
                 }
             });
     }
