@@ -6,6 +6,7 @@ const entities = require('../../entities');
 const gcm = require('../../helpers/gcm');
 
 const s3 = require('../../helpers/s3');
+const crypto = require('crypto');
 
 exports.createMessage = function(ctx, next) {
     let user = ctx.state.user,
@@ -19,7 +20,8 @@ exports.createMessage = function(ctx, next) {
     let p,
         img = ctx.req.file;
     if(img) {
-        p = s3.upload(message.messageImageS3Path, img.buffer, img.mimeType)
+        let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
+        p = s3.upload('messageImages/' + hash, img.buffer, img.mimeType)
         .catch(err => {
             console.error(err);
             ctx.throw(500, 'S3 Error');
