@@ -28,7 +28,7 @@ router.get('get me', '/',
             body: {
                 user: {
                     dob: validator.optional(validator.isDate()),
-                    phone: validator.optional(validator.isNumeric()),
+                    // phone: validator.optional(validator.isNumeric()),
                     gender: validator.optional(validator.isIn(['male', 'female', 'na'])),
                     oldPassword: validator.optional(),
                     newPassword: validator.optional(validator.validatePassword),
