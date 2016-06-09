@@ -55,15 +55,15 @@ router.use('/', auth.authenticate())
                 let added = user.friends.addToSet(friend);
                 if (added.length > 0) {
                     return user.save().then(() => {
-                        mailer.addFriend(friend.email, {
-                            name: friend.firstName,
-                            actor: user,
-                            link: url.format({
-                                protocol: 'https',
-                                host: config.baseUrl,
-                                pathname: `/users/${user._id}`
-                            })
-                        });
+                        // mailer.addFriend(friend.email, {
+                        //     name: friend.firstName,
+                        //     actor: user,
+                        //     link: url.format({
+                        //         protocol: 'https',
+                        //         host: config.baseUrl,
+                        //         pathname: `/users/${user._id}`
+                        //     })
+                        // });
                         ctx.status = 200;
                     });
                 } else {

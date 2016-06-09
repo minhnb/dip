@@ -10,7 +10,7 @@ const hotelServiceSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['Pool', 'Spa', 'Restaurant']
+        enum: ['PoolService', 'SpaService', 'RestaurantService']
     },
     name: {
         type: String,

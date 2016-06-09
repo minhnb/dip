@@ -12,6 +12,8 @@ const mailer = require('../../../mailer');
 
 const stripe = require('../../../helpers/stripe');
 const auth = require('../../../helpers/passport_auth');
+const config = require('../../../config');
+
 module.exports = router;
 
 router
@@ -25,6 +27,7 @@ router
         createReservation,
         createSale,
         chargeSale,
+        // sendEmails,
         ctx => {
             ctx.status = 200;
         }
@@ -32,7 +35,7 @@ router
     .get('get reservations', '/',
         ctx => {
             return db.hotelReservations
-                .find({'user.ref': ctx.state.user, type: 'Hotel'})
+                .find({'user.ref': ctx.state.user, type: 'HotelReservation'})
                 .populate({
                     path: 'hotel.ref',
                     model: db.hotels
@@ -100,7 +103,7 @@ function verifyServices(ctx, next) {
 function verifyRequestServices(ctx, next) {
     let userServices = ctx.request.body.services,
         serviceIds = ctx.state.serviceIds;
-    ctx.state.price = 0;
+    ctx.state.beforeTax = 0;
     ctx.state.offerMap = {};
 
     return db.hotelServices
@@ -187,15 +190,18 @@ function verifyOffers(ctx, next, offers) {
             price += expected.count * offer.price;
             price += addonPrice;
 
-            ctx.state.price += price;
+            ctx.state.beforeTax += price;
             return offer.save();
         });
         return Promise.all(p).then(() => {
             ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
             let expectedPrice = ctx.request.body.price;
-            if (ctx.state.price != expectedPrice) {
+            if (ctx.state.beforeTax != expectedPrice) {
                 ctx.throw(400, 'Unmatched total price');
             }
+            let taxPercent = config.taxPercent;
+            ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
+            ctx.state.price = ctx.state.tax + ctx.state.beforeTax;
             return next();
         })
     })
@@ -241,7 +247,6 @@ function createSubReservation(ctx, next) {
         serviceMap = ctx.state.serviceMap,
         serviceIds = [];
         let p = userServices.map(s => { 
-            // console.log(s);
             let service = new db.hotelSubReservations({
                 service: {
                     ref: s.id,
@@ -288,6 +293,8 @@ function createReservation(ctx, next) {
         serviceIds = ctx.state.userServiceIds,
         hotel = ctx.state.hotel,
         price = ctx.state.price,
+        tax = ctx.state.tax,
+        beforeTax = ctx.state.beforeTax,
         userReservation = new db.hotelReservations({
             user: {
                 ref: user,
@@ -302,7 +309,9 @@ function createReservation(ctx, next) {
                 location: hotel.location
             },
             services: serviceIds,
-            price: price
+            price: price,
+            tax: tax,
+            beforeTax: beforeTax
         });
     let p = Promise.resolve();
     if (user.account.balance > 0) {

@@ -11,7 +11,7 @@ const hotelSubReservationSchema = new Schema({
         },
         type: {
             type: String,
-            enum: ['Pool', 'Spa', 'Restaurant']
+            enum: ['PoolService', 'SpaService', 'RestaurantService']
         },
         name: String,
         title: String,
