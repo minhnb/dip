@@ -23,7 +23,7 @@ function convertUser(user, currentUser) {
         data.facebookId = user.facebookId ? user.facebookId : undefined;
         data.email = user.email;
         data.dob = user.dob; // ? (user.dob.getFullYear() + "-" + (user.dob.getMonth() + 1) + "-" + user.dob.getDate()) : "";
-        data.phone = user.phone;
+        data.phone = user.phone || '';
         data.createdAt = user.createdAt;
         data.balance = user.account.balance;
         data.paymentMethods = user.account.cards.map(convertCard);
