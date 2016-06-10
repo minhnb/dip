@@ -51,7 +51,7 @@ exports.up = function(next) {
 	                    		}
 	                    	}
 	                    })
-	                    Promise.all(pools.map(pool => collection.save(pool)))
+	                    Promise.all(pools.map(pool => collection.save(pool))).then(() => next());
 	                }
 	            });
 	        });
