@@ -43,14 +43,14 @@ const hotelServiceSchema = new Schema({
     phone: String,
     reservable: Boolean,
     amenities: [{
-        type: String,
+        type: {type: String},
         count: {
             type: Number,
             default: 0
         },
         details: [{
-            label: String,
-            price: String
+            label: {type: String},
+            price: {type: String}
         }]
     }],
     policy: String

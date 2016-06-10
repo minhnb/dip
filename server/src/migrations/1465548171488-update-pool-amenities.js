@@ -1,0 +1,82 @@
+'use strict';
+
+const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
+const rootFolder = path.normalize(__dirname + '/../../..');
+
+dotenv.load({
+    path: `${rootFolder}/.env`
+});
+
+const connectionPromise = require('./db');
+const s3 = require('../helpers/s3');
+
+exports.up = function(next) {
+    let file_path = path.join(__dirname, `assets/pool-amenities-2.json`);
+    fs.readFile(file_path, 'utf8', function (err, data) {
+        if (err) {
+            return next(err);
+        }
+        var poolData = JSON.parse(data);
+        let poolNames = poolData.map(pool => pool.name);
+    	var poolMap = poolData.reduce((obj, pool) => {
+            obj[pool.name] = pool;
+            return obj;
+        }, Object.create({}));
+        return connectionPromise.then(connection => {
+	        connection.db.collection('hotelservices', (error, collection) => {
+	            collection.find({}).toArray((error, pools) => {
+	                if (error) {
+	                    next(error);
+	                } else {
+	                    pools.map(pool => {
+	                    	delete pool.amenities;
+	                    	
+	                    	if(poolMap[pool.name]) {
+	                    		pool.amenities = [];
+	                    		if (poolMap[pool.name].daybed !== 0) {
+	                    		    pool.amenities.push({
+	                    		        type: 'daybed',
+	                    		        count: poolMap[pool.name].daybed,
+	                    		        details: poolMap[pool.name].daybedPrice
+	                    		    });
+	                    		}
+	                    		if (poolMap[pool.name].cabana !== 0) {
+	                    		    pool.amenities.push({
+	                    		        type: 'cabana',
+	                    		        count: poolMap[pool.name].cabana,
+	                    		        details: poolMap[pool.name].cabanaPrice
+	                    		    });
+	                    		}
+	                    	}
+	                    })
+	                    Promise.all(pools.map(pool => collection.save(pool)))
+	                }
+	            });
+	        });
+	    });
+    });
+};
+
+exports.down = function(next) {
+    let file_path = path.join(__dirname, `assets/pool-amenities-2.json`);
+    fs.readFile(file_path, 'utf8', function (err, data) {
+        if (err) {
+            return next(err);
+        }
+        var poolData = JSON.parse(data);
+        let poolNames = poolData.map(pool => pool.name);
+    	return connectionPromise.then(connection => {
+        connection.db.collection('hotelservices', (error, collection) => {
+            collection.find({'name': {$in: poolNames}}).toArray((error, pools) => {
+            	pools.map(pool => {
+            		delete pool.amenities;
+            	})
+            	Promise.all(pools.map(pool => collection.save(pool))).then(() => next())
+            })
+        });
+    });
+       	
+    });
+};
