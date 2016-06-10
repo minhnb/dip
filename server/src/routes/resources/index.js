@@ -169,12 +169,18 @@ function getHotels(ctx, next) {
     let query = db.hotels.where("active").equals(true);
         query = query.where('reservable').equals(true);
 
-    let conditions = {};
-    conditions['_id'] = {$in: ctx.state.nearestHotels};
+    let conditions = {},
+        nearestHotels = ctx.state.nearestHotels;
+    conditions['_id'] = {$in: nearestHotels};
     // Filter on searchKey (aka, name)
     if (ctx.query.searchKey) {
         conditions['$text'] = {$search: ctx.query.searchKey};
     }
+
+    let indexMapping = Object.create(null);
+    nearestHotels.forEach((hotel, index) => {
+        indexMapping[hotel.id] = index;
+    });
 
     return query
     .find(conditions)
@@ -184,6 +190,9 @@ function getHotels(ctx, next) {
     })
     .exec()
     .then(hotels => {
+        hotels = hotels.sort((h1, h2) => {
+            return indexMapping[h1.id] - indexMapping[h2.id];
+        });
         ctx.state.hotels = hotels.map(entities.hotel);
         return next();
     })
