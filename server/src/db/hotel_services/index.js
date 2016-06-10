@@ -52,7 +52,8 @@ const hotelServiceSchema = new Schema({
             label: String,
             price: String
         }]
-    }]
+    }],
+    policy: String
 }, {
     timestamps: true,
     discriminatorKey: 'type'

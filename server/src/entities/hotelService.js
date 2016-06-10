@@ -17,7 +17,8 @@ function convertService(service) {
         phone: service.phone,
         roomService: service.roomService,
         reservable: service.reservable,
-        amenities: service.amenities
+        amenities: service.amenities,
+        policy: service.policy
     }
 }
 
