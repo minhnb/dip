@@ -55,6 +55,7 @@ exports.up = function(next) {
 	                		if(pool.name == 'San Vicente Inn (Bungalows)') pool.name = 'San Vicente Inn & Bungalows';
 	                		if(pool.name == 'The Hotel Wilshire, a Kimpton Hotel') pool.name = 'Hotel Wilshire';
 	                		if(pool.name == 'W Los Angeles - Westwood') pool.name = 'W Los Angeles - West Beverly Hills';
+	                		if(pool.name == 'Hotel Shangri-La Santa Monica') pool.name = 'Hotel Shangri-La';
 				            obj[pool.name] = pool._id;
 				            return obj;
 				        }, Object.create({}));
