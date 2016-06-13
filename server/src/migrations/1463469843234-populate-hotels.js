@@ -37,6 +37,10 @@ exports.up = function(next) {
        	{
        		oldName: 'W Los Angeles - West Beverly Hills',
        		newName: 'W Los Angeles - Westwood'
+       	},
+       	{
+       		oldName: 'Hotel Shangri-La',
+       		newName: 'Hotel Shangri-La Santa Monica'
        	}];
        	for(let i = 0; i < tmpHotelsName.length; i++) {
        		if(hotelsName.indexOf(tmpHotelsName[i].oldName)) {
