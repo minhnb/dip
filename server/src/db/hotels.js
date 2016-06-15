@@ -43,7 +43,12 @@ const hotelSchema = new Schema({
     services: [{
         type: Schema.ObjectId,
         ref: 'HotelService'
-    }]
+    }],
+    featured: {
+        type: Boolean,
+        require: true,
+        default: false
+    }
 }, {
     timestamps: true
 });

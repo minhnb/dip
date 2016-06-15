@@ -27,6 +27,14 @@ router
         getHotels,
         response
     )
+    .get('get featured resources', '/featured',
+        setFeaturedForFindingResources,
+        getNearestHotels,
+        getEvents,
+        // getSpecialOffers,
+        getHotels,
+        response
+    )
     .get('get events', '/events',
         getNearestHotels,
         getEvents,
@@ -88,6 +96,11 @@ function getNearestHotels(ctx, next) {
     let query = db.hotels.where("active").equals(true),
         user = ctx.state.user;
         query = query.where('reservable').equals(true);
+    if (ctx.state.featured) {
+        query = query.where('featured').equals(true);
+    } else {
+        query = query.where('featured').equals(false);
+    }
     var p;
     // Filter on location
     if (ctx.query.longitude && ctx.query.latitude) {
@@ -308,4 +321,8 @@ function filterPriceRanges(input) {
     };
 }
 
+function setFeaturedForFindingResources(ctx, next) {
+    ctx.state.featured = true;
+    return next();
+}
 
