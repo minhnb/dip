@@ -108,12 +108,21 @@ function getNearestHotels(ctx, next) {
             maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
             center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
 
+        let geoOptions = {
+            center: {
+                type: 'Point',
+                coordinates: center
+            },
+            minDistance: minDistance,
+            maxDistance: maxDistance,
+            spherical: true
+        };
 
         if (ctx.testEmails.has(user.email)) {
             // Let users in test-emails-list go straight in
             p = Promise.resolve();
-            minDistance = undefined;
-            maxDistance = undefined;
+            delete geoOptions.minDistance;
+            delete geoOptions.maxDistance;
         } else {
             p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
                 .then(function (res) {
@@ -130,15 +139,6 @@ function getNearestHotels(ctx, next) {
                 })
         }
 
-        let geoOptions = {
-            center: {
-                type: 'Point',
-                coordinates: center
-            },
-            minDistance: minDistance,
-            maxDistance: maxDistance,
-            spherical: true
-        };
         query = query.where('coordinates').near(geoOptions);
     } else {
         p = Promise.resolve();
