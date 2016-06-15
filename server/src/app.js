@@ -104,7 +104,7 @@ app.use(auth.passport.initialize());
 app.use(router.routes(), router.allowedMethods());
 
 // Fetch dip account before exporting
-let adminEmail = 'admin@thedipapp.com';
+let adminEmail = config.admin.email;
 db.users.findByEmail(adminEmail).exec().then(admin => {
     if (!admin) {
         console.error(`Couldn't find admin account ${adminEmail}`);
@@ -112,6 +112,12 @@ db.users.findByEmail(adminEmail).exec().then(admin => {
     } else {
         app.context.dipId = admin._id;
     }
+});
+
+// Fetch test emails list from db
+db.testEmails.find({}).exec().then(testEmails => {
+    let emails = testEmails.map(e => e.email);
+    app.context.testEmails = new Set(emails);
 });
 
 module.exports = app;

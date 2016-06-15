@@ -85,7 +85,8 @@ router
 
 function getNearestHotels(ctx, next) {
     // TODO: Move this to either db or controller module
-    let query = db.hotels.where("active").equals(true);
+    let query = db.hotels.where("active").equals(true),
+        user = ctx.state.user;
         query = query.where('reservable').equals(true);
     var p;
     // Filter on location
@@ -105,22 +106,27 @@ function getNearestHotels(ctx, next) {
 
         query = query.where('coordinates').near(geoOptions);
 
-        p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
-        .then(function(res) {
-            let city = res[0].administrativeLevels.level2long,
-                state = res[0].administrativeLevels.level1long;
-            return db.cities
-                .findOne({'$and': [{city: city}, {state: state}]})
-                .exec();
-        })
-        .then(city => {
-            if(!city) {
-                ctx.throw(404, 'Not Support');
-            }   
-        })
+        if (ctx.testEmails.has(user.email)) {
+            // Let users in test-emails-list go straight in
+            p = Promise.resolve();
+        } else {
+            p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
+                .then(function (res) {
+                    let city = res[0].administrativeLevels.level2long,
+                        state = res[0].administrativeLevels.level1long;
+                    return db.cities
+                        .findOne({'$and': [{city: city}, {state: state}]})
+                        .exec();
+                })
+                .then(city => {
+                    if (!city) {
+                        ctx.throw(404, 'Not Support');
+                    }
+                })
+        }
     } else {
         p = Promise.resolve();
-    };
+    }
 
     return p.then(() => {
         return query.exec()
