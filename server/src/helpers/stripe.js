@@ -100,6 +100,11 @@ function deletePlan(plan) {
     return stripe.plans.del(plan);
 }
 
+
+function retrieveEvent(eventId) {
+    return stripe.events.retrieve(eventId)
+}
+
 module.exports = {
     stripe: stripe,
     addUser: addUser,
@@ -111,5 +116,6 @@ module.exports = {
     updatePlan: updatePlan,
     setDefaultUserCard: setDefaultUserCard,
     retrievePlan: retrievePlan,
-    deletePlan: deletePlan
+    deletePlan: deletePlan,
+    retrieveEvent: retrieveEvent
 };
