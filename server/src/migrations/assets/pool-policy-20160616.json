@@ -1,0 +1,281 @@
+[
+  {
+    "name": "Petit Ermitage",
+    "amenities": [],
+    "policy": "Annual Membership and Hotel guests only"
+  },
+  {
+    "name": "Mosaic Hotel Beverly Hills",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": "Hotel guests only except for bar and restaurant"
+  },
+  {
+    "name": "Luxe Sunset Boulevard Hotel",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": "Hotel guests only except for bar and restaurant"
+  },
+  {
+    "name": "Montage Beverly Hills",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": ""
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": ""
+  },
+  {
+    "name": "The London West Hollywood",
+    "amenities": [{"type": "Cabanas"}, {"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": ""
+  },
+  {
+    "name": "Sunset Marquis",
+    "amenities": [{"type": "Cabanas"}],
+    "policy": ""
+  },
+  {
+    "name": "The Beverly Hilton",
+    "amenities": [],
+    "policy": "Hotel guests only"
+  },
+  {
+    "name": "Ace Hotel Downtown LA",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "The Standard Downtown LA",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "The Standard Hollywood",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Sportsmen's Lodge Hotel",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Sunset Towers Hotel",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Custom Hotel",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Hollywood Roosevelt Hotel",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Hotel Wilshire",
+    "amenities": [{"type": "Pool Pass"}],
+    "policy": ""
+  },
+  {
+    "name": "Mondrian Los Angeles Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access the swimming pool. If you are non-hotel guest and have a reservation at sky bar or for a cabana then you can access the pool."
+  },
+  {
+    "name": "The BLVD Hotel & Suites",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The BLVD Hotel and Spa",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Georgian",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Moment Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hollywood Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Bel-Air",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Beverly Hills Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Casa del Mar",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Shutters on the Beach",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Fairmont Miramar Hotel & Bungalows",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Andaz West Hollywood",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Burbank Inn & Suites",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Cal Mar Hotel Suites",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Coral Sands Motel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Farmer's Daughter Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Mikado Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Mr. C Beverly Hills",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Oceana Beach Club Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Pasadena Inn",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Dixie Hollywood",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "San Vicente Inn (Bungalows)",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Hotel Wilshire, a Kimpton Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Angeleno",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Loews Hollywood Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Loews Santa Monica Beach Hotel",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Garland",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Chamberlain West Hollywood",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Grafton on Sunset",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Omni Los Angeles at California Plaza",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "SLS Hotel at Beverly Hills",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The LA Hotel Downtown",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "W Hollywood",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "W Los Angeles - Westwood",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "The Line",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Avalon Hotel Beverly Hills",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Viceroy Santa Monica",
+    "amenities": [],
+    "policy": "Only hotel guests can access this swimming pool."
+  },
+  {
+    "name": "Hotel Figueroa",
+    "amenities": [],
+    "policy": "Pool currently closed for renovation."
+  },
+  {
+    "name": "Millennium Biltmore Hotel Los Angeles",
+    "policy": ""
+  }
+]

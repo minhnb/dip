@@ -7,7 +7,8 @@ function convertService(service) {
         name: service.name,
         instagram: service.instagram,
         location: service.location,
-        details: service.details,
+        // details: service.details,
+        details: "Swimming Pool",//all details must display as Swimming Pool - see http://jira.cvp.io/browse/DIP-162
         url: service.url,
         lowRate: service.lowRate,
         highRate: service.highRate,
