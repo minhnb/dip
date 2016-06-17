@@ -19,6 +19,7 @@ const auth = require('./auth');
 const membershipTypes = require('./membershipTypes');
 const hooks = require('./hooks');
 const resources = require('./resources');
+const cities = require('./cities');
 
 router.get('index page', '/', ctx => {
     ctx.throw(401);
@@ -39,3 +40,4 @@ router.use('/wishlist', wishList.routes(), wishList.allowedMethods());
 router.use('/plans', membershipTypes.routes(), membershipTypes.allowedMethods());
 router.use('/hooks', hooks.routes(), hooks.allowedMethods());
 router.use('/resources', resources.routes(), resources.allowedMethods());
+router.use('/cities', cities.routes(), cities.allowedMethods());
