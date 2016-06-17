@@ -23,8 +23,8 @@ router
     .get('get resources', '/',
         searchHotel,
         getNearestHotels,
-        getEvents,
-        getSpecialOffers,
+        // getEvents,
+        // getSpecialOffers,
         getHotels,
         response
     )
@@ -105,6 +105,9 @@ function getNearestHotels(ctx, next) {
             query = query.where('_id').in(ctx.state.searchedHotels);
         }
     }
+    let skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
+        limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0;
+
     var p;
     // Filter on location
     if (ctx.query.longitude && ctx.query.latitude) {
@@ -152,7 +155,7 @@ function getNearestHotels(ctx, next) {
         return query.populate({
                 path: 'services',
                 model: db.hotelServices
-            }).exec()
+            }).limit(limit).skip(skip).exec()
         .then(nearestHotels => {
             ctx.state.nearestHotels = nearestHotels;
             return next();
