@@ -21,6 +21,7 @@ module.exports = router;
 router
     .use('/', auth.authenticate())
     .get('get resources', '/',
+        searchHotel,
         getNearestHotels,
         getEvents,
         getSpecialOffers,
@@ -100,6 +101,9 @@ function getNearestHotels(ctx, next) {
         query = query.where('featured').equals(true);
     } else {
         query = query.where('featured').equals(false);
+        if (ctx.state.searchedHotels) {
+            query = query.where('_id').in(ctx.state.searchedHotels);
+        }
     }
     var p;
     // Filter on location
@@ -145,7 +149,10 @@ function getNearestHotels(ctx, next) {
     }
 
     return p.then(() => {
-        return query.exec()
+        return query.populate({
+                path: 'services',
+                model: db.hotelServices
+            }).exec()
         .then(nearestHotels => {
             ctx.state.nearestHotels = nearestHotels;
             return next();
@@ -188,36 +195,41 @@ function getSpecialOffers(ctx, next) {
 }
 
 function getHotels(ctx, next) {
-    let query = db.hotels.where("active").equals(true);
-        query = query.where('reservable').equals(true);
+    ctx.state.hotels = ctx.state.nearestHotels.map(entities.hotel);
+    return next();
 
-    let conditions = {},
-        nearestHotels = ctx.state.nearestHotels;
-    conditions['_id'] = {$in: nearestHotels};
-    // Filter on searchKey (aka, name)
-    if (ctx.query.searchKey) {
-        conditions['$text'] = {$search: ctx.query.searchKey};
-    }
+    //remove unnecessary query to db for getting hotel
 
-    let indexMapping = Object.create(null);
-    nearestHotels.forEach((hotel, index) => {
-        indexMapping[hotel.id] = index;
-    });
-
-    return query
-    .find(conditions)
-    .populate({
-        path: 'services',
-        model: db.hotelServices
-    })
-    .exec()
-    .then(hotels => {
-        hotels = hotels.sort((h1, h2) => {
-            return indexMapping[h1.id] - indexMapping[h2.id];
-        });
-        ctx.state.hotels = hotels.map(entities.hotel);
-        return next();
-    })
+    // let query = db.hotels.where("active").equals(true);
+    //     query = query.where('reservable').equals(true);
+    //
+    // let conditions = {},
+    //     nearestHotels = ctx.state.nearestHotels;
+    // conditions['_id'] = {$in: nearestHotels};
+    // // Filter on searchKey (aka, name)
+    // if (ctx.query.searchKey) {
+    //     conditions['$text'] = {$search: ctx.query.searchKey};
+    // }
+    //
+    // let indexMapping = Object.create(null);
+    // nearestHotels.forEach((hotel, index) => {
+    //     indexMapping[hotel.id] = index;
+    // });
+    //
+    // return query
+    // .find(conditions)
+    // .populate({
+    //     path: 'services',
+    //     model: db.hotelServices
+    // })
+    // .exec()
+    // .then(hotels => {
+    //     hotels = hotels.sort((h1, h2) => {
+    //         return indexMapping[h1.id] - indexMapping[h2.id];
+    //     });
+    //     ctx.state.hotels = hotels.map(entities.hotel);
+    //     return next();
+    // })
 }
 
 
@@ -329,3 +341,32 @@ function setFeaturedForFindingResources(ctx, next) {
     return next();
 }
 
+function searchHotel(ctx, next) {
+    if (ctx.state.featured || !ctx.query.searchKey) {
+        return next();
+    }
+    return searchHotelByNameAndNeighborhood(ctx.query.searchKey, hotels => {
+        ctx.state.searchedHotels = hotels;
+        return next();
+    });
+}
+
+function searchHotelByNameAndNeighborhood(searchKey, callback) {
+    let virtualFieldKey = "nameAndNeighborhood";
+    let project = {}, condition = {};
+    project[virtualFieldKey] = {$concat:["$name", " ", "$address.neighborhood"]};
+    let words = searchKey.trim().split(" ");
+    let andConditions = [];
+    words.forEach(word => {
+        let item = {};
+        item[virtualFieldKey] = new RegExp(".*" + word + ".*", "i");
+        andConditions.push(item);
+    });
+    condition = {$and: andConditions};
+    return db.hotels
+        .aggregate({$project: project},{$match: condition})
+        .exec()
+        .then((hotels) => {
+            return callback(hotels);
+        });
+}
