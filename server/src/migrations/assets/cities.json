@@ -1,42 +1,6 @@
 [
   {
-    "city": "Los Angeles",
+    "city": "Los Angeles County",
     "state": "California"
-  },
-  {
-    "city": "San Francisco",
-    "state": "California"
-  },
-  {
-    "city": "Austin",
-    "state": "Texas"
-  },
-  {
-    "city": "Dallas",
-    "state": "Texas"
-  },
-  {
-    "city": "Santa Fe",
-    "state": "California"
-  },
-  {
-    "city": "Miami",
-    "state": "Florida"
-  },
-  {
-    "city": "Honolulu",
-    "state": "Hawaii"
-  },
-  {
-    "city": "New York",
-    "state": "New York"
-  },
-  {
-    "city": "Atlanta",
-    "state": "Georgia"
-  },
-  {
-    "city": "New Orleans",
-    "state": "Lousiana"
   }
 ]

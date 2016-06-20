@@ -8,11 +8,11 @@ const entities = require('../entities');
 
 module.exports = router;
 
-router.get('get cities', '/',
+router.get('get locations', '/',
     auth.authenticate(),
     ctx => {
-        return db.cities.find({}).exec().then(listCities => {
-            ctx.body = listCities.map(entities.cities);
+        return db.dipLocations.find({}).exec().then(listLocations => {
+            ctx.body = listLocations.map(entities.dipLocations);
         });
     }
 );

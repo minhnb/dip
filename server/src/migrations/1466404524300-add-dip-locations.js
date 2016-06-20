@@ -12,29 +12,25 @@ dotenv.load({
 const connectionPromise = require('./db');
 
 exports.up = function(next) {
-    var listCities = require(__dirname + '/assets/cities.json');
+    var listCities = require(__dirname + '/assets/dipLocations.json');
     return updateCities(listCities, next);
 };
 
 exports.down = function (next) {
-    let losAngeles = {
-        "city": "Los Angeles County",
-        "state": "California"
-    };
-    return updateCities(losAngeles, next);
+    return updateCities([], next);
 };
 
-function updateCities(listCities, next) {
+function updateCities(listLocations, next) {
     return connectionPromise.then(connection => {
-        connection.db.collection('cities', (error, collection) => {
+        connection.db.collection('diplocations', (error, collection) => {
             collection.remove({}, (error) => {
                 if (error) {
                     next(error);
                 } else {
-                    if (listCities.length == 0) {
+                    if (listLocations.length == 0) {
                         Promise.resolve().then(() => next());
                     } else {
-                        collection.insert(listCities, (error) => {
+                        collection.insert(listLocations, (error) => {
                             Promise.resolve().then(() => next());
                         });
                     }

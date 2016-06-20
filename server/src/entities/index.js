@@ -26,5 +26,6 @@ module.exports = {
     hotel: require('./hotel'),
     hotelReservation: require('./hotelReservation'),
     hotelService: require('./hotelService'),
-    cities: require('./cities')
+    cities: require('./cities'),
+    dipLocations: require('./dipLocations')
 };

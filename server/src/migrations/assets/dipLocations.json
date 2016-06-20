@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "los_angeles",
+    "name": "Los Angeles",
+    "description": "California"
+  },
+  {
+    "_id": "san_francisco",
+    "name": "San Francisco",
+    "description": "California"
+  },
+  {
+    "_id": "austin",
+    "name": "Austin",
+    "description": "Texas"
+  },
+  {
+    "_id": "dallas",
+    "name": "Dallas",
+    "description": "Texas"
+  },
+  {
+    "_id": "santa_fe",
+    "name": "Santa Fe",
+    "description": "California"
+  },
+  {
+    "_id": "miami",
+    "name": "Miami",
+    "description": "Florida"
+  },
+  {
+    "_id": "honolulu",
+    "name": "Honolulu",
+    "description": "Hawaii"
+  },
+  {
+    "_id": "new_york",
+    "name": "New York",
+    "description": "New York"
+  },
+  {
+    "_id": "atlanta",
+    "name": "Atlanta",
+    "description": "Georgia"
+  },
+  {
+    "_id": "new_orleans",
+    "name": "New Orleans",
+    "description": "Lousiana"
+  }
+]

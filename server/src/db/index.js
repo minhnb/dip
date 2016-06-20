@@ -36,5 +36,6 @@ module.exports = {
     specialOfferReservations: require('./reservations/special_offer'),
     hotelReservations: require('./reservations/hotel'),
     hotelSubReservations: require('./reservations/hotel/services'),
-    testEmails: require('./testEmails')
+    testEmails: require('./testEmails'),
+    dipLocations: require('./dipLocations')
 };
