@@ -105,6 +105,9 @@ function getNearestHotels(ctx, next) {
             query = query.where('_id').in(ctx.state.searchedHotels);
         }
     }
+    if (ctx.query.location) {
+        query = query.where('dipLocation').equals(ctx.query.location);
+    }
     let skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
         limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0;
 

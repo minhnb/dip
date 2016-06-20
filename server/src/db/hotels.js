@@ -48,7 +48,8 @@ const hotelSchema = new Schema({
         type: Boolean,
         require: true,
         default: false
-    }
+    },
+    dipLocation: String
 }, {
     timestamps: true
 });
