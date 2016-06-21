@@ -120,4 +120,9 @@ db.testEmails.find({}).exec().then(testEmails => {
     app.context.testEmails = new Set(emails);
 });
 
+db.dipLocations.find({"supported": true}).exec().then(dipLocations => {
+    let supportedLocations = dipLocations.map(location => location._id);
+    app.context.supportedLocations = new Set(supportedLocations);
+});
+
 module.exports = app;

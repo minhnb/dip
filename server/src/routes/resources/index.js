@@ -97,6 +97,13 @@ function getNearestHotels(ctx, next) {
     let query = db.hotels.where("active").equals(true),
         user = ctx.state.user;
         query = query.where('reservable').equals(true);
+    if (ctx.query.location) {
+        let location = ctx.query.location;
+        if (!utils.isDipSupportedLocation(location, ctx)) {
+            ctx.throw(404, 'Not Support');
+        }
+        query = query.where('dipLocation').equals(location);
+    }
     if (ctx.state.featured) {
         query = query.where('featured').equals(true);
     } else {
@@ -104,9 +111,6 @@ function getNearestHotels(ctx, next) {
         if (ctx.state.searchedHotels) {
             query = query.where('_id').in(ctx.state.searchedHotels);
         }
-    }
-    if (ctx.query.location) {
-        query = query.where('dipLocation').equals(ctx.query.location);
     }
     let skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
         limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0;
@@ -128,7 +132,7 @@ function getNearestHotels(ctx, next) {
             spherical: true
         };
 
-        if (ctx.testEmails.has(user.email)) {
+        if (utils.isTestEmail(user.email, ctx) || ctx.query.location) {
             // Let users in test-emails-list go straight in
             p = Promise.resolve();
             delete geoOptions.minDistance;

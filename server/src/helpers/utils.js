@@ -41,11 +41,27 @@ function generateMemberCode(prefix, codeLength) {
     return code;
 }
 
+function isDipSupportedLocation(dipLocation, ctx) {
+    if (ctx.supportedLocations.has(dipLocation)) {
+        return true;
+    }
+    return false;
+}
+
+function isTestEmail(email, ctx) {
+    if (ctx.testEmails.has(email)) {
+        return true;
+    }
+    return false;
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
     convertCardExpireDate: convertCardExpireDate,
     checkGroupOwner: checkGroupOwner,
     isAdmin: isAdmin,
-    generateMemberCode: generateMemberCode
+    generateMemberCode: generateMemberCode,
+    isDipSupportedLocation: isDipSupportedLocation,
+    isTestEmail: isTestEmail
 };
