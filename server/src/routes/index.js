@@ -20,6 +20,7 @@ const membershipTypes = require('./membershipTypes');
 const hooks = require('./hooks');
 const resources = require('./resources');
 const locations = require('./locations');
+const admin = require('./admin');
 
 router.get('index page', '/', ctx => {
     ctx.throw(401);
@@ -41,3 +42,4 @@ router.use('/plans', membershipTypes.routes(), membershipTypes.allowedMethods())
 router.use('/hooks', hooks.routes(), hooks.allowedMethods());
 router.use('/resources', resources.routes(), resources.allowedMethods());
 router.use('/locations', locations.routes(), locations.allowedMethods());
+router.use('/admin', admin.routes(), admin.allowedMethods());

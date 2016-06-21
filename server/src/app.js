@@ -31,6 +31,7 @@ const app = new Koa();
 const config = require('./config');
 const db = require('./db');
 const router = require('./routes');
+const adminServices = require('./services/admin');
 
 app.use(bodyparser);
 app.use(convert(json()));
@@ -114,15 +115,9 @@ db.users.findByEmail(adminEmail).exec().then(admin => {
     }
 });
 
-// Fetch test emails list from db
-db.testEmails.find({}).exec().then(testEmails => {
-    let emails = testEmails.map(e => e.email);
-    app.context.testEmails = new Set(emails);
-});
-
-db.dipLocations.find({"supported": true}).exec().then(dipLocations => {
-    let supportedLocations = dipLocations.map(location => location._id);
-    app.context.supportedLocations = new Set(supportedLocations);
-});
+// Fetch test emails list & supported locations list from db
+app.context.testEmails = new Set();
+app.context.supportedLocations = new Set();
+adminServices.updateAppContext(app.context);
 
 module.exports = app;
