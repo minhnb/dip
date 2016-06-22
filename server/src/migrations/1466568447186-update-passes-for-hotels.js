@@ -106,11 +106,12 @@ function updatePassesForHotel(hotelData, next) {
                                 offer.hotel = hotel.id;
                                 offer.type = "pass";
                                 let day = "2016-06-22";
+                                let dueDay = "2017-06-22";
                                 if (!offer.price) {
                                     offer.price = 0;
                                 }
                                 if (!offer.dueDay) {
-                                    offer.dueDay = day;
+                                    offer.dueDay = dueDay;
                                 }
                                 if (!offer.startDay) {
                                     offer.startDay = day;
