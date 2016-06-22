@@ -1,0 +1,438 @@
+[
+  {
+    "name": "Hotel Shangri-La",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 420,
+        "endTime" : 1380
+      },
+      "price" : 20000,
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }, {
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 420,
+        "endTime" : 1380
+      },
+      "price" : 2500,
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Petit Ermitage",
+    "amenities": []
+  },
+  {
+    "name": "Mosaic Hotel Beverly Hills",
+    "amenities": []
+  },
+  {
+    "name": "Luxe Sunset Boulevard Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Montage Beverly Hills",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 660,
+        "endTime" : 1080
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }]
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }]
+  },
+  {
+    "name": "The London West Hollywood",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }, {
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 540,
+        "endTime" : 1320
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }]
+  },
+  {
+    "name": "Sunset Marquis",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Cabana",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1080
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "cabana"
+      ]
+    }]
+  },
+  {
+    "name": "The Beverly Hilton",
+    "amenities": []
+  },
+  {
+    "name": "Ace Hotel Downtown LA",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 660,
+        "endTime" : 840
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "The Standard Downtown LA",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 480,
+        "endTime" : 1320
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "The Standard Hollywood",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 570,
+        "endTime" : 840
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Sportsmen's Lodge Hotel",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 480,
+        "endTime" : 1260
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Sunset Towers Hotel",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Custom Hotel",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Hollywood Roosevelt Hotel",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Hotel Wilshire",
+    "amenities": [],
+    "offers": [{
+      "type" : "pass",
+      "description" : "Pool Pass",
+      "allotmentCount" : 5,
+      "duration" : {
+        "startTime" : 600,
+        "endTime" : 1020
+      },
+      "days" : [1, 2, 3, 4, 5, 6, 7],
+      "amenities" : [
+        "poolservice"
+      ]
+    }]
+  },
+  {
+    "name": "Mondrian Los Angeles Hotel",
+    "amenities": []
+  },
+  {
+    "name": "The BLVD Hotel & Suites",
+    "amenities": []
+  },
+  {
+    "name": "The BLVD Hotel and Spa",
+    "amenities": []
+  },
+  {
+    "name": "The Georgian",
+    "amenities": []
+  },
+  {
+    "name": "The Moment Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Hollywood Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Hotel Bel-Air",
+    "amenities": []
+  },
+  {
+    "name": "The Beverly Hills Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Casa del Mar",
+    "amenities": []
+  },
+  {
+    "name": "Shutters on the Beach",
+    "amenities": []
+  },
+  {
+    "name": "Fairmont Miramar Hotel & Bungalows",
+    "amenities": []
+  },
+  {
+    "name": "Andaz West Hollywood",
+    "amenities": []
+  },
+  {
+    "name": "Burbank Inn & Suites",
+    "amenities": []
+  },
+  {
+    "name": "Cal Mar Hotel Suites",
+    "amenities": []
+  },
+  {
+    "name": "Coral Sands Motel",
+    "amenities": []
+  },
+  {
+    "name": "Farmer's Daughter Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Mikado Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Mr. C Beverly Hills",
+    "amenities": []
+  },
+  {
+    "name": "Oceana Beach Club Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Pasadena Inn",
+    "amenities": []
+  },
+  {
+    "name": "The Dixie Hollywood",
+    "amenities": []
+  },
+  {
+    "name": "San Vicente Inn (Bungalows)",
+    "amenities": []
+  },
+  {
+    "name": "The Hotel Wilshire, a Kimpton Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Hotel Angeleno",
+    "amenities": []
+  },
+  {
+    "name": "Loews Hollywood Hotel",
+    "amenities": []
+  },
+  {
+    "name": "Loews Santa Monica Beach Hotel",
+    "amenities": []
+  },
+  {
+    "name": "The Garland",
+    "amenities": []
+  },
+  {
+    "name": "Chamberlain West Hollywood",
+    "amenities": []
+  },
+  {
+    "name": "Grafton on Sunset",
+    "amenities": []
+  },
+  {
+    "name": "Omni Los Angeles at California Plaza",
+    "amenities": []
+  },
+  {
+    "name": "SLS Hotel at Beverly Hills",
+    "amenities": []
+  },
+  {
+    "name": "The LA Hotel Downtown",
+    "amenities": []
+  },
+  {
+    "name": "W Hollywood",
+    "amenities": []
+  },
+  {
+    "name": "W Los Angeles - Westwood",
+    "amenities": []
+  },
+  {
+    "name": "The Line",
+    "amenities": []
+  },
+  {
+    "name": "Avalon Hotel Beverly Hills",
+    "amenities": []
+  },
+  {
+    "name": "Viceroy Santa Monica",
+    "amenities": []
+  },
+  {
+    "name": "Hotel Figueroa",
+    "amenities": []
+  },
+  {
+    "name": "Millennium Biltmore Hotel Los Angeles",
+    "amenities": []
+  }
+]
