@@ -4,6 +4,9 @@ const event = require('./event');
 const service = require('./hotelService');
 
 module.exports = function(reservation) {
+    if (!reservation) {
+        return null;
+    }
     return {
         id: reservation._id,
         email: reservation.user.email,
@@ -19,6 +22,7 @@ module.exports = function(reservation) {
         },
         host: service(reservation.event.ref.host),
         price: reservation.price,
-        count: reservation.count
+        count: reservation.count,
+        createdAt: reservation.createdAt.getTime()
     }
 };

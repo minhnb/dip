@@ -4,6 +4,9 @@ const pool = require('./pool');
 const offerEntity = require('./offer');
 const addonEntity = require('./addon');
 module.exports = function(reservation) {
+    if (!reservation) {
+        return null;
+    }
     return {
         id: reservation._id,
         type: reservation.type.slice(0, reservation.type.length - 11),
@@ -36,6 +39,7 @@ module.exports = function(reservation) {
                 })
             }
         }),
-        price: reservation.price
+        price: reservation.price,
+        createdAt: reservation.createdAt.getTime()
     }
 };

@@ -4,6 +4,9 @@ const event = require('./event');
 const offerEntity = require('./offer');
 
 module.exports = function(reservation) {
+    if (!reservation) {
+        return null;
+    }
     return {
         id: reservation._id,
         name: reservation.specialOffer.name,
@@ -22,6 +25,7 @@ module.exports = function(reservation) {
                     details: offer.service.details
                 }
             }
-        })
+        }),
+        createdAt: reservation.createdAt.getTime()
     }
 };
