@@ -14,7 +14,7 @@ function convertGroup(group) {
         createdAt: group.createdAt,
         updatedAt: group.updatedAt,
         seen: !group.lastMessage || (currentMember && group.lastMessage._id.equals(currentMember.lastMessage)),
-        lastMessage: group.lastMessage.content
+        lastMessage: group.lastMessage ? group.lastMessage.content : null
     };
 }
 

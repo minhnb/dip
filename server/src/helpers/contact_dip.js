@@ -17,20 +17,21 @@ function sendMessage(user, dipId, content) {
                 let name = 'Support',
                     description = '',
                     members = [dipId, userId];
+                let message = new db.messages({
+                    user: dipId,
+                    group: group,
+                    content: content || 'Welcome to Dip. We hope you will enjoy it here'
+                });
                 group = new db.groups({
                     name: name,
                     description: description,
                     owner: dipId,
                     members: members.map(m => {
                         return {ref: m};
-                    })
+                    }),
+                    lastMessage: message
                 });
                 return group.save().then(group => {
-                    let message = new db.messages({
-                        user: dipId,
-                        group: group,
-                        content: content || 'Welcome to Dip. We hope you will enjoy it here'
-                    });
                     return message.save().then(() => {
                         return group;
                     });
