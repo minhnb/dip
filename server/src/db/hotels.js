@@ -12,7 +12,7 @@ const hotelSchema = new Schema({
     },
     location: {
         type: String,
-        required: true
+        required: false
     },
     details: String,
     url: String,
