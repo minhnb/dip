@@ -15,7 +15,8 @@ exports.up = function(next) {
         "startTime" : 720,
         "endTime" : 1080
     };
-    db.events.update({"title": "Launch Dip"}, {$set: {duration: duration}}, (error, result) => {
+    var title = "Dip Launch Party";
+    db.events.update({"email" : "admin@thedipapp.com"}, {$set: {duration: duration, title: title}}, (error, result) => {
         if (error) return next(error);
         if (result.nModified < 1) {
             return next("Not Found Dip Event");
