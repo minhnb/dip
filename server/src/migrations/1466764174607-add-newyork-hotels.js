@@ -3,6 +3,7 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const rootFolder = path.normalize(__dirname + '/../../..');
+const im = require('imagemagick');
 
 dotenv.load({
     path: `${rootFolder}/.env`
@@ -88,16 +89,30 @@ function mapHotelAddress(hotel) {
 
 function uploadHotelImages(hotels, callback) {
     let imgPromises = hotels.map(hotel => {
-        hotel.tmpName = hotel.name.replace(/ /g, "_").toLowerCase();
-        let img_path = path.join(__dirname, `assets/1466764174607-add-newyork-hotels/${hotel.tmpName}.jpg`);
-        try {
-            let data = fs.readFileSync(img_path);
-            return s3.upload(`pools/${hotel.tmpName}`, data, 'image/jpg');
-        } catch (err) {
-            // Ignore image errors
-            console.log(err);
-            return Promise.resolve();
-        }
+        return new Promise((resolve, reject) => {
+            hotel.tmpName = hotel.name.replace(/ /g, "_").toLowerCase();
+            let img_path = path.join(__dirname, `assets/1466764174607-add-newyork-hotels/${hotel.tmpName}.jpg`);
+            try {
+                let data = fs.readFileSync(img_path);
+                im.resize({
+                    srcPath: img_path,
+                    width: 736
+                }, function(err, stdout, stderr){
+                    // console.log(err);
+                    let bufferData = new Buffer(stdout, 'binary');
+                    s3.upload(`hotels/${hotel.tmpName}`, data, 'image/jpg').then(img => {
+                        s3.upload(`hotels/${hotel.tmpName}_resized`, bufferData, 'image/jpg').then(resize_img => {
+                            // console.log(resize_img);
+                            resolve(img);
+                        });
+                    });
+                });
+            } catch (err) {
+                // Ignore image errors
+                console.log(err);
+                resolve();
+            }
+        });
     });
     return Promise.all(imgPromises).then(imgs => {
         console.info('uploaded hotel images');
