@@ -68,7 +68,6 @@ function mapHotelAddress(hotel) {
         postalCode: 0,
         country: 'US'
     };
-    hotel.active = true;
     return geocoder.geocode(hotel.fullAddress)
         .then(data => {
             hotel.address.street = hotel.fullAddress.split(",")[0];
