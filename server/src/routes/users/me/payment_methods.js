@@ -31,6 +31,12 @@ router.post('add payment', '/',
                 }
                 ctx.response.status = 200;
                 ctx.body = {newCard: entities.creditCard(card, user.account.defaultCardId)};
+            }, error => {
+                if (error.type == "StripeCardError" || error.type == "StripeInvalidRequestError") {
+                    ctx.throw(400, error.message);
+                } else {
+                    ctx.throw(500, error.message);
+                }
             });
         }
     )
