@@ -10,6 +10,7 @@ const entities = require('../../../entities');
 const auth = require('../../../helpers/passport_auth');
 const validator = require('../../../helpers/input_validator');
 const s3 = require('../../../helpers/s3');
+const imageUtils = require('../../../helpers/image');
 
 const cardRouter = require('./payment_methods');
 const promotionRouter = require('./promotions');
@@ -98,21 +99,25 @@ router.get('get me', '/',
                 ctx.throw(400, 'No image specified');
             } else {
                 // TODO: convert/compress/process image before uploading to s3
-                return s3.upload(user.avatarS3Path, img.buffer, img.mimeType)
-                    .catch(err => {
-                        console.error(err);
-                        ctx.throw(500, 'S3 Error');
-                    }).then(data => {
-                        user.avatar.url = data.Location;
-                        user.avatar.contentType = img.mimeType;
-                        user.avatar.provider = 'dip';
-                        return user.save().then(() => {
-                            ctx.status = 200;
-                            ctx.body = {
-                                location: data.Location,
-                                contentType: img.mimeType
-                            };
-                        });
+                return imageUtils.resize(img.buffer, 256, 'jpg')
+                    .then(data => {
+                        let contentType = 'image/jpg';
+                        return s3.upload(user.avatarS3Path, data, contentType)
+                            .catch(err => {
+                                console.error(err);
+                                ctx.throw(500, 'S3 Error');
+                            }).then(data => {
+                                user.avatar.url = data.Location;
+                                user.avatar.contentType = contentType;
+                                user.avatar.provider = 'dip';
+                                return user.save().then(() => {
+                                    ctx.status = 200;
+                                    ctx.body = {
+                                        location: data.Location,
+                                        contentType: contentType
+                                    };
+                                });
+                            });
                     });
             }
         }
