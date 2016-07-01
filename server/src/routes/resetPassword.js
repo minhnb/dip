@@ -38,6 +38,22 @@ router.post('Request password reset', '/',
                         //         }
                         //     })
                         // });
+                        let userName = user.firstName || user.lastName || user.email;
+                        mailer.resetPassword({
+                            email: user.email,
+                            name: userName
+                        }, {
+                            name: userName,
+                            token: token.token,
+                            link: url.format({
+                                protocol: 'https',
+                                host: config.baseUrl,
+                                pathname: '/resetpassword',
+                                query: {
+                                    token: token.token
+                                }
+                            })
+                        });
                     });
                 } else {
                     ctx.status = 400;
