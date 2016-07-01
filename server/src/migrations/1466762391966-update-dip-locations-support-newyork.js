@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const db = require('../db');
+const connectionPromise = require('./db');
 
 let newYorkId = "new_york";
 exports.up = function(next) {
@@ -14,11 +14,15 @@ exports.down = function(next) {
 };
 
 function updateSupportedDipLocationForCity(dipLocationId, supported, next) {
-    db.dipLocations.update({"_id": dipLocationId}, {$set: {supported: supported}}, (error, result) => {
-        if (error) return next(error);
-        if (result.nModified < 1) {
-            return next("Not Found New York City");
-        }
-        return next();
+    return connectionPromise.then(connection => {
+        connection.db.collection('diplocations', (error, collection) => {
+            collection.update({"_id": dipLocationId}, {$set: {supported: supported}}, (error, result) => {
+                if (error) return next(error);
+                if (result.result.n < 1) {
+                    return next("Not Found New York City");
+                }
+                return next();
+            });
+        });
     });
 }
