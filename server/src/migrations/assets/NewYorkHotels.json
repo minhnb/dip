@@ -3,6 +3,7 @@
     "name":"The Beach at Dream Downtown",
     "neighborhood":"Chelsea",
     "fullAddress":"355 W 16th St, New York, NY 10011",
+    "city": "New York",
     "url":"http://dreambeach.club/",
     "phone":"(212) 229-2559",
     "active": true,
@@ -11,6 +12,7 @@
   {
     "name":"Equinox Printing House",
     "fullAddress":"421 Hudson St, New York, NY 10014",
+    "city": "New York",
     "url":"https://www.equinox.com/clubs/new-york/downtown/printinghouse",
     "phone":"(212) 243-7600",
     "active": true,
@@ -19,6 +21,7 @@
   {
     "name":"The James New York",
     "fullAddress":"27 Grand St, New York, NY 10013",
+    "city": "New York",
     "url":"http://www.jameshotels.com/new-york",
     "phone":"(212) 465-2000",
     "active": true,
@@ -27,6 +30,7 @@
   {
     "name":"Hotel Americano",
     "fullAddress":"518 WEST 27TH STREET, NEW YORK NY 10001",
+    "city": "New York",
     "url":"http://www.hotel-americano.com/",
     "phone":"212-525-0000",
     "active": true,
@@ -35,6 +39,7 @@
   {
     "name":"The Standard Le Bain",
     "fullAddress":"848 Washington St, New York, NY 10014",
+    "city": "New York",
     "url":"http://www.standardhotels.com/new-york/features/le-bain",
     "phone":"(212) 645-7600",
     "active": true,
@@ -43,6 +48,7 @@
   {
     "name":"Le Parker Meridien New York",
     "fullAddress":"119 W 56th St, New York, NY 10019",
+    "city": "New York",
     "url":"http://www.parkermeridien.com/home/",
     "phone":"(212) 245-5000",
     "active": true,
@@ -51,6 +57,7 @@
   {
     "name":"McCarren Hotel & Pool",
     "fullAddress":"160 N 12th St, Brooklyn, NY 11249",
+    "city": "Brooklyn",
     "url":"http://www.mccarrenhotel.com/about",
     "phone":"(718) 218-7500",
     "active": true,
