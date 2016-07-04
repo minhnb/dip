@@ -19,6 +19,9 @@ const request = require('request-promise');
 
 const contactDip = require('./contact_dip');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
 module.exports = {
     passport: passport,
     login: login,
@@ -78,7 +81,8 @@ function login() {
             if (ctx.state.user) {
                 return next();
             } else {
-                ctx.throw(400, ctx.state.error || 'Bad Request');
+                // ctx.throw(400, ctx.state.error || 'Bad Request');
+                throw new DIPError(dipErrorDictionary.INVALID_USERNAME_OR_PASSWORD);
             }
         });
     }
@@ -92,7 +96,10 @@ function facebookLogin() {
         return request(request_user_info_url).then(fbUserInfo => {
             fbUserInfo = JSON.parse(fbUserInfo);
             let email = fbUserInfo.email || ctx.request.body.email;
-            if(!email) ctx.throw(400, 'Missing Email');
+            if(!email) {
+                // ctx.throw(400, 'Missing Email');
+                throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
+            }
             email = email.toLowerCase();
             return users.findByEmail(fbUserInfo.email).exec().then(user => {
                 if (!user) {
@@ -113,8 +120,9 @@ function facebookLogin() {
                 }
             });
         }).catch(err => {
-            err.status = 401;
-            throw err;
+            // err.status = 401;
+            // throw err;
+            throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
         }).then(user => {
             ctx.state.user = user;
             return next();
@@ -142,7 +150,8 @@ function authenticateJwt(requiredScopes) {
             if (ctx.state.user) {
                 return next();
             } else {
-                ctx.throw(401, ctx.state.error || 'Unauthorized');
+                // ctx.throw(401, ctx.state.error || 'Unauthorized');
+                throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
             }
         });
     }

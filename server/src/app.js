@@ -32,6 +32,7 @@ const config = require('./config');
 const db = require('./db');
 const router = require('./routes');
 const adminServices = require('./services/admin');
+const DIPError = require('./helpers/DIPError');
 
 app.use(bodyparser);
 app.use(convert(json()));
@@ -61,6 +62,10 @@ app.use((ctx, next) => {
         }, function(err){
             if (err == null) console.log('Successfully notified the room.');
         });
+        let isJsonResponse = false;
+        if (ctx.headers.jsonerror == "true") {
+            isJsonResponse = true;
+        }
         if (config.env != 'production' && config.env != 'prod') {
             console.log('caught', err);
 
@@ -74,12 +79,14 @@ app.use((ctx, next) => {
                     error: err
                 });
             } else {
-                ctx.response.body = err.message || 'Internal Server Error';
+                // ctx.response.body = err.message || 'Internal Server Error';
+                ctx.response.body = DIPError.responseError(err, false, isJsonResponse);
             }
         } else {
             // If err.expose is true, it means the error is safe to display to the user
             // err.expose is set to true whenever we use ctx.throw, so be careful!
-            ctx.response.body = (err.expose ? err.message : null) || 'Bad Request';
+            // ctx.response.body = (err.expose ? err.message : null) || 'Bad Request';
+            ctx.response.body = DIPError.responseError(err, true, isJsonResponse);
         }
     });
 });

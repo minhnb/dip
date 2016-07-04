@@ -13,6 +13,9 @@ const contactDip = require('../helpers/contact_dip');
 const stripe = require('../helpers/stripe');
 const utils = require('../helpers/utils');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
 module.exports = router;
 
 router
@@ -44,7 +47,10 @@ router
                 refCodePromises =  db.users.findOne({'account.refCode': code})
                 .exec()
                 .then(referer => {
-                    if(!referer) ctx.throw(400, 'Code not exist')
+                    if(!referer) {
+                        // ctx.throw(400, 'Code not exist')
+                        throw new DIPError(dipErrorDictionary.INVALID_INVITE_CODE);
+                    }
                     return referer;
                 })
             } else {
@@ -96,9 +102,12 @@ router
                 }).catch(err => {
                     if (err.code === 11000) {
                         // Duplicate key error -- existed email
-                        ctx.throw(409, "Email existed");
+                        // ctx.throw(409, "Email existed");
+                        throw new DIPError(dipErrorDictionary.EMAIL_EXISTED);
                     } else {
-                        throw err;
+                        // throw err;
+                        console.log(err);
+                        throw new DIPError(dipErrorDictionary.UNKNOWN_ERROR);
                     }
                 });
             })

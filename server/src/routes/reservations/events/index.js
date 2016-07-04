@@ -10,6 +10,10 @@ const stripe = require('../../../helpers/stripe');
 const config = require('../../../config');
 
 const auth = require('../../../helpers/passport_auth');
+
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 module.exports = router;
 
 router
@@ -46,13 +50,25 @@ router
     );
 
 function validateInput(ctx, next) {
-    if(!ctx.request.body.eventId) ctx.throw(400, 'Missing event id');
+    if(!ctx.request.body.eventId) {
+        // ctx.throw(400, 'Missing event id');
+        throw new DIPError(dipErrorDictionary.MISSING_EVENT);
+    }
     let eventPrice = ctx.request.body.price || ctx.request.body.price === 0;
-    if(!eventPrice) ctx.throw(400, 'Missing price');
+    if(!eventPrice) {
+        // ctx.throw(400, 'Missing price');
+        throw new DIPError(dipErrorDictionary.MISSING_PRICE);
+    }
 
     let quantities = ctx.request.body.quantities;
-    if(!quantities) ctx.throw(400, 'Missing quantities');
-    if(quantities < 0) ctx.throw(400, 'quantities must be large then zero');
+    if(!quantities) {
+        // ctx.throw(400, 'Missing quantities');
+        throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+    }
+    if(quantities < 0) {
+        // ctx.throw(400, 'quantities must be large then zero');
+        throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+    }
     ctx.state.quantities = quantities;
 
     return db.eventReservations.findOne({
@@ -63,7 +79,8 @@ function validateInput(ctx, next) {
     .exec()
     .then(event => {
         if(!event) return next();
-        ctx.throw(400, 'User already join this event');
+        // ctx.throw(400, 'User already join this event');
+        throw new DIPError(dipErrorDictionary.USER_ALREADY_JOIN_EVENT);
     })
 }
 
@@ -75,18 +92,32 @@ function verifyEvent(ctx, next) {
     .populate('host')
     .exec()
     .then(event => {
-        if(!event) ctx.throw(404, 'Event not found');
-        if(expectedPrice !== event.price) ctx.throw(404, 'Unmatched event price');
-        if(event.reservationCount + quantities > event.capacity) ctx.throw(400, 'Overbooking event');
+        if(!event) {
+            // ctx.throw(404, 'Event not found');
+            throw new DIPError(dipErrorDictionary.EVENT_NOT_FOUND);
+        }
+        if(expectedPrice !== event.price) {
+            // ctx.throw(404, 'Unmatched event price');
+            throw new DIPError(dipErrorDictionary.UNMATCHED_EVENT_PRICE);
+        }
+        if(event.reservationCount + quantities > event.capacity) {
+            // ctx.throw(400, 'Overbooking event');
+            throw new DIPError(dipErrorDictionary.EVENT_OVERBOOKING);
+        }
         if(event.price > 0) {
-            if(!ctx.request.body.cardId) ctx.throw(400, 'Missing cardId');
+            if(!ctx.request.body.cardId) {
+                // ctx.throw(400, 'Missing cardId');
+                throw new DIPError(dipErrorDictionary.INVALID_CARD_ID);
+            }
             let userCardId = ctx.request.body.cardId;
             let userCard = ctx.state.user.account.cards.id(userCardId);
                 if (!userCard) {
-                    ctx.throw(400, 'Invalid card id');
+                    // ctx.throw(400, 'Invalid card id');
+                    throw new DIPError(dipErrorDictionary.INVALID_CARD_ID);
                 }
                 if (!userCard.passCvc) {
-                    ctx.throw(400, 'Cvc checking failed');
+                    // ctx.throw(400, 'Cvc checking failed');
+                    throw new DIPError(dipErrorDictionary.CVC_CHECKING_FAILED);
                 }
                 ctx.state.userCard = userCard;
                 //validate friend
@@ -131,7 +162,10 @@ function verifyService(ctx, next) {
     return db.hotelServices.findOne({_id: hostId})
     .exec()
     .then(service => {
-        if(!service) ctx.throw(404, 'Service not found');
+        if(!service) {
+            // ctx.throw(404, 'Service not found');
+            throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+        }
         ctx.state.service = service;
         return next();
     })
@@ -170,7 +204,10 @@ function createReservation(ctx, next) {
         return db.events.findOne({_id: event._id})
             .exec()
             .then(e => {
-                if(e.reservationCount + quantities > e.capacity) ctx.throw(400, 'Overbooking event');
+                if(e.reservationCount + quantities > e.capacity) {
+                    // ctx.throw(400, 'Overbooking event');
+                    throw new DIPError(dipErrorDictionary.EVENT_OVERBOOKING);
+                }
                 e.reservationCount += quantities;
                 e.members.addToSet(user);
                 return e.save();
@@ -235,7 +272,8 @@ function chargeSale(ctx, next) {
             sale.state = charge.status;
             return sale.save().then(() => {
                 if (charge.status == 'failed') {
-                    ctx.throw(400, 'Card charging failed');
+                    // ctx.throw(400, 'Card charging failed');
+                    throw new DIPError(dipErrorDictionary.CARD_CHARGING_FAILED);
                 }
             });
         })

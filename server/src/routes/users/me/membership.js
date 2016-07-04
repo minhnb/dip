@@ -10,6 +10,9 @@ const auth = require('../../../helpers/passport_auth');
 const validator = require('../../../helpers/input_validator');
 const stripe = require('../../../helpers/stripe');
 
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 router.post('add membership', '/',
         auth.authenticate(),
         validator({
@@ -25,17 +28,20 @@ router.post('add membership', '/',
                 defaultSubscription = user.account.defaultSubscription;
                 
             if(defaultSubscription) {
-                ctx.throw(400, 'need cancel current subscription')
+                // ctx.throw(400, 'need cancel current subscription')
+                throw new DIPError(dipErrorDictionary.NEED_CANCEL_CURRENT_SUBSCRIPTION);
             }
             if(user.account.cards && user.account.cards.length == 0) {
-                ctx.throw(400, 'user do not have any credit card')
+                // ctx.throw(400, 'user do not have any credit card')
+                throw new DIPError(dipErrorDictionary.NO_CREDIT_CARD);
             }
             
             return db.membershipTypes.findById(type)
             .exec()
             .then(plan => {
                 if(!plan) {
-                    ctx.throw(404, 'plan not found');
+                    // ctx.throw(404, 'plan not found');
+                    throw new DIPError(dipErrorDictionary.PLAN_NOT_FOUND);
                 }
                 return stripe.createSubscription(user, plan)
                 .then(data => {
@@ -61,7 +67,8 @@ router.post('add membership', '/',
             let user = ctx.state.user,
                 defaultSubscriptionId = user.account.defaultSubscription;
             if(!defaultSubscriptionId) {
-                ctx.throw(400, 'invalid membership');
+                // ctx.throw(400, 'invalid membership');
+                throw new DIPError(dipErrorDictionary.INVALID_MEMBERSHIP);
             }
             let subscription = user.account.subscriptions.id(defaultSubscriptionId);
 
@@ -69,7 +76,8 @@ router.post('add membership', '/',
             .exec()
             .then(plan => {
                 if(!plan) {
-                    ctx.throw(404, 'Plan not found');
+                    // ctx.throw(404, 'Plan not found');
+                    throw new DIPError(dipErrorDictionary.PLAN_NOT_FOUND);
                 }
                 return stripe.cancelSubscription(user, subscription);
             }).then(data => {

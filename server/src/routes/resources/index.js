@@ -16,6 +16,9 @@ var httpAdapter = 'http';
 
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 
+const dipErrorDictionary = require('../../constants/dipErrorDictionary');
+const DIPError = require('../../helpers/DIPError');
+
 module.exports = router;
 
 router
@@ -100,7 +103,8 @@ function getNearestHotels(ctx, next) {
     if (ctx.query.location) {
         let location = ctx.query.location;
         if (!utils.isDipSupportedLocation(location, ctx)) {
-            ctx.throw(404, 'Not Support');
+            // ctx.throw(404, 'Not Support');
+            throw new DIPError(dipErrorDictionary.NOT_SUPPORT);
         }
         query = query.where('dipLocation').equals(location);
     }
@@ -148,7 +152,8 @@ function getNearestHotels(ctx, next) {
                 })
                 .then(city => {
                     if (!city) {
-                        ctx.throw(404, 'Not Support');
+                        // ctx.throw(404, 'Not Support');
+                        throw new DIPError(dipErrorDictionary.NOT_SUPPORT);
                     }
                 })
         }

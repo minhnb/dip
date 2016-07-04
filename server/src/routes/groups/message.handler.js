@@ -8,6 +8,9 @@ const gcm = require('../../helpers/gcm');
 const s3 = require('../../helpers/s3');
 const crypto = require('crypto');
 
+const dipErrorDictionary = require('../../constants/dipErrorDictionary');
+const DIPError = require('../../helpers/DIPError');
+
 exports.createMessage = function(ctx, next) {
     let user = ctx.state.user,
         group = ctx.state.group,
@@ -24,7 +27,8 @@ exports.createMessage = function(ctx, next) {
         p = s3.upload('messageImages/' + hash, img.buffer, img.mimeType)
         .catch(err => {
             console.error(err);
-            ctx.throw(500, 'S3 Error');
+            // ctx.throw(500, 'S3 Error');
+            throw new DIPError(dipErrorDictionary.S3_ERROR);
         }).then(data => {
             message.media = {
                 url: data.Location,

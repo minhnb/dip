@@ -3,6 +3,8 @@
 const convert = require('koa-convert');
 const validator = require('koa-router-validator');
 //const merge = require('merge-descriptors');
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('./DIPError');
 
 function validatorWrapper() {
     return convert(validator(...arguments));
@@ -12,7 +14,8 @@ function validatePassword(pwd) {
     if (pwd && pwd.length >= 6 && /[a-z]/.test(pwd) && /[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) {
         return true;
     } else {
-        throw new Error('Invalid password');
+        // throw new Error('Invalid password');
+        throw new DIPError(dipErrorDictionary.INVALID_PASSWORD);
     }
 }
 

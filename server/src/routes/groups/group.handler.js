@@ -4,6 +4,8 @@ const db = require('../../db');
 const entities = require('../../entities');
 const contactDipHelper = require('../../helpers/contact_dip');
 
+const dipErrorDictionary = require('../../constants/dipErrorDictionary');
+const DIPError = require('../../helpers/DIPError');
 
 exports.createOrAuthenticateGroup = function(ctx, next) {
 	let group = ctx.request.body.group || (ctx.req.body ? ctx.req.body.group : undefined);
@@ -14,7 +16,8 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
 	            let user = ctx.state.user,
 	                currentMember = group.findMember(user);
 	            if (!user._id.equals(group.owner) && !currentMember) {
-	                ctx.throw(403); // Access denied
+	                // ctx.throw(403); // Access denied
+                    throw new DIPError(dipErrorDictionary.ACCESS_DENIED);
 	            } else {
 	                ctx.state.group = group;
 	                group.currentMember = currentMember;
@@ -27,11 +30,16 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
     try {
         var members = ctx.request.body.members || JSON.parse(ctx.req.body.members)
     } catch (err) {
-        ctx.throw(400, 'invalid members')
+        // ctx.throw(400, 'invalid members')
+        throw new DIPError(dipErrorDictionary.INVALID_MEMBERS);
     };
-    if(!members) ctx.throw(400, 'Missing members');
+    if(!members) {
+        // ctx.throw(400, 'Missing members');
+        throw new DIPError(dipErrorDictionary.MISSING_MEMBERS);
+    }
     if (!Array.isArray(members)) {
-        ctx.throw(400, 'Members must be an array');
+        // ctx.throw(400, 'Members must be an array');
+        throw new DIPError(dipErrorDictionary.MEMBERS_MUST_BE_ARRAY);
     }
 
     members = new Set(members);
@@ -56,7 +64,8 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
                 description = ctx.request.body.description || '',
                 friends = ctx.state.user.friends;
             if (!Array.isArray(members)) {
-                ctx.throw(400, 'Members must be an array');
+                // ctx.throw(400, 'Members must be an array');
+                throw new DIPError(dipErrorDictionary.MEMBERS_MUST_BE_ARRAY);
             }
             return db.users.find({
                 $and: [
@@ -69,7 +78,8 @@ exports.createOrAuthenticateGroup = function(ctx, next) {
                 ]
             }).then(dbMembers => {
                 if (dbMembers.length < members.length) {
-                    ctx.throw(400, 'Invalid member id');
+                    // ctx.throw(400, 'Invalid member id');
+                    throw new DIPError(dipErrorDictionary.INVALID_MEMBER_ID);
                 }
                 let group = new db.groups({
                     name: name,
@@ -94,11 +104,15 @@ exports.authenticateGroup = (ctx, next) => {
     return db.groups.findById(ctx.params.groupId)
         .exec()
         .then(group => {
-        	if(!group) ctx.throw(404, 'Group not found');
+        	if(!group) {
+                // ctx.throw(404, 'Group not found');
+                throw new DIPError(dipErrorDictionary.GROUP_NOT_FOUND);
+            }
             let user = ctx.state.user,
                 currentMember = group.findMember(user);
             if (!user._id.equals(group.owner) && !currentMember) {
-                ctx.throw(403); // Access denied
+                // ctx.throw(403); // Access denied
+                throw new DIPError(dipErrorDictionary.ACCESS_DENIED);
             } else {
                 ctx.state.group = group;
                 group.currentMember = currentMember;
@@ -123,7 +137,8 @@ exports.addGroup = ctx => {
         members = ctx.request.body.members || [],
         friends = ctx.state.user.friends;
     if (!Array.isArray(members) || members.length == 0) {
-        ctx.throw(400, 'Members must be an array');
+        // ctx.throw(400, 'Members must be an array');
+        throw new DIPError(dipErrorDictionary.MEMBERS_MUST_BE_ARRAY);
     }
     members = new Set(members);
     members.add(ctx.state.user.id);
@@ -138,7 +153,8 @@ exports.addGroup = ctx => {
         ]
     }).then(dbMembers => {
         if (dbMembers.length < members.length) {
-            ctx.throw(400, 'Invalid member id');
+            // ctx.throw(400, 'Invalid member id');
+            throw new DIPError(dipErrorDictionary.INVALID_MEMBER_ID);
         }
         let group = new db.groups({
             name: name,
@@ -217,7 +233,8 @@ exports.deleteMember = ctx => {
         // If one (group's owner or not) wants to remove oneself from the group,
         // use DELETE /groups/group_id
         // The path /groups/group_id/members are for members' management only
-        ctx.throw(400, "Couldn't remove yourself");
+        // ctx.throw(400, "Couldn't remove yourself");
+        throw new DIPError(dipErrorDictionary.CANT_REMOVE_YOURSELF);
     } else {
         let member = group.findMember(userId);
         if (member) {

@@ -8,6 +8,9 @@ const db = require('../db');
 const validator = require('../validators');
 const mailer = require('../mailer');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
 module.exports = router;
 
 router.post('Request password reset', '/',
@@ -72,11 +75,13 @@ router.post('Request password reset', '/',
             .exec()
             .then(token => {
                 if (!token) {
-                    ctx.throw(404, 'Invalid or expired token');
+                    // ctx.throw(404, 'Invalid or expired token');
+                    throw new DIPError(dipErrorDictionary.INVALID_OR_EXPIRED_TOKEN);
                 }
                 // Check if token.user is valid first
                 if (!token.user) {
-                    ctx.throw(404, 'Invalid user');
+                    // ctx.throw(404, 'Invalid user');
+                    throw new DIPError(dipErrorDictionary.USER_NOT_FOUND);
                 }
                 let user = token.user;
                 user.setPassword(password);

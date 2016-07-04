@@ -5,6 +5,9 @@ const router = require('koa-router')();
 const db = require('../../../db');
 const entities = require('../../../entities');
 
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 module.exports = router;
 
 router.put('add promotion', '/:promotionCode',
@@ -14,7 +17,8 @@ router.put('add promotion', '/:promotionCode',
 
         return db.promotions.findOne({code: promotionCode}).then(promotion => {
             if (!promotion) {
-                ctx.throw(404, 'Invalid code');
+                // ctx.throw(404, 'Invalid code');
+                throw new DIPError(dipErrorDictionary.INVALID_PROMOTION_CODE);
             }
             let added = user.account.promotions.addToSet(promotion);
             if (added.length > 0) {
@@ -28,7 +32,8 @@ router.put('add promotion', '/:promotionCode',
                     };
                 });
             } else {
-                ctx.throw(400, 'Promotion code already used');
+                // ctx.throw(400, 'Promotion code already used');
+                throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
             }
         });
     }

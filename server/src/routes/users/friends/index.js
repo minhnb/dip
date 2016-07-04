@@ -10,6 +10,9 @@ const config = require('../../../config');
 
 const auth = require('../../../helpers/passport_auth');
 
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 module.exports = router;
 
 router.use('/', auth.authenticate())
@@ -42,15 +45,18 @@ router.use('/', auth.authenticate())
             } else if (email) {
                 p = db.users.findByEmail(email).exec();
             } else {
-                ctx.throw(400, 'Missing user id and email');
+                // ctx.throw(400, 'Missing user id and email');
+                throw new DIPError(dipErrorDictionary.MISSING_USER_ID_AND_EMAIL);
             }
 
             return p.then(friend => {
                 if (!friend) {
-                    ctx.throw(404, 'Invalid user');
+                    // ctx.throw(404, 'Invalid user');
+                    throw new DIPError(dipErrorDictionary.USER_NOT_FOUND);
                 }
                 if (user._id.equals(friend._id)) {
-                    ctx.throw(400, "Can't add yourself as a friend");
+                    // ctx.throw(400, "Can't add yourself as a friend");
+                    throw new DIPError(dipErrorDictionary.CANT_ADD_YOURSELF);
                 }
                 let added = user.friends.addToSet(friend);
                 if (added.length > 0) {

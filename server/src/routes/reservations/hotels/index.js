@@ -14,6 +14,9 @@ const stripe = require('../../../helpers/stripe');
 const auth = require('../../../helpers/passport_auth');
 const config = require('../../../config');
 
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 module.exports = router;
 
 router
@@ -62,16 +65,27 @@ router
 function checkInput(ctx, next) {
     let user = ctx.state.user,
         userCardId = ctx.request.body.cardId;
-    if(!ctx.request.body.services) ctx.throw(400, 'Invalid services');
-    if(!ctx.request.body.hotel) ctx.throw(400, 'Missing hotel id');
-    if(!Array.isArray(ctx.request.body.services)) ctx.throw(400, 'Services must be an array');
+    if(!ctx.request.body.services) {
+        // ctx.throw(400, 'Invalid services');
+        throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
+    }
+    if(!ctx.request.body.hotel) {
+        // ctx.throw(400, 'Missing hotel id');
+        throw new DIPError(dipErrorDictionary.MISSING_HOTEL_ID);
+    }
+    if(!Array.isArray(ctx.request.body.services)) {
+        // ctx.throw(400, 'Services must be an array');
+        throw new DIPError(dipErrorDictionary.SERVICES_MUST_BE_AN_ARRAY);
+    }
 
     let userCard = user.account.cards.id(userCardId);
     if (!userCard) {
-        ctx.throw(400, 'Invalid card id');
+        // ctx.throw(400, 'Invalid card id');
+        throw new DIPError(dipErrorDictionary.INVALID_CARD_ID);
     }
     if (!userCard.passCvc) {
-        ctx.throw(400, 'Cvc checking failed');
+        // ctx.throw(400, 'Cvc checking failed');
+        throw new DIPError(dipErrorDictionary.CVC_CHECKING_FAILED);
     }
 
     ctx.state.userCard = userCard;
@@ -84,7 +98,10 @@ function verifyHotel(ctx, next) {
     return db.hotels.findOne({_id: ctx.request.body.hotel})
     .exec()
     .then(hotel => {
-        if(!hotel) ctx.throw(400, 'Invalid hotel');
+        if(!hotel) {
+            // ctx.throw(400, 'Invalid hotel');
+            throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+        }
         ctx.state.hotel = hotel;
         return next();
     })
@@ -95,7 +112,10 @@ function verifyServices(ctx, next) {
     return db.hotelServices.find({_id: {$in: serviceIds}})
     .exec()
     .then(services => {
-        if(services.length < serviceIds.length) ctx.throw(400, 'Invalid Services');
+        if(services.length < serviceIds.length) {
+            // ctx.throw(400, 'Invalid Services');
+            throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
+        }
         return next();
     });
 }
@@ -132,7 +152,10 @@ function verifyOffers(ctx, next, offers) {
     .populate('hotel')
     .exec()
     .then(offers => {
-        if (offers.length < _offers.length) ctx.throw(400, 'Invalid offer id');
+        if (offers.length < _offers.length) {
+            // ctx.throw(400, 'Invalid offer id');
+            throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
+        }
         let baseOfferMap = offers.reduce((obj, offer) => {
             obj[offer.id] = offer;
             return obj;
@@ -147,10 +170,14 @@ function verifyOffers(ctx, next, offers) {
             let expected = _offerMap[offer._id.toString()],
                 price = 0;
             if (!expected) {
-                ctx.throw(400, 'Invalid offer id');
+                // ctx.throw(400, 'Invalid offer id');
+                throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
             }
 
-            if(!expected.date) ctx.throw(400, 'Missing offer date');
+            if(!expected.date) {
+                // ctx.throw(400, 'Missing offer date');
+                throw new DIPError(dipErrorDictionary.MISSING_OFFER_DATE);
+            }
             
             let startDay = moment().weekday(),
                 startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
@@ -164,11 +191,17 @@ function verifyOffers(ctx, next, offers) {
                 offerTime < moment().tz(offer.hotel.address.timezone) || 
                 moment(reservDate) > moment(next7Days) || 
                 moment(offer.dueDay) < moment(reservDate) || 
-                moment(offer.startDay) > moment(reservDate)) ctx.throw(400, 'Not serve');
+                moment(offer.startDay) > moment(reservDate)) {
+                // ctx.throw(400, 'Not serve');
+                throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
+            }
 
             if(offerById.reservationCount && offerById.reservationCount[reservDate] &&
                 offerById.reservationCount[reservDate] + expected.count > offerById.allotmentCount)
-                    ctx.throw(400, 'Over booking'); 
+            {
+                // ctx.throw(400, 'Over booking');
+                throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
+            }
 
             if (offer.reservationCount == undefined) {
                 offer.reservationCount = {};
@@ -178,15 +211,23 @@ function verifyOffers(ctx, next, offers) {
                 offer.reservationCount[reservDate] = expected.count
             offer.markModified('reservationCount');
 
-            if(!expected.count) ctx.throw(400, 'Missing quantities');
-            if(expected.count < 0) ctx.throw(400, 'quantities must be large then zero');
+            if(!expected.count) {
+                // ctx.throw(400, 'Missing quantities');
+                throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+            }
+            if(expected.count < 0) {
+                // ctx.throw(400, 'quantities must be large then zero');
+                throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+            }
 
             if (expected.price != offer.price) {
-                ctx.throw(400, 'Unmatched offer price');
+                // ctx.throw(400, 'Unmatched offer price');
+                throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
             }
 
             if (!verifySpecialOffers(expected, offer)) {
-                ctx.throw(400, 'Invalid special offer');
+                // ctx.throw(400, 'Invalid special offer');
+                throw new DIPError(dipErrorDictionary.INVALID_SPECIAL_OFFER);
             }
             let addonPrice = expected.addons.reduce((total, addon) => {
                 return total + addon.price * addon.count;
@@ -201,7 +242,8 @@ function verifyOffers(ctx, next, offers) {
             ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
             let expectedPrice = ctx.request.body.price;
             if (ctx.state.beforeTax != expectedPrice) {
-                ctx.throw(400, 'Unmatched total price');
+                // ctx.throw(400, 'Unmatched total price');
+                throw new DIPError(dipErrorDictionary.UNMATCHED_TOTAL_PRICE);
             }
             let taxPercent = config.taxPercent;
             ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
@@ -365,7 +407,8 @@ function chargeSale(ctx, next) {
             sale.state = charge.status;
             return sale.save().then(() => {
                 if (charge.status == 'failed') {
-                    ctx.throw(400, 'Card charging failed');
+                    // ctx.throw(400, 'Card charging failed');
+                    throw new DIPError(dipErrorDictionary.CARD_CHARGING_FAILED);
                 }
             });
         })

@@ -13,6 +13,9 @@ const entities = require('../../entities');
 const auth = require('../../helpers/passport_auth');
 const validator = require('../../validators');
 
+const dipErrorDictionary = require('../../constants/dipErrorDictionary');
+const DIPError = require('../../helpers/DIPError');
+
 module.exports = router;
 
 router.use('/', auth.authenticate())
@@ -34,7 +37,8 @@ router.use('/', auth.authenticate())
 		                .findOne({location: location})
 		                .exec();  
 		    	} else {
-		    		ctx.throw(400, 'Geo error');
+		    		// ctx.throw(400, 'Geo error');
+					throw new DIPError(dipErrorDictionary.GEO_ERROR);
 		    	}        
 		    })
 		    .then(wishList => {

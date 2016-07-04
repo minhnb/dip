@@ -4,6 +4,9 @@ const randomstring = require('randomstring');
 const dateformat = require('dateformat');
 const md5 = require('md5');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
 function generateRandomToken(length) {
     return randomstring.generate(length);
 }
@@ -22,7 +25,8 @@ function checkGroupOwner(ctx, next) {
     if (ctx.state.user && ctx.state.user._id.equals(ctx.state.group.owner)) {
         return next();
     } else {
-        ctx.throw(403); // access denied
+        // ctx.throw(403); // access denied
+        throw new DIPError(dipErrorDictionary.ACCESS_DENIED);
     }
 }
 
@@ -30,7 +34,8 @@ function isAdmin(ctx, next) {
     if(ctx.state.user && ctx.state.user.role == 'admin') {
         return next();
     } else{
-        ctx.throw(401);
+        // ctx.throw(401);
+        throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
     }
 }
 

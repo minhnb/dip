@@ -16,6 +16,9 @@ const cardRouter = require('./payment_methods');
 const promotionRouter = require('./promotions');
 const membershipRoute = require('./membership');
 
+const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
+const DIPError = require('../../../helpers/DIPError');
+
 module.exports = router;
 
 router.get('get me', '/',
@@ -71,7 +74,8 @@ router.get('get me', '/',
         if (postData.oldPassword !== undefined) {
             let oldPwd = postData.oldPassword;
             if (!user.checkPassword(oldPwd)) {
-                ctx.throw(400, 'Wrong password');
+                // ctx.throw(400, 'Wrong password');
+                throw new DIPError(dipErrorDictionary.WRONG_PASSWORD);
             }
             user.setPassword(postData.newPassword);
         }
@@ -83,9 +87,10 @@ router.get('get me', '/',
         return user.save().then(() => {
             ctx.response.status = 204;
         }).catch(err => {
-            ctx.response.status = 400;
-            ctx.body = "Bad request";
-            throw err;
+            // ctx.response.status = 400;
+            // ctx.body = "Bad request";
+            // throw err;
+            throw new DIPError(dipErrorDictionary.UNKNOWN_ERROR);
         });
     }
     )
@@ -96,7 +101,8 @@ router.get('get me', '/',
             let img = ctx.req.file, // NOTE: koa-multer still saves file to ctx.req
                 user = ctx.state.user;
             if (!img) {
-                ctx.throw(400, 'No image specified');
+                // ctx.throw(400, 'No image specified');
+                throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
             } else {
                 // TODO: convert/compress/process image before uploading to s3
                 return imageUtils.resize(img.buffer, 256, 'jpg')
@@ -105,7 +111,8 @@ router.get('get me', '/',
                         return s3.upload(user.avatarS3Path, data, contentType)
                             .catch(err => {
                                 console.error(err);
-                                ctx.throw(500, 'S3 Error');
+                                // ctx.throw(500, 'S3 Error');
+                                throw new DIPError(dipErrorDictionary.S3_ERROR);
                             }).then(data => {
                                 user.avatar.url = data.Location;
                                 user.avatar.contentType = contentType;

@@ -12,6 +12,8 @@ const config = require('../../config');
 const stripe = require('../../helpers/stripe');
 const utils = require('../../helpers/utils');
 
+const dipErrorDictionary = require('../../constants/dipErrorDictionary');
+const DIPError = require('../../helpers/DIPError');
 
 module.exports = router;
 
@@ -92,7 +94,8 @@ router.use('/', auth.authenticate())
                             })
                         });
             		} else {
-            			ctx.throw(404, 'membership type not found');
+            			// ctx.throw(404, 'membership type not found');
+                        throw new DIPError(dipErrorDictionary.MEMBERSHIP_TYPE_NOT_FOUND);
             		}
             	});
         }
