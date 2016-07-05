@@ -18,6 +18,13 @@ var templatesInfo = {
     resetPassword: {
         name: 'password-reset',
         subject: 'Password Reset'
+    },
+    /**
+     * @exports mailer.passwordChanged
+     */
+    passwordChanged: {
+        name: 'password-change',
+        subject: 'Password Changed'
     }
 };
 

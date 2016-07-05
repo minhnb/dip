@@ -88,6 +88,15 @@ router.post('Request password reset', '/',
                 return user.save().then(user => {
                     ctx.status = 204;
                     token.remove();
+
+                    // Send password-changed email
+                    let userName = user.firstName || user.lastName || user.email;
+                    mailer.passwordChanged({
+                        email: user.email,
+                        name: userName
+                    }, {
+                        name: userName
+                    });
                 });
             });
     }

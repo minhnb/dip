@@ -19,6 +19,8 @@ const membershipRoute = require('./membership');
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');
 
+const mailer = require('../../../mailer');
+
 module.exports = router;
 
 router.get('get me', '/',
@@ -86,6 +88,17 @@ router.get('get me', '/',
 
         return user.save().then(() => {
             ctx.response.status = 204;
+
+            // Send password-changed email if necessary
+            if (postData.oldPassword) {
+                let userName = user.firstName || user.lastName || user.email;
+                mailer.passwordChanged({
+                    email: user.email,
+                    name: userName
+                }, {
+                    name: userName
+                });
+            }
         }).catch(err => {
             // ctx.response.status = 400;
             // ctx.body = "Bad request";
