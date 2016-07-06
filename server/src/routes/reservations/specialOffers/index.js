@@ -179,14 +179,14 @@ function verifyOffers(ctx, next, offers) {
 
             let startDay = moment().weekday(),
                 startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
-                next7Days = moment(startDate).add(7, 'days').format('YYYY-MM-DD'),
+                maxDaysReservation = moment(startDate).add(14, 'days').format('YYYY-MM-DD'),
                 reservDay = moment(expected.date).weekday(),
                 reservDate = moment(expected.date).format('YYYY-MM-DD'),
                 offerTime = moment.tz(reservDate, offer.hotel.address.timezone).add(moment.duration(offer.duration.startTime/60, 'hours'));
                 
             if(baseOfferMap[offer.id].days.indexOf(reservDay) == -1 || 
                 offerTime < moment().tz(offer.hotel.address.timezone) || 
-                moment(reservDate) > moment(next7Days) || 
+                moment(reservDate) > moment(maxDaysReservation) ||
                 moment(offer.dueDay) < moment(reservDate) || 
                 moment(offer.startDay) > moment(reservDate)) {
                 // ctx.throw(400, 'Not serve');
