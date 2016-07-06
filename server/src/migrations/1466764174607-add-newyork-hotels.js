@@ -103,6 +103,7 @@ function mapHotelAddress(hotel) {
         .then(data => {
             hotel.address.street = hotel.fullAddress.split(",")[0];
             hotel.address.city = hotel.city;
+            hotel.address.neighborhood = hotel.neighborhood;
             if(data.length > 0) {
                 hotel.address.state = data[0].administrativeLevels.level1short;
                 hotel.coordinates.push(data[0].longitude);
@@ -213,6 +214,7 @@ function saveListHotels(hotelImages, poolImages, hotels, next) {
     }
     hotels.map(hotel => {
         delete hotel.fullAddress;
+        delete hotel.neighborhood;
     });
     console.info('begin inserting NY hotel');
     var hotelMap = hotels.reduce((obj, hotel) => {

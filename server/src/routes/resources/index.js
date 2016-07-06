@@ -111,7 +111,7 @@ function getNearestHotels(ctx, next) {
     if (ctx.state.featured) {
         query = query.where('featured').equals(true);
     } else {
-        query = query.where('featured').equals(false);
+        // query = query.where('featured').equals(false);
         if (ctx.state.searchedHotels) {
             query = query.where('_id').in(ctx.state.searchedHotels);
         }

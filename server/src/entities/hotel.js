@@ -22,7 +22,8 @@ function convertHotel(hotel) {
         services: hotel.services.filter(Boolean).map(s => {
            return hotelService(s);
         }),
-        amenities: hotel.amenities
+        amenities: hotel.amenities,
+        featured: hotel.featured
     }
 }
 
