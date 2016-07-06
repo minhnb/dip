@@ -17,7 +17,7 @@ router.use('/', auth.authenticate())
     .get('/:groupId', groupHandler.authenticateGroup, groupHandler.getGroup)
     .delete('/:groupId', groupHandler.authenticateGroup, groupHandler.leaveGroup) // @deprecated
     .get('/:groupId/messages', groupHandler.authenticateGroup, messageHandler.getMessages)
-    .post('/:groupId/messages', groupHandler.authenticateGroup, messageHandler.createMessage) // @deprecated
+    .post('/:groupId/messages', multer().single('image'), groupHandler.authenticateGroup, messageHandler.createMessage) // @deprecated
     .get('/:groupId/members', groupHandler.authenticateGroup, groupHandler.getMembers)
     .post('/:groupId/members', groupHandler.authenticateGroup, groupHandler.addMember) // @deprecated
     .put('/:groupId/seen', groupHandler.authenticateGroup, groupHandler.updateSeen)

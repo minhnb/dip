@@ -13,12 +13,17 @@ const DIPError = require('../../helpers/DIPError');
 
 exports.createMessage = function(ctx, next) {
     let user = ctx.state.user,
-        group = ctx.state.group,
-        content = ctx.request.body.content || ctx.req.body.content,
-        message = new db.messages({
+        group = ctx.state.group;
+    let content = '';
+    if (ctx.request && ctx.request.body && ctx.request.body.content) {
+        content = ctx.request.body.content;
+    } else if (ctx.req && ctx.req.body && ctx.req.body.content) {
+        content = ctx.req.body.content;
+    }
+    let message = new db.messages({
             user: user,
             group: group,
-            content: content || ''
+            content: content
         });
     let p,
         img = ctx.req.file;
