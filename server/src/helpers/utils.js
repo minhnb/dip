@@ -3,6 +3,7 @@
 const randomstring = require('randomstring');
 const dateformat = require('dateformat');
 const md5 = require('md5');
+const config = require('../config');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
@@ -60,6 +61,15 @@ function isTestEmail(email, ctx) {
     return false;
 }
 
+function calculateTax(total) {
+    let taxPercent = config.taxPercent;
+    return Math.round(taxPercent * total / 100);
+}
+
+function calculatePriceIncludeTax(total) {
+    return (total + calculateTax(total));
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
@@ -68,5 +78,7 @@ module.exports = {
     isAdmin: isAdmin,
     generateMemberCode: generateMemberCode,
     isDipSupportedLocation: isDipSupportedLocation,
-    isTestEmail: isTestEmail
+    isTestEmail: isTestEmail,
+    calculateTax: calculateTax,
+    calculatePriceIncludeTax: calculatePriceIncludeTax
 };

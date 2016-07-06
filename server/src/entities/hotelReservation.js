@@ -3,6 +3,8 @@
 const pool = require('./pool');
 const offerEntity = require('./offer');
 const addonEntity = require('./addon');
+const utils = require('../helpers/utils');
+
 module.exports = function(reservation) {
     if (!reservation) {
         return null;
@@ -28,6 +30,8 @@ module.exports = function(reservation) {
                         price: offer.price,
                         count: offer.count,
                         date: offer.date,
+                        tax: utils.calculateTax(offer.price * offer.count),
+                        totalIncludeTax: utils.calculatePriceIncludeTax(offer.price * offer.count),
                         addons: offer.addons.map(addon => {
                             return {
                                 ref: addonEntity(addon.ref),

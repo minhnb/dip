@@ -2,6 +2,7 @@
 
 const event = require('./event');
 const service = require('./hotelService');
+const utils = require('../helpers/utils');
 
 module.exports = function(reservation) {
     if (!reservation) {
@@ -23,6 +24,8 @@ module.exports = function(reservation) {
         host: service(reservation.event.ref.host),
         price: reservation.price,
         count: reservation.count,
+        tax: utils.calculateTax(reservation.price * reservation.count),        
+        totalIncludeTax: utils.calculatePriceIncludeTax(reservation.price * reservation.count),
         createdAt: reservation.createdAt.getTime()
     }
 };

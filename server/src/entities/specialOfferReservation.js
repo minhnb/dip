@@ -2,6 +2,7 @@
 
 const event = require('./event');
 const offerEntity = require('./offer');
+const utils = require('../helpers/utils');
 
 module.exports = function(reservation) {
     if (!reservation) {
@@ -18,6 +19,8 @@ module.exports = function(reservation) {
                 count: offer.count,
                 date: offer.date,
                 price: offer.price,
+                tax: utils.calculateTax(offer.price * offer.count),
+                totalIncludeTax: utils.calculatePriceIncludeTax(offer.price * offer.count),
                 host: {
                     id: offer.service._id,
                     name: offer.service.name,
