@@ -1,0 +1,32 @@
+[
+  {
+    "name":"The Beach at Dream Downtown",
+    "featured": false,
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name":"Equinox Printing House",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name":"The James New York",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name":"Hotel Americano",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name":"The Standard Le Bain",
+    "instagram": "#standardhotels",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name":"Le Parker Meridien New York",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name":"McCarren Hotel & Pool",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  }
+]
