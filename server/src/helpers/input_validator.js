@@ -11,7 +11,7 @@ function validatorWrapper() {
 }
 
 function validatePassword(pwd) {
-    if (pwd && pwd.length >= 6 && /[a-z]/.test(pwd) && /[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) {
+    if (pwd && pwd.length >= 6 && /*/[a-z]/.test(pwd) && /[A-Z]/.test(pwd) &&*/ /[0-9]/.test(pwd)) {
         return true;
     } else {
         // throw new Error('Invalid password');
