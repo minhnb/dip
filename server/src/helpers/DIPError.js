@@ -16,7 +16,7 @@ DIPError.prototype.constructor = DIPError;
 DIPError.responseError = function (error, isProduction, isJSON, isFull) {
     let unknownError = dipErrorDictionary.UNKNOWN_ERROR.code;
     if (isProduction && !error.expose) {
-        console.log(error);
+        console.error(error);
         error.code = dipErrorDictionary.BAD_REQUEST.code;
         error.details = dipErrorDictionary.BAD_REQUEST.details;
         error.status = 500;
