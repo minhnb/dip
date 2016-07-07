@@ -22,8 +22,11 @@ const resources = require('./resources');
 const locations = require('./locations');
 const admin = require('./admin');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
 router.get('index page', '/', ctx => {
-    ctx.throw(401);
+    throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
 });
 
 router.use('/activities', activities.routes(), activities.allowedMethods());
