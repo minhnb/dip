@@ -36,7 +36,7 @@ exports.up = function(next) {
             if (error) {
                 next(error);
             } else {
-                collection.find().toArray((error, hotels) => {
+                collection.find({"dipLocation": "los_angeles"}).toArray((error, hotels) => {
                     if (hotels.length > 0) {
                         let backupHotels = hotels.map(hotel => {
                             return {
