@@ -53,5 +53,10 @@ module.exports = {
         name: process.env.MAIL_NAME,
         address: process.env.MAIL_ADDRESS
     },
-    taxPercent: parseFloat(process.env.TAX_PERCENT)
+    taxPercent: parseFloat(process.env.TAX_PERCENT),
+    iftttMaker: {
+        secretKey: process.env.IFTTT_MAKER_SECRET_KEY,
+        eventReservationEvent: process.env.IFTTT_MAKER_EVENT_RESERVATION_EVENT,
+        userSignupEvent: process.env.IFTTT_MAKER_USER_SIGNUP_EVENT
+    }
 };

@@ -16,6 +16,8 @@ const utils = require('../helpers/utils');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
+const makerEvent= require('../helpers/iftttMakerEvent');
+
 module.exports = router;
 
 router
@@ -73,9 +75,14 @@ router
                     ctx.response.status = 204;
                     mailer.welcome([{
                         email: user.email,
-                        name: user.firstName && user.lastName ? user.firstName + " " + user.lastName : user.email
+                        name: user.nameOrEmail
                     }]);
                     stripe.addUser(user); // Not using return to allow it to process in background
+                    makerEvent.dipUserSignup({
+                        value1: user.nameOrEmail,
+                        value2: user.email,
+                        value3: 0
+                    });
                     return user;
                 }).then(user => {
                     if(referer) {

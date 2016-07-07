@@ -14,6 +14,8 @@ const auth = require('../../../helpers/passport_auth');
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');
 
+const makerEvent = require('../../../helpers/iftttMakerEvent');
+
 module.exports = router;
 
 router
@@ -26,6 +28,7 @@ router
         createSale,
         chargeSale,
         // sendEmail,
+        updateGoogleSpreadsheet,
         ctx => {
             ctx.status = 200;
         }
@@ -284,4 +287,14 @@ function chargeSale(ctx, next) {
 function sendEmail(ctx, next) {
     mailer.confirmEventReservation(ctx.state.user.email, ctx.state.event);
     return next();
+}
+
+function updateGoogleSpreadsheet(ctx, next) {
+    let user = ctx.state.user,
+        event = ctx.state.event;
+    return makerEvent.dipEventReservation({
+        value1: user.nameOrEmail,
+        value2: user.email,
+        value3: event.title
+    }).then(() => next());
 }

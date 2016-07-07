@@ -110,6 +110,11 @@ function facebookLogin() {
                         gender: fbUserInfo.gender,
                         facebookId: fbUserInfo.id
                     });
+                    makerEvent.dipUserSignup({
+                        value1: user.nameOrEmail,
+                        value2: user.email,
+                        value3: 1
+                    });
                     contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
                     return user.save();
                 } else if(user.facebookId) {
