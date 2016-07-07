@@ -33,37 +33,42 @@ router
             	.populate({
                     path: 'event.ref',
                     model: db.events,
-                    populate: {
+                    populate: [{
                         path: 'host',
                         model: db.hotelServices
-                    }
+                    }, {
+                        path: 'hotel',
+                        model: db.hotels
+                    }]
                 })
             	.exec()
             	.then(reservations => {
             		responseData.events = reservations.map(entities.eventReservation);
-            		return;
-            	})
+            	});
             let getSpecialOfferReservation = db.reservations
-                .find({'user.ref': ctx.state.user, type: 'SpecialOfferReservation'})    
+                .find({'user.ref': ctx.state.user, type: 'SpecialOfferReservation'})
                 .populate({
                     path: 'specialOffer.ref',
                     model: db.specialOffers
                 })
                 .populate({
                     path: 'offers.ref',
-                    model: db.offers
+                    model: db.offers,
+                    populate: [{
+                        path: 'hotel',
+                        model: db.hotels
+                    }]
                 })
                 .populate({
                     path: 'offers.service',
-                    model: db.hotelServices,
+                    model: db.hotelServices
                 })
                 .exec()
                 .then(reservations => {
                     responseData.specialOffers = reservations.map(entities.specialOfferReservation);
-                    return;
-                })
+                });
             let getHotelReservation = db.reservations
-                .find({'user.ref': ctx.state.user, type: 'HotelReservation'})  
+                .find({'user.ref': ctx.state.user, type: 'HotelReservation'})
                 .populate({
                     path: 'hotel.ref',
                     model: db.hotels
@@ -73,18 +78,17 @@ router
                     model: db.hotelSubReservations,
                     populate: [{
                         path: 'offers.ref',
-                        model: db.offers   
+                        model: db.offers
                     },
                     {
                         path: 'offers.addons.ref',
-                        model: db.addons, 
+                        model: db.addons,
                     }]
                 })
                 .exec()
                 .then(reservations => {
                     responseData.hotels = reservations.map(entities.hotelReservation);
-                    return;
-                })
+                });
 
             return Promise.all([getHotelReservation, getEventReservation, getSpecialOfferReservation]).then(() => {
             	ctx.body = responseData;

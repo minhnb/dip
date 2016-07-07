@@ -25,7 +25,8 @@ module.exports = function(reservation) {
                     id: offer.service._id,
                     name: offer.service.name,
                     location: offer.service.location,
-                    details: offer.service.details
+                    details: offer.service.details,
+                    displayName: utils.getHotelDisplayName(offer.ref.hotel)
                 }
             }
         }),

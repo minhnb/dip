@@ -8,6 +8,8 @@ module.exports = function(reservation) {
     if (!reservation) {
         return null;
     }
+    let host = service(reservation.event.ref.host);
+    host.displayName = utils.getHotelDisplayName(reservation.event.ref.hotel);
     return {
         id: reservation._id,
         email: reservation.user.email,
@@ -21,7 +23,7 @@ module.exports = function(reservation) {
             date: reservation.event.ref.date,
             duration: reservation.event.ref.duration
         },
-        host: service(reservation.event.ref.host),
+        host: host,
         price: reservation.price,
         count: reservation.count,
         tax: utils.calculateTax(reservation.price * reservation.count),        

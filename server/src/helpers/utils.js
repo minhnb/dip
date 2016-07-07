@@ -70,6 +70,20 @@ function calculatePriceIncludeTax(total) {
     return (total + calculateTax(total));
 }
 
+function getFullName(listNames, separator) {
+    return listNames.filter(Boolean).join(separator);
+}
+
+function getHotelDisplayName(hotel) {
+    if (!hotel) return '';
+    let listNames = [];
+    listNames.push(hotel.name);
+    if (hotel.address) {
+        listNames.push(hotel.address.neighborhood);
+    }
+    return getFullName(listNames, ", ");
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
@@ -80,5 +94,7 @@ module.exports = {
     isDipSupportedLocation: isDipSupportedLocation,
     isTestEmail: isTestEmail,
     calculateTax: calculateTax,
-    calculatePriceIncludeTax: calculatePriceIncludeTax
+    calculatePriceIncludeTax: calculatePriceIncludeTax,
+    getFullName: getFullName,
+    getHotelDisplayName: getHotelDisplayName
 };

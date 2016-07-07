@@ -15,14 +15,14 @@ module.exports = function(reservation) {
         hotel: {
             id: reservation.hotel.ref._id,
             name: reservation.hotel.name,
-            description: reservation.hotel.description,
-            location: reservation.hotel.location
+            description: reservation.hotel.description
         },
         services: reservation.services.map(s => {
             return {
                 id: s._id,
                 type: s.service.type.slice(0, s.service.type.length - 7),
                 name: s.service.name,
+                displayName: utils.getHotelDisplayName(reservation.hotel.ref),
                 location: s.service.location,
                 offers: s.offers.map(offer => {
                     return {
