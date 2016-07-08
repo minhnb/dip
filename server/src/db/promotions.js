@@ -5,8 +5,11 @@ const crypto = require('crypto');
 
 const Schema = mongoose.Schema;
 
+const promotionTypes = require('../constants/promotionType');
+const promotionTaxTypes = require('../constants/promotionTaxType');
+const utils = require('../helpers/utils');
+
 const promotionSchema = new Schema({
-    status: Number,
     code: {
         type: String,
         required: true,
@@ -14,7 +17,30 @@ const promotionSchema = new Schema({
             unique: true
         }
     },
-    amount: {type: Number, required: true}
+    amount: {type: Number, required: true},
+    type: {
+        type: String,
+        enum: utils.objectToArray(promotionTypes),
+        require: true
+    },
+    taxType: {
+        type: String,
+        enum: utils.objectToArray(promotionTaxTypes),
+    },
+    usageLimit: Number,
+    usageCount: {
+        type: Number,
+        require: true,
+        default: 0
+    },
+    startDay: {
+        type: String,
+        required: true
+    },
+    dueDay: {
+        type: String,
+        required: true
+    }
 }, {
     timestamps: true
 });

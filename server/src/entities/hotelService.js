@@ -1,5 +1,7 @@
 'use strict';
 
+const config = require('../config');
+
 function convertService(service) {
     return {
         id: service._id,
@@ -19,7 +21,8 @@ function convertService(service) {
         roomService: service.roomService,
         reservable: service.reservable,
         amenities: service.amenities,
-        policy: service.policy
+        policy: service.policy,
+        tax: config.taxPercent
     }
 }
 

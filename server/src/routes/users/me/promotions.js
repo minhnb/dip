@@ -5,6 +5,8 @@ const router = require('koa-router')();
 const db = require('../../../db');
 const entities = require('../../../entities');
 
+const promotionServices = require('../../../services/promotion');
+
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');
 
@@ -13,27 +15,13 @@ module.exports = router;
 router.put('add promotion', '/:promotionCode',
     ctx => {
         let promotionCode = ctx.params.promotionCode,
-            user = ctx.state.user;
+            user = ctx.state.user,
+            hotel = ctx.request.body.hotel;
 
-        return db.promotions.findOne({code: promotionCode}).then(promotion => {
-            if (!promotion) {
-                // ctx.throw(404, 'Invalid code');
-                throw new DIPError(dipErrorDictionary.INVALID_PROMOTION_CODE);
-            }
-            let added = user.account.promotions.addToSet(promotion);
-            if (added.length > 0) {
-                // promotion not in list yet
-                user.account.balance += promotion.amount;
-                return user.save().then(user => {
-                    ctx.status = 200;
-                    ctx.body = {
-                        promotion: entities.promotion(promotion),
-                        balance: user.account.balance
-                    };
-                });
-            } else {
-                // ctx.throw(400, 'Promotion code already used');
-                throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
+        return promotionServices.addPromotionCode(user, promotionCode, hotel).then((result) => {
+            ctx.body = result.promotion;
+            if (result.user) {
+                ctx.state.user = result.user;
             }
         });
     }

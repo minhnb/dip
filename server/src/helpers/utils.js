@@ -84,6 +84,14 @@ function getHotelDisplayName(hotel) {
     return getFullName(listNames, ", ");
 }
 
+function objectToArray(object) {
+    let result = [];
+    for (var key in object) {
+        result.push(object[key]);
+    }
+    return result;
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
@@ -96,5 +104,6 @@ module.exports = {
     calculateTax: calculateTax,
     calculatePriceIncludeTax: calculatePriceIncludeTax,
     getFullName: getFullName,
-    getHotelDisplayName: getHotelDisplayName
+    getHotelDisplayName: getHotelDisplayName,
+    objectToArray: objectToArray
 };
