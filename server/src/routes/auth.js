@@ -67,7 +67,8 @@ router
                     phone: ctx.request.body.phone ? ctx.request.body.phone : null
                 });
                 user.setPassword(ctx.request.body.password);
-                user.setRefCode(utils.generateMemberCode(user.email, 8));
+                // refCode is set directly when saving new user record -- see db.users
+                // user.setRefCode(utils.generateMemberCode(user.email, 8));
                 if(referer) user.account.balance += 2000;
 
                 return user.save().then(user => {

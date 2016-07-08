@@ -104,6 +104,9 @@ userSchema.pre('save', function(next) {
     if (this.dob) {
         this.dob = utils.convertDate(this.dob);
     }
+    if (this.isNew) {
+        this.account.refCode = utils.generateMemberCode(this.email, 5);
+    }
     next();
 });
 
