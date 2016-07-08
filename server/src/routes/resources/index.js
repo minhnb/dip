@@ -181,7 +181,7 @@ function getEvents(ctx, next) {
     //TODO: add search and filter function
     return query
     .find({hotel: {$in: hotelIds}})
-    .populate('host')
+    .populate(['host', 'hotel'])
     .exec()
     .then(events => {
         ctx.state.events = events.map(event => entities.event(event, ctx.state.user));
