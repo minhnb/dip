@@ -38,7 +38,11 @@ const ReservationSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Sale'
     },
-    promotionDiscount: Number
+    promotionDiscount: Number,
+    promotion: {
+        code: String,
+        discount: Number
+    }
 }, {
     timestamps: true,
     discriminatorKey: 'type'

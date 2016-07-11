@@ -7,6 +7,7 @@ const entities = require('../entities');
 
 const utils = require('../helpers/utils');
 const promotionTypes = require('../constants/promotionType');
+const promotionTaxTypes = require('../constants/promotionTaxType');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
@@ -89,26 +90,7 @@ promotionServices.buildUserCondition = function (hotelId, listOfferIds, eventId)
                     return reject();
                 }
                 listOffers.forEach(offer => {
-                    condition.offers.push(offer._id);
-
-                    if (offer.amenities && offer.amenities.length > 0) {
-                        offer.amenities.forEach(amenityType => {
-                            if (condition.amenityTypes.indexOf(amenityType) == -1) {
-                                condition.amenityTypes.push(amenityType);
-                            }
-                        });
-                    }
-
-                    if (condition.hotels.indexOf(offer.hotel._id) == -1) {
-                        condition.hotels.push(offer.hotel._id);
-                    }
-                    if (condition.hotelServices.indexOf(offer.service._id) == -1) {
-                        condition.hotelServices.push(offer.service._id);
-
-                        if (condition.serviceTypes.indexOf(offer.service.type) == -1) {
-                            condition.serviceTypes.push(offer.service.type);
-                        }
-                    }
+                    condition = promotionServices.makeOfferCondition(offer, condition);
                 });
                 resolve(condition);
             });
@@ -119,18 +101,7 @@ promotionServices.buildUserCondition = function (hotelId, listOfferIds, eventId)
                 if (!event) {
                     reject();
                 }
-                condition.events.push(event._id);
-
-                if (condition.hotels.indexOf(event.hotel._id) == -1) {
-                    condition.hotels.push(event.hotel._id);
-                }
-                if (condition.hotelServices.indexOf(event.host._id) == -1) {
-                    condition.hotelServices.push(event.host._id);
-
-                    if (condition.serviceTypes.indexOf(event.host.type) == -1) {
-                        condition.serviceTypes.push(event.host.type);
-                    }
-                }
+                condition = promotionServices.makeEventCondition(event, condition);
                 resolve(condition);
             });
         } else if (hotelId) {
@@ -142,7 +113,99 @@ promotionServices.buildUserCondition = function (hotelId, listOfferIds, eventId)
     });
 };
 
-promotionServices.addPromotionCode = function (user, promotionCode, hotel, offers, event) {
+promotionServices.makeOfferCondition = function(offer, condition) {
+    condition.offers.push(offer._id);
+
+    if (offer.amenities && offer.amenities.length > 0) {
+        offer.amenities.forEach(amenityType => {
+            if (condition.amenityTypes.indexOf(amenityType) == -1) {
+                condition.amenityTypes.push(amenityType);
+            }
+        });
+    }
+
+    if (condition.hotels.indexOf(offer.hotel._id) == -1) {
+        condition.hotels.push(offer.hotel._id);
+    }
+    if (condition.hotelServices.indexOf(offer.service._id) == -1) {
+        condition.hotelServices.push(offer.service._id);
+
+        if (condition.serviceTypes.indexOf(offer.service.type) == -1) {
+            condition.serviceTypes.push(offer.service.type);
+        }
+    }
+    return condition;
+};
+
+promotionServices.makeEventCondition = function(event, condition) {
+    condition.events.push(event._id);
+
+    if (condition.hotels.indexOf(event.hotel._id) == -1) {
+        condition.hotels.push(event.hotel._id);
+    }
+    if (condition.hotelServices.indexOf(event.host._id) == -1) {
+        condition.hotelServices.push(event.host._id);
+
+        if (condition.serviceTypes.indexOf(event.host.type) == -1) {
+            condition.serviceTypes.push(event.host.type);
+        }
+    }
+    return condition;
+};
+
+promotionServices.isPromotionOffer = function (promotion, userOffer) {
+    let condition = {
+        hotels: [],
+        hotelServices: [],
+        serviceTypes: [],
+        offers: [],
+        amenityTypes: [],
+        events: []
+    };
+    condition = promotionServices.makeOfferCondition(userOffer.data, condition);
+    return promotionServices.checkValidPromotionCode(promotion, condition);
+};
+
+promotionServices.calculatePromotionPortionForOffer = function (promotion, listUserOffer) {
+    let promotionPortion = 0;
+    listUserOffer.forEach(userOffer => {
+        if (promotionServices.isPromotionOffer(promotion, userOffer)) {
+            promotionPortion += userOffer.count * userOffer.price;
+        }
+    });
+    return promotionPortion;
+};
+
+promotionServices.calculatePromotionDiscountForOffer = function (promotion, listUserOffer, taxPercent) {
+    let promotionPortion = promotionServices.calculatePromotionPortionForOffer(promotion, listUserOffer);
+    return promotionServices.calculatePromotionDiscount(promotion, promotionPortion, taxPercent);
+};
+
+promotionServices.calculatePromotionDiscount = function (promotion, promotionPortion, taxPercent) {
+    let promotionDiscount = 0;
+    switch (promotion.type) {
+        case promotionTypes.SUBTRACT_TOTAL_AMOUNT:
+            let maxDiscountPromo = promotion.amount;
+            if (promotion.taxType == promotionTaxTypes.BEFORE_TAX) {
+                promotionDiscount = maxDiscountPromo > promotionPortion ? promotionPortion : maxDiscountPromo;
+            } else {
+                let promotionPortionIncludeTax = promotionPortion + Math.round(taxPercent * promotionPortion / 100);
+                promotionDiscount = maxDiscountPromo > promotionPortionIncludeTax ? promotionPortionIncludeTax : maxDiscountPromo;
+            }
+            break;
+        case promotionTypes.SUBTRACT_TOTAL_PERCENT:
+            let promotionPercent = promotion.amount;
+            promotionDiscount = Math.round(promotionPercent * promotionPortion / 100);
+            break;
+        default:
+    }
+
+    let result = promotion;
+    result.discount = promotionDiscount;
+    return result;
+};
+
+promotionServices.getPromotionCode = function (user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event) {
     return new Promise((resolve, reject) => {
         this.dbGetPromotionByCodeAndHotel(promotionCode, hotel).then((promotion) => {
             if (!promotion) {
@@ -151,12 +214,21 @@ promotionServices.addPromotionCode = function (user, promotionCode, hotel, offer
             }
             let result = entities.promotion(promotion);
             if (promotion.type == promotionTypes.DIP_CREDIT) {
-                this.dbAddPromotionCodeToUser(user, promotion).then(value => {
-                    resolve(result);
-                }, () => {
-                    // ctx.throw(400, 'Promotion code already used');
+                let checkUser = this.checkPromotionCodeIsUnused(user, promotion);
+                if (checkUser) {
+                    if (needAddingDipCreditPromotionCode) {
+                        if (promotion.type == promotionTypes.DIP_CREDIT) {
+                            checkUser.account.balance += promotion.amount;
+                        }
+                        return user.save().then(user => {
+                            resolve(result);
+                        });
+                    } else {
+                        resolve(result);
+                    }
+                } else {
                     reject(new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED));
-                });
+                }
             } else {
                 let checkUser = this.checkPromotionCodeIsUnused(user, promotion);
                 if (checkUser) {
@@ -186,6 +258,11 @@ promotionServices.addPromotionCode = function (user, promotionCode, hotel, offer
 
         });
     });
+};
+
+promotionServices.addPromotionCode = function (user, promotionCode, hotel, offers, event) {
+    let needAddingDipCreditPromotionCode = true;
+    return promotionServices.getPromotionCode(user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event);
 };
 
 module.exports = promotionServices;
