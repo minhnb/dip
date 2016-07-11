@@ -95,16 +95,17 @@ function facebookLogin() {
         let request_user_info_url = "https://graph.facebook.com/me?access_token=" + code + "&appsecret_proof=" + hash;
         return request(request_user_info_url).then(fbUserInfo => {
             fbUserInfo = JSON.parse(fbUserInfo);
-            let email = fbUserInfo.email || ctx.request.body.email;
+            // let email = fbUserInfo.email || ctx.request.body.email;
+            let email = fbUserInfo.email;
             if(!email) {
                 // ctx.throw(400, 'Missing Email');
                 throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
             }
             email = email.toLowerCase();
-            return users.findByEmail(fbUserInfo.email).exec().then(user => {
+            return users.findByEmail(email).exec().then(user => {
                 if (!user) {
                     user = new users({
-                        email: fbUserInfo.email || email,
+                        email: email,
                         firstName: fbUserInfo.first_name,
                         lastName: fbUserInfo.last_name,
                         gender: fbUserInfo.gender,
@@ -124,7 +125,7 @@ function facebookLogin() {
                     return user.save();
                 }
             });
-        }).catch(err => {
+        }, err => {
             // err.status = 401;
             // throw err;
             throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
