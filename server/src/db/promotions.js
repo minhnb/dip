@@ -40,6 +40,26 @@ const promotionSchema = new Schema({
     dueDay: {
         type: String,
         required: true
+    },
+    condition: {
+        hotels: [{
+            type: Schema.ObjectId,
+            ref: 'Hotel'
+        }],
+        hotelServices: [{
+            type: Schema.ObjectId,
+            ref: 'HotelService'
+        }],
+        serviceTypes: [String],
+        offers: [{
+            type: Schema.ObjectId,
+            ref: 'Offer'
+        }],
+        amenityTypes: [String],
+        events: [{
+            type: Schema.ObjectId,
+            ref: 'Event'
+        }]
     }
 }, {
     timestamps: true

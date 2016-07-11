@@ -8,7 +8,8 @@ function convertPromotion(promotion) {
         code: promotion.code,
         amount: promotion.amount,
         type: promotion.type,
-        taxType: promotion.taxType
+        taxType: promotion.taxType,
+        condition: promotion.condition
     };
 }
 

@@ -92,6 +92,12 @@ function objectToArray(object) {
     return result;
 }
 
+function hasDuplicateElement(firstArray, secondArray) {
+    return firstArray.some(value => {
+        return secondArray.indexOf(value) > -1;
+    });
+}
+
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
@@ -105,5 +111,6 @@ module.exports = {
     calculatePriceIncludeTax: calculatePriceIncludeTax,
     getFullName: getFullName,
     getHotelDisplayName: getHotelDisplayName,
-    objectToArray: objectToArray
+    objectToArray: objectToArray,
+    hasDuplicateElement: hasDuplicateElement
 };

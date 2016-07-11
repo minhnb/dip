@@ -16,13 +16,12 @@ router.put('add promotion', '/:promotionCode',
     ctx => {
         let promotionCode = ctx.params.promotionCode,
             user = ctx.state.user,
-            hotel = ctx.request.body.hotel;
+            hotel = ctx.request.body.hotel,
+            offers = ctx.request.body.offers,
+            event = ctx.request.body.event;
 
-        return promotionServices.addPromotionCode(user, promotionCode, hotel).then((result) => {
-            ctx.body = result.promotion;
-            if (result.user) {
-                ctx.state.user = result.user;
-            }
+        return promotionServices.addPromotionCode(user, promotionCode, hotel, offers, event).then((promotion) => {
+            ctx.body = promotion;
         });
     }
 );
