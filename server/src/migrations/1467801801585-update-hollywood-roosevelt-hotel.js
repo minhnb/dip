@@ -39,6 +39,9 @@ exports.up = function(next) {
                             }
                             return collection.save(hotel).then(() => next());
                         });
+                    } else {
+                        console.log("Not found hotel");
+                        return next();
                     }
                 });
             }

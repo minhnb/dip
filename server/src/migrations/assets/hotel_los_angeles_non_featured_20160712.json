@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Montage Beverly Hills",
+    "neighborhood": "Beverly Hills",
+    "url": "https://www.montagehotels.com/beverlyhills/",
+    "phone": "310-860-7800",
+    "instagram": "@montagebh",
+    "service_amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "SIXTY Beverly Hills",
+    "neighborhood": "Beverly Hills",
+    "url": "http://www.sixtyhotels.com/beverly-hills/",
+    "phone": "310-273-1400",
+    "instagram": "@sixtyhotels",
+    "service_amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "The London West Hollywood",
+    "neighborhood": "West Hollywood",
+    "url": "http://www.thelondonwesthollywood.com/",
+    "phone": "310-854-1111",
+    "instagram": "#thelondonwesthollywood",
+    "service_amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Peninsula Beverly Hills",
+    "neighborhood": "Beverly Hills",
+    "url": "http://beverlyhills.peninsula.com/en/default",
+    "phone": "310-551-2888",
+    "instagram": "@thepeninsulabh",
+    "service_amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "Sunset Marquis",
+    "neighborhood": "West Hollywood",
+    "url": "http://sunsetmarquis.com/",
+    "phone": "310-657-1333",
+    "instagram": "@sunsetmarquis",
+    "service_amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "Ace Hotel Downtown LA",
+    "neighborhood": "Los Angeles",
+    "url": "http://www.acehotel.com/losangeles",
+    "phone": "(213) 623-3233",
+    "instagram": "@acedtla",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Standard Downtown LA",
+    "neighborhood": "Los Angeles",
+    "url": "http://www.standardhotels.com/la/properties/downtown-la",
+    "phone": "213-892-8080",
+    "instagram": "#thestandarddtla",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Standard Hollywood",
+    "neighborhood": "West Hollywood",
+    "url": "http://www.standardhotels.com/la/properties/hollywood",
+    "phone": "323-650-9090",
+    "instagram": "#thestandardhollywood",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Sportsmen's Lodge Hotel",
+    "neighborhood": "Los Angeles",
+    "url": "http://www.sportsmenlodge.com",
+    "phone": "818-769-4700",
+    "instagram": "#sportmenslodge",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Sunset Towers Hotel",
+    "neighborhood": "West Hollywood",
+    "url": "http://www.sunsettowerhotel.com/",
+    "phone": "323-654-7100",
+    "instagram": "#sunsettowershotel",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Custom Hotel",
+    "neighborhood": "Los Angeles",
+    "url": "http://www.jdvhotels.com/hotels/california/los-angeles-hotels/custom-hotel/",
+    "phone": "310-645-0400",
+    "instagram": "@customhotel",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Hollywood Roosevelt Hotel",
+    "neighborhood": "Los Angeles",
+    "url": "http://www.thehollywoodroosevelt.com/",
+    "phone": "323-856-1970",
+    "instagram": "@thehollywoodroosevelt",
+    "service_amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Hotel Wilshire",
+    "neighborhood": "Los Angeles",
+    "url": "http://theroofonwilshire.com/",
+    "phone": "323-852-6002",
+    "instagram": "#theroofonwilshire",
+    "service_amenities": [{"type": "Pool Pass"}]
+  }
+]
