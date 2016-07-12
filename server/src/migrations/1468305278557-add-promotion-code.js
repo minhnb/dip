@@ -33,7 +33,7 @@ exports.up = function(next) {
     connection.db.collection('promotions', (error, collection) => {
       collection.insert(listPromotion, (error, results) => {
         if (error) {
-          return next(error);
+            console.log(error);
         }
         next();
       });
@@ -42,5 +42,5 @@ exports.up = function(next) {
 };
 
 exports.down = function(next) {
-  next();
+    next();
 };

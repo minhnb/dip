@@ -132,7 +132,7 @@ function updateHotels(collection, hotels, hotelMap, callback) {
             for (var key in mapHotel){
                 if (key != "_id" && key != "service_amenities") {
                     if (key == "neighborhood") {
-                        hotel.address[key] = mapHotel[key];
+                        hotel.address.neighborhood = mapHotel[key];
                     } else {
                         if (key == "services") {
                             let services = mapHotel[key];
