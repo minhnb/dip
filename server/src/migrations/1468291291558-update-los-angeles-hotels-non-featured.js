@@ -24,9 +24,7 @@ exports.up = function(next) {
             return next(error);
         }
         if (hotels.length > 0) {
-            let backupHotels = hotels.map(hotel => {
-                return hotel;
-            });
+            let backupHotels = hotels;
             saveJsonContentToFile(migrateDownPath, backupHotels, (err) => {
                 if (err) {
                     return next(err);
@@ -95,7 +93,7 @@ function getHotelsByDipLocation(hotelData, isBackup, callback) {
                     let listHotelServices = [];
                     let hotelMapService = {};
                     if (hotels.length > 0) {
-                        hotels.map(hotel => {
+                        hotels.forEach(hotel => {
                             if (hotel.services && hotel.services.length > 0) {
                                 hotel.services.forEach(service => {
                                     if (service) {
@@ -106,8 +104,8 @@ function getHotelsByDipLocation(hotelData, isBackup, callback) {
                             }
                         });
                     }
-                    connection.db.collection('hotelservices', (error, collection) => {
-                        collection.find({"_id": {$in: listHotelServices}}).toArray((error, services) => {
+                    connection.db.collection('hotelservices', (error, hotelservicecollection) => {
+                        hotelservicecollection.find({"_id": {$in: listHotelServices}}).toArray((error, services) => {
                             services.forEach(service => {
                                 let hotel = hotelMapService[service._id.toString()];
                                 if (hotel) {
@@ -132,7 +130,7 @@ function updateHotels(collection, hotels, hotelMap, callback) {
             for (var key in mapHotel){
                 if (key != "_id" && key != "service_amenities") {
                     if (key == "neighborhood") {
-                        hotel.address.neighborhood = mapHotel[key];
+                        hotel.address[key] = mapHotel[key];
                     } else {
                         if (key == "services") {
                             let services = mapHotel[key];

@@ -24,9 +24,7 @@ exports.up = function(next) {
             return next(error);
         }
         if (hotels.length > 0) {
-            let backupHotels = hotels.map(hotel => {
-                return hotel;
-            });
+            let backupHotels = hotels;
             saveJsonContentToFile(migrateDownPath, backupHotels, (err) => {
                 if (err) {
                     return next(err);
