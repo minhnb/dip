@@ -33,6 +33,7 @@ module.exports = function(reservation) {
         },
         price: reservation.price,
         promotionDiscount: reservation.promotionDiscount,
-        saleId: reservation.sale
+        saleId: reservation.sale,
+        promotion: reservation.promotion
     }
 };

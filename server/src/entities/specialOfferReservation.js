@@ -30,6 +30,10 @@ module.exports = function(reservation) {
                 }
             }
         }),
-        createdAt: reservation.createdAt.getTime()
+        createdAt: reservation.createdAt.getTime(),
+        promotion: reservation.promotion,
+        promotionDiscount: reservation.promotionDiscount || 0,
+        tax: reservation.tax,
+        beforeTax: reservation.beforeTax
     }
 };

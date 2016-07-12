@@ -28,6 +28,9 @@ module.exports = function(reservation) {
         count: reservation.count,
         tax: utils.calculateTax(reservation.price * reservation.count),        
         totalIncludeTax: utils.calculatePriceIncludeTax(reservation.price * reservation.count),
-        createdAt: reservation.createdAt.getTime()
+        createdAt: reservation.createdAt.getTime(),
+        promotion: reservation.promotion,
+        promotionDiscount: reservation.promotionDiscount || 0,
+        beforeTax: reservation.beforeTax
     }
 };

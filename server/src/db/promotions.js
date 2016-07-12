@@ -25,7 +25,7 @@ const promotionSchema = new Schema({
     },
     taxType: {
         type: String,
-        enum: utils.objectToArray(promotionTaxTypes),
+        enum: utils.objectToArray(promotionTaxTypes)
     },
     usageLimit: Number,
     usageCount: {

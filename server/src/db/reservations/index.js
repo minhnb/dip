@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const promotionTaxTypes = require('../../constants/promotionTaxType');
+const utils = require('../../helpers/utils')
 
 const ReservationSchema = new Schema({
     type: {
@@ -41,6 +43,10 @@ const ReservationSchema = new Schema({
     promotionDiscount: Number,
     promotion: {
         code: String,
+        taxType: {
+            type: String,
+            enum: utils.objectToArray(promotionTaxTypes)
+        },
         discount: Number
     }
 }, {

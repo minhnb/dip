@@ -21,9 +21,9 @@ const promotionServices = require('./promotion');
 
 var reservationServices = {};
 
-reservationServices.dbGetReservation = function (user) {
+reservationServices.dbGetReservation = function (condition) {
     return db.hotelReservations
-        .find({'user.ref': user, type: 'HotelReservation'})
+        .find(condition)
         .populate({
             path: 'hotel.ref',
             model: db.hotels
@@ -59,7 +59,8 @@ reservationServices.dbGetHotel = function (hotelId) {
 };
 
 reservationServices.getHotelReservation = function (user) {
-    return reservationServices.dbGetReservation(user).then(reservations => {
+    let condition = {'user.ref': user, type: 'HotelReservation'};
+    return reservationServices.dbGetReservation(condition).then(reservations => {
         return reservations.map(entities.hotelReservation);
     });
 };
@@ -284,7 +285,7 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
         let hotel = ctx.request.body.hotel;
         let offers = ctx.state.offerIds;
         let needAddingDipCreditPromotionCode = true;
-        return promotionServices.getPromotionCode(ctx.state.user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, null).then(promotion => {
+        return promotionServices.dbGetPromotionCode(ctx.state.user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, null).then(promotion => {
             let substractTotalArray = [promotionTypes.SUBTRACT_TOTAL_PERCENT, promotionTypes.SUBTRACT_TOTAL_AMOUNT];
             if (substractTotalArray.indexOf(promotion.type) > -1) {
                 let offerMap = ctx.state.offerMap;
@@ -294,7 +295,7 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
                 let taxPercent = config.taxPercent;
                 let promotionDiscount = promotionServices.calculatePromotionDiscountForOffer(promotion, listUserOffer, taxPercent);
                 if (promotionDiscount.discount > 0) {
-                    ctx.promotion = promotionDiscount;
+                    ctx.state.promotion = promotionDiscount;
                     if (promotionDiscount.taxType == promotionTaxTypes.BEFORE_TAX) {
                         ctx.state.beforeTax = ctx.state.beforeTax - promotionDiscount.discount;
                         ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
@@ -303,7 +304,11 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
                         ctx.state.price = ctx.state.price - promotionDiscount.discount;
                     }
                 }
-                return next();
+                return promotionServices.dbAddPromotionCodeToUser(ctx.state.user, promotion).then(() => {
+                    return next();
+                }, () => {
+                    throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
+                });
             } else {
                 return next();
             }
@@ -395,8 +400,8 @@ reservationServices.createHotelReservation = function(ctx, next) {
             tax: tax,
             beforeTax: beforeTax
         });
-    if (ctx.promotion) {
-        userReservation.promotion = ctx.promotion;
+    if (ctx.state.promotion) {
+        userReservation.promotion = ctx.state.promotion;
     }
     let p = Promise.resolve();
     if (user.account.balance > 0) {
@@ -408,7 +413,14 @@ reservationServices.createHotelReservation = function(ctx, next) {
 
     ctx.state.reservation = userReservation;
     return p.then(user => {
-        return userReservation.save();
+        return userReservation.save().then((reservation) => {
+            let condition = {'_id': reservation._id};
+            return reservationServices.dbGetReservation(condition).then(reservations => {
+                if (reservations && reservations.length > 0) {
+                    ctx.body = entities.hotelReservation(reservations[0]);
+                }
+            });
+        });
     }).then(next);
 };
 

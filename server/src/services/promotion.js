@@ -33,22 +33,22 @@ promotionServices.dbGetPromotionByCode = function (code) {
 };
 
 promotionServices.checkPromotionCodeIsUnused = function (user, promotion) {
-    let added = user.account.promotions.addToSet(promotion);
-    if (added.length > 0) {
-        return user;
-    }
-    return false;
+    return user.account.promotions.indexOf(promotion._id) == -1;
 };
 
 promotionServices.dbAddPromotionCodeToUser = function (user, promotion) {
     return new Promise((resolve, reject) => {
-        let user = this.checkPromotionCodeIsUnused(user, promotion);
-        if (user) {
+        let checkPromotionCode = this.checkPromotionCodeIsUnused(user, promotion);
+        if (checkPromotionCode) {
+            user.account.promotions.addToSet(promotion);
             if (promotion.type == promotionTypes.DIP_CREDIT) {
                 user.account.balance += promotion.amount;
             }
-            return user.save().then(user => {
-                resolve(user);
+            user.save().then(user => {
+                promotion.usageCount++;
+                promotion.save().then(promotion => {
+                    resolve(user);
+                });
             });
         } else {
             reject();
@@ -200,38 +200,37 @@ promotionServices.calculatePromotionDiscount = function (promotion, promotionPor
         default:
     }
 
-    let result = promotion;
+    let result = promotion.toObject();
     result.discount = promotionDiscount;
     return result;
 };
 
-promotionServices.getPromotionCode = function (user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event) {
+promotionServices.dbGetPromotionCode = function (user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event) {
     return new Promise((resolve, reject) => {
         this.dbGetPromotionByCodeAndHotel(promotionCode, hotel).then((promotion) => {
             if (!promotion) {
                 // ctx.throw(404, 'Invalid code');
                 return reject(new DIPError(dipErrorDictionary.INVALID_PROMOTION_CODE));
             }
-            let result = entities.promotion(promotion);
+            let result = promotion;
             if (promotion.type == promotionTypes.DIP_CREDIT) {
-                let checkUser = this.checkPromotionCodeIsUnused(user, promotion);
-                if (checkUser) {
-                    if (needAddingDipCreditPromotionCode) {
-                        if (promotion.type == promotionTypes.DIP_CREDIT) {
-                            checkUser.account.balance += promotion.amount;
-                        }
-                        return user.save().then(user => {
-                            resolve(result);
-                        });
-                    } else {
+                if (needAddingDipCreditPromotionCode) {
+                    this.dbAddPromotionCodeToUser(user, promotion).then(() => {
                         resolve(result);
-                    }
+                    }, () => {
+                        reject(new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED));
+                    })
                 } else {
-                    reject(new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED));
+                    let checkUser = this.checkPromotionCodeIsUnused(user, promotion);
+                    if (checkUser) {
+                        resolve(result);
+                    } else {
+                        reject(new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED));
+                    }
                 }
             } else {
-                let checkUser = this.checkPromotionCodeIsUnused(user, promotion);
-                if (checkUser) {
+                let checkPromotionCode = this.checkPromotionCodeIsUnused(user, promotion);
+                if (checkPromotionCode) {
                     let substractTotalArray = [promotionTypes.SUBTRACT_TOTAL_PERCENT, promotionTypes.SUBTRACT_TOTAL_AMOUNT];
                     if (substractTotalArray.indexOf(promotion.type) > -1) {
                         this.buildUserCondition(hotel, offers, event).then(userCondition => {
@@ -262,7 +261,10 @@ promotionServices.getPromotionCode = function (user, promotionCode, needAddingDi
 
 promotionServices.addPromotionCode = function (user, promotionCode, hotel, offers, event) {
     let needAddingDipCreditPromotionCode = true;
-    return promotionServices.getPromotionCode(user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event);
+    return promotionServices.dbGetPromotionCode(user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, event).then(promotion => {
+        let result = entities.promotion(promotion);
+        return result;
+    });
 };
 
 module.exports = promotionServices;

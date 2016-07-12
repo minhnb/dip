@@ -44,6 +44,10 @@ module.exports = function(reservation) {
             }
         }),
         price: reservation.price,
-        createdAt: reservation.createdAt.getTime()
+        createdAt: reservation.createdAt.getTime(),
+        promotion: reservation.promotion,
+        promotionDiscount: reservation.promotionDiscount || 0,
+        tax: reservation.tax,
+        beforeTax: reservation.beforeTax
     }
 };
