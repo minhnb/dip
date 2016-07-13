@@ -65,21 +65,79 @@ reservationServices.getHotelReservation = function (user) {
     });
 };
 
-reservationServices.checkInput = function(ctx, next) {
+reservationServices.isValidObjectId = function (objectId, listValidObjects) {
+    for (let i = 0; i < listValidObjects.length; i++) {
+        let validService = listValidObjects[i];
+        if (validService && validService._id && validService._id == objectId) {
+            return true;
+        }
+    }
+    return false;
+};
+
+reservationServices.checkValidOffer = function (userOffer, baseOffer) {
+    if (!userOffer) {
+        // ctx.throw(400, 'Invalid offer id');
+        throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
+    }
+
+    if(!userOffer.date) {
+        // ctx.throw(400, 'Missing offer date');
+        throw new DIPError(dipErrorDictionary.MISSING_OFFER_DATE);
+    }
+
+    if(!userOffer.count) {
+        // ctx.throw(400, 'Missing quantities');
+        throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+    }
+    if(userOffer.count < 0) {
+        // ctx.throw(400, 'quantities must be large then zero');
+        throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
+    }
+
+    if (userOffer.price != baseOffer.price) {
+        // ctx.throw(400, 'Unmatched offer price');
+        throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
+    }
+
+    let startDay = moment().weekday(),
+        startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
+        maxDaysReservation = moment(startDate).add(14, 'days').format('YYYY-MM-DD'),
+        reserveDay = moment(userOffer.date).weekday(),
+        reserveDate = moment(userOffer.date).format('YYYY-MM-DD'),
+        offerTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.startTime/60, 'hours'));
+
+    if(baseOffer.days.indexOf(reserveDay) == -1 ||
+        offerTime < moment().tz(baseOffer.hotel.address.timezone) ||
+        moment(reserveDate) > moment(maxDaysReservation) ||
+        moment(baseOffer.dueDay) < moment(reserveDate) ||
+        moment(baseOffer.startDay) > moment(reserveDate)) {
+        // ctx.throw(400, 'Not serve');
+        throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
+    }
+
+    if(baseOffer.reservationCount && baseOffer.reservationCount[reserveDate] &&
+        baseOffer.reservationCount[reserveDate] + userOffer.count > baseOffer.allotmentCount)
+    {
+        // ctx.throw(400, 'Over booking');
+        throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
+    }
+};
+
+reservationServices.increaseOfferCount = function(offer, reserveDate, count) {
+    if (offer.reservationCount == undefined) {
+        offer.reservationCount = {};
+    }
+    offer.reservationCount[reserveDate] ?
+        offer.reservationCount[reserveDate] += count :
+        offer.reservationCount[reserveDate] = count;
+    offer.markModified('reservationCount');
+    return offer;
+};
+
+reservationServices.checkUserCardInput = function(ctx, next) {
     let user = ctx.state.user,
         userCardId = ctx.request.body.cardId;
-    if(!ctx.request.body.services) {
-        // ctx.throw(400, 'Invalid services');
-        throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
-    }
-    if(!ctx.request.body.hotel) {
-        // ctx.throw(400, 'Missing hotel id');
-        throw new DIPError(dipErrorDictionary.MISSING_HOTEL_ID);
-    }
-    if(!Array.isArray(ctx.request.body.services)) {
-        // ctx.throw(400, 'Services must be an array');
-        throw new DIPError(dipErrorDictionary.SERVICES_MUST_BE_AN_ARRAY);
-    }
 
     let userCard = user.account.cards.id(userCardId);
     if (!userCard) {
@@ -92,70 +150,92 @@ reservationServices.checkInput = function(ctx, next) {
     }
 
     ctx.state.userCard = userCard;
-    ctx.state.serviceIds = ctx.request.body.services.map(service => service.id);
     return next();
 };
 
-reservationServices.verifyHotel = function(ctx, next) {
+reservationServices.initCtxState = function(ctx, next) {
+    ctx.state.beforeTax = 0;
+    return next();
+};
+
+
+reservationServices.checkHotelReservationInput = compose([
+    function(ctx, next) {
+        if(!ctx.request.body.services) {
+            // ctx.throw(400, 'Invalid services');
+            throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
+        }
+        if(!ctx.request.body.hotel) {
+            // ctx.throw(400, 'Missing hotel id');
+            throw new DIPError(dipErrorDictionary.MISSING_HOTEL_ID);
+        }
+        if(!Array.isArray(ctx.request.body.services)) {
+            // ctx.throw(400, 'Services must be an array');
+            throw new DIPError(dipErrorDictionary.SERVICES_MUST_BE_AN_ARRAY);
+        }
+
+        ctx.state.serviceIds = ctx.request.body.services.map(service => service.id);
+        return next();
+    },
+    reservationServices.checkUserCardInput,
+    reservationServices.initCtxState
+]);
+
+reservationServices.verifyHotelServicesAndOffers = function(ctx, next) {
     return db.hotels.findOne({_id: ctx.request.body.hotel})
+        .populate('services')
         .exec()
         .then(hotel => {
             if(!hotel) {
                 // ctx.throw(400, 'Invalid hotel');
                 throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
             }
+            let serviceIds = ctx.state.serviceIds;
+            let services = hotel.services;
+            serviceIds.forEach(serviceId => {
+                if (!reservationServices.isValidObjectId(serviceId, services)) {
+                    // ctx.throw(400, 'Invalid Services');
+                    throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
+                }
+            });
+
             ctx.state.hotel = hotel;
-            return next();
-        })
-};
 
-reservationServices.verifyServices = function(ctx, next) {
-    let serviceIds = ctx.state.serviceIds;
-    return db.hotelServices.find({_id: {$in: serviceIds}})
-        .exec()
-        .then(services => {
-            if(services.length < serviceIds.length) {
-                // ctx.throw(400, 'Invalid Services');
-                throw new DIPError(dipErrorDictionary.INVALID_SERVICES);
-            }
-            return next();
-        });
-};
-
-reservationServices.verifyRequestServices = function(ctx, next) {
-    let userServices = ctx.request.body.services,
-        serviceIds = ctx.state.serviceIds;
-    ctx.state.beforeTax = 0;
-    ctx.state.offerMap = {};
-
-    return db.hotelServices
-        .find({_id: {$in: serviceIds}})
-        .exec()
-        .then(services => {
             let serviceMap = services.reduce((obj, service) => {
                 obj[service.id] = service;
                 return obj;
             }, Object.create({}));
-            ctx.state.serviceMap = serviceMap;
-            let p = userServices.map(service => {
-                return reservationServices.verifyOffers(ctx, () => {}, service.offers);
+
+            let userServices = ctx.request.body.services;
+            let listOffer = [];
+            userServices.forEach(service => {
+                listOffer = listOffer.concat(service.offers);
             });
+
+            ctx.state.serviceMap = serviceMap;
+            ctx.state.offerMap = {};
             ctx.state.userServices = userServices;
-            return Promise.all(p).then(next);
+            let p = reservationServices.verifyOffers(ctx, () => {}, listOffer);
+            return p.then(next);
         })
 };
 
-
 reservationServices.verifyOffers = function(ctx, next, offers) {
     let _offers = offers,
-        offerIds = _offers.map(offer => offer.id);
+        offerIds = _offers.map(offer => offer.id),
+        serviceIds = ctx.state.serviceIds,
+        hotel = ctx.state.hotel;
     ctx.state.offerIds = offerIds;
-    return db.offers.find({_id: {$in: offerIds}})
+    return db.offers.find({_id: {$in: offerIds}, service: {$in: serviceIds}})
         .populate('addons')
-        .populate(['hotel', 'service'])
         .exec()
         .then(offers => {
-            if (offers.length < _offers.length) {
+            offerIds.forEach(offerId => {
+                if (!reservationServices.isValidObjectId(offerId, offers)) {
+                    throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
+                }
+            });
+            if (offers.length != _offers.length) {
                 // ctx.throw(400, 'Invalid offer id');
                 throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
             }
@@ -169,63 +249,15 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
                 return obj;
             }, Object.create({}));
 
-            let p = offers.map(offer => {
+            let needUpdateOffers = offers.map(offer => {
                 let expected = _offerMap[offer._id.toString()],
                     price = 0;
-                if (!expected) {
-                    // ctx.throw(400, 'Invalid offer id');
-                    throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
-                }
+                offer.hotel = hotel;
 
-                if(!expected.date) {
-                    // ctx.throw(400, 'Missing offer date');
-                    throw new DIPError(dipErrorDictionary.MISSING_OFFER_DATE);
-                }
+                reservationServices.checkValidOffer(expected, offer);
 
-                if(!expected.count) {
-                    // ctx.throw(400, 'Missing quantities');
-                    throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
-                }
-                if(expected.count < 0) {
-                    // ctx.throw(400, 'quantities must be large then zero');
-                    throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
-                }
-
-                if (expected.price != offer.price) {
-                    // ctx.throw(400, 'Unmatched offer price');
-                    throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
-                }
-
-                let startDay = moment().weekday(),
-                    startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
-                    maxDaysReservation = moment(startDate).add(14, 'days').format('YYYY-MM-DD'),
-                    reservDay = moment(expected.date).weekday(),
-                    reservDate = moment(expected.date).format('YYYY-MM-DD'),
-                    offerTime = moment.tz(reservDate, offer.hotel.address.timezone).add(moment.duration(offer.duration.startTime/60, 'hours'));
-
-                if(offer.days.indexOf(reservDay) == -1 ||
-                    offerTime < moment().tz(offer.hotel.address.timezone) ||
-                    moment(reservDate) > moment(maxDaysReservation) ||
-                    moment(offer.dueDay) < moment(reservDate) ||
-                    moment(offer.startDay) > moment(reservDate)) {
-                    // ctx.throw(400, 'Not serve');
-                    throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
-                }
-
-                if(offer.reservationCount && offer.reservationCount[reservDate] &&
-                    offer.reservationCount[reservDate] + expected.count > offer.allotmentCount)
-                {
-                    // ctx.throw(400, 'Over booking');
-                    throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
-                }
-
-                if (offer.reservationCount == undefined) {
-                    offer.reservationCount = {};
-                }
-                offer.reservationCount[reservDate] ?
-                    offer.reservationCount[reservDate] += expected.count :
-                    offer.reservationCount[reservDate] = expected.count
-                offer.markModified('reservationCount');
+                let reserveDate = moment(expected.date).format('YYYY-MM-DD');
+                offer = reservationServices.increaseOfferCount(offer, reserveDate, expected.count);
 
                 if (!reservationServices.verifySpecialOffers(expected, offer)) {
                     // ctx.throw(400, 'Invalid special offer');
@@ -238,20 +270,20 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
                 price += addonPrice;
 
                 ctx.state.beforeTax += price;
-                return offer.save();
+                return offer;
             });
-            return Promise.all(p).then(() => {
-                ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
-                let expectedPrice = ctx.request.body.price;
-                if (ctx.state.beforeTax != expectedPrice) {
-                    // ctx.throw(400, 'Unmatched total price');
-                    throw new DIPError(dipErrorDictionary.UNMATCHED_TOTAL_PRICE);
-                }
-                let taxPercent = config.taxPercent;
-                ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
-                ctx.state.price = ctx.state.tax + ctx.state.beforeTax;
-                return next();
-            })
+            ctx.state.needUpdateOffers = needUpdateOffers;
+
+            ctx.state.offerMap = Object.assign(ctx.state.offerMap, _offerMap);
+            let expectedPrice = ctx.request.body.price;
+            if (ctx.state.beforeTax != expectedPrice) {
+                // ctx.throw(400, 'Unmatched total price');
+                throw new DIPError(dipErrorDictionary.UNMATCHED_TOTAL_PRICE);
+            }
+            let taxPercent = config.taxPercent;
+            ctx.state.tax = Math.round(taxPercent * ctx.state.beforeTax / 100);
+            ctx.state.price = ctx.state.tax + ctx.state.beforeTax;
+            return next();
         })
 };
 
@@ -316,6 +348,14 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
     } else {
         return next();
     }
+};
+
+reservationServices.updateListOffer = function(ctx, next) {
+    let needUpdateOffers = ctx.state.needUpdateOffers;
+    let p = needUpdateOffers.map(offer => {
+        return offer.save();
+    });
+    return Promise.all(p).then(next);
 };
 
 // Final price must either be zero or greater than 50cent (stripe limit)
@@ -467,12 +507,11 @@ reservationServices.chargeSale = function(ctx, next) {
     return p.then(next);
 };
 
-reservationServices.createHotelReservation = compose([
-    reservationServices.checkInput,
-    reservationServices.verifyHotel,
-    reservationServices.verifyServices,
-    reservationServices.verifyRequestServices,
+reservationServices.purchaseHotelPasses = compose([
+    reservationServices.checkHotelReservationInput,
+    reservationServices.verifyHotelServicesAndOffers,
     reservationServices.calculateOfferPromotion,
+    reservationServices.updateListOffer,
     reservationServices.createHotelSubReservation,
     reservationServices.createHotelReservation,
     reservationServices.createSale,

@@ -9,7 +9,7 @@ module.exports = router;
 router
     .use('/', auth.authenticate())
     .post('add reservation', '/',
-        reservationServices.createHotelReservation,
+        reservationServices.purchaseHotelPasses,
         ctx => {
             ctx.status = 200;
         }
