@@ -22,6 +22,8 @@ const contactDip = require('./contact_dip');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
+const makerEvent = require('./iftttMakerEvent');
+
 module.exports = {
     passport: passport,
     login: login,
