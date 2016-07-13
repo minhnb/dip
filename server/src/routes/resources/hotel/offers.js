@@ -25,12 +25,21 @@ router.get('/',
             })
             .populate('type')
             .populate('addons')
+            .populate('hotel')
             .exec()
             .then(offers => {
+                let listOffer = [];
                 offers.forEach(offer => {
-                    offer.date = date
+                    let currentTime = moment().tz(offer.hotel.address.timezone);
+                    let reserveDate = moment.tz(moment(date).format('YYYY-MM-DD'), offer.hotel.address.timezone);
+                    let offerTime = reserveDate.add(moment.duration(offer.duration.startTime/60, 'hours'));
+                    if (offerTime < currentTime) {
+                        return;
+                    }
+                    offer.date = date;
+                    listOffer.push(offer);
                 });
-                ctx.body = {offers: offers.map(entities.offer)};
+                ctx.body = {offers: listOffer.map(entities.offer)};
             });
     });
 
