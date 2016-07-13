@@ -2,7 +2,7 @@
 
 const router = require('koa-router')();
 const mongoose = require('mongoose');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const db = require('../../../db');
 const entities = require('../../../entities');
 const validator = require('../../../validators');
