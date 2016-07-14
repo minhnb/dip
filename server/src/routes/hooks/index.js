@@ -28,11 +28,18 @@ function processEvent(type, eventId) {
 	// Return "true" to mark the event as processed so that stripe won't send it again
 	if(type != events.subscriptionCharged) return Promise.resolve();
 
-	return processEventSubscriptionCharged(eventId).then(() => saveEvent(eventId));
+	return getExistingEvent(eventId).then(dbEvent => {
+		if (!dbEvent) {
+			return processEventSubscriptionCharged(eventId).then(() => saveEvent(eventId));
+		} else {
+			return Promise.resolve();
+		}
+	});
 }
 
 function processEventSubscriptionCharged(eventId) {
 	return stripe.retrieveEvent(eventId).then(response => {
+		// valid event
 		let eventData = response.data.object,
 			customerId = eventData.customer;
 		return db.users.findOne({"account.stripeId": customerId})
@@ -52,6 +59,10 @@ function processEventSubscriptionCharged(eventId) {
 			});
 		});
 	});
+}
+
+function getExistingEvent(eventId) {
+	return db.stripeEvents.findOne({eventId: eventId}).exec()
 }
 
 function saveEvent(eventId) {
