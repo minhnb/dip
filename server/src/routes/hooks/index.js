@@ -54,8 +54,9 @@ function processEventSubscriptionCharged(eventId) {
 			.then(plan => {
 				if(!plan) return;
 				var dipCredit = plan.dipCredit;
-				user.account.balance += dipCredit;
-				return user.save();
+				return db.users.findByIdAndUpdate(user._id, {$inc: {'account.balance': dipCredit}}).exec();
+				// user.account.balance += dipCredit;
+				// return user.save();
 			});
 		});
 	});
