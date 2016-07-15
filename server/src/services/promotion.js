@@ -36,17 +36,24 @@ promotionServices.checkPromotionCodeIsUnused = function (user, promotion) {
     return user.account.promotions.indexOf(promotion._id) == -1;
 };
 
+promotionServices.checkPromotionCodeIsPending = function (user, promotion) {
+    return db.users.findById(user._id).exec().then(dataUser => {
+        return dataUser.account.pendingPromotions.indexOf(promotion._id) == -1;
+    });
+};
+
 promotionServices.dbAddPromotionCodeToUser = function (user, promotion) {
     return new Promise((resolve, reject) => {
         let checkPromotionCode = this.checkPromotionCodeIsUnused(user, promotion);
         if (checkPromotionCode) {
-            user.account.promotions.addToSet(promotion);
+            let update = {$addToSet: {"account.promotions": promotion._id}};
             if (promotion.type == promotionTypes.DIP_CREDIT) {
-                user.account.balance += promotion.amount;
+                update.$inc = {"account.balance": promotion.amount};
+            } else {
+                update.$pull = {"account.pendingPromotions": promotion._id};
             }
-            user.save().then(user => {
-                promotion.usageCount++;
-                promotion.save().then(promotion => {
+            db.users.update({_id: user._id}, update).then(user => {
+                db.promotions.update({_id: promotion._id}, {$inc: {usageCount: 1}}).then((promotion) => {
                     resolve(user);
                 });
             });

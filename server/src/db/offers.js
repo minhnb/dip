@@ -105,6 +105,10 @@ const offerSchema = new Schema({
     price: {
         type: Number,
         required: true
+    },
+    pendingReservationCount: {
+        type: Schema.Types.Mixed,
+        required: false
     }
 }, {
     timestamps: true

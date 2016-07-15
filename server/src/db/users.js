@@ -66,7 +66,16 @@ const userSchema = new Schema({
         refCode: {
             type: String,
             require: true
-        }
+        },
+        pendingBalance: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        pendingPromotions: [{
+            type: Schema.ObjectId,
+            ref: 'Promotion'
+        }]
     },
     resetPasswordToken: Schema.ObjectId, // We can get createdAt field from the ObjectId
     devices: [{
