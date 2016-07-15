@@ -1,0 +1,93 @@
+[
+  {
+    "name": "MGM Grand Hotel Casino",
+    "neighborhood": "The Strip",
+    "fullAddress": "3799 S Las Vegas Blvd, Las Vegas, NV 89109",
+    "city": "Las Vegas",
+    "url": "https://www.mgmgrand.com/en.html",
+    "phone": "(702) 891-1111",
+    "instagram": "@mgmgrand",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Palazzo Las Vegas",
+    "neighborhood": "The Strip",
+    "fullAddress": "3325 S Las Vegas Blvd, Las Vegas, NV 89109",
+    "city": "Las Vegas",
+    "url": "http://www.palazzo.com/",
+    "phone": "(702) 607-7777",
+    "instagram": "@palazzovegas",
+    "amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "The Aliante Casino & Hotel",
+    "neighborhood": "The Strip",
+    "fullAddress": "7300 N Aliante Pkwy, North Las Vegas, NV 89084",
+    "city": "North Las Vegas",
+    "url": "http://www.aliantegaming.com/",
+    "phone": "(702) 692-7777",
+    "instagram": "@aliantecasinohotel",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Palms Casino & Resort",
+    "neighborhood": "The Strip",
+    "fullAddress": "4321 W Flamingo Rd, Las Vegas, NV 89103",
+    "city": "Las Vegas",
+    "url": "http://palms.com/",
+    "phone": "(702) 942-7777",
+    "instagram": "@palmscasinoresort",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Caesars Palace",
+    "neighborhood": "The Strip",
+    "fullAddress": "3570 S Las Vegas Blvd, Las Vegas, NV 89109",
+    "city": "Las Vegas",
+    "url": "https://www.caesars.com/caesars-palace/home-concept-0216",
+    "phone": "(866) 227-5938",
+    "instagram": "@caesarspalace",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Aria Resort & Casino",
+    "neighborhood": "The Strip",
+    "fullAddress": "3730 S Las Vegas Blvd, Las Vegas, NV 89158",
+    "city": "Las Vegas",
+    "url": "https://www.aria.com/en.html",
+    "phone": "(866) 359-7111",
+    "instagram": "@arialasvegas",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Mirage Hotel & Casino",
+    "neighborhood": "The Strip",
+    "fullAddress": "3400 S Las Vegas Blvd, Las Vegas, NV 89109",
+    "city": "Las Vegas",
+    "url": "https://www.mirage.com/en.html",
+    "phone": "(702) 791-7111",
+    "instagram": "@themiragelv",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Artisan Hotel",
+    "neighborhood": "",
+    "fullAddress": "1501 W Sahara Ave, Las Vegas, NV 89102",
+    "city": "Las Vegas",
+    "url": "http://artisanhotel.com/",
+    "phone": "(702) 214-4000",
+    "instagram": "@artisanvegas",
+    "Pool Hours": "10am-7pm",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Hard Rock Hotel & Casino",
+    "neighborhood": "The Strip",
+    "fullAddress": "4455 Paradise Rd, Las Vegas, NV 89169",
+    "city": "Las Vegas",
+    "url": "https://www.hardrockhotel.com/",
+    "phone": "(702) 693-5000",
+    "instagram": "@hrcvegasstrip",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  }
+]
