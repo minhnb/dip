@@ -19,6 +19,8 @@ const config = require('../config');
 const compose = require('koa-compose');
 const promotionServices = require('./promotion');
 
+const maker = require('../helpers/iftttMakerEvent');
+
 var reservationServices = {};
 
 reservationServices.dbGetReservation = function (condition) {
@@ -597,7 +599,9 @@ reservationServices.saveHotelReservation = function(ctx, next) {
         let condition = {'_id': reservation._id};
         return reservationServices.dbGetReservation(condition).then(reservations => {
             if (reservations && reservations.length > 0) {
-                ctx.body = entities.hotelReservation(reservations[0]);
+                let reservation = reservations[0];
+                ctx.body = entities.hotelReservation(reservation);
+                notifyReservation(ctx.state.user, reservation, ctx.state.cardChargeAmount);
             } else {
 
             }
@@ -694,3 +698,18 @@ reservationServices.purchaseHotelPasses = compose([
 ]);
 
 module.exports = reservationServices;
+
+function notifyReservation(user, reservation, chargeAmount) {
+    let passes = [];
+    reservation.services.forEach(subReservation => {
+        subReservation.offers.forEach(offer => {
+            passes.push(`${offer.ref.description} (${offer.count})`);
+        });
+    });
+    let passesString = passes.join("\n");
+    let data = [user.nameOrEmail, user.email, reservation.hotel.ref.name, passesString, chargeAmount / 100];
+    
+    return maker.dipHotelPassReservation({
+        value1: data.join(' ||| ')
+    });
+}
