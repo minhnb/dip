@@ -19,6 +19,8 @@ const config = require('../config');
 const compose = require('koa-compose');
 const promotionServices = require('./promotion');
 
+const maker = require('../helpers/iftttMakerEvent');
+
 var reservationServices = {};
 
 reservationServices.dbGetReservation = function (condition) {
@@ -81,6 +83,11 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
         throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
     }
 
+    if (userOffer.service != baseOffer.service) {
+        // ctx.throw(400, 'Invalid offer id');
+        throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
+    }
+
     if(!userOffer.date) {
         // ctx.throw(400, 'Missing offer date');
         throw new DIPError(dipErrorDictionary.MISSING_OFFER_DATE);
@@ -116,8 +123,17 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
         throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
     }
 
-    if(baseOffer.reservationCount && baseOffer.reservationCount[reserveDate] &&
-        baseOffer.reservationCount[reserveDate] + userOffer.count > baseOffer.allotmentCount)
+    let reservationCount = 0;
+    let pendingReservationCount = 0;
+    if (baseOffer.reservationCount && baseOffer.reservationCount[reserveDate]) {
+        reservationCount = baseOffer.reservationCount[reserveDate];
+    }
+
+    if (baseOffer.pendingReservationCount && baseOffer.pendingReservationCount[reserveDate]) {
+        pendingReservationCount = baseOffer.pendingReservationCount[reserveDate];
+    }
+
+    if(reservationCount + pendingReservationCount + userOffer.count > baseOffer.allotmentCount)
     {
         // ctx.throw(400, 'Over booking');
         throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
@@ -209,7 +225,10 @@ reservationServices.verifyHotelServicesAndOffers = function(ctx, next) {
             let userServices = ctx.request.body.services;
             let listOffer = [];
             userServices.forEach(service => {
-                listOffer = listOffer.concat(service.offers);
+                service.offers.map(offer => {
+                    offer.service = service.id;
+                    listOffer.push(offer);
+                });
             });
 
             ctx.state.serviceMap = serviceMap;
@@ -230,11 +249,6 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
         .populate('addons')
         .exec()
         .then(offers => {
-            offerIds.forEach(offerId => {
-                if (!reservationServices.isValidObjectId(offerId, offers)) {
-                    throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
-                }
-            });
             if (offers.length != _offers.length) {
                 // ctx.throw(400, 'Invalid offer id');
                 throw new DIPError(dipErrorDictionary.INVALID_OFFER_ID);
@@ -257,7 +271,10 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
                 reservationServices.checkValidOffer(expected, offer);
 
                 let reserveDate = moment(expected.date).format('YYYY-MM-DD');
-                offer = reservationServices.increaseOfferCount(offer, reserveDate, expected.count);
+                // offer = reservationServices.increaseOfferCount(offer, reserveDate, expected.count);
+
+                offer.reserveDate = reserveDate;
+                offer.reserveCount = expected.count;
 
                 if (!reservationServices.verifySpecialOffers(expected, offer)) {
                     // ctx.throw(400, 'Invalid special offer');
@@ -317,16 +334,23 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
         let hotel = ctx.request.body.hotel;
         let offers = ctx.state.offerIds;
         let needAddingDipCreditPromotionCode = true;
-        return promotionServices.dbGetPromotionCode(ctx.state.user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, null).then(promotion => {
+        let user = ctx.state.user;
+        return promotionServices.dbGetPromotionCode(user, promotionCode, needAddingDipCreditPromotionCode, hotel, offers, null).then(promotion => {
             let substractTotalArray = [promotionTypes.SUBTRACT_TOTAL_PERCENT, promotionTypes.SUBTRACT_TOTAL_AMOUNT];
             if (substractTotalArray.indexOf(promotion.type) > -1) {
-                let offerMap = ctx.state.offerMap;
-                let listUserOffer = offers.map(offerId => {
-                    return offerMap[offerId];
-                });
-                let taxPercent = config.taxPercent;
-                let promotionDiscount = promotionServices.calculatePromotionDiscountForOffer(promotion, listUserOffer, taxPercent);
-                if (promotionDiscount.discount > 0) {
+                return db.users.findById(user._id).exec().then(dataUser => {
+                    if (dataUser.account.pendingPromotions.indexOf(promotion._id) > -1) {
+                        throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
+                    }
+                    let offerMap = ctx.state.offerMap;
+                    let listUserOffer = offers.map(offerId => {
+                        return offerMap[offerId];
+                    });
+                    let taxPercent = config.taxPercent;
+                    let promotionDiscount = promotionServices.calculatePromotionDiscountForOffer(promotion, listUserOffer, taxPercent);
+                    if (!promotionDiscount.discount) {
+                        throw new DIPError(dipErrorDictionary.INVALID_PROMOTION_CODE);
+                    }
                     ctx.state.promotion = promotionDiscount;
                     if (promotionDiscount.taxType == promotionTaxTypes.BEFORE_TAX) {
                         ctx.state.beforeTax = ctx.state.beforeTax - promotionDiscount.discount;
@@ -335,11 +359,8 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
                     } else {
                         ctx.state.price = ctx.state.price - promotionDiscount.discount;
                     }
-                }
-                return promotionServices.dbAddPromotionCodeToUser(ctx.state.user, promotion).then(() => {
+                    ctx.state.basePromotion = promotion;
                     return next();
-                }, () => {
-                    throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
                 });
             } else {
                 return next();
@@ -350,12 +371,65 @@ reservationServices.calculateOfferPromotion = function (ctx, next) {
     }
 };
 
-reservationServices.updateListOffer = function(ctx, next) {
+reservationServices.markPromotionCodeIsUsed = function (ctx, next) {
+    if (!ctx.state.basePromotion) {
+        return next();
+    }
+    let promotion = ctx.state.basePromotion;
+    return promotionServices.dbAddPromotionCodeToUser(ctx.state.user, promotion).then(() => {
+        return next();
+    }, () => {
+        // throw new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED);
+        console.error(new DIPError(dipErrorDictionary.PROMOTION_CODE_ALREADY_USED));
+        return next();
+    });
+};
+
+reservationServices.freezeOfferAmount = function(ctx, next) {
     let needUpdateOffers = ctx.state.needUpdateOffers;
     let p = needUpdateOffers.map(offer => {
-        return offer.save();
+        let update = {$inc: {}};
+        let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+        update.$inc[pendingReservationCount] = offer.reserveCount;
+        return db.offers.update({_id: offer._id}, update);
     });
     return Promise.all(p).then(next);
+};
+
+reservationServices.updateListOfferAndReleaseOfferAmount = function(ctx, next) {
+    let needUpdateOffers = ctx.state.needUpdateOffers;
+    let p = needUpdateOffers.map(offer => {
+        let update = {$inc: {}};
+        let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+        let reservationCount = `reservationCount.${offer.reserveDate}`;
+        update.$inc[pendingReservationCount] = -offer.reserveCount;
+        update.$inc[reservationCount] = offer.reserveCount;
+        return db.offers.update({_id: offer._id}, update).then(result => {
+        }, () => {
+            console.error("releaseOfferAmount failed " + offer._id);
+        });
+    });
+    return Promise.all(p).then(next);
+};
+
+reservationServices.releaseOfferAmount = function(listOffers) {
+    return new Promise((resolve, reject) => {
+        let p = listOffers.map(offer => {
+            let update = {$inc: {}};
+            let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+            update.$inc[pendingReservationCount] = -offer.reserveCount;
+            return db.offers.update({_id: offer._id}, update).then(result => {
+            }, () => {
+                console.error("releaseOfferAmount failed " + offer._id);
+            });
+        });
+        Promise.all(p).then(() => {
+            resolve();
+        }, () => {
+            resolve();
+        });
+    });
+
 };
 
 // Final price must either be zero or greater than 50cent (stripe limit)
@@ -368,12 +442,72 @@ reservationServices.getDiscount = function(price, balance) {
     }
 };
 
-reservationServices.createHotelSubReservation = function(ctx, next) {
+reservationServices.calculateDipCreditDiscountAndCardChargeAmount = function (ctx, next) {
+    let price = ctx.state.price,
+        user = ctx.state.user;
+    let discount = reservationServices.getDiscount(price, user.account.balance);
+    let cardChargeAmount = price - discount;
+    let promotion = ctx.state.basePromotion;
+    ctx.state.dipCreditDiscount = discount;
+    ctx.state.cardChargeAmount = cardChargeAmount;
+    return reservationServices.freezeDipCreditAndPromotion(user, discount, promotion).then(next);
+};
+
+reservationServices.freezeDipCreditAndPromotion = function (user, dipCreditDiscount, promotion) {
+    if (dipCreditDiscount || promotion) {
+        let update = {};
+        if (dipCreditDiscount) {
+            update = {$inc: {"account.pendingBalance": dipCreditDiscount}};
+        }
+        if (promotion) {
+            update.$addToSet = {"account.pendingPromotions": promotion._id};
+        }
+        return db.users.update({'_id': user._id}, update);
+    } else {
+        return Promise.resolve();
+    }
+};
+
+reservationServices.updateAndReleaseDipCreditForUser = function (ctx, next) {
+    let user = ctx.state.user,
+        discount = ctx.state.dipCreditDiscount;
+    if (discount > 0) {
+        return db.users.update({'_id': user._id}, {$inc: {"account.pendingBalance": -discount, "account.balance": -discount}}).then(next);
+    } else {
+        return next();
+    }
+};
+
+reservationServices.releaseDipCreditAndPromotionForUser = function (user, dipCreditDiscount, promotion) {
+    let p = new Promise((resolve, reject) => {
+        if (dipCreditDiscount || promotion) {
+            let update = {};
+            if (dipCreditDiscount) {
+                update = {$inc: {"account.pendingBalance": -dipCreditDiscount}};
+            }
+            if (promotion) {
+                update.$pull = {"account.pendingPromotions": promotion._id};
+            }
+            return db.users.update({'_id': user._id}, update).then(() => {
+                resolve();
+            }, () => {
+                console.error("releaseDipCreditAndPromotionForUser failed " + user._id + " " + user.email);
+                resolve();
+            });
+        } else {
+            resolve();
+        }
+    });
+    return p;
+};
+
+reservationServices.initHotelSubReservation = function(ctx, next) {
     let userServices = ctx.state.userServices,
         offerMap = ctx.state.offerMap,
         serviceMap = ctx.state.serviceMap,
-        serviceIds = [];
-    let p = userServices.map(s => {
+        serviceIds = [],
+        listHotelSubReservation = [];
+    userServices.map(s => {
         let service = new db.hotelSubReservations({
             service: {
                 ref: s.id,
@@ -405,23 +539,32 @@ reservationServices.createHotelSubReservation = function(ctx, next) {
                 };
             })
         });
-        return service.save().then(res => {
-            serviceIds.push(res._id);
-        });
+        listHotelSubReservation.push(service);
+        serviceIds.push(service._id);
     });
-    return Promise.all(p).then(() => {
-        ctx.state.userServiceIds = serviceIds;
-        return next();
-    })
+    ctx.state.userServiceIds = serviceIds;
+    ctx.state.listHotelSubReservation = listHotelSubReservation;
+    return next();
 };
 
-reservationServices.createHotelReservation = function(ctx, next) {
+reservationServices.saveHotelSubReservation = function(ctx, next) {
+    let listHotelSubReservation = ctx.state.listHotelSubReservation;
+    let p = listHotelSubReservation.map(subHotelReservation => {
+        return subHotelReservation.save();
+    });
+    return Promise.all(p).then(() => {
+        return next();
+    });
+};
+
+reservationServices.initHotelReservation = function(ctx, next) {
     let user = ctx.state.user,
         serviceIds = ctx.state.userServiceIds,
         hotel = ctx.state.hotel,
         price = ctx.state.price,
         tax = ctx.state.tax,
         beforeTax = ctx.state.beforeTax,
+        discount = ctx.state.dipCreditDiscount,
         userReservation = new db.hotelReservations({
             user: {
                 ref: user,
@@ -443,23 +586,25 @@ reservationServices.createHotelReservation = function(ctx, next) {
     if (ctx.state.promotion) {
         userReservation.promotion = ctx.state.promotion;
     }
-    let p = Promise.resolve();
     if (user.account.balance > 0) {
-        let discount = reservationServices.getDiscount(price, user.account.balance);
-        user.account.balance -= discount;
         userReservation.promotionDiscount = discount;
-        p = user.save();
     }
-
     ctx.state.reservation = userReservation;
-    return p.then(user => {
-        return userReservation.save().then((reservation) => {
-            let condition = {'_id': reservation._id};
-            return reservationServices.dbGetReservation(condition).then(reservations => {
-                if (reservations && reservations.length > 0) {
-                    ctx.body = entities.hotelReservation(reservations[0]);
-                }
-            });
+    return next();
+};
+
+reservationServices.saveHotelReservation = function(ctx, next) {
+    let userReservation = ctx.state.reservation;
+    return userReservation.save().then((reservation) => {
+        let condition = {'_id': reservation._id};
+        return reservationServices.dbGetReservation(condition).then(reservations => {
+            if (reservations && reservations.length > 0) {
+                let reservation = reservations[0];
+                ctx.body = entities.hotelReservation(reservation);
+                notifyReservation(ctx.state.user, reservation, ctx.state.cardChargeAmount);
+            } else {
+
+            }
         });
     }).then(next);
 };
@@ -467,9 +612,7 @@ reservationServices.createHotelReservation = function(ctx, next) {
 reservationServices.createSale = function(ctx, next) {
     let user = ctx.state.user,
         userCard = ctx.state.userCard,
-        discount = ctx.state.reservation.promotionDiscount || 0,
-        price = ctx.state.price,
-        finalAmount = price - discount,
+        finalAmount = ctx.state.cardChargeAmount,
         p;
     if (finalAmount > 0) {
         let userSale = new db.sales({
@@ -491,31 +634,82 @@ reservationServices.createSale = function(ctx, next) {
 };
 
 reservationServices.chargeSale = function(ctx, next) {
-    let sale = ctx.state.sale,
-        p = Promise.resolve();
-    if (sale) {
-        p = stripe.chargeSale(sale).then(charge => {
-            sale.state = charge.status;
-            return sale.save().then(() => {
-                if (charge.status == 'failed') {
+    let sale = ctx.state.sale;
+    if (!sale) {
+        return next();
+    }
+    let p = new Promise((resolve, reject) => {
+        if (sale) {
+            stripe.chargeSale(sale).then(charge => {
+                resolve(charge);
+            }, (error) => {
+                let charge = {status: 'failed'};
+                resolve(charge);
+            });
+        } else {
+            resolve();
+        }
+    });
+
+    return p.then((charge) => {
+        sale.state = charge.status;
+        return sale.save().then(() => {
+            if (charge.status == 'failed') {
+                return reservationServices.releaseDipCreditPromotionAndPendingReserveAmount(ctx).then(() => {
                     // ctx.throw(400, 'Card charging failed');
                     throw new DIPError(dipErrorDictionary.CARD_CHARGING_FAILED);
-                }
-            });
-        })
-    }
-    return p.then(next);
+                });
+            } else {
+                return next();
+            }
+        });
+    });
+};
+
+reservationServices.releaseDipCreditPromotionAndPendingReserveAmount = function (ctx) {
+    return new Promise((resolve, reject) => {
+        reservationServices.releaseDipCreditAndPromotionForUser(ctx.state.user, ctx.state.dipCreditDiscount, ctx.state.basePromotion).then(() => {
+            if (ctx.state.needUpdateOffers) {
+                reservationServices.releaseOfferAmount(ctx.state.needUpdateOffers).then(() => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
+    });
 };
 
 reservationServices.purchaseHotelPasses = compose([
     reservationServices.checkHotelReservationInput,
     reservationServices.verifyHotelServicesAndOffers,
     reservationServices.calculateOfferPromotion,
-    reservationServices.updateListOffer,
-    reservationServices.createHotelSubReservation,
-    reservationServices.createHotelReservation,
+    reservationServices.freezeOfferAmount,
+    reservationServices.calculateDipCreditDiscountAndCardChargeAmount,
+    reservationServices.initHotelSubReservation,
+    reservationServices.initHotelReservation,
     reservationServices.createSale,
-    reservationServices.chargeSale
+    reservationServices.chargeSale,
+    reservationServices.updateListOfferAndReleaseOfferAmount,
+    reservationServices.markPromotionCodeIsUsed,
+    reservationServices.updateAndReleaseDipCreditForUser,
+    reservationServices.saveHotelSubReservation,
+    reservationServices.saveHotelReservation
 ]);
 
 module.exports = reservationServices;
+
+function notifyReservation(user, reservation, chargeAmount) {
+    let passes = [];
+    reservation.services.forEach(subReservation => {
+        subReservation.offers.forEach(offer => {
+            passes.push(`${offer.ref.description} (${offer.count})`);
+        });
+    });
+    let passesString = passes.join("\n");
+    let data = [user.nameOrEmail, user.email, reservation.hotel.ref.name, passesString, chargeAmount / 100];
+    
+    return maker.dipHotelPassReservation({
+        value1: data.join(' ||| ')
+    });
+}

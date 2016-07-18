@@ -16,6 +16,12 @@ var eventList = {
      */
     dipUserSignup: {
         event: config.iftttMaker.userSignupEvent
+    },
+    /**
+     * @exports maker.dipHotelPassReservation
+     */
+    dipHotelPassReservation: {
+        event: config.iftttMaker.hotelPassReservationEvent
     }
 };
 

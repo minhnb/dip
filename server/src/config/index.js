@@ -56,7 +56,8 @@ module.exports = {
     taxPercent: parseFloat(process.env.TAX_PERCENT),
     iftttMaker: {
         secretKey: process.env.IFTTT_MAKER_SECRET_KEY,
-        eventReservationEvent: process.env.IFTTT_MAKER_EVENT_RESERVATION_EVENT,
-        userSignupEvent: process.env.IFTTT_MAKER_USER_SIGNUP_EVENT
+        userSignupEvent: process.env.IFTTT_MAKER_USER_SIGNUP_EVENT,
+        hotelPassReservationEvent: process.env.IFTTT_MAKER_HOTEL_PASS_RESERVATION_EVENT,
+        eventReservationEvent: process.env.IFTTT_MAKER_EVENT_RESERVATION_EVENT
     }
 };
