@@ -28,7 +28,9 @@ module.exports = {
     passport: passport,
     login: login,
     facebookLogin: facebookLogin,
-    authenticate: authenticateJwt
+    authenticate: authenticateJwt,
+    refreshAccessToken: refreshAccessToken,
+    setupToken: returnToken
 };
 
 passport.use(new LocalStrategy(
@@ -55,7 +57,7 @@ passport.use(new JwtStrategy(
             if (err) {
                 done(err);
             } else if (!session) {
-                done(null, false, 'Session has been expired');
+                done(null, false, 'Invalid session');
             } else {
                 users.findById(jwt_payload.sub, function (err, user) {
                     if (err) {
@@ -162,5 +164,29 @@ function authenticateJwt(requiredScopes) {
                 throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
             }
         });
+    }
+}
+
+function refreshAccessToken() {
+    return (ctx, next) => {
+        let refreshToken = ctx.request.body.refreshToken;
+        return sessions.getByRefreshToken(refreshToken).exec().then(session => {
+            if (!session) {
+                throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
+            } else {
+                return session.generateToken().then(token => {
+                    returnToken(token, ctx);
+                    return next();
+                });
+            }
+        });
+    }
+}
+
+function returnToken(token, ctx) {
+    ctx.response.status = 200;
+    ctx.body = {
+        JWT: token.accessToken,
+        refreshToken: token.refreshToken
     }
 }

@@ -169,23 +169,19 @@ userSchema.methods.encryptPassword = function (password) {
 };
 userSchema.methods.generateJWT = function() {
     var sessionKey = utils.generateToken(64);
-    var session = new sessions({_id: sessionKey, user: this});
-    return session.save().then(() => {
-        return new Promise((resolve, reject) => {
-            jwt.sign({scopes: ['all'], jti: sessionKey}, config.jwt.key, {
-                subject: this._id,
-                jwtid: sessionKey,
-                issuer: config.jwt.issuer,
-                algorithm: config.jwt.algorithm
-            }, token => {
-                resolve(token);
-            });
-        });
+    var refreshToken = utils.generateToken(64);
+    var session = new sessions({
+        _id: sessionKey,
+        user: this,
+        refreshToken: refreshToken
+    });
+    return session.save().then(session => {
+        return session.generateToken();
     });
 };
 userSchema.methods.setRefCode = function(code) {
     this.account.refCode = code;
-}
+};
 
 /**
  * @class
