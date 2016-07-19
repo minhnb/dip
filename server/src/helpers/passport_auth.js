@@ -170,6 +170,9 @@ function authenticateJwt(requiredScopes) {
 function refreshAccessToken() {
     return (ctx, next) => {
         let refreshToken = ctx.request.body.refreshToken;
+        if (!refreshToken || typeof refreshToken != 'string' || refreshToken.length == 0) {
+            throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
+        }
         return sessions.getByRefreshToken(refreshToken).exec().then(session => {
             if (!session) {
                 throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
