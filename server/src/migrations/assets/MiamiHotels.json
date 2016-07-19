@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Dream Hotel South Beach",
+    "neighborhood": "South Beach",
+    "fullAddress": "1111 Collins Ave, Miami Beach, FL 33139",
+    "url": "http://www.dreamhotels.com/southbeach/default-en.html",
+    "phone": "(305) 673-4747",
+    "instagram": "@dreamhotels",
+    "city": "Miami Beach",
+    "amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "1 Hotel South Beach",
+    "neighborhood": "South Beach",
+    "fullAddress": "2341 Collins Ave, Miami Beach, FL 33139",
+    "url": "https://1hotels.com/south-beach?utm_source=google&utm_medium=local&utm_campaign=GMB",
+    "phone": "(305) 604-1000",
+    "instagram": "@1hotelsb",
+    "city": "Miami Beach",
+    "amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "Miami Biltmore Hotel",
+    "neighborhood": "Coral Gables",
+    "fullAddress": "1200 Anastasia Ave, Coral Gables, FL 33134",
+    "url": "http://www.biltmorehotel.com/",
+    "phone": "(855) 311-6903",
+    "instagram": "@biltmorehotel",
+    "city": "Coral Gables",
+    "amenities": [{"type": "Cabana"}]
+  },
+  {
+    "name": "Four Seasons Hotel Miami",
+    "neighborhood": "Brickell",
+    "fullAddress": "1435 Brickell Ave, Miami, FL 33131",
+    "url": "http://www.fourseasons.com/miami/",
+    "phone": "(305) 358-3535",
+    "instagram": "@fourseasons",
+    "city": "Miami",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Mondrian South Beach",
+    "neighborhood": "South Beach",
+    "fullAddress": "1100 West Ave, Miami Beach, FL 33139",
+    "url": "https://www.morganshotelgroup.com/mondrian/mondrian-south-beach",
+    "phone": "(305) 514-1500",
+    "instagram": "@mondrianhotels",
+    "city": "Miami Beach",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Conrad Miami",
+    "neighborhood": "Brickell",
+    "fullAddress": "1395 Brickell Ave, Miami, FL 33131",
+    "url": "http://conradhotels3.hilton.com/en/hotels/florida/conrad-miami-MIACICI/index.html",
+    "phone": "(305) 503-6500",
+    "instagram": "@conradmiami",
+    "city": "Miami",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Standard Spa Miami Beach",
+    "neighborhood": "Miami Beach",
+    "fullAddress": "40 Island Ave, Miami Beach, FL 33139",
+    "url": "http://www.standardhotels.com/miami/properties/miami-beach",
+    "phone": "(305) 673-1717",
+    "instagram": "@thestandard",
+    "city": "Miami Beach",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  }
+]
