@@ -3,6 +3,9 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
+
 const rootFolder = path.normalize(__dirname + '/../../..');
 
 dotenv.load({
@@ -11,26 +14,22 @@ dotenv.load({
 
 const connectionPromise = require('./db');
 
-exports.up = function(next) {
-    connectionPromise.then(connection => {
-        connection.db.collection('users', (error, collection) => {
-            if (error) {
-                next(error);
-            } else {
-                next();
-            }
-        });
-    });
-};
+const getCollection = async (collectionName => {
+    let connection = await (connectionPromise);
+    return connection.db.collection(collectionName);
+});
 
-exports.down = function(next) {
-    connectionPromise.then(connection => {
-        connection.db.collection('users', (error, collection) => {
-            if(error) {
-                next(error);
-            } else {
-                next();
-            }
-        });
-    });
+const up = async (function(next) {
+    let collection = await (getCollection('users'));
+    return next();
+});
+
+const down = async (function(next) {
+    let collection = await (getCollection('users'));
+    return next();
+});
+
+exports = module.exports = {
+    up: up,
+    down: down
 };

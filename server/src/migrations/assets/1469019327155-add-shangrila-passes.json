@@ -1,0 +1,68 @@
+[
+  {
+    "type": "pass",
+    "description": "Pool Pass",
+    "days": [1,2,3,4,5],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 1,
+    "price": 2500,
+    "allotmentCount": 10,
+    "startDay": "2016-07-24"
+  },
+  {
+    "type": "pass",
+    "description": "Pool Pass",
+    "days": [6,0],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 1,
+    "price": 4500,
+    "allotmentCount": 10,
+    "startDay": "2016-07-24"
+  },
+  {
+    "type": "pass",
+    "description": "Daybed",
+    "days": [1,2,3,4,5],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 2,
+    "price": 4500,
+    "allotmentCount": 2,
+    "startDay": "2016-07-24"
+  },
+  {
+    "type": "pass",
+    "description": "Daybed",
+    "days": [6,0],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 2,
+    "price": 7500,
+    "allotmentCount": 2,
+    "startDay": "2016-07-24"
+  },
+  {
+    "type": "pass",
+    "description": "Cabana",
+    "days": [1,2,3,4,5],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 4,
+    "price": 20000,
+    "allotmentCount": 4,
+    "startDay": "2016-07-24"
+  },
+  {
+    "type": "pass",
+    "description": "Cabana",
+    "days": [6,0],
+    "startTime": 10,
+    "endTime": 18,
+    "capacity": 4,
+    "price": 30000,
+    "allotmentCount": 4,
+    "startDay": "2016-07-24"
+  }
+]

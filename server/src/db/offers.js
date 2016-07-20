@@ -43,10 +43,11 @@ const offerSchema = new Schema({
         ref: 'Hotel',
         required: true
     },
-    date: {
-        type: String,
-        required: true
-    },
+    // Comment out unused field
+    // date: {
+    //     type: String,
+    //     required: true
+    // },
     days: [{
         type: Number,
         enum: [0, 1, 2, 3, 4, 5, 6] // Monday is one...Sunday is 0
@@ -57,7 +58,7 @@ const offerSchema = new Schema({
     },
     dueDay: {
         type: String,
-        required: true
+        required: false
     },
     duration: {
         startTime: {
