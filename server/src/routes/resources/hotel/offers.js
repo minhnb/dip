@@ -33,12 +33,22 @@ router.get('/',
             .then(offers => {
                 let listOffer = [];
                 offers.forEach(offer => {
+                    // let currentTime = moment().tz(offer.hotel.address.timezone);
+                    // let reserveDate = moment.tz(moment(date).format('YYYY-MM-DD'), offer.hotel.address.timezone);
+                    // let offerTime = reserveDate.add(moment.duration(offer.duration.startTime/60, 'hours'));
+                    // if (offerTime < currentTime) {
+                    //     return;
+                    // }
+
+                    // New rule: disable offers that has less than 1 hour to endTime
                     let currentTime = moment().tz(offer.hotel.address.timezone);
                     let reserveDate = moment.tz(moment(date).format('YYYY-MM-DD'), offer.hotel.address.timezone);
-                    let offerTime = reserveDate.add(moment.duration(offer.duration.startTime/60, 'hours'));
-                    if (offerTime < currentTime) {
+                    let beginTime = reserveDate.add(moment.duration(offer.duration.startTime/60, 'hours'));
+                    let lastAllowTime = reserveDate.add(moment.duration(offer.duration.endTime/60 - 1, 'hours'));
+                    if ((beginTime < currentTime) && (lastAllowTime < currentTime)) {
                         return;
                     }
+
                     offer.date = date;
                     listOffer.push(offer);
                 });
