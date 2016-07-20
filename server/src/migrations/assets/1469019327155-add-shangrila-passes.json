@@ -8,7 +8,7 @@
     "capacity": 1,
     "price": 2500,
     "allotmentCount": 10,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   },
   {
     "type": "pass",
@@ -19,7 +19,7 @@
     "capacity": 1,
     "price": 4500,
     "allotmentCount": 10,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   },
   {
     "type": "pass",
@@ -30,7 +30,7 @@
     "capacity": 2,
     "price": 4500,
     "allotmentCount": 2,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   },
   {
     "type": "pass",
@@ -41,7 +41,7 @@
     "capacity": 2,
     "price": 7500,
     "allotmentCount": 2,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   },
   {
     "type": "pass",
@@ -52,7 +52,7 @@
     "capacity": 4,
     "price": 20000,
     "allotmentCount": 4,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   },
   {
     "type": "pass",
@@ -63,6 +63,6 @@
     "capacity": 4,
     "price": 30000,
     "allotmentCount": 4,
-    "startDay": "2016-07-24"
+    "startDay": "2016-07-20"
   }
 ]

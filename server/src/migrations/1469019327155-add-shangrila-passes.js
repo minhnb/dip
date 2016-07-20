@@ -38,8 +38,10 @@ const up = async (function(next) {
             type: offer.type,
             days: offer.days,
             duration: {
-                startTime: offer.startTime,
-                endTime: offer.endTime
+                // The duration is stored as "hours" in json file,
+                // so we need to multiply those by 60 here
+                startTime: offer.startTime * 60,
+                endTime: offer.endTime * 60
             },
             capacity: offer.capacity,
             price: offer.price,
