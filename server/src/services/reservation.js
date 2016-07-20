@@ -117,7 +117,7 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
     if(baseOffer.days.indexOf(reserveDay) == -1 ||
         offerTime < moment().tz(baseOffer.hotel.address.timezone) ||
         moment(reserveDate) > moment(maxDaysReservation) ||
-        moment(baseOffer.dueDay) < moment(reserveDate) ||
+        (baseOffer.dueDay && moment(baseOffer.dueDay) < moment(reserveDate)) ||
         moment(baseOffer.startDay) > moment(reserveDate)) {
         // ctx.throw(400, 'Not serve');
         throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);

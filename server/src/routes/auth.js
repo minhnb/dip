@@ -25,8 +25,7 @@ router
         auth.login(),
         ctx => {
             return ctx.state.user.generateJWT().then(token => {
-                ctx.response.status = 200;
-                ctx.body = {JWT: token};
+                auth.setupToken(token, ctx);
             });
         }
     )
@@ -35,8 +34,7 @@ router
         auth.facebookLogin(),
         ctx => {
             return ctx.state.user.generateJWT().then(token => {
-                ctx.response.status = 200;
-                ctx.body = {JWT: token};
+                auth.setupToken(token, ctx);
             });
         }
     )
@@ -130,5 +128,5 @@ router
                 ctx.status = 200;
             });
         }
-    );
-
+    )
+    .post('/refreshtoken', auth.refreshAccessToken());

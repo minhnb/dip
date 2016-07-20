@@ -19,7 +19,10 @@ router.get('/',
         return db.offers.find({
                 service: mongoose.Types.ObjectId(service),
                 days: day,
-                dueDay: {$gte: date},
+                $or: [
+                    {dueDay: {$gte: date}},
+                    {dueDay: {$exists: false}}
+                ],
                 startDay: {$lte: date},
                 type: 'pass'
             })

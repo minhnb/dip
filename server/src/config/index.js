@@ -24,7 +24,8 @@ module.exports = {
     jwt: {
         key: process.env.JWT_KEY,
         algorithm: process.env.JWT_ALG,
-        issuer: 'dip'
+        issuer: 'dip',
+        expiresIn: process.env.JWT_EXPIRES_IN
     },
     stripe: {
         publicKey: process.env.STRIPE_PUBLIC_KEY,
