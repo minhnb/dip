@@ -114,8 +114,12 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
         reserveDate = moment(userOffer.date).format('YYYY-MM-DD'),
         offerTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.startTime/60, 'hours'));
 
+    // New rule: disable offers that has less than 1 hour to endTime
+    let lastAllowTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.endTime/60 - 1, 'hours'));
+    let now = moment().tz(baseOffer.hotel.address.timezone);
+
     if(baseOffer.days.indexOf(reserveDay) == -1 ||
-        offerTime < moment().tz(baseOffer.hotel.address.timezone) ||
+        ((offerTime < now) && (lastAllowTime < now)) ||
         moment(reserveDate) > moment(maxDaysReservation) ||
         (baseOffer.dueDay && moment(baseOffer.dueDay) < moment(reserveDate)) ||
         moment(baseOffer.startDay) > moment(reserveDate)) {
