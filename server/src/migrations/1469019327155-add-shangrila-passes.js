@@ -33,9 +33,10 @@ const up = async (function(next) {
         offerCollection = await (getCollection('offers'));
 
     offers = offers.map(offer => {
-        return {
+        let _offer = {
             _id: mongoose.Types.ObjectId(),
             type: offer.type,
+            description: offer.description,
             days: offer.days,
             duration: {
                 // The duration is stored as "hours" in json file,
@@ -55,6 +56,8 @@ const up = async (function(next) {
             createdAt: now,
             updatedAt: now
         };
+        if (!_offer.dueDay) delete(_offer.dueDay);
+        return _offer;
     });
 
     return offerCollection.insert(offers, err => {
