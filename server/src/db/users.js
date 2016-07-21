@@ -12,6 +12,9 @@ const cardSchema = require('./subSchemas/creditCard');
 const membershipSchema = require('./subSchemas/membership');
 const sessions = require('./sessions');
 
+const DIPError = require('../helpers/DIPError');
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+
 const userSchema = new Schema({
     //username: { type: String, required: true },
     email: {
@@ -149,6 +152,53 @@ userSchema.statics.findByEmail = function(email, callback) {
         email = email.toLowerCase();
     }
     return this.findOne({email: email}, callback);
+};
+
+userSchema.statics.findByFacebookId = function(id, cb) {
+    return this.findOne({facebookId: id}, cb);
+};
+
+userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
+    let facebookId = fbInfo.id,
+        email = requestBody.email || fbInfo.email,
+        firstName = requestBody.firstName !== undefined ? requestBody.firstName : fbInfo.first_name,
+        lastName = requestBody.lastName !== undefined ? requestBody.lastName : fbInfo.last_name,
+        gender = fbInfo.gender,
+        dob = requestBody.dob;
+    if(!email) {
+        // ctx.throw(400, 'Missing Email');
+        throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
+    }
+    email = email.toLowerCase();
+
+    let newUser = new this({
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        facebookId: facebookId,
+        avatar: {
+            provider: 'facebook'
+        }
+    });
+    if (dob) {
+        newUser.dob = dob;
+    }
+
+    return this.findByFacebookId(facebookId).exec().then(user => {
+        if (!user) {
+            // 'this' works because array function doesn't override the this scope
+            return this.findByEmail(email).then(existUser => {
+                if (existUser) {
+                    throw new DIPError(dipErrorDictionary.EMAIL_EXISTED);
+                } else {
+                    return newUser.save();
+                }
+            });
+        } else {
+            return user;
+        }
+    });
 };
 
 
