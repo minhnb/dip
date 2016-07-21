@@ -165,10 +165,6 @@ userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
         lastName = requestBody.lastName !== undefined ? requestBody.lastName : fbInfo.last_name,
         gender = fbInfo.gender,
         dob = requestBody.dob;
-    if(!email) {
-        // ctx.throw(400, 'Missing Email');
-        throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
-    }
     email = email.toLowerCase();
 
     let newUser = new this({
@@ -187,6 +183,10 @@ userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
 
     return this.findByFacebookId(facebookId).exec().then(user => {
         if (!user) {
+            if(!email) {
+                // ctx.throw(400, 'Missing Email');
+                throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
+            }
             // 'this' works because array function doesn't override the this scope
             return this.findByEmail(email).then(existUser => {
                 if (existUser) {
