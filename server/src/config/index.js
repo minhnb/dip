@@ -60,5 +60,9 @@ module.exports = {
         userSignupEvent: process.env.IFTTT_MAKER_USER_SIGNUP_EVENT,
         hotelPassReservationEvent: process.env.IFTTT_MAKER_HOTEL_PASS_RESERVATION_EVENT,
         eventReservationEvent: process.env.IFTTT_MAKER_EVENT_RESERVATION_EVENT
+    },
+    strings: {
+        dipGroupName: process.env.DIP_GROUP_NAME,
+        dipWelcomeMessage: process.env.DIP_WELCOME_MESSAGE
     }
 };
