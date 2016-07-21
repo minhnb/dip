@@ -1,0 +1,52 @@
+[
+  {
+    "name": "W Austin Hotel",
+    "neighborhood": "Downtown",
+    "fullAddress": "2nd Street District, 200 Lavaca St, Austin, TX 78701",
+    "url": "http://www.whotelaustin.com/",
+    "phone": "(512) 542-3600",
+    "instagram": "@whotels",
+    "city": "Austin",
+    "amenities": [{"type": "Cabana"}, {"type": "Pool Pass"}]
+  },
+  {
+    "name": "Travaasa Austin",
+    "neighborhood": "Valente",
+    "fullAddress": "13500 FM2769, Austin, TX 78726",
+    "url": "http://travaasa.com/austin/",
+    "phone": "(512) 364-0061",
+    "instagram": "@travaasa",
+    "city": "Austin",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Four Seasons Hotel Austin",
+    "neighborhood": "Downtown",
+    "fullAddress": "98 San Jacinto Blvd, Austin, TX 78701",
+    "url": "http://www.fourseasons.com/austin/",
+    "phone": "(512) 478-4500",
+    "instagram": "@fourseasons",
+    "city": "Austin",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "South Congress Hotel",
+    "neighborhood": "Travis Heights",
+    "fullAddress": "1603 S Congress Ave, Austin, TX 78704",
+    "url": "http://southcongresshotel.com/",
+    "phone": "(512) 920-6405",
+    "instagram": "@southcongresshotel",
+    "city": "Austin",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Hotel Ella",
+    "neighborhood": "West Campus",
+    "fullAddress": "1900 Rio Grande St, Austin, TX 78705",
+    "url": "http://hotelella.com/",
+    "phone": "(512) 495-1800",
+    "instagram": "@hotelella",
+    "city": "Austin",
+    "amenities": [{"type": "Pool Pass"}]
+  }
+]
