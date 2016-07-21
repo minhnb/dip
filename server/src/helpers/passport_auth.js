@@ -9,6 +9,8 @@ const passport = require('koa-passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 
+const querystring = require('querystring');
+
 const users = require('../db').users;
 const sessions = require('../db').sessions;
 
@@ -96,44 +98,26 @@ function facebookLogin() {
     return (ctx, next) => { 
         let code = ctx.request.body.code;
         let hash = crypto.createHmac('sha256', config.facebook.secretId).update(code).digest('hex');
-        let request_user_info_url = "https://graph.facebook.com/me?access_token=" + code + "&appsecret_proof=" + hash;
+        let params = {
+            access_token: code,
+            appsecret_proof: hash
+        };
+        let request_user_info_url = "https://graph.facebook.com/me?" + querystring.stringify(params);
         return request(request_user_info_url).then(fbUserInfo => {
             fbUserInfo = JSON.parse(fbUserInfo);
-            // let email = fbUserInfo.email || ctx.request.body.email;
-            let email = fbUserInfo.email;
-            if(!email) {
-                // ctx.throw(400, 'Missing Email');
-                throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
-            }
-            email = email.toLowerCase();
-            return users.findByEmail(email).exec().then(user => {
-                if (!user) {
-                    user = new users({
-                        email: email,
-                        firstName: fbUserInfo.first_name,
-                        lastName: fbUserInfo.last_name,
-                        gender: fbUserInfo.gender,
-                        facebookId: fbUserInfo.id
-                    });
-                    makerEvent.dipUserSignup({
-                        value1: user.nameOrEmail,
-                        value2: user.email,
-                        value3: 1
-                    });
-                    contactDip.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
-                    return user.save();
-                } else if(user.facebookId) {
-                    return user;
-                } else {
-                    user.facebookId = fbUserInfo.id;
-                    return user.save();
-                }
-            });
+            return users.createFromFacebook(fbUserInfo, ctx.request.body);
         }, err => {
             // err.status = 401;
             // throw err;
             throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
         }).then(user => {
+            makerEvent.dipUserSignup({
+                value1: user.nameOrEmail,
+                value2: user.email,
+                value3: 1
+            });
+            contactDip.initialize(user, ctx.dipId);
+
             ctx.state.user = user;
             return next();
         });

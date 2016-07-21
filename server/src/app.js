@@ -3,6 +3,7 @@
 const Koa = require('koa');
 const views = require('koa-views');
 const convert = require('koa-convert');
+const cors = require('kcors');
 
 const logger = require('koa-logger');
 const dotenv = require('dotenv');
@@ -45,6 +46,14 @@ app.use(convert(views('views', {
     root: `${serverFolder}/views`,
     default: 'jade'
 })));
+
+let corsOption = {
+    origin: function (ctx) {
+      return ctx.header.origin;
+    },
+    credentials: true
+};
+app.use(cors(corsOption));
 
 app.use((ctx, next) => {
     ctx.render = co.wrap(ctx.render);

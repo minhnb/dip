@@ -54,11 +54,21 @@ module.exports = {
         name: process.env.MAIL_NAME,
         address: process.env.MAIL_ADDRESS
     },
+    mailTo: {
+        reservation: {
+            email: process.env.MAILTO_RESERVATION_ADDRESS,
+            name: process.env.MAILTO_RESERVATION_NAME
+        }
+    },
     taxPercent: parseFloat(process.env.TAX_PERCENT),
     iftttMaker: {
         secretKey: process.env.IFTTT_MAKER_SECRET_KEY,
         userSignupEvent: process.env.IFTTT_MAKER_USER_SIGNUP_EVENT,
         hotelPassReservationEvent: process.env.IFTTT_MAKER_HOTEL_PASS_RESERVATION_EVENT,
         eventReservationEvent: process.env.IFTTT_MAKER_EVENT_RESERVATION_EVENT
+    },
+    strings: {
+        dipGroupName: process.env.DIP_GROUP_NAME,
+        dipWelcomeMessage: process.env.DIP_WELCOME_MESSAGE
     }
 };

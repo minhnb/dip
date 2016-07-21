@@ -23,29 +23,94 @@ const maker = require('../helpers/iftttMakerEvent');
 
 var reservationServices = {};
 
-reservationServices.dbGetReservation = function (condition) {
-    return db.hotelReservations
-        .find(condition)
-        .populate({
-            path: 'hotel.ref',
-            model: db.hotels
-        })
-        .populate({
-            path: 'services',
-            model: db.hotelSubReservations,
-            populate: [{
+reservationServices.dbGetReservation = function (condition, needUserRef) {
+    if (!condition) {
+        condition = {};
+    }
+    let query;
+    let populate = [];
+    if (needUserRef) {
+        populate.push({
+            path: 'user.ref',
+            model: db.users
+        });
+    }
+    if (!condition.type) {
+        if (populate.length > 0) {
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+        } else {
+            return db.reservations
+                .find(condition)
+                .exec();
+        }
+    }
+
+    switch (condition.type) {
+        case 'HotelReservation':
+            populate.push({
+                path: 'hotel.ref',
+                model: db.hotels
+            });
+            populate.push({
+                path: 'services',
+                model: db.hotelSubReservations,
+                populate: [
+                    {
+                        path: 'offers.ref',
+                        model: db.offers
+                    },
+                    {
+                        path: 'offers.addons.ref',
+                        model: db.addons
+                    }
+                ]
+            });
+            return db.hotelReservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+
+        case 'EventReservation':
+            populate.push({
+                path: 'event.ref',
+                model: db.events,
+                populate: [
+                    {
+                        path: 'host',
+                        model: db.hotelServices
+                    },
+                    {
+                        path: 'hotel',
+                        model: db.hotels
+                    }
+                ]
+            });
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+
+        case 'SpecialOfferReservation':
+            populate.push({
+                path: 'specialOffer.ref',
+                model: db.specialOffers
+            });
+            populate.push({
                 path: 'offers.ref',
                 model: db.offers
-            },
-                {
-                    path: 'offers.addons.ref',
-                    model: db.addons
-                }]
-        })
-        .exec()
-        .then(reservations => {
-            return reservations;
-        });
+            });
+            populate.push({
+                path: 'offers.service',
+                model: db.hotelServices
+            });
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+    }
 };
 
 reservationServices.dbGetHotel = function (hotelId) {
@@ -600,12 +665,13 @@ reservationServices.initHotelReservation = function(ctx, next) {
 reservationServices.saveHotelReservation = function(ctx, next) {
     let userReservation = ctx.state.reservation;
     return userReservation.save().then((reservation) => {
-        let condition = {'_id': reservation._id};
+        let condition = {'_id': reservation._id, type: reservation.type};
         return reservationServices.dbGetReservation(condition).then(reservations => {
             if (reservations && reservations.length > 0) {
                 let reservation = reservations[0];
                 ctx.body = entities.hotelReservation(reservation);
                 notifyReservation(ctx.state.user, reservation, ctx.state.cardChargeAmount);
+                sendConfirmationEmail(ctx.state.user, reservation, ctx.state.cardChargeAmount);
             } else {
 
             }
@@ -716,4 +782,36 @@ function notifyReservation(user, reservation, chargeAmount) {
     return maker.dipHotelPassReservation({
         value1: data.join(' ||| ')
     });
+}
+
+function sendConfirmationEmail(user, reservation, chargeAmount) {
+    let passes = [];
+    reservation.services.forEach(subReservation => {
+        subReservation.offers.forEach(offer => {
+            let date = moment(offer.date),
+                startTime = date.clone().add(moment.duration(offer.ref.duration.startTime / 60, 'hours')),
+                endTime = date.clone().add(moment.duration(offer.ref.duration.endTime / 60, 'hours'));
+            passes.push({
+                passType: offer.ref.description,
+                passCount: offer.count,
+                date: date.format('LL'),
+                startTime: startTime.format('LT'),
+                endTime: endTime.format('LT')
+            });
+        });
+    });
+    let date = passes[0].date;
+    let data = {
+        customerName: user.nameOrEmail,
+        hotelName: reservation.hotel.ref.name,
+        chargeAmount: (chargeAmount / 100).toFixed(2),
+        passes: passes,
+        date: date
+    };
+    let hotel = reservation.hotel.ref;
+    let recipients = [config.mailTo.reservation];
+    if (hotel.emails && hotel.emails.reservation) {
+        recipients = recipients.concat(hotel.emails.reservation);
+    }
+    mailer.adminHotelReservationConfirmation(recipients, data);
 }

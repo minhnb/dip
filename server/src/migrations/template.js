@@ -14,11 +14,6 @@ dotenv.load({
 
 const connectionPromise = require('./db');
 
-const getCollection = async (collectionName => {
-    let connection = await (connectionPromise);
-    return connection.db.collection(collectionName);
-});
-
 const up = async (function(next) {
     let collection = await (getCollection('users'));
     return next();
@@ -33,3 +28,45 @@ exports = module.exports = {
     up: up,
     down: down
 };
+
+///////////// Helper functions /////////////
+let getCollection = async (collectionName => {
+    let connection = await (connectionPromise);
+    return connection.db.collection(collectionName);
+});
+
+let getDocuments = async ((collection, query) => {
+    return new Promise((resolve, reject) => {
+        collection.find(query).toArray((err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+});
+
+let getOneDocument = async ((collection, query) => {
+    return new Promise((resolve, reject) => {
+        collection.findOne(query, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+});
+
+let updateDocuments = async ((collection, query, update) => {
+    return new Promise((resolve, reject) => {
+        collection.update(query, update, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+});
