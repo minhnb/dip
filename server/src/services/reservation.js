@@ -23,29 +23,94 @@ const maker = require('../helpers/iftttMakerEvent');
 
 var reservationServices = {};
 
-reservationServices.dbGetReservation = function (condition) {
-    return db.hotelReservations
-        .find(condition)
-        .populate({
-            path: 'hotel.ref',
-            model: db.hotels
-        })
-        .populate({
-            path: 'services',
-            model: db.hotelSubReservations,
-            populate: [{
+reservationServices.dbGetReservation = function (condition, needUserRef) {
+    if (!condition) {
+        condition = {};
+    }
+    let query;
+    let populate = [];
+    if (needUserRef) {
+        populate.push({
+            path: 'user.ref',
+            model: db.users
+        });
+    }
+    if (!condition.type) {
+        if (populate.length > 0) {
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+        } else {
+            return db.reservations
+                .find(condition)
+                .exec();
+        }
+    }
+
+    switch (condition.type) {
+        case 'HotelReservation':
+            populate.push({
+                path: 'hotel.ref',
+                model: db.hotels
+            });
+            populate.push({
+                path: 'services',
+                model: db.hotelSubReservations,
+                populate: [
+                    {
+                        path: 'offers.ref',
+                        model: db.offers
+                    },
+                    {
+                        path: 'offers.addons.ref',
+                        model: db.addons
+                    }
+                ]
+            });
+            return db.hotelReservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+
+        case 'EventReservation':
+            populate.push({
+                path: 'event.ref',
+                model: db.events,
+                populate: [
+                    {
+                        path: 'host',
+                        model: db.hotelServices
+                    },
+                    {
+                        path: 'hotel',
+                        model: db.hotels
+                    }
+                ]
+            });
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+
+        case 'SpecialOfferReservation':
+            populate.push({
+                path: 'specialOffer.ref',
+                model: db.specialOffers
+            });
+            populate.push({
                 path: 'offers.ref',
                 model: db.offers
-            },
-                {
-                    path: 'offers.addons.ref',
-                    model: db.addons
-                }]
-        })
-        .exec()
-        .then(reservations => {
-            return reservations;
-        });
+            });
+            populate.push({
+                path: 'offers.service',
+                model: db.hotelServices
+            });
+            return db.reservations
+                .find(condition)
+                .populate(populate)
+                .exec();
+    }
 };
 
 reservationServices.dbGetHotel = function (hotelId) {

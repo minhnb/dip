@@ -27,5 +27,8 @@ module.exports = {
     hotelReservation: require('./hotelReservation'),
     hotelService: require('./hotelService'),
     cities: require('./cities'),
-    dipLocations: require('./dipLocations')
+    dipLocations: require('./dipLocations'),
+    userReport: require('./userReport'),
+    eventReservationReport: require('./eventReservationReport'),
+    hotelReservationReport: require('./hotelReservationReport')
 };
