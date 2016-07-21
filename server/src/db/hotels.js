@@ -49,7 +49,17 @@ const hotelSchema = new Schema({
         require: true,
         default: false
     },
-    dipLocation: String
+    dipLocation: String,
+    emails: {
+        reservation: [{
+            email: {
+                type: String,
+                lowercase: true,
+                required: true
+            },
+            name: String
+        }]
+    }
 }, {
     timestamps: true
 });

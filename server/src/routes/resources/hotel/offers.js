@@ -43,8 +43,8 @@ router.get('/',
                     // New rule: disable offers that has less than 1 hour to endTime
                     let currentTime = moment().tz(offer.hotel.address.timezone);
                     let reserveDate = moment.tz(moment(date).format('YYYY-MM-DD'), offer.hotel.address.timezone);
-                    let beginTime = reserveDate.add(moment.duration(offer.duration.startTime/60, 'hours'));
-                    let lastAllowTime = reserveDate.add(moment.duration(offer.duration.endTime/60 - 1, 'hours'));
+                    let beginTime = reserveDate.clone().add(moment.duration(offer.duration.startTime/60, 'hours'));
+                    let lastAllowTime = reserveDate.clone().add(moment.duration(offer.duration.endTime/60 - 1, 'hours'));
                     if ((beginTime < currentTime) && (lastAllowTime < currentTime)) {
                         return;
                     }
