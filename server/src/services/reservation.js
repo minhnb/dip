@@ -804,7 +804,7 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
     let data = {
         customerName: user.nameOrEmail,
         hotelName: reservation.hotel.ref.name,
-        chargeAmount: chargeAmount / 100,
+        chargeAmount: (chargeAmount / 100).toFixed(2),
         passes: passes,
         date: date
     };
