@@ -665,7 +665,7 @@ reservationServices.initHotelReservation = function(ctx, next) {
 reservationServices.saveHotelReservation = function(ctx, next) {
     let userReservation = ctx.state.reservation;
     return userReservation.save().then((reservation) => {
-        let condition = {'_id': reservation._id};
+        let condition = {'_id': reservation._id, type: reservation.type};
         return reservationServices.dbGetReservation(condition).then(reservations => {
             if (reservations && reservations.length > 0) {
                 let reservation = reservations[0];
