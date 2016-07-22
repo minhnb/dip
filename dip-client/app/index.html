@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]>
-<html lang="en" ng-app="dipApp" class="body-full-height no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<html lang="en" ng-app="dipApp" ng-controller="DIPController" class="body-full-height no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>
-<html lang="en" ng-app="dipApp" class="body-full-height no-js lt-ie9 lt-ie8"> <![endif]-->
+<html lang="en" ng-app="dipApp" ng-controller="DIPController" class="body-full-height no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>
-<html lang="en" ng-app="dipApp" class="body-full-height no-js lt-ie9"> <![endif]-->
+<html lang="en" ng-app="dipApp" ng-controller="DIPController" class="body-full-height no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html lang="en" ng-app="dipApp" class="body-full-height no-js"> <!--<![endif]-->
+<html lang="en" ng-app="dipApp" ng-controller="DIPController" class="body-full-height no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -27,7 +27,17 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="dip-app-body" ng-view></div>
+<div class="dip-app-body" ng-view ng-if="isNoMenuPage"></div>
+
+<div class="page-container" ng-if="!isNoMenuPage">
+    <dip-menu></dip-menu>
+    <div class="page-content">
+        <dip-top-bar></dip-top-bar>
+        <div class="page-content-wrap" ng-view>
+        </div>
+    </div>
+</div>
+<dip-message-box ng-if="!isNoMenuPage"></dip-message-box>
 
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -37,6 +47,7 @@
 <script src="bower_components/ng-storage/ngStorage.min.js"></script>
 
 <script src="app.js"></script>
+<script src="dipController.js"></script>
 <script src="login/login.js"></script>
 <script src="dashboard/dashboard.js"></script>
 <script src="report_users/report_users.js"></script>

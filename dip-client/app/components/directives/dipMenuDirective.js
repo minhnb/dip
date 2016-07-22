@@ -5,9 +5,11 @@ dipApp.directive('dipMenu', ['$location', function ($location) {
             return '/components/dip_templates/menu.html';
         },
         link: function ($scope, element, attrs) {
-            $scope.goToPath = function (path) {
-                $location.path(path);
+            function load_scripts() {
+                load_script('joli_template/js/actions.js');
             }
+
+            load_scripts();
         }
     };
 }]);

@@ -8,6 +8,7 @@ angular.module('dipApp.login', ['ngRoute'])
     }])
     .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService',
         function ($scope, $timeout, $rootScope, $location, userService) {
+            $rootScope.isNoMenuPage = true;
             $scope.username = "";
             $scope.password = "";
 

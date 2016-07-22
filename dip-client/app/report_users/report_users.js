@@ -9,6 +9,7 @@ angular.module('dipApp.report_users', ['ngRoute'])
     }])
     .controller('ReportUsersController', ['$scope', '$timeout', '$rootScope', '$location', 'reportService',
         function ($scope, $timeout, $rootScope, $location, reportService) {
+            $rootScope.isNoMenuPage = false;
             $scope.pageTitle = "Users Report";
             $scope.tableTitle = "List Users";
             $scope.headers = ["Username", "First Name", "Last Name", "Sign Up Date"];
