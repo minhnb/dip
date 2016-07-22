@@ -20,6 +20,7 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
+        lowercase: true,
         index: {unique: true}
     },
     encryptedPassword: {
@@ -165,8 +166,8 @@ userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
         lastName = requestBody.lastName !== undefined ? requestBody.lastName : fbInfo.last_name,
         gender = fbInfo.gender,
         dob = requestBody.dob;
-    email = email.toLowerCase();
 
+    // Move email lowercase checking to user schema
     let newUser = new this({
         email: email,
         firstName: firstName,

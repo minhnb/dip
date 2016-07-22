@@ -25,6 +25,13 @@ var templatesInfo = {
     passwordChanged: {
         name: 'password-change',
         subject: 'Password Changed'
+    },
+    /**
+     * @exports mailer.adminHotelReservationConfirmation
+     */
+    adminHotelReservationConfirmation: {
+        name: 'reservation-confirmation-for-hotel',
+        subject: 'Reservation Confirmed'
     }
 };
 

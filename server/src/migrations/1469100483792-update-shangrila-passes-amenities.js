@@ -15,12 +15,34 @@ dotenv.load({
 const connectionPromise = require('./db');
 
 const up = async (function(next) {
-    let collection = await (getCollection('users'));
+    let hotelCollection = await (getCollection('hotels'));
+    let hotel = await (getOneDocument(hotelCollection, {name: 'Hotel Shangri-La'}));
+
+    let collection = await (getCollection('offers'));
+    await (updateDocuments(collection, {
+        hotel: hotel._id,
+        description: 'Cabana',
+        amenities: {$size: 0}
+    }, {
+        $set: {
+            amenities: ['cabana']
+        }
+    }));
+
+    await (updateDocuments(collection, {
+        hotel: hotel._id,
+        description: 'Daybed',
+        amenities: {$size: 0}
+    }, {
+        $set: {
+            amenities: ['daybed']
+        }
+    }));
+
     return next();
 });
 
 const down = async (function(next) {
-    let collection = await (getCollection('users'));
     return next();
 });
 

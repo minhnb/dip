@@ -671,6 +671,7 @@ reservationServices.saveHotelReservation = function(ctx, next) {
                 let reservation = reservations[0];
                 ctx.body = entities.hotelReservation(reservation);
                 notifyReservation(ctx.state.user, reservation, ctx.state.cardChargeAmount);
+                sendConfirmationEmail(ctx.state.user, reservation, ctx.state.cardChargeAmount);
             } else {
 
             }
@@ -781,4 +782,36 @@ function notifyReservation(user, reservation, chargeAmount) {
     return maker.dipHotelPassReservation({
         value1: data.join(' ||| ')
     });
+}
+
+function sendConfirmationEmail(user, reservation, chargeAmount) {
+    let passes = [];
+    reservation.services.forEach(subReservation => {
+        subReservation.offers.forEach(offer => {
+            let date = moment(offer.date),
+                startTime = date.clone().add(moment.duration(offer.ref.duration.startTime / 60, 'hours')),
+                endTime = date.clone().add(moment.duration(offer.ref.duration.endTime / 60, 'hours'));
+            passes.push({
+                passType: offer.ref.description,
+                passCount: offer.count,
+                date: date.format('LL'),
+                startTime: startTime.format('LT'),
+                endTime: endTime.format('LT')
+            });
+        });
+    });
+    let date = passes[0].date;
+    let data = {
+        customerName: user.nameOrEmail,
+        hotelName: reservation.hotel.ref.name,
+        chargeAmount: (chargeAmount / 100).toFixed(2),
+        passes: passes,
+        date: date
+    };
+    let hotel = reservation.hotel.ref;
+    let recipients = [config.mailTo.reservation];
+    if (hotel.emails && hotel.emails.reservation) {
+        recipients = recipients.concat(hotel.emails.reservation);
+    }
+    mailer.adminHotelReservationConfirmation(recipients, data);
 }
