@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START DATATABLE EXPORT -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{tableTitle}}</h3>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                    <ul class="dropdown-menu">
+                        <li><a onClick ="$('#dipdatatable').tableExport({type:'excel',escape:'false'});"><img src='/joli_template/img/icons/xls.png' width="24"/> XLS</a></li>
+                        <li class="divider"></li>
+                        <li><a onClick ="$('#dipdatatable').tableExport({type:'csv',escape:'false'});"><img src='/joli_template/img/icons/csv.png' width="24"/> CSV</a></li>
+                        <li><a onClick ="$('#dipdatatable').tableExport({type:'txt',escape:'false'});"><img src='/joli_template/img/icons/txt.png' width="24"/> TXT</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="panel-body">
+                <table id="dipdatatable" class="table datatable">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="header in headers">{{header}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in rows">
+                        <td ng-repeat="col in columns">
+                            <div ng-if="col != 'passes'">{{getCellValue(row, col)}}</div>
+                            <div ng-if="col == 'passes'">
+                                <div class="dip-report-pass" ng-repeat="pass in row.passes">
+                                    <span>{{pass.description}}</span><span>{{pass.price}}</span><span>x</span><span>{{pass.count}}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- END DATATABLE EXPORT -->
+
+    </div>
+</div>
