@@ -3,7 +3,7 @@
 angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/report/hotel-reservations', {
-            templateUrl: 'report_hotel_reservations/report_hotel_reservations.html',
+            templateUrl: 'report/hotel_reservations/hotel_reservations.html',
             controller: 'ReportHotelReservationsController'
         });
     }])
@@ -11,7 +11,7 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
     .controller('ReportHotelReservationsController', ['$scope', '$timeout', '$rootScope', '$location', '$compile', 'reportService',
         function ($scope, $timeout, $rootScope, $location, $compile, reportService) {
             $rootScope.isNoMenuPage = false;
-            $scope.pageTitle = "Hotel Reservations Report";
+            $rootScope.pageTitle = "Hotel Reservations Report";
             $scope.tableTitle = "List Hotel Reservations";
             $scope.headers = ["Username", "Name", "Hotel", "PassDate", "Passes", "Before Tax", "Tax", "Total", "Purchased Date"];
             $scope.columns = ["user.username", "user.fullName", "hotel.name", "passDate", "passes", "beforeTax", "tax", "price", "purchasedDate"];

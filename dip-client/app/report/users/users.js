@@ -3,14 +3,14 @@
 angular.module('dipApp.report_users', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/report/users', {
-            templateUrl: 'report_users/report_users.html',
+            templateUrl: 'report/users/users.html',
             controller: 'ReportUsersController'
         });
     }])
     .controller('ReportUsersController', ['$scope', '$timeout', '$rootScope', '$location', 'reportService',
         function ($scope, $timeout, $rootScope, $location, reportService) {
             $rootScope.isNoMenuPage = false;
-            $scope.pageTitle = "Users Report";
+            $rootScope.pageTitle = "Users Report";
             $scope.tableTitle = "List Users";
             $scope.headers = ["Username", "First Name", "Last Name", "Sign Up Date"];
             $scope.columns = ["username", "firstName", "lastName", "signUpDate"];

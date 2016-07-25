@@ -10,7 +10,7 @@ angular.module('dipApp.dashboard', ['ngRoute'])
     .controller('DashBoardController', ['$scope', '$timeout', '$rootScope', '$location',
         function ($scope, $timeout, $rootScope, $location) {
             $rootScope.isNoMenuPage = false;
-            $scope.pageTitle = "Dashboard";
+            $rootScope.pageTitle = "Dashboard";
             function load_scripts() {
                 load_script('joli_template/js/plugins.js');
                 load_script('joli_template/js/demo_dashboard.js');

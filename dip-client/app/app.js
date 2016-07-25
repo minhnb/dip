@@ -8,6 +8,7 @@ var dipApp = angular.module('dipApp', [
     'dipApp.report_users',
     'dipApp.report_event_reservations',
     'dipApp.report_hotel_reservations',
+    'dipApp.settings',
     'dipApp.version'
 ]).config(['$locationProvider', '$routeProvider', '$httpProvider',
     function ($locationProvider, $routeProvider, $httpProvider) {
@@ -15,7 +16,7 @@ var dipApp = angular.module('dipApp', [
     $httpProvider.interceptors.push('authInterceptor');
     // $locationProvider.hashPrefix('!');
 
-    $routeProvider.otherwise({redirectTo: '/login'});
+    $routeProvider.otherwise({redirectTo: '/dashboard'});
 
     // $locationProvider.html5Mode({
     //     enabled: true,

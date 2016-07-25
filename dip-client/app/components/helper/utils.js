@@ -42,3 +42,15 @@ function showMessageBoxWithSound(messageBoxIdWithHashTag, soundName) {
     });
     $(messageBoxIdWithHashTag).toggleClass("open");
 }
+
+function notyMessage(message, type) {
+    noty({text: message, layout: 'topRight', type: type, timeout: NOTY_TIME_OUT});
+}
+
+function notySuccessMessage(message) {
+    notyMessage(message, 'success');
+}
+
+function notyErrorMessage(message) {
+    notyMessage(message, 'error');
+}

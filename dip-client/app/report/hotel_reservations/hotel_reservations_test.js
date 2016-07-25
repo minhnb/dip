@@ -1,10 +1,10 @@
 'use strict';
 
-describe('dipApp.report_hotel_reservations module', function() {
+describe('dipApp.hotel_reservations module', function() {
 
     beforeEach(module('dipApp.report_hotel_reservations'));
 
-    describe('report_hotel_reservations controller', function(){
+    describe('hotel_reservations controller', function(){
 
         it('should ....', inject(function($controller) {
             //spec body

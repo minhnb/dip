@@ -1,10 +1,10 @@
 'use strict';
 
-describe('dipApp.report_users module', function() {
+describe('dipApp.users module', function() {
 
     beforeEach(module('dipApp.report_users'));
 
-    describe('report_users controller', function(){
+    describe('users controller', function(){
 
         it('should ....', inject(function($controller) {
             //spec body
