@@ -16,6 +16,8 @@ var httpAdapter = 'http';
 
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 
+const resourcesServices = require('../../services/resources');
+
 const dipErrorDictionary = require('../../constants/dipErrorDictionary');
 const DIPError = require('../../helpers/DIPError');
 
@@ -24,7 +26,6 @@ module.exports = router;
 router
     .use('/', auth.authenticate())
     .get('get resources', '/',
-        searchHotel,
         getNearestHotels,
         // getEvents,
         // getSpecialOffers,
@@ -93,85 +94,70 @@ router
         },
         hotel.routes(), 
         hotel.allowedMethods()
-    )
+    );
 
 function getNearestHotels(ctx, next) {
     // TODO: Move this to either db or controller module
-    let query = db.hotels.where("active").equals(true),
+    let query = db.hotels,
         user = ctx.state.user;
-        query = query.where('reservable').equals(true);
-    if (ctx.query.location) {
-        let location = ctx.query.location;
+    let location = ctx.query.location;
+    if (location) {
         if (!utils.isDipSupportedLocation(location, ctx)) {
             // ctx.throw(404, 'Not Support');
             throw new DIPError(dipErrorDictionary.NOT_SUPPORT);
-        }
-        query = query.where('dipLocation').equals(location);
+        }        
     }
-    if (ctx.state.featured) {
-        query = query.where('featured').equals(true);
-    } else {
-        // query = query.where('featured').equals(false);
-        if (ctx.state.searchedHotels) {
-            query = query.where('_id').in(ctx.state.searchedHotels);
-        }
-    }
-    let skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
-        limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0;
-
+    let minDistance = 0, maxDistance = 0, longitude = 0, latitude = 0;
     var p;
     // Filter on location
     if (ctx.query.longitude && ctx.query.latitude) {
-        let minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0,
-            maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000,
-            center = [parseFloat(ctx.query.longitude), parseFloat(ctx.query.latitude)];
-
-        let geoOptions = {
-            center: {
-                type: 'Point',
-                coordinates: center
-            },
-            minDistance: minDistance,
-            maxDistance: maxDistance,
-            spherical: true
-        };
-
+        longitude = ctx.query.longitude;
+        latitude = ctx.query.latitude;
         if (utils.isTestEmail(user.email, ctx) || ctx.query.location) {
             // Let users in test-emails-list go straight in
             p = Promise.resolve();
-            delete geoOptions.minDistance;
-            delete geoOptions.maxDistance;
         } else {
-            p = geocoder.reverse({lat: ctx.query.latitude, lon: ctx.query.longitude})
-                .then(function (res) {
-                    let city = res[0].administrativeLevels.level2long,
-                        state = res[0].administrativeLevels.level1long;
-                    return db.cities
-                        .findOne({'$and': [{city: city}, {state: state}]})
-                        .exec();
-                })
-                .then(city => {
-                    if (!city) {
-                        // ctx.throw(404, 'Not Support');
-                        throw new DIPError(dipErrorDictionary.NOT_SUPPORT);
-                    }
-                })
+            minDistance = ctx.query.minDistance ? parseFloat(ctx.query.minDistance) : 0;
+            maxDistance = ctx.query.maxDistance ? parseFloat(ctx.query.maxDistance) : 190000;
+            p = resourcesServices.isSupportLocationByCoordinates(longitude, latitude);
         }
-
-        query = query.where('coordinates').near(geoOptions);
     } else {
         p = Promise.resolve();
     }
 
     return p.then(() => {
-        return query.populate({
-                path: 'services',
-                model: db.hotelServices
-            }).limit(limit).skip(skip).exec()
-        .then(nearestHotels => {
-            ctx.state.nearestHotels = nearestHotels;
+        let searchKey = ctx.query.searchKey,
+            featured = ctx.state.featured,
+            skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
+            limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0,
+            sort = {featured:-1};
+        let condition = {};
+        condition.active = true;
+        condition.reservable = true;
+        if (location) {
+            condition.dipLocation = location;
+        }
+        if (featured) {
+            // condition.featured = true;
+            //temporary disable featured hotels page
+            ctx.state.nearestHotels = [];
             return next();
-        })
+        }
+
+        return resourcesServices.dbSearchNearestHotels(searchKey, condition, longitude, latitude, maxDistance, minDistance, sort, limit, skip).then(hotels => {
+            if (hotels.length > 0) {
+                return db.hotels.populate(hotels, {
+                        path: 'services',
+                        model: db.hotelServices
+                    }).then(nearestHotels => {
+                        ctx.state.nearestHotels = nearestHotels;
+                        return next();
+                    });
+            } else {
+                ctx.state.nearestHotels = [];
+                return next();
+            }
+        });
     })
 }
 
@@ -354,34 +340,4 @@ function filterPriceRanges(input) {
 function setFeaturedForFindingResources(ctx, next) {
     ctx.state.featured = true;
     return next();
-}
-
-function searchHotel(ctx, next) {
-    if (ctx.state.featured || !ctx.query.searchKey) {
-        return next();
-    }
-    return searchHotelByNameAndNeighborhood(ctx.query.searchKey, hotels => {
-        ctx.state.searchedHotels = hotels;
-        return next();
-    });
-}
-
-function searchHotelByNameAndNeighborhood(searchKey, callback) {
-    let virtualFieldKey = "nameAndNeighborhood";
-    let project = {}, condition = {};
-    project[virtualFieldKey] = {$concat:["$name", " ", "$address.neighborhood"]};
-    let words = searchKey.trim().split(" ");
-    let andConditions = [];
-    words.forEach(word => {
-        let item = {};
-        item[virtualFieldKey] = new RegExp(".*" + word + ".*", "i");
-        andConditions.push(item);
-    });
-    condition = {$and: andConditions};
-    return db.hotels
-        .aggregate({$project: project},{$match: condition})
-        .exec()
-        .then((hotels) => {
-            return callback(hotels);
-        });
 }
