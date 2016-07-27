@@ -7,6 +7,7 @@ var geocoderProvider = 'google';
 var httpAdapter = 'http';
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 
+const dipConstant = require('../constants/constants');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
@@ -38,7 +39,8 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
         coordinates.push(parseFloat(latitude));
         let geoNear = {
             near: {type: "Point", coordinates: coordinates},
-            distanceField: "dist.calculated",
+            distanceField: "distance",
+            distanceMultiplier: dipConstant.METER_TO_MILE,
             query: condition,
             spherical: true
         };
