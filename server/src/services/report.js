@@ -7,7 +7,11 @@ const reservationServices = require('../services/reservation');
 var reportServices = {};
 
 reportServices.dbGetListDIPUsers = function () {
-    return db.users.find({"role": "user"}).exec().then(listUser => {
+    return db.users.find({"role": "user"})
+        .populate({
+            path: 'account.subscriptions.type',
+            model: db.membershipTypes
+        }).exec().then(listUser => {
         return listUser;
     });
 };
@@ -28,7 +32,6 @@ reportServices.getListEventReservations = function () {
 reportServices.getListHotelReservations = function () {
     let condition = {type: 'HotelReservation'};
     return reservationServices.dbGetReservation(condition, true).then(reservations => {
-        console.log(reservations);
         return reservations.map(entities.hotelReservationReport);
     });
 };
