@@ -71,9 +71,12 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
     }
     aggregate.push({$match: searchKeyCondition});
 
-    if (sort != undefined) {
-        aggregate.push({$sort: sort});
+    if (sort != undefined && sort.distance == undefined) {
+        sort.distance = 1;
+    } else {
+        sort = {distance: 1};
     }
+    aggregate.push({$sort: sort});
 
     if (skip != undefined) {
         aggregate.push({$skip: skip});
