@@ -11,7 +11,7 @@ module.exports = router;
 router.get('get locations', '/',
     auth.authenticate(),
     ctx => {
-        return db.dipLocations.find({}).exec().then(listLocations => {
+        return db.dipLocations.find({}).sort({order: 1}).exec().then(listLocations => {
             ctx.body = listLocations.map(entities.dipLocations);
         });
     }

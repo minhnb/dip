@@ -8,6 +8,11 @@ const dipLocationsSchema = new Schema({
     _id: String,
     name: String,
     description: String,
+    order: {
+        type: Number,
+        required: true,
+        default: 1000
+    },
     supported: Boolean
 });
 

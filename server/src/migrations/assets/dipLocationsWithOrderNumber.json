@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "los_angeles",
+    "order": 0
+  },
+  {
+    "_id": "san_francisco",
+    "order": 1
+  },
+  {
+    "_id": "san_francisco_bay_area",
+    "order": 1
+  },
+  {
+    "_id": "austin",
+    "order": 2
+  },
+  {
+    "_id": "dallas",
+    "order": 3
+  },
+  {
+    "_id": "santa_fe",
+    "order": 4
+  },
+  {
+    "_id": "miami",
+    "order": 5
+  },
+  {
+    "_id": "honolulu",
+    "order": 6
+  },
+  {
+    "_id": "new_york",
+    "order": 7
+  },
+  {
+    "_id": "atlanta",
+    "order": 8
+  },
+  {
+    "_id": "new_orleans",
+    "order": 9
+  },
+  {
+    "_id": "las_vegas",
+    "order": 10
+  }
+]

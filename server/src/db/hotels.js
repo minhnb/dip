@@ -46,7 +46,7 @@ const hotelSchema = new Schema({
     }],
     featured: {
         type: Boolean,
-        require: true,
+        required: true,
         default: false
     },
     dipLocation: String,
