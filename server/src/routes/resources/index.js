@@ -130,7 +130,7 @@ function getNearestHotels(ctx, next) {
             featured = ctx.state.featured,
             skip = ctx.query.skip ? parseFloat(ctx.query.skip) : 0,
             limit = ctx.query.limit ? parseFloat(ctx.query.limit) : 0,
-            sort = {featured:-1};
+            sort = {featured:-1, distance: 1};
         let condition = {};
         condition.active = true;
         condition.reservable = true;
