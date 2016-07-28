@@ -24,7 +24,7 @@ function convertHotel(hotel) {
         }),
         amenities: hotel.amenities,
         featured: hotel.featured,
-        distance: hotel.distance ? hotel.distance : undefined
+        distance: hotel.distance != undefined ? hotel.distance : undefined
     }
 }
 
