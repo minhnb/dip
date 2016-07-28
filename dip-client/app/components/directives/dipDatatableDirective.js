@@ -15,7 +15,7 @@ dipApp.directive('dipDatatable', function () {
             };
 
             $scope.getCellValue = function (row, col) {
-                return getObjectValueByKey(row, col);
+                return utils.getObjectValueByKey(row, col);
             }
         }
     };

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "The Scarlet Huntington Hotel",
+    "neighborhood": "San Francisco",
+    "fullAddress": "1075 California St, San Francisco, CA 94108",
+    "url": "http://www.thescarlethotels.com/huntington-hotel-san-francisco/",
+    "phone": "(415) 474-5400",
+    "instagram": "@thescarlet_sf",
+    "city": "San Francisco",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Lafayette Park Hotel and Spa",
+    "neighborhood": "East Bay",
+    "fullAddress": "3287 Mt Diablo Blvd, Lafayette, CA 94549",
+    "url": "http://lafayetteparkhotel.com/",
+    "phone": "(925) 283-3700",
+    "instagram": "@lafayetteparkhotel",
+    "city": "San Francisco",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "The Purple Orchid",
+    "neighborhood": "East Bay",
+    "fullAddress": "4549 Cross Rd, Livermore, CA 94550",
+    "url": "http://www.rosehotel.net/",
+    "phone": "(925) 606-8857",
+    "instagram": "@thepurpleorchid",
+    "city": "San Francisco",
+    "amenities": [{"type": "Pool Pass"}]
+  },
+  {
+    "name": "Cavallo Point",
+    "neighborhood": "North Bay",
+    "fullAddress": "601 Murray Circle, Sausalito, CA 94965",
+    "url": "http://www.cavallopoint.com/",
+    "phone": "(415) 339-4700",
+    "instagram": "@cavallopoint",
+    "city": "San Francisco",
+    "amenities": [{"type": "Pool Pass"}]
+  }
+]

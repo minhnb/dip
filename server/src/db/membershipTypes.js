@@ -8,25 +8,25 @@ const Schema = mongoose.Schema;
 const membershipTypeSchema = new Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     dipCredit: {
         type: Number,
-        require: true
+        required: true
     },
     amount: {
         type: Number,
-        require: true
+        required: true
     },
     planId: {
         type: String,
-        require: true
+        required: true
     },
     //The frequency with which a subscription should be billed
     interval: {
         type: String,
         enum: ['day', 'week', 'month', 'year'],
-        require: true
+        required: true
     },
     description: {
         type: String,
@@ -35,7 +35,7 @@ const membershipTypeSchema = new Schema({
     //The number of intervals between each subscription billing
     intervalCount: {
         type: Number,
-        require: true,
+        required: true,
         default: 1
     },
     icon: {
