@@ -48,7 +48,9 @@ app.use(convert(views('views', {
 })));
 
 let corsOption = {
-    origin: '*',
+    origin: function (ctx) {
+      return ctx.header.origin;
+    },
     credentials: true
 };
 app.use(cors(corsOption));
