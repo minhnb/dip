@@ -32,8 +32,15 @@ resourcesServices.isSupportLocationByCoordinates = function (longitude, latitude
 
 resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longitude, latitude, maxDistance, minDistance, sort, limit, skip) {
     let virtualFieldKey = "nameAndNeighborhood";
-    let aggregate = [], project = {}, searchKeyCondition = {};
+    let aggregate = [], project = {}, aggregateCondition = {};
     let needDistanceKey = false;
+
+    if (condition == undefined) {
+        aggregateCondition = {};
+    } else {
+        aggregateCondition = condition;
+    }
+
     if (longitude && latitude) {
         let coordinates = [];
         coordinates.push(parseFloat(longitude));
@@ -53,6 +60,7 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
         }
         aggregate.push({$geoNear: geoNear});
         needDistanceKey = true;
+        aggregateCondition = {};
     }
 
     if (searchKey) {
@@ -69,10 +77,12 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
             andConditions.push(item);
         });
 
-        searchKeyCondition = {$and: andConditions};
+        if (aggregateCondition.$and == undefined) {
+            aggregateCondition.$and = [];
+        }
+        aggregateCondition.$and.push({$and: andConditions});
     }
-
-    aggregate.push({$match: searchKeyCondition});
+    aggregate.push({$match: aggregateCondition});
 
     let query = db.hotels.aggregate(aggregate);
     let aggregateSort = resourcesServices.createAggregateSort(sort, needDistanceKey);
