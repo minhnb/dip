@@ -33,6 +33,7 @@ resourcesServices.isSupportLocationByCoordinates = function (longitude, latitude
 resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longitude, latitude, maxDistance, minDistance, sort, limit, skip) {
     let virtualFieldKey = "nameAndNeighborhood";
     let aggregate = [], project = {}, searchKeyCondition = {};
+    let needDistanceKey = false;
     if (longitude && latitude) {
         let coordinates = [];
         coordinates.push(parseFloat(longitude));
@@ -51,6 +52,7 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
             geoNear.minDistance = minDistance;
         }
         aggregate.push({$geoNear: geoNear});
+        needDistanceKey = true;
     }
 
     if (searchKey) {
@@ -69,29 +71,54 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
 
         searchKeyCondition = {$and: andConditions};
     }
+
     aggregate.push({$match: searchKeyCondition});
 
-    if (sort != undefined && sort.distance == undefined) {
-        sort.distance = 1;
-    } else {
-        sort = {distance: 1};
+    let query = db.hotels.aggregate(aggregate);
+    let aggregateSort = resourcesServices.createAggregateSort(sort, needDistanceKey);
+    if (aggregateSort && aggregateSort.length > 0) {
+        query = query.sort(aggregateSort);
     }
-    aggregate.push({$sort: sort});
 
-    if (skip != undefined) {
-        aggregate.push({$skip: skip});
+    if (skip) {
+        query = query.skip(skip);
     }
 
     if (limit) {
-        aggregate.push({$limit: limit});
+        query = query.limit(limit);
     }
 
-    return db.hotels
-        .aggregate(aggregate)
-        .exec()
-        .then((hotels) => {
-            return hotels;
-        });
+    return query.exec().then((hotels) => {
+        return hotels;
+    });
+};
+
+resourcesServices.createAggregateSort = function (sort, needDistanceKey) {
+    let result = [];
+    if (sort != undefined) {
+        let hasDistanceKey = false;
+        for (var key in sort) {
+            if (key == 'distance') {
+                hasDistanceKey = true;
+            }
+            let sortKeyToString = '';
+            if (sort[key] < 0) {
+                sortKeyToString = '-' + key;
+            } else if (sort[key] > 0) {
+                sortKeyToString = key;
+            }
+            result.push(sortKeyToString);
+        }
+        if (!hasDistanceKey && needDistanceKey) {
+            result.push('distance');
+        }
+    } else {
+        if (needDistanceKey) {
+            result = ['distance'];
+        }
+    }
+
+    return result.join(' ');
 };
 
 module.exports = resourcesServices;
