@@ -69,7 +69,7 @@ const userSchema = new Schema({
         defaultCardId: Schema.ObjectId,
         refCode: {
             type: String,
-            require: true
+            required: true
         },
         pendingBalance: {
             type: Number,
@@ -105,7 +105,7 @@ const userSchema = new Schema({
     role: {
         type: String,
         enum: ['admin', 'user'],
-        require: true,
+        required: true,
         default: 'user'
     }
 }, {
