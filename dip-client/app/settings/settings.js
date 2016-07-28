@@ -15,10 +15,10 @@ angular.module('dipApp.settings', ['ngRoute'])
             $scope.updateAppContext = function () {
                 adminService.updateAppContext()
                     .success(function (data, status) {
-                        notySuccessMessage('Updated app context successfully!');
+                        utils.notySuccessMessage('Updated app context successfully!');
                     })
                     .error(function (data, status) {
-                        notyErrorMessage('Updated app context failed!');
+                        utils.notyErrorMessage('Updated app context failed!');
                     });
             }
         }]);

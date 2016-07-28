@@ -13,7 +13,7 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "Hotel Reservations Report";
             $scope.tableTitle = "List Hotel Reservations";
-            $scope.headers = ["Username", "Name", "Hotel", "PassDate", "Passes", "Before Tax", "Tax", "Total", "Purchased Date"];
+            $scope.headers = ["Email", "Name", "Hotel", "PassDate", "Passes", "Before Tax", "Tax", "Total", "Purchased Date"];
             $scope.columns = ["user.username", "user.fullName", "hotel.name", "passDate", "passes", "beforeTax", "tax", "price", "purchasedDate"];
             $scope.rows = [];
 
@@ -30,26 +30,19 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
 
             $scope.analyzeHotelReservationsReportData = function (list) {
                 list.map(item => {
-                    item.price = displayMoney(item.price);
-                    item.tax = displayMoney(item.tax);
-                    item.beforeTax = displayMoney(item.beforeTax);
-                    item.purchasedDate = formatTimeStampToDateTime(item.createdAt);
+                    item.price = utils.displayMoney(item.price);
+                    item.tax = utils.displayMoney(item.tax);
+                    item.beforeTax = utils.displayMoney(item.beforeTax);
+                    item.purchasedDate = utils.formatTimeStampToDateTime(item.createdAt);
                     let passes = "";
                     let passDate = "";
                     let passesArray = [];
                     item.services.map(service => {
                         service.offers.map(offer => {
                             if (!passDate) {
-                                passDate = formatDipDateToDate(offer.date);
+                                passDate = utils.formatDipDateToDate(offer.date);
                             }
-                            let passPrice = displayMoney(offer.price);
-                            let passDescription = '<div>' + offer.description + " " + passPrice + " x " + offer.count + '</div>';
-                            if (passes.length > 0) {
-                                passes += "<br/>" + passDescription;
-                            } else {
-                                passes += passDescription;
-                            }
-                            offer.price = displayMoney(offer.price);
+                            offer.price = utils.displayMoney(offer.price);
                             passesArray.push(offer);
                         });
                     });
@@ -59,7 +52,9 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
                 return list;
             };
 
-            setTimeout(function () {
+            $scope.init = function () {
                 $scope.getHotelReservationsReport();
-            }, 100);
+            };
+
+            $rootScope.initDipApp($scope.init);
         }]);

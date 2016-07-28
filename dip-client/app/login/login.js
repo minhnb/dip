@@ -15,7 +15,7 @@ angular.module('dipApp.login', ['ngRoute'])
             $scope.init = function () {
                 userService.initUser();
                 if (userService.user && userService.user.JWT) {
-                    console.log("user already login");
+                    // console.log("user already login");
                     $location.path('/dashboard');
                 }
             };
@@ -28,26 +28,15 @@ angular.module('dipApp.login', ['ngRoute'])
                 }
                 userService.login($scope.username, $scope.password)
                     .success(function (data, status) {
-                        console.log(data, status);
                         $location.path('/dashboard');
                     })
                     .error(function (data, status) {
-                        console.log(data, status);
                         $scope.showLoginError();
                     });
             };
 
             $scope.showLoginError = function () {
-                showMessageBoxWithSound('#message-box-sound-login-failed', 'fail');
-                // document.getElementById('audio-fail').play();
-                // $("#message-box-sound-login-failed .mb-control-close").on("click",function(){
-                //     $(this).parents(".message-box").removeClass("open");
-                //     return false;
-                // });
-                // $('#message-box-sound-login-failed').toggleClass("open");
+                utils.showMessageBoxWithSound('#message-box-sound-login-failed', 'fail');
             };
-
-
-
 
         }]);
