@@ -39,13 +39,20 @@ var utils = {
         });
         $(messageBoxIdWithHashTag).toggleClass("open");
     },
-    notyMessage: function (message, type) {
+    notyMessage: function (message, type, hasSound) {
+        if (hasSound) {
+            let soundName = 'alert';
+            if (type == 'error') {
+                soundName = 'fail';
+            }
+            document.getElementById('audio-' + soundName).play();
+        }
         noty({text: message, layout: 'topRight', type: type, timeout: NOTY_TIME_OUT});
     },
-    notySuccessMessage: function (message) {
-        this.notyMessage(message, 'success');
+    notySuccessMessage: function (message, hasSound) {
+        this.notyMessage(message, 'success', hasSound);
     },
-    notyErrorMessage: function (message) {
-        this.notyMessage(message, 'error');
+    notyErrorMessage: function (message, hasSound) {
+        this.notyMessage(message, 'error', hasSound);
     }
 };

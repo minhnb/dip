@@ -6,12 +6,12 @@ a {
     cursor: pointer;
 }
 
-.login-container .login-box div.login-logo {
-    background-size: 50px;
-}
+/*.login-container .login-box div.login-logo {*/
+    /*background-size: 50px;*/
+/*}*/
 
 .dip-report-pass {
-
+    min-width: 150px;
 }
 .dip-report-pass > span {
     margin: 5px;
@@ -26,12 +26,4 @@ a {
 }
 .dip-report-pass > span:last-child {
     margin-right: 0;
-}
-.dataTables_paginate > span > span {
-    float: left;
-    margin: 10px 5px 0 5px;
-}
-
-.page-content .page-content-wrap {
-    min-height: 100%;
 }

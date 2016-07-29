@@ -10,10 +10,10 @@ angular.module('dipApp.dashboard', ['ngRoute'])
     .controller('DashBoardController', ['$scope', '$timeout', '$rootScope', '$location',
         function ($scope, $timeout, $rootScope, $location) {
             $rootScope.isNoMenuPage = false;
-            $scope.pageTitle = "Dashboard";
+            $scope.$parent.pageTitle = "Dashboard";
             function load_scripts() {
-                utils.load_script('components/helper/template/settings.js');
-                utils.load_script('joli_template/js/demo_dashboard.js');
+                utils.load_script('adminLTE/dist/js/pages/dashboard2.js');
+                // utils.load_script('adminLTE/dist/js/demo.js');
             }
 
             $scope.init = function () {

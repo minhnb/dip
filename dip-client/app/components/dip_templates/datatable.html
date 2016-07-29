@@ -1,23 +1,25 @@
 <div class="row">
-    <div class="col-md-12">
-
-        <!-- START DATATABLE EXPORT -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{tableTitle}}</h3>
+    <div class="col-xs-12">
+        <div class="box" ng-show="isShowDataTable">
+            <div class="box-header">
+                <h3 class="box-title">{{tableTitle}}</h3>
                 <div class="btn-group pull-right">
-                    <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data</button>
+                    <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data
+                    </button>
                     <ul class="dropdown-menu">
-                        <li><a onClick ="$('#dipdatatable').tableExport({type:'excel',escape:'false'});"><img src='/joli_template/img/icons/xls.png' width="24"/> XLS</a></li>
+                        <li><a onClick="$('#dipdatatable').tableExport({type:'excel',escape:'false'});"><img
+                                src='/joli_template/img/icons/xls.png' width="24"/> XLS</a></li>
                         <li class="divider"></li>
-                        <li><a onClick ="$('#dipdatatable').tableExport({type:'csv',escape:'false'});"><img src='/joli_template/img/icons/csv.png' width="24"/> CSV</a></li>
-                        <li><a onClick ="$('#dipdatatable').tableExport({type:'txt',escape:'false'});"><img src='/joli_template/img/icons/txt.png' width="24"/> TXT</a></li>
+                        <li><a onClick="$('#dipdatatable').tableExport({type:'csv',escape:'false'});"><img
+                                src='/joli_template/img/icons/csv.png' width="24"/> CSV</a></li>
+                        <li><a onClick="$('#dipdatatable').tableExport({type:'txt',escape:'false'});"><img
+                                src='/joli_template/img/icons/txt.png' width="24"/> TXT</a></li>
                     </ul>
                 </div>
-
             </div>
-            <div class="panel-body">
-                <table id="dipdatatable" class="table datatable">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="dipdatatable" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th ng-repeat="header in headers">{{header}}</th>
@@ -35,11 +37,14 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th ng-repeat="header in headers">{{header}}</th>
+                    </tr>
+                    </tfoot>
                 </table>
-
             </div>
+            <!-- /.box-body -->
         </div>
-        <!-- END DATATABLE EXPORT -->
-
     </div>
 </div>
