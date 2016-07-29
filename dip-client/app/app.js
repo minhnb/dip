@@ -25,7 +25,7 @@ var dipApp = angular.module('dipApp', [
 }]);
 
 
-dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage) {
+dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage, $location) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
@@ -36,10 +36,15 @@ dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage) {
             return config;
         },
         response: function (response) {
+            return response || $q.when(response);
+        },
+        responseError: function (response) {
             if (response.status === 401) {
                 // handle the case where the user is not authenticated
+                $localStorage.$reset();
+                $location.path('/login');
             }
-            return response || $q.when(response);
+            return $q.reject(response);
         }
     };
 });

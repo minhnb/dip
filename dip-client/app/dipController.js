@@ -3,5 +3,15 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $rootScope.isNoMenuPage = false;
         $rootScope.goToPath = function (path) {
             $location.path(path);
-        }
+        };
+
+        $rootScope.initDipApp = function (fn) {
+            $rootScope.isInit = false;
+            setTimeout(function () {
+                if (!$rootScope.isInit) {
+                    $rootScope.isInit = true;
+                    fn();
+                }
+            }, 1000);
+        };
     }]);

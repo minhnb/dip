@@ -22,7 +22,6 @@ angular.module('dipApp.login', ['ngRoute'])
             $scope.init();
 
             $scope.login = function () {
-                console.log($scope.username, $scope.password);
                 if (!$scope.username || !$scope.password) {
                     return;
                 }
