@@ -113,12 +113,15 @@ const userSchema = new Schema({
 });
 userSchema.index({firstName: 'text', lastName: 'text'});
 
+userSchema.pre('validate', function(next) {
+    if (this.isNew || !this.account.refCode) {
+        this.account.refCode = utils.generateMemberCode(this.email, 5);
+    }
+    next();
+});
 userSchema.pre('save', function(next) {
     if (this.dob) {
         this.dob = utils.convertDate(this.dob);
-    }
-    if (this.isNew) {
-        this.account.refCode = utils.generateMemberCode(this.email, 5);
     }
     next();
 });
