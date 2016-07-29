@@ -9,8 +9,9 @@ dipApp.directive('dipDatatable', function () {
             $scope.bindingDatatable = function () {
                 setTimeout(function () {
                     $('#dipdatatable').dataTable();
+                    $scope.isShowDataTable = true;
+                    $scope.$apply();
                 }, 500);
-                $scope.isShowDataTable = true;
             };
 
             $scope.getCellValue = function (row, col) {

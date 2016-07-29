@@ -1,6 +1,6 @@
 dipApp.factory('userService', ['$q', '$http', '$localStorage',
     function ($q, $http, $localStorage) {
-        let apiAuthUrl = config.DIP_API + "auth",
+        var apiAuthUrl = config.DIP_API + "auth",
             apiUsersUrl = config.DIP_API + "users",
             userService = {};
         userService = {
@@ -42,7 +42,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                     var user = {username: username, password: password};
                     return $http.post(apiAuthUrl + "/login", user)
                         .success(function (data, status, headers, config) {
-                            let token = data.JWT;
+                            var token = data.JWT;
                             userService.saveUserAccessTokenToLocalStorage(token);
                             userService.getUserInfo();
                         })

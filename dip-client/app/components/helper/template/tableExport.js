@@ -35,9 +35,9 @@
                 });
 
                 // // Row vs Column
-                $(el).dataTable().fnGetData().forEach(data => {
+                $(el).dataTable().fnGetData().forEach(function(data) {
                     tdData += "\n";
-                    data.forEach(col => {
+                    data.forEach(function(col) {
                         tdData += '"'+ extractContent(col) + '"'+ defaults.separator;
                     });
                     tdData = $.trim(tdData).substring(0, tdData.length -1);
@@ -70,9 +70,9 @@
                 tdData += ") VALUES ";
 
                 // Row vs Column
-                $(el).dataTable().fnGetData().forEach(data => {
+                $(el).dataTable().fnGetData().forEach(function(data) {
                     tdData += "(";
-                    data.forEach(col => {
+                    data.forEach(function(col) {
                         tdData += '"'+ extractContent(col) + '"'+ '",';
                     });
                     tdData = $.trim(tdData).substring(0, tdData.length -1);
@@ -111,10 +111,10 @@
                 });
 
                 var jsonArray = [];
-                $(el).dataTable().fnGetData().forEach(data => {
+                $(el).dataTable().fnGetData().forEach(function(data) {
                     var jsonArrayTd = [];
 
-                    data.forEach(col => {
+                    data.forEach(function(col) {
                         jsonArrayTd.push(extractContent(col));
                     });
                 });
@@ -152,10 +152,10 @@
 
                 // Row Vs Column
                 var rowCount=1;
-                $(el).dataTable().fnGetData().forEach(data => {
+                $(el).dataTable().fnGetData().forEach(function(data) {
                     xml += '<row id="'+rowCount+'">';
                     var colCount=0;
-                    data.forEach(col => {
+                    data.forEach(function(col) {
                         xml += "<column-"+colCount+">"+extractContent(col)+"</column-"+colCount+">";
                         colCount++;
                     });
@@ -193,9 +193,9 @@
 
                 // Row Vs Column
                 var rowCount=1;
-                $(el).dataTable().fnGetData().forEach(data => {
+                $(el).dataTable().fnGetData().forEach(function(data) {
                     excel += "<tr>";
-                    data.forEach(col => {
+                    data.forEach(function(col) {
                         excel += "<td>"+extractContent(col)+"</td>";
                     });
                     rowCount++;
@@ -286,9 +286,9 @@
 
                     });
 
-                    $(el).dataTable().fnGetData().forEach(data => {
-                        let index = 0;
-                        data.forEach(col => {
+                    $(el).dataTable().fnGetData().forEach(function(data) {
+                        var index = 0;
+                        data.forEach(function(col) {
                             var colPosition = startColPosition+ (index * 50);
                             doc.text(colPosition,rowPosition, extractContent(col));
                             index++;

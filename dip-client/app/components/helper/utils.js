@@ -6,9 +6,9 @@ var utils = {
     },
     getObjectValueByKey: function(object, key) {
         if (!key) return null;
-        let keys = key.split('.');
-        let result = object[keys[0]];
-        for (let i = 1; i < keys.length; i++) {
+        var keys = key.split('.');
+        var result = object[keys[0]];
+        for (var i = 1; i < keys.length; i++) {
             if (result == undefined) return null;
             result = result[keys[i]];
         }
@@ -25,7 +25,7 @@ var utils = {
     },
     displayMoney: function (money) {
         if (!money) return "";
-        let result = Math.round(money / 100).toFixed(2);
+        var result = Math.round(money / 100).toFixed(2);
         return "$" + result;
     },
     showMessageBoxWithSound: function (messageBoxIdWithHashTag, soundName) {
@@ -41,7 +41,7 @@ var utils = {
     },
     notyMessage: function (message, type, hasSound) {
         if (hasSound) {
-            let soundName = 'alert';
+            var soundName = 'alert';
             if (type == 'error') {
                 soundName = 'fail';
             }

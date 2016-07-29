@@ -29,9 +29,9 @@ angular.module('dipApp.report_event_reservations', ['ngRoute'])
             };
 
             $scope.analyzeEventReservationsReportData = function (list) {
-                list.map(item => {
-                    let startTime = utils.convertMinuteDurationToTime(item.event.duration.startTime);
-                    let endTime = utils.convertMinuteDurationToTime(item.event.duration.endTime);
+                list.map(function(item) {
+                    var startTime = utils.convertMinuteDurationToTime(item.event.duration.startTime);
+                    var endTime = utils.convertMinuteDurationToTime(item.event.duration.endTime);
                     item.eventTime = moment(item.event.date).format(FORMAT_DATE) + " " + startTime + " - " + endTime;
                     item.purchasedDate = utils.formatTimeStampToDateTime(item.createdAt);
                 });

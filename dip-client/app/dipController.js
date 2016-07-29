@@ -15,5 +15,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             }, 1000);
         };
 
-        utils.load_script('adminLTE/dist/js/app.js');
+        setTimeout(function () {
+            utils.load_script('adminLTE/dist/js/app.js');
+        }, 1000);
     }]);

@@ -28,7 +28,7 @@ angular.module('dipApp.report_users', ['ngRoute'])
             };
 
             $scope.analyzeUserReportData = function (list) {
-                list.map(item => {
+                list.map(function(item) {
                     item.signUpDate = utils.formatTimeStampToDateTime(item.createdAt);
                     if (item.dob) {
                         item.birthday = utils.formatDipDateToDate(item.dob);

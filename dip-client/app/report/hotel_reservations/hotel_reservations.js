@@ -29,16 +29,16 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
             };
 
             $scope.analyzeHotelReservationsReportData = function (list) {
-                list.map(item => {
+                list.map(function(item) {
                     item.price = utils.displayMoney(item.price);
                     item.tax = utils.displayMoney(item.tax);
                     item.beforeTax = utils.displayMoney(item.beforeTax);
                     item.purchasedDate = utils.formatTimeStampToDateTime(item.createdAt);
-                    let passes = "";
-                    let passDate = "";
-                    let passesArray = [];
-                    item.services.map(service => {
-                        service.offers.map(offer => {
+                    var passes = "";
+                    var passDate = "";
+                    var passesArray = [];
+                    item.services.map(function(service) {
+                        service.offers.map(function (offer) {
                             if (!passDate) {
                                 passDate = utils.formatDipDateToDate(offer.date);
                             }
