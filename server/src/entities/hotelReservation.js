@@ -14,8 +14,11 @@ module.exports = function(reservation) {
         type: reservation.type.slice(0, reservation.type.length - 11),
         hotel: {
             id: reservation.hotel.ref._id,
-            name: reservation.hotel.name,
-            description: reservation.hotel.description
+            displayName: utils.getHotelDisplayName(reservation.hotel.ref),
+            name: reservation.hotel.ref.name,
+            address: reservation.hotel.ref.address,
+            description: reservation.hotel.details,
+            imageUrl: reservation.hotel.ref.image.url
         },
         services: reservation.services.map(s => {
             return {
