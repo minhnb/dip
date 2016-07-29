@@ -8,6 +8,7 @@ dipApp.directive('dipTopBar', ['userService', function (userService) {
             $scope.logOut = function () {
                 userService.logOut()
                     .success(function (data, status) {
+                        $scope.$parent.isInitTemplate = false;
                         $scope.goToPath('/login');
                     })
                     .error(function (data, status) {

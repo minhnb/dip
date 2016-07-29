@@ -18,6 +18,10 @@ angular.module('dipApp.dashboard', ['ngRoute'])
 
             $scope.init = function () {
                 load_scripts();
+                console.log($scope.isInitTemplate);
+                if (!$scope.isInitTemplate) {
+                    $scope.initTemplate();
+                }
             };
 
             $rootScope.initDipApp($scope.init);
