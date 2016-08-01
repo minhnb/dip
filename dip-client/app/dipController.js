@@ -1,5 +1,5 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', 'usSpinnerService', 'userService',
-    function ($scope, $timeout, $rootScope, $location, usSpinnerService, userService) {
+dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$translate', 'usSpinnerService', 'userService',
+    function ($scope, $timeout, $rootScope, $location, $translate, usSpinnerService, userService) {
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
         $rootScope.goToPath = function (path) {
@@ -17,6 +17,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
 
         $scope.stopSpin = function(){
             usSpinnerService.stop('dip-spinner');
+        };
+
+        $scope.changeLanguage = function (key) {
+            $translate.use(key);
         };
 
         $rootScope.initDipApp = function (fn) {

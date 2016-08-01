@@ -21,12 +21,12 @@
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <!-- Menu toggle button -->
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
                         <span class="label label-success">4</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 4 messages</li>
+                        <li class="header">{{'YOU_HAVE_MESSAGES' | translate: '{number: 4}'}}</li>
                         <li>
                             <!-- inner menu: contains the messages -->
                             <ul class="menu">
@@ -49,7 +49,7 @@
                             </ul>
                             <!-- /.menu -->
                         </li>
-                        <li class="footer"><a href="#">See All Messages</a></li>
+                        <li class="footer"><a href="#">{{'SEE_ALL_MESSAGES' | translate}}</a></li>
                     </ul>
                 </li>
                 <!-- /.messages-menu -->
@@ -57,12 +57,12 @@
                 <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
                     <!-- Menu toggle button -->
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
                         <span class="label label-warning">10</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 10 notifications</li>
+                        <li class="header">{{'YOU_HAVE_NOTIFICATIONS' | translate: '{number: 10}'}}</li>
                         <li>
                             <!-- Inner Menu: contains the notifications -->
                             <ul class="menu">
@@ -74,18 +74,18 @@
                                 <!-- end notification -->
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">View all</a></li>
+                        <li class="footer"><a href="#">{{'VIEW_ALL' | translate}}</a></li>
                     </ul>
                 </li>
                 <!-- Tasks Menu -->
                 <li class="dropdown tasks-menu">
                     <!-- Menu Toggle Button -->
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">9</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 9 tasks</li>
+                        <li class="header">{{'YOU_HAVE_TASKS' | translate: '{number: 9}'}}</li>
                         <li>
                             <!-- Inner menu: contains the tasks -->
                             <ul class="menu">
@@ -109,7 +109,7 @@
                             </ul>
                         </li>
                         <li class="footer">
-                            <a href="#">View all tasks</a>
+                            <a href="#">{{'VIEW_ALL_TASKS' | translate}}</a>
                         </li>
                     </ul>
                 </li>
@@ -129,20 +129,20 @@
 
                             <p>
                                 Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <small>{{'MEMBER_SINCE' | translate : '{date: "Nov. 2012"}'}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
+                                    <a href="#">{{'FOLLOWERS' | translate}}</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Sales</a>
+                                    <a href="#">{{'SALES' | translate}}</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Friends</a>
+                                    <a href="#">{{'FRIENDS' | translate}}</a>
                                 </div>
                             </div>
                             <!-- /.row -->
@@ -150,10 +150,10 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="#" class="btn btn-default btn-flat">{{'PROFILE' | translate}}</a>
                             </div>
                             <div class="pull-right">
-                                <a class="btn btn-default btn-flat" ng-click="logOut()">Sign out</a>
+                                <a class="btn btn-default btn-flat" ng-click="logOut()">{{'SIGN_OUT' | translate}}</a>
                             </div>
                         </li>
                     </ul>

@@ -2,9 +2,9 @@
     <div class="col-xs-12">
         <div class="box" ng-show="isShowDataTable">
             <div class="box-header">
-                <h3 class="box-title">{{tableTitle}}</h3>
+                <h3 class="box-title" translate="{{tableTitle}}"></h3>
                 <div class="btn-group pull-right">
-                    <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export Data
+                    <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> <span translate="EXPORT_DATA"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a onClick="$('#dipdatatable').tableExport({type:'excel',escape:'false'});"><img
@@ -22,7 +22,7 @@
                 <table id="dipdatatable" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th ng-repeat="header in headers">{{header}}</th>
+                        <th ng-repeat="header in headers" translate="{{header}}"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th ng-repeat="header in headers">{{header}}</th>
+                        <th ng-repeat="header in headers" translate="{{header}}"></th>
                     </tr>
                     </tfoot>
                 </table>

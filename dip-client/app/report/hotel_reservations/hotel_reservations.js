@@ -11,9 +11,9 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
     .controller('ReportHotelReservationsController', ['$scope', '$timeout', '$rootScope', '$location', '$compile', 'reportService',
         function ($scope, $timeout, $rootScope, $location, $compile, reportService) {
             $rootScope.isNoMenuPage = false;
-            $scope.$parent.pageTitle = "Hotel Reservations Report";
-            $scope.tableTitle = "List Hotel Reservations";
-            $scope.headers = ["Email", "Name", "Hotel", "PassDate", "Passes", "Before Tax", "Tax", "Total", "Purchased Date"];
+            $scope.$parent.pageTitle = "HOTEL_RESERVATIONS_REPORT";
+            $scope.tableTitle = "LIST_HOTEL_RESERVATIONS";
+            $scope.headers = ["EMAIL", "NAME", "Hotel", "PASS_DATE", "PASSES", "BEFORE_TAX", "TAX", "TOTAL", "PURCHASED_DATE"];
             $scope.columns = ["user.username", "user.fullName", "hotel.name", "passDate", "passes", "beforeTax", "tax", "price", "purchasedDate"];
             $scope.rows = [];
 
