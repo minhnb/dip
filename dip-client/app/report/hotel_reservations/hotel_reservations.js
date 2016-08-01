@@ -18,13 +18,15 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
             $scope.rows = [];
 
             $scope.getHotelReservationsReport = function () {
+                $scope.startSpin();
                 reportService.getHotelReservationsReport()
                     .success(function (data, status) {
                         $scope.rows = $scope.analyzeHotelReservationsReportData(data);
+                        $scope.stopSpin();
                         $scope.bindingDatatable();
                     })
                     .error(function (data, status) {
-
+                        $scope.stopSpin();
                     });
             };
 

@@ -55,15 +55,6 @@
 
 <div class="dip-app-body" ng-view ng-if="isNoMenuPage"></div>
 
-<!--<div class="page-container" ng-if="!isNoMenuPage">-->
-    <!--<dip-menu></dip-menu>-->
-    <!--<div class="page-content">-->
-        <!--<dip-top-bar></dip-top-bar>-->
-        <!--<div class="page-content-wrap" ng-view>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
 <div class="wrapper" ng-if="!isNoMenuPage">
     <dip-top-bar></dip-top-bar>
     <dip-menu></dip-menu>
@@ -80,6 +71,7 @@
     <dip-footer></dip-footer>
     <dip-control-sidebar></dip-control-sidebar>
 </div>
+<span id="dip-spinner" us-spinner spinner-key="dip-spinner"></span>
 
 <!-- START PRELOADS -->
 <audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
@@ -92,6 +84,8 @@
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/ng-storage/ngStorage.min.js"></script>
+<script src="bower_components/spin.js/spin.min.js"></script>
+<script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
 
 <script src="components/config/config.js"></script>
 <script src="components/helper/constant.js"></script>

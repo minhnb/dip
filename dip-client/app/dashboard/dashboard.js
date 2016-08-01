@@ -18,13 +18,11 @@ angular.module('dipApp.dashboard', ['ngRoute'])
 
             $scope.init = function () {
                 load_scripts();
-                console.log($scope.isInitTemplate);
                 if (!$scope.isInitTemplate) {
                     $scope.initTemplate();
                 }
+                $scope.stopSpin();
             };
 
             $rootScope.initDipApp($scope.init);
-
-
         }]);

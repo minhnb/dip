@@ -23,3 +23,11 @@ a {
 .dip-report-pass > span:last-child {
     margin-right: 0;
 }
+
+.content-wrapper {
+    min-height: 100vh;
+}
+
+#dip-spinner .spinner {
+    position: fixed !important;
+}

@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on views, and components
 var dipApp = angular.module('dipApp', [
-    'ngRoute', 'ngStorage',
+    'ngRoute', 'ngStorage', 'angularSpinner',
     'dipApp.login',
     'dipApp.dashboard',
     'dipApp.report_users',

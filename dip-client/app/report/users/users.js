@@ -17,13 +17,15 @@ angular.module('dipApp.report_users', ['ngRoute'])
             $scope.rows = [];
 
             $scope.getUsersReport = function () {
+                $scope.startSpin();
                 reportService.getUserReport()
                     .success(function (data, status) {
                         $scope.rows = $scope.analyzeUserReportData(data);
+                        $scope.stopSpin();
                         $scope.bindingDatatable();
                     })
                     .error(function (data, status) {
-
+                        $scope.stopSpin();
                     });
             };
 
