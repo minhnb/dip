@@ -61,7 +61,7 @@ let getOneDocument = async ((collection, query) => {
 
 let updateDocuments = async ((collection, query, update) => {
     return new Promise((resolve, reject) => {
-        collection.update(query, update, (err, result) => {
+        collection.updateMany(query, update, (err, result) => {
             if (err) {
                 reject(err);
             } else {
