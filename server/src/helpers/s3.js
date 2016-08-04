@@ -4,6 +4,11 @@ const AWS = require('aws-sdk');
 
 const config = require('../config');
 
+const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const DIPError = require('../helpers/DIPError');
+
+const imageUtils = require('../helpers/image');
+
 AWS.config.update({
     accessKeyId: config.aws.key,
     secretAccessKey: config.aws.secret,
@@ -42,8 +47,45 @@ function upload(key, data, contentType) {
     });
 }
 
+function uploadResizedImage(img, resizedWidth, path) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    } else {
+        return imageUtils.resize(img.buffer, resizedWidth, 'jpg')
+            .then(data => {
+                let contentType = 'image/jpg';
+                return upload(path, data, contentType)
+                    .catch(err => {
+                        console.error(err);
+                        throw new DIPError(dipErrorDictionary.S3_ERROR);
+                    }).then(data => {
+                        return data;
+                    });
+            });
+    }
+}
+
+function uploadResizedImage(img, resizedWidth, path) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    } else {
+        return imageUtils.resize(img.buffer, resizedWidth, 'jpg')
+            .then(data => {
+                let contentType = 'image/jpg';
+                return upload(path, data, contentType)
+                    .catch(err => {
+                        console.error(err);
+                        throw new DIPError(dipErrorDictionary.S3_ERROR);
+                    }).then(data => {
+                        return data;
+                    });
+            });
+    }
+}
+
 module.exports = {
     s3: s3,
     getSignedUrl: getSignedUrl,
-    upload: upload
+    upload: upload,
+    uploadResizedImage: uploadResizedImage
 };

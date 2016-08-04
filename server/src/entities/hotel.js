@@ -13,7 +13,7 @@ function convertHotel(hotel) {
             longitude: hotel.coordinates[0],
             latitude: hotel.coordinates[1]
         } : null,
-        imageUrl: hotel.image.url,
+        imageUrl: hotel.image && hotel.image.url ? hotel.image.url : undefined,
         instagram: hotel.instagram,
         url: hotel.url,
         phone: hotel.phone,
