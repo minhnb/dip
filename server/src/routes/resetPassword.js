@@ -16,11 +16,13 @@ module.exports = router;
 router.post('Request password reset', '/',
     validator.resetPassword.request(),
     ctx => {
-        let email = ctx.request.body.email.toLowerCase();
+        let email = ctx.request.body.email.toLowerCase(),
+            createPassword = ctx.request.body.createPassword || false;
         return db.users.findByEmail(email)
             .exec()
             .then(user => {
                 // We don't let user know whether the email exists or not
+                // --UPDATED-- New requirements: Return error if user does not exist
                 if (user) {
                     ctx.status = 204;
                     let token = new db.passwordToken({
@@ -41,22 +43,28 @@ router.post('Request password reset', '/',
                         //         }
                         //     })
                         // });
-                        let userName = user.firstName || user.lastName || user.email;
-                        mailer.resetPassword({
-                            email: user.email,
-                            name: userName
-                        }, {
-                            name: userName,
-                            token: token.token,
-                            link: url.format({
-                                protocol: 'https',
-                                host: config.baseUrl,
-                                pathname: '/resetpassword',
-                                query: {
-                                    token: token.token
-                                }
-                            })
-                        });
+                        let userName = user.firstName || user.lastName || user.email,
+                            recipient = {
+                                email: user.email,
+                                name: userName
+                            },
+                            data = {
+                                name: userName,
+                                token: token.token,
+                                link: url.format({
+                                    protocol: 'https',
+                                    host: config.baseUrl,
+                                    pathname: '/resetpassword',
+                                    query: {
+                                        token: token.token
+                                    }
+                                })
+                            };
+                        if (!createPassword) {
+                            mailer.resetPassword(recipient, data);
+                        } else {
+                            mailer.createPassword(recipient, data);
+                        }
                     });
                 } else {
                     ctx.status = 400;

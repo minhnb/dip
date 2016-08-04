@@ -41,7 +41,9 @@ passport.use(new LocalStrategy(
         users.findByEmail(username).exec().then(user => {
             if (!user) {
                 done(null, false, 'Invalid user');
-            } else if (user.encryptedPassword !== user.encryptPassword(password)) {
+            } else if (!user.checkPassword(password)) {
+                // If user doesn't have a password, or if password checking fails,
+                // return error
                 done(null, false, 'Invalid password');
             } else {
                 done(null, user);

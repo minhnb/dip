@@ -13,6 +13,13 @@ var templatesInfo = {
         subject: 'Welcome to Dip!'
     },
     /**
+     * @exports mailer.createPassword
+     */
+    createPassword: {
+        name: 'create-password',
+        subject: 'Password Confirmation'
+    },
+    /**
      * @exports mailer.resetPassword
      */
     resetPassword: {
