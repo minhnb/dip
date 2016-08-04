@@ -16,13 +16,7 @@ const hotelServiceSchema = new Schema({
         type: String,
         required: true
     },
-    location: {
-        type: String,
-        required: true
-    },
     details: String,
-    url: String,
-    instagram: String,
     lowRate: Number,
     highRate: Number,
     rating: {
@@ -39,8 +33,6 @@ const hotelServiceSchema = new Schema({
         url: String,
         verified: Boolean
     },
-    active: Boolean,
-    phone: String,
     reservable: Boolean,
     amenities: [{
         type: {type: String},
@@ -53,11 +45,21 @@ const hotelServiceSchema = new Schema({
             price: {type: String}
         }]
     }],
-    policy: String
+    policy: String,
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 }, {
     timestamps: true,
     discriminatorKey: 'type'
 });
 hotelServiceSchema.index({name: 'text'});
+hotelServiceSchema.pre('find', function () {
+    if (this._conditions && this._conditions.deleted == undefined) {
+        this._conditions.deleted = false;
+    }
+});
 
 module.exports = mongoose.model('HotelService', hotelServiceSchema);
