@@ -5,6 +5,8 @@ var angular_translate_en = {
     USERS: "Users",
     EVENT_RESERVATIONS: "Event Reservations",
     HOTEL_RESERVATIONS: "Hotel Reservations",
+    PROPERTIES: "Properties",
+    HOTELS: "Hotels",
     SETTINGS: "Settings",
 
     ONLINE: "Online",
@@ -58,5 +60,27 @@ var angular_translate_en = {
     EVENT: "Event",
     EVENT_TIME: "Event Time",
     COUNT: "Count",
-    PRICE: "Price"
+    PRICE: "Price",
+
+
+    SAVE: "Save",
+    CANCEL: "Cancel",
+    UPLOAD: "Upload",
+    NEW_HOTEL: "New Hotel",
+    NEXT: "Next",
+    PREVIOUS: "Previous",
+
+    CREATE_HOTEL: "Create Hotel",
+    HOTEL_NAME: "Hotel Name",
+    ADDRESS: "Address",
+    LOCATION: "Location",
+    FRONT_DESK: "Front Desk",
+    ROOM_SERVICE: "Room Service",
+    WEBSITE: "Website",
+    INSTAGRAM: "Instagram Handle",
+    CITY: "City",
+    NEIGHBORHOOD: "Neighborhood",
+    PROFILE_PICTURE: "Profile picture",
+
+    LIST_HOTELS: "List Hotels"
 };

@@ -2,8 +2,8 @@
 
 angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/report/hotel-reservations', {
-            templateUrl: 'report/hotel_reservations/hotel_reservations.html',
+        $routeProvider.when('/reports/hotel-reservations', {
+            templateUrl: 'reports/hotel_reservations/hotel_reservations.html',
             controller: 'ReportHotelReservationsController'
         });
     }])

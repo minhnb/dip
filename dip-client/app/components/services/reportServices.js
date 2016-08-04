@@ -1,6 +1,6 @@
 dipApp.factory('reportService', ['$q', '$http', '$localStorage',
     function ($q, $http, $localStorage) {
-        var apiReportUrl = config.DIP_API + "admin/report",
+        var apiReportUrl = config.DIP_API + "admin/reports",
             reportService = {};
         reportService = {
             getUserReport: function () {
@@ -12,7 +12,7 @@ dipApp.factory('reportService', ['$q', '$http', '$localStorage',
                     });
             },
             getEventReservationsReport: function () {
-                return $http.get(apiReportUrl + "/reservation/events")
+                return $http.get(apiReportUrl + "/reservations/events")
                     .success(function (data, status, headers, config) {
                     })
                     .error(function (data, status, headers, config) {
@@ -20,7 +20,7 @@ dipApp.factory('reportService', ['$q', '$http', '$localStorage',
                     });
             },
             getHotelReservationsReport: function () {
-                return $http.get(apiReportUrl + "/reservation/hotels")
+                return $http.get(apiReportUrl + "/reservations/hotels")
                     .success(function (data, status, headers, config) {
                     })
                     .error(function (data, status, headers, config) {

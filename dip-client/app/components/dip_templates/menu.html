@@ -40,9 +40,19 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a ng-click="goToPath('/report/users')"><i class="fa fa-circle-o"></i><span translate="USERS"></span></a></li>
-                    <li><a ng-click="goToPath('/report/event-reservations')"><i class="fa fa-circle-o"></i><span translate="EVENT_RESERVATIONS"></span></a></li>
-                    <li><a ng-click="goToPath('/report/hotel-reservations')"><i class="fa fa-circle-o"></i><span translate="HOTEL_RESERVATIONS"></span></a></li>
+                    <li><a ng-click="goToPath('/reports/users')"><i class="fa fa-circle-o"></i><span translate="USERS"></span></a></li>
+                    <li><a ng-click="goToPath('/reports/event-reservations')"><i class="fa fa-circle-o"></i><span translate="EVENT_RESERVATIONS"></span></a></li>
+                    <li><a ng-click="goToPath('/reports/hotel-reservations')"><i class="fa fa-circle-o"></i><span translate="HOTEL_RESERVATIONS"></span></a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a><i class="fa fa-table"></i> <span translate="PROPERTIES"></span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a ng-click="goToPath('/properties/hotels')"><i class="fa fa-circle-o"></i><span translate="HOTELS"></span></a></li>
                 </ul>
             </li>
             <li><a ng-click="goToPath('/settings')"><i class="fa fa-gears"></i> <span translate="SETTINGS"></span></a></li>

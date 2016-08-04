@@ -46,6 +46,7 @@ angular.module('dipApp.login', ['ngRoute'])
                     $location.path('/dashboard');
                 } else {
                     $scope.initRememberCheckbox();
+                    $scope.stopSpin();
                 }
             };
             $scope.init();

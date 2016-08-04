@@ -31,3 +31,43 @@ a {
 #dip-spinner .spinner {
     position: fixed !important;
 }
+
+.image-box {
+    width: 100%;
+    min-height: 250px;
+    border: 1px solid #f4f4f4;
+    position: relative;
+}
+
+.create-hotel .box-body .image-box {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.light-font {
+    font-weight: 300;
+}
+
+.list-hotel .box-body > .row {
+    margin-bottom: 30px;
+}
+.list-hotel .box-body > .row:last-child {
+    margin-bottom: 0;
+}
+.list-hotel .hotel-info > div:last-child {
+    font-weight: 300;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.list-hotel .row.hotel-info {
+    line-height: 1.42857;
+    padding-left: 15px;
+}
+.list-hotel .row.hotel-info > div {
+    border-top: 1px solid #f4f4f4;
+    padding: 8px;
+}
+.list-hotel img {
+    border: 1px solid #f4f4f4;
+}

@@ -2,8 +2,8 @@
 
 angular.module('dipApp.report_users', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/report/users', {
-            templateUrl: 'report/users/users.html',
+        $routeProvider.when('/reports/users', {
+            templateUrl: 'reports/users/users.html',
             controller: 'ReportUsersController'
         });
     }])
