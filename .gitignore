@@ -7,3 +7,5 @@ server/app
 client/node_modules
 npm-debug.log
 server/.gulp-cache
+
+dip-client/app/adminLTE/plugins
