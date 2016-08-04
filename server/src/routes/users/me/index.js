@@ -16,6 +16,7 @@ const cardRouter = require('./payment_methods');
 const promotionRouter = require('./promotions');
 const membershipRoute = require('./membership');
 
+const dipConstant = require('../../../constants/constants');
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');
 
@@ -118,7 +119,7 @@ router.get('get me', '/',
                 throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
             } else {
                 // TODO: convert/compress/process image before uploading to s3
-                return imageUtils.resize(img.buffer, 256, 'jpg')
+                return imageUtils.resize(img.buffer, dipConstant.AVATAR_WIDTH, 'jpg')
                     .then(data => {
                         let contentType = 'image/jpg';
                         return s3.upload(user.avatarS3Path, data, contentType)
