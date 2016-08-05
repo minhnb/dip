@@ -5,6 +5,8 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $rootScope.goToPath = function (path) {
             $location.path(path);
         };
+        $scope.okText = "OK";
+        $scope.cancelText = "CANCEL";
 
         $scope.startSpin = function(){
             if ($rootScope.isNoMenuPage) {
@@ -23,6 +25,15 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             $translate.use(key);
         };
 
+        $scope.translate = function (translationId, interpolateParams, interpolationId) {
+            return $translate.instant(translationId, interpolateParams, interpolationId);
+        };
+
+        $scope.handleError = function (error) {
+            $scope.stopSpin();
+            utils.notyErrorMessage(error.details, true);
+        };
+
         $rootScope.initDipApp = function (fn) {
             $scope.startSpin();
             $rootScope.isInit = false;
@@ -35,6 +46,9 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         };
 
         $scope.initTemplate = function () {
+            $scope.okText = $scope.translate($scope.okText);
+            $scope.cancelText = $scope.translate($scope.cancelText);
+
             if (!$rootScope.isNoMenuPage && !$scope.isInitTemplate) {
                 $scope.isInitTemplate = true;
                 utils.load_script('adminLTE/dist/js/app.js');

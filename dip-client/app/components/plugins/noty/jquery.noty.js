@@ -1,6 +1,6 @@
 /*!
  @package noty - jQuery Notification Plugin
- @version version: 2.2.7
+ @version version: 2.3.8
  @contributors https://github.com/needim/noty/graphs/contributors
 
  @documentation Examples and Documentation - http://needim.github.com/noty/
@@ -8,17 +8,15 @@
  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
  */
 
-if(typeof Object.create !== 'function') {
-    Object.create = function(o) {
-        function F() {
-        }
+    if(typeof Object.create !== 'function') {
+        Object.create = function(o) {
+            function F() {
+            }
 
-        F.prototype = o;
-        return new F();
-    };
-}
-
-(function($) {
+            F.prototype = o;
+            return new F();
+        };
+    }
 
     var NotyObject = {
 
@@ -32,15 +30,10 @@ if(typeof Object.create !== 'function') {
             if($.noty.themes[this.options.theme])
                 this.options.theme = $.noty.themes[this.options.theme];
             else
-                options.themeClassName = this.options.theme;
-
-            delete options.layout;
-            delete options.theme;
+                this.options.themeClassName = this.options.theme;
 
             this.options = $.extend({}, this.options, this.options.layout.options);
             this.options.id = 'noty_' + (new Date().getTime() * Math.floor(Math.random() * 1000000));
-
-            this.options = $.extend({}, this.options, options);
 
             // Build the noty dom initial structure
             this._build();
@@ -75,10 +68,11 @@ if(typeof Object.create !== 'function') {
 
                 $.each(this.options.buttons, function(i, button) {
                     var $button = $('<button/>').addClass((button.addClass) ? button.addClass : 'gray').html(button.text).attr('id', button.id ? button.id : 'button-' + i)
+                        .attr('title', button.title)
                         .appendTo(self.$bar.find('.noty_buttons'))
-                        .on('click', function() {
+                        .on('click', function(event) {
                             if($.isFunction(button.onClick)) {
-                                button.onClick.call($button, self);
+                                button.onClick.call($button, self, event);
                             }
                         });
                 });
@@ -106,7 +100,7 @@ if(typeof Object.create !== 'function') {
 
             self.$bar.addClass(self.options.layout.addClass);
 
-            self.options.layout.container.style.apply($(self.options.layout.container.selector));
+            self.options.layout.container.style.apply($(self.options.layout.container.selector), [self.options.within]);
 
             self.showing = true;
 
@@ -139,15 +133,34 @@ if(typeof Object.create !== 'function') {
             if(self.options.callback.onShow)
                 self.options.callback.onShow.apply(self);
 
-            self.$bar.animate(
-                self.options.animation.open,
-                self.options.animation.speed,
-                self.options.animation.easing,
-                function() {
+            if (typeof self.options.animation.open == 'string') {
+                self.$bar.css('height', self.$bar.innerHeight());
+                self.$bar.on('click',function(e){
+                    self.wasClicked = true;
+                });
+                self.$bar.show().addClass(self.options.animation.open).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
                     self.showing = false;
                     self.shown = true;
+                    if(self.hasOwnProperty('wasClicked')){
+                        self.$bar.off('click',function(e){
+                            self.wasClicked = true;
+                        });
+                        self.close();
+                    }
                 });
+
+            } else {
+                self.$bar.animate(
+                    self.options.animation.open,
+                    self.options.animation.speed,
+                    self.options.animation.easing,
+                    function() {
+                        if(self.options.callback.afterShow) self.options.callback.afterShow.apply(self);
+                        self.showing = false;
+                        self.shown = true;
+                    });
+            }
 
             // If noty is have a timeout option
             if(self.options.timeout)
@@ -175,8 +188,6 @@ if(typeof Object.create !== 'function') {
                 return;
             }
 
-            this.$bar.dequeue();
-
             if(!this.shown && !this.showing) { // If we are still waiting in the queue just delete from queue
                 var queue = [];
                 $.each($.noty.queue, function(i, n) {
@@ -194,53 +205,81 @@ if(typeof Object.create !== 'function') {
                 self.options.callback.onClose.apply(self);
             }
 
-            self.$bar.clearQueue().stop().animate(
-                self.options.animation.close,
-                self.options.animation.speed,
-                self.options.animation.easing,
-                function() {
+            if (typeof self.options.animation.close == 'string') {
+                self.$bar.addClass(self.options.animation.close).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
                     if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
-                })
-                .promise().done(function() {
+                    self.closeCleanUp();
+                });
+            } else {
+                self.$bar.clearQueue().stop().animate(
+                    self.options.animation.close,
+                    self.options.animation.speed,
+                    self.options.animation.easing,
+                    function() {
+                        if(self.options.callback.afterClose) self.options.callback.afterClose.apply(self);
+                    })
+                    .promise().done(function() {
+                        self.closeCleanUp();
+                    });
+            }
 
-                    // Modal Cleaning
-                    if(self.options.modal) {
-                        $.notyRenderer.setModalCount(-1);
-                        if($.notyRenderer.getModalCount() == 0) $('.noty_modal').fadeOut('fast', function() {
-                            $(this).remove();
-                        });
-                    }
+        }, // end close
 
-                    // Layout Cleaning
-                    $.notyRenderer.setLayoutCountFor(self, -1);
-                    if($.notyRenderer.getLayoutCountFor(self) == 0) $(self.options.layout.container.selector).remove();
+        closeCleanUp: function() {
 
-                    // Make sure self.$bar has not been removed before attempting to remove it
-                    if(typeof self.$bar !== 'undefined' && self.$bar !== null) {
+            var self = this;
+
+            // Modal Cleaning
+            if(self.options.modal) {
+                $.notyRenderer.setModalCount(-1);
+                if($.notyRenderer.getModalCount() == 0) $('.noty_modal').fadeOut(self.options.animation.fadeSpeed, function() {
+                    $(this).remove();
+                });
+            }
+
+            // Layout Cleaning
+            $.notyRenderer.setLayoutCountFor(self, -1);
+            if($.notyRenderer.getLayoutCountFor(self) == 0) $(self.options.layout.container.selector).remove();
+
+            // Make sure self.$bar has not been removed before attempting to remove it
+            if(typeof self.$bar !== 'undefined' && self.$bar !== null) {
+
+                if (typeof self.options.animation.close == 'string') {
+                    self.$bar.css('transition', 'all 100ms ease').css('border', 0).css('margin', 0).height(0);
+                    self.$bar.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function() {
                         self.$bar.remove();
                         self.$bar = null;
                         self.closed = true;
-                    }
 
-                    delete $.noty.store[self.options.id]; // deleting noty from store
+                        if(self.options.theme.callback && self.options.theme.callback.onClose) {
+                            self.options.theme.callback.onClose.apply(self);
+                        }
+                    });
+                } else {
+                    self.$bar.remove();
+                    self.$bar = null;
+                    self.closed = true;
+                }
+            }
 
-                    if(self.options.theme.callback && self.options.theme.callback.onClose) {
-                        self.options.theme.callback.onClose.apply(self);
-                    }
+            delete $.noty.store[self.options.id]; // deleting noty from store
 
-                    if(!self.options.dismissQueue) {
-                        // Queue render
-                        $.noty.ontap = true;
+            if(self.options.theme.callback && self.options.theme.callback.onClose) {
+                self.options.theme.callback.onClose.apply(self);
+            }
 
-                        $.notyRenderer.render();
-                    }
+            if(!self.options.dismissQueue) {
+                // Queue render
+                $.noty.ontap = true;
 
-                    if(self.options.maxVisible > 0 && self.options.dismissQueue) {
-                        $.notyRenderer.render();
-                    }
-                })
+                $.notyRenderer.render();
+            }
 
-        }, // end close
+            if(self.options.maxVisible > 0 && self.options.dismissQueue) {
+                $.notyRenderer.render();
+            }
+
+        }, // end close clean up
 
         setText: function(text) {
             if(!this.closed) {
@@ -310,7 +349,7 @@ if(typeof Object.create !== 'function') {
         if($.type(instance) === 'object') {
             if(instance.options.dismissQueue) {
                 if(instance.options.maxVisible > 0) {
-                    if($(instance.options.layout.container.selector + ' li').length < instance.options.maxVisible) {
+                    if($(instance.options.layout.container.selector + ' > li').length < instance.options.maxVisible) {
                         $.notyRenderer.show($.noty.queue.shift());
                     }
                     else {
@@ -371,7 +410,7 @@ if(typeof Object.create !== 'function') {
             if(notification.options.theme.modal && notification.options.theme.modal.css)
                 modal.css(notification.options.theme.modal.css);
 
-            modal.prependTo($('body')).fadeIn('fast');
+            modal.prependTo($('body')).fadeIn(notification.options.animation.fadeSpeed);
 
             if($.inArray('backdrop', notification.options.closeWith) > -1)
                 modal.on('click', function(e) {
@@ -462,10 +501,11 @@ if(typeof Object.create !== 'function') {
         dismissQueue: true,
         template    : '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
         animation   : {
-            open  : {opacity: 'toggle'},
+            open  : {height: 'toggle'},
             close : {height: 'toggle'},
-            easing: 'linear',
-            speed : 100
+            easing: 'swing',
+            speed : 500,
+            fadeSpeed: 'fast',
         },
         timeout     : false,
         force       : false,
@@ -494,9 +534,7 @@ if(typeof Object.create !== 'function') {
         });
     });
 
-})(jQuery);
-
-// Helpers
-window.noty = function noty(options) {
-    return jQuery.notyRenderer.init(options);
-};
+    // Helpers
+    window.noty = function noty(options) {
+        return $.notyRenderer.init(options);
+    };

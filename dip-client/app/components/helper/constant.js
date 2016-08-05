@@ -4,3 +4,4 @@ var FORMAT_TIME = "h:mm a";
 var FORMAT_TIME_EVENT = "h:mm a";
 
 var NOTY_TIME_OUT = 5000;
+var MAX_IMAGE_SIZE_MB = 5;

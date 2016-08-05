@@ -7,6 +7,7 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             createHotel: function (hotel) {
                 return $http.post(apiHotelUrl, hotel)
                     .success(function (data, status, headers, config) {
+
                     })
                     .error(function (data, status, headers, config) {
                         console.log(status, data);
@@ -20,6 +21,34 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     })
+                    .success(function (data, status, headers, config) {
+
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(status, data);
+                    });
+            },
+            getHotelById: function (hotelId) {
+                return $http.get(apiHotelUrl + "/" + hotelId)
+                    .success(function (data, status, headers, config) {
+
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(status, data);
+                    });
+            },
+            updateHotel: function (hotel) {
+                var hotelId = hotel.id;
+                return $http.put(apiHotelUrl + "/" + hotelId, hotel)
+                    .success(function (data, status, headers, config) {
+
+                    })
+                    .error(function (data, status, headers, config) {
+                        console.log(status, data);
+                    });
+            },
+            deleteHotel: function (hotelId) {
+                return $http.delete(apiHotelUrl + "/" + hotelId)
                     .success(function (data, status, headers, config) {
 
                     })

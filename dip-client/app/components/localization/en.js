@@ -65,6 +65,8 @@ var angular_translate_en = {
 
     SAVE: "Save",
     CANCEL: "Cancel",
+    DELETE: "Delete",
+    EDIT: "Edit",
     UPLOAD: "Upload",
     NEW_HOTEL: "New Hotel",
     NEXT: "Next",
@@ -82,5 +84,9 @@ var angular_translate_en = {
     NEIGHBORHOOD: "Neighborhood",
     PROFILE_PICTURE: "Profile picture",
 
-    LIST_HOTELS: "List Hotels"
+    LIST_HOTELS: "List Hotels",
+
+    HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
+    ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
+    ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture"
 };

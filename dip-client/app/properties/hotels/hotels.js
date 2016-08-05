@@ -32,7 +32,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     return false;
                 }
                 if (!$('#image_create_hotel > .input-upload-img').val()) {
-                    utils.notyErrorMessage('Invalid hotel profile picture', true);
+                    utils.notyErrorMessage($scope.translate('ERROR_INVALID_HOTEL_PICTURE'), true);
                     return false;
                 }
                 return true;
@@ -48,7 +48,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                         $scope.updateHotelImage(data.id);
                     })
                     .error(function (data, status) {
-                        utils.notyErrorMessage(data.details, true);
+                        $scope.handleError(data);
                     });
             };
 
@@ -69,7 +69,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                         $scope.getListHotel();
                     })
                     .error(function (data, status) {
-                        $scope.stopSpin();
+                        $scope.handleError(data);
                     });
             };
 
@@ -80,10 +80,10 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     imageBoxPreview.find('.image-box > .load-image-spinner').show();
 
                     if ($(inputElement)[0].files && $(inputElement)[0].files[0]) {
-                        var maxFileSize = 5242880;
+                        var maxFileSize = MAX_IMAGE_SIZE_MB * 1024 * 1024;
                         if ($(inputElement)[0].files[0].size > maxFileSize) {
                             imageBoxPreview.find('.image-box > .load-image-spinner').hide();
-                            utils.notyErrorMessage("Allowed file size exceeded. (Max. 5 MB)", true);
+                            utils.notyErrorMessage($scope.translate('ERROR_MAX_FILE_SIZE', {number: MAX_IMAGE_SIZE_MB}), true);
                             return;
                         }
                         var reader = new FileReader();
@@ -100,6 +100,23 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 $(imageBoxPreview).find('.input-upload-img').click();
             };
 
+            $scope.deleteHotel = function (hotel) {
+                utils.notyConfirm($scope.translate('HOTEL_DELETE_CONFIRM', {name: hotel.name}), $scope.okText, $scope.cancelText, function () {
+                    $scope.startSpin();
+                    var hotelId = hotel.id;
+                    hotelService.deleteHotel(hotelId)
+                        .success(function (data, status) {
+                            $scope.stopSpin();
+                            $scope.getListHotel();
+                        })
+                        .error(function (data, status) {
+                            $scope.handleError(data);
+                        });
+                }, function () {
+
+                });
+            };
+
             $scope.getListHotel = function () {
                 $scope.startSpin();
                 hotelService.getListHotel()
@@ -108,7 +125,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                         $scope.stopSpin();
                     })
                     .error(function (data, status) {
-
+                        $scope.handleError(data);
                     });
             };
 

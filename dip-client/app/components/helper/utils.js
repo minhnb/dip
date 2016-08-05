@@ -47,12 +47,32 @@ var utils = {
             }
             document.getElementById('audio-' + soundName).play();
         }
-        noty({text: message, layout: 'topRight', type: type, timeout: NOTY_TIME_OUT});
+        noty({text: message, layout: 'topRight', theme: 'relax', type: type, timeout: NOTY_TIME_OUT});
     },
     notySuccessMessage: function (message, hasSound) {
         this.notyMessage(message, 'success', hasSound);
     },
     notyErrorMessage: function (message, hasSound) {
         this.notyMessage(message, 'error', hasSound);
+    },
+    notyConfirm: function (message, okText, cancelText, okFunction, cancelFunction) {
+        noty({
+            text: message,
+            layout: 'center',
+            theme: 'relax',
+            modal: true,
+            buttons: [
+                {addClass: 'btn btn-info', text: okText, onClick: function($noty) {
+                    $noty.close();
+                    okFunction();
+                }
+                },
+                {addClass: 'btn btn-danger', text: cancelText, onClick: function($noty) {
+                    $noty.close();
+                    cancelFunction();
+                }
+                }
+            ]
+        });
     }
 };

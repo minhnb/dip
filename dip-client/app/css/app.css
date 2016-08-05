@@ -53,6 +53,12 @@ a {
 .list-hotel .box-body > .row:last-child {
     margin-bottom: 0;
 }
+.list-hotel .lead {
+    float: left;
+}
+.list-hotel .box-body button.btn.pull-right {
+    margin-left: 10px;
+}
 .list-hotel .hotel-info > div:last-child {
     font-weight: 300;
     text-overflow: ellipsis;
