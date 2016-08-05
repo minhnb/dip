@@ -83,9 +83,41 @@ function uploadResizedImage(img, resizedWidth, path) {
     }
 }
 
+function deleteImage(path) {
+    return new Promise((resolve, reject) => {
+        let params = {
+            Key: path
+        };
+        s3.deleteObject(params, (error, data) => {
+            if (!error) resolve(data);
+            else reject(error);
+        });
+    });
+}
+
+function deleteImages(paths) {
+    return new Promise((resolve, reject) => {
+        let objects = paths.map(path => {
+                return {Key: path};
+            });
+        let params = {
+            Delete: {
+                Objects: objects,
+                Quiet: true
+            }
+        };
+        s3.deleteObjects(params, (error, data) => {
+            if (!error) resolve(data);
+            else reject(error);
+        });
+    });
+}
+
 module.exports = {
     s3: s3,
     getSignedUrl: getSignedUrl,
     upload: upload,
-    uploadResizedImage: uploadResizedImage
+    uploadResizedImage: uploadResizedImage,
+    deleteImage: deleteImage,
+    deleteImages: deleteImages
 };

@@ -13,6 +13,7 @@ const DIPError = require('../helpers/DIPError');
 
 const s3 = require('../helpers/s3');
 const crypto = require('crypto');
+const url = require('url');
 
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
@@ -144,9 +145,25 @@ resourcesServices.createHotel = function (hotel) {
     });
 };
 
+resourcesServices.getHotelById = function (hotelId) {
+    return entities.hotel(resourcesServices.dbGetHotelById(hotelId));
+};
+
 resourcesServices.updateHotelImage = function (hotelId, img) {
     return resourcesServices.dbUpdateHotelImage(hotelId, img).then(hotel => {
         return entities.hotel(hotel);
+    });
+};
+
+resourcesServices.updateHotel = function (hotelId, update) {
+    return resourcesServices.dbUpdateHotel(hotelId, update).then(hotel => {
+        return entities.hotel(hotel);
+    });
+};
+
+resourcesServices.deleteHotel = function (hotelId) {
+    return resourcesServices.dbDeleteHotel(hotelId).then(result => {
+        return true;
     });
 };
 
@@ -160,6 +177,68 @@ resourcesServices.dbCreateHotel = function (hotel) {
     if (!hotel.fullAddress) {
         throw new DIPError(dipErrorDictionary.HOTEL_INVALID_ADDRESS);
     }
+    hotel = resourcesServices.initNormalHotel(hotel);
+    let newHotel = db.hotels(hotel);
+    return newHotel.save();
+};
+
+resourcesServices.dbUpdateHotelImage = function (hotelId, img) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    }
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name, hotelId, null));
+    if (uploadImage) {
+        if (hotel.image && hotel.image.url && hotel.image.verified && hotel.image.url != uploadImage.Location) {
+            resourcesServices.deleteHotelImage(hotel.image.url);
+        }
+        hotel.image = {
+            url: uploadImage.Location,
+            verified: true
+        };
+        return hotel.save();
+    } else {
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
+resourcesServices.dbGetHotelById = function (hotelId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    return hotel;
+};
+
+resourcesServices.dbUpdateHotel = function (hotelId, update) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    update = resourcesServices.initNormalHotel(update);
+    for (let key in update) {
+        hotel[key] = update[key];
+    }
+    return hotel.save();
+};
+
+resourcesServices.dbDeleteHotel = function (hotelId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    return db.hotels.update({_id: hotel._id}, {deleted: true});
+};
+
+resourcesServices.dbGetListPendingHotel = function () {
+    let condition = {};
+    condition.active = false;
+    let sort = {_id: -1};
+    return db.hotels.find(condition).sort(sort).exec().then(hotels => {
+        return hotels;
+    });
+};
+
+resourcesServices.getExistedHotel = function (hotelId) {
+    let hotel = await(db.hotels.findById(hotelId));
+    if (!hotel || hotel.deleted) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+    }
+    return hotel;
+};
+
+resourcesServices.initNormalHotel = function (hotel) {
     hotel.featured = false;
     hotel.reservable = false;
     hotel.active = false;
@@ -173,46 +252,18 @@ resourcesServices.dbCreateHotel = function (hotel) {
         delete hotel.image;
     }
 
-    let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
-    hotel.address = hotelAddressData.address;
-    hotel.coordinates = hotelAddressData.coordinates;
+    if (hotel.fullAddress) {
+        let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
+        hotel.address = hotelAddressData.address;
+        hotel.coordinates = hotelAddressData.coordinates;
+    }
 
     hotel.address.city = hotel.city;
     hotel.address.neighborhood = hotel.neighborhood;
     delete hotel.city;
     delete hotel.neighborhood;
 
-    let newHotel = db.hotels(hotel);
-    return newHotel.save();
-};
-
-resourcesServices.dbUpdateHotelImage = function (hotelId, img) {
-    if (!img) {
-        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
-    }
-    let hotel = await(db.hotels.findById(hotelId));
-    if (!hotel) {
-        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
-    }
-    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name, null));
-    if (uploadImage) {
-        hotel.image = {
-            url: uploadImage.Location,
-            verified: true
-        };
-        return hotel.save();
-    } else {
-        throw new DIPError(dipErrorDictionary.S3_ERROR);
-    }
-};
-
-resourcesServices.dbGetListPendingHotel = function () {
-    let condition = {};
-    condition.active = false;
-    let sort = {_id: -1};
-    return db.hotels.find(condition).sort(sort).exec().then(hotels => {
-        return hotels;
-    });
+    return hotel;
 };
 
 resourcesServices.getHotelAddress = function (hotelFullAddress) {
@@ -239,15 +290,30 @@ resourcesServices.getHotelAddress = function (hotelFullAddress) {
         });
 };
 
-resourcesServices.uploadHotelImage = function (img, hotelName, serviceType) {
+resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceType) {
     let key = 'hotels';
     if (serviceType) {
         key = 'pools';
     }
     let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
-    let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hash;
+    let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hotelId + '_' + hash;
     let uploadImage = await(s3.uploadResizedImage(img, undefined, path));
     let uploadResizedImage = await(s3.uploadResizedImage(img, dipConstant.HOTEL_IMAGE_WIDTH, path + '_resized'));
     return uploadImage;
 };
+
+resourcesServices.deleteHotelImage = function (imageURL) {
+    if (!imageURL) {
+        return;
+    }
+    try {
+        let path = url.parse(imageURL).pathname.substr(1);
+        let paths = [path, path + '_resized'];
+        let deletedHotelImages = await(s3.deleteImages(paths));
+    } catch (ex) {
+        console.log(ex);
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
 module.exports = resourcesServices;

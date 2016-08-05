@@ -20,6 +20,26 @@ router
             ctx.body = await(resourcesServices.createHotel(hotel));
         })
     )
+    .get('get hotel by id', '/:hotelId',
+        async(ctx => {
+            let hotelId = ctx.params.hotelId;
+            ctx.body = await(resourcesServices.getHotelById(hotelId));
+        })
+    )
+    .put('update hotel', '/:hotelId',
+        async(ctx => {
+            let hotelId = ctx.params.hotelId;
+            let hotel = ctx.request.body;
+            ctx.body = await(resourcesServices.updateHotel(hotelId, hotel));
+        })
+    )
+    .delete('delete hotel', '/:hotelId',
+        async(ctx => {
+            let hotelId = ctx.params.hotelId;
+            let hotel = await(resourcesServices.deleteHotel(hotelId));
+            ctx.status = 200;
+        })
+    )
     .put('update hotel image', '/:hotelId/image',
         multer().single('image'),
         async(ctx => {
