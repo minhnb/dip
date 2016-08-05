@@ -45,7 +45,6 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.createHotel($scope.hotel)
                     .success(function (data, status) {
-                        console.log(data);
                         $scope.updateHotelImage(data.id);
                     })
                     .error(function (data, status) {
@@ -53,13 +52,18 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     });
             };
 
+            $scope.initCreateHotelPanel = function () {
+                $scope.hotel = {};
+                $('#image_create_hotel > .input-upload-img').val('');
+                $('#image_create_hotel > .image-box img').hide();
+                $('#image_create_hotel > .image-box img').attr('src', '');
+            };
+
             $scope.updateHotelImage = function (hotelId) {
                 var image = $('#image_create_hotel > .input-upload-img')[0].files[0];
                 hotelService.updateHotelImage(hotelId, image)
                     .success(function (data, status) {
-                        console.log(data);
-                        $scope.hotel = {};
-                        $('#image_create_hotel > .input-upload-img').val('');
+                        $scope.initCreateHotelPanel();
                         $scope.stopSpin();
                         $scope.hideCreateHotelBox();
                         $scope.getListHotel();
