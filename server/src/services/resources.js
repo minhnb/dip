@@ -191,6 +191,9 @@ resourcesServices.dbUpdateHotelImage = function (hotelId, img) {
         throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
     }
     let hotel = await(db.hotels.findById(hotelId));
+    if (!hotel) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+    }
     let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name, null));
     if (uploadImage) {
         hotel.image = {
