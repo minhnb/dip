@@ -37,6 +37,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             };
 
             $scope.showEditHotelBox = function (hotel) {
+                $scope.initCreateHotelPanel();
                 $scope.startSpin();
                 hotelService.getHotelById(hotel.id)
                     .success(function (data, status) {
