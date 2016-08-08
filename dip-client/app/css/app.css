@@ -39,7 +39,11 @@ a {
     position: relative;
 }
 
-.create-hotel .box-body .image-box {
+.create-edit-hotel .box-body label {
+    font-weight: 300;
+}
+
+.create-edit-hotel .box-body .image-box {
     margin-bottom: 10px;
     cursor: pointer;
 }

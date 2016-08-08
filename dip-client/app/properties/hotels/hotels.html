@@ -1,10 +1,10 @@
 <div class="panel-body">
-    <button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateHotelBox"
+    <button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateEditHotelBox"
             ng-click="showCreateHotelBox()">{{'NEW_HOTEL' | translate}}
     </button>
 </div>
 
-<ng-include src="'/properties/hotels/create-hotel.html'"></ng-include>
+<ng-include src="'/properties/hotels/create-edit-hotel.html'"></ng-include>
 
 <div class="box box-info list-hotel" ng-show="isShowingListHotels">
     <div class="box-header with-border">

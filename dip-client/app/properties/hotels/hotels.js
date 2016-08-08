@@ -11,27 +11,50 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
         function ($scope, $timeout, $rootScope, $location, hotelService) {
             $rootScope.isNoMenuPage = false;
             $scope.$parent.pageTitle = "HOTELS";
-            $scope.isShowingCreateHotelBox = false;
+            $scope.isShowingCreateEditHotelBox = false;
             $scope.isShowingProfileImage = false;
             $scope.isShowingListHotels = false;
             $scope.hotelProfilePicture = "";
+            $scope.isEditingHotel = false;
 
             $scope.hotel = {};
             $scope.list = [];
 
+            $scope.showCreateEditHotelBox = function () {
+                $scope.isShowingCreateEditHotelBox = true;
+                $scope.isShowingListHotels = false;
+            };
+
+            $scope.hideCreateEditHotelBox = function () {
+                $scope.isShowingCreateEditHotelBox = false;
+                $scope.isShowingListHotels = $scope.list.length > 0;
+            };
+
             $scope.showCreateHotelBox = function () {
-                $scope.isShowingCreateHotelBox = true;
+                $scope.isEditingHotel = false;
+                $scope.initCreateHotelPanel();
+                $scope.showCreateEditHotelBox();
             };
 
-            $scope.hideCreateHotelBox = function () {
-                $scope.isShowingCreateHotelBox = false;
+            $scope.showEditHotelBox = function (hotel) {
+                $scope.startSpin();
+                hotelService.getHotelById(hotel.id)
+                    .success(function (data, status) {
+                        $scope.stopSpin();
+                        data.neighborhood = data.address.neighborhood;
+                        data.city = data.address.city;
+                        data.fullAddress = $scope.getHotelFullAddress(data);
+                        $scope.hotel = data;
+                        $scope.isEditingHotel = true;
+                        $scope.showCreateEditHotelBox();
+                    });
             };
 
-            $scope.isValidHotel = function (hotel) {
+            $scope.isValidHotel = function (hotel, requiredImage) {
                 if (!hotel.name || !hotel.fullAddress) {
                     return false;
                 }
-                if (!$('#image_create_hotel > .input-upload-img').val()) {
+                if (requiredImage && !$('#image_create_hotel > .input-upload-img').val()) {
                     utils.notyErrorMessage($scope.translate('ERROR_INVALID_HOTEL_PICTURE'), true);
                     return false;
                 }
@@ -39,13 +62,15 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             };
 
             $scope.createHotel = function () {
-                if (!$scope.isValidHotel($scope.hotel)) {
+                if (!$scope.isValidHotel($scope.hotel, true)) {
                     return;
                 }
                 $scope.startSpin();
                 hotelService.createHotel($scope.hotel)
                     .success(function (data, status) {
-                        $scope.updateHotelImage(data.id);
+                        $scope.updateHotelImage(data.id).then(function () {
+                            $scope.actionAfterSaveHotel();
+                        });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -61,12 +86,9 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.updateHotelImage = function (hotelId) {
                 var image = $('#image_create_hotel > .input-upload-img')[0].files[0];
-                hotelService.updateHotelImage(hotelId, image)
+                return hotelService.updateHotelImage(hotelId, image)
                     .success(function (data, status) {
-                        $scope.initCreateHotelPanel();
-                        $scope.stopSpin();
-                        $scope.hideCreateHotelBox();
-                        $scope.getListHotel();
+
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -84,6 +106,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                         if ($(inputElement)[0].files[0].size > maxFileSize) {
                             imageBoxPreview.find('.image-box > .load-image-spinner').hide();
                             utils.notyErrorMessage($scope.translate('ERROR_MAX_FILE_SIZE', {number: MAX_IMAGE_SIZE_MB}), true);
+                            inputElement.val('');
                             return;
                         }
                         var reader = new FileReader();
@@ -98,6 +121,32 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     }
                 });
                 $(imageBoxPreview).find('.input-upload-img').click();
+            };
+
+            $scope.editHotel = function () {
+                if (!$scope.isValidHotel($scope.hotel, false)) {
+                    return;
+                }
+                $scope.startSpin();
+                hotelService.updateHotel($scope.hotel)
+                    .success(function (data, status) {
+                        if ($('#image_create_hotel > .input-upload-img').val()) {
+                            $scope.updateHotelImage(data.id).then(function () {
+                                $scope.actionAfterSaveHotel();
+                            });
+                        } else {
+                            $scope.actionAfterSaveHotel();
+                        }
+                    })
+                    .error(function (data, status) {
+                        $scope.handleError(data);
+                    });
+            };
+
+            $scope.actionAfterSaveHotel = function () {
+                $scope.stopSpin();
+                $scope.hideCreateEditHotelBox();
+                $scope.getListHotel();
             };
 
             $scope.deleteHotel = function (hotel) {
@@ -129,10 +178,14 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     });
             };
 
+            $scope.getHotelFullAddress = function (hotel) {
+                var address = [hotel.address.street, hotel.address.city, hotel.address.state];
+                return address.filter(Boolean).join(", ");
+            };
+
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(function (hotel) {
-                    var address = [hotel.address.street, hotel.address.city, hotel.address.state];
-                    hotel.fullAddress = address.filter(Boolean).join(", ");
+                    hotel.fullAddress = $scope.getHotelFullAddress(hotel);
                     if (hotel.instagram) {
                         hotel.instagramUrl = "https://www.instagram.com/" + hotel.instagram.replace('@', '');
                     } else {
@@ -143,7 +196,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     }
                     return hotel;
                 });
-                $scope.isShowingListHotels = hotels.length > 0;
+                $scope.isShowingListHotels = $scope.list.length > 0;
             };
 
             $scope.init = function () {
