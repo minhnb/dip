@@ -7,32 +7,32 @@
         <span aria-hidden="true" class="fa fa-times"></span>
     </button>
 </div>
-<div class="col-md-8" ng-if="hotel.fullAddress">
-    <div class="row hotel-info">
+<div class="col-md-8 hotel-info">
+    <div class="row" ng-if="hotel.fullAddress">
         <div class="col-md-4">{{'ADDRESS' | translate}}</div>
         <div class="col-md-8">{{hotel.fullAddress}}</div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.address.neighborhood">
+    <div class="row" ng-if="hotel.address.neighborhood">
         <div class="col-md-4">{{'NEIGHBORHOOD' | translate}}</div>
         <div class="col-md-8">{{hotel.address.neighborhood}}</div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.address.city">
+    <div class="row" ng-if="hotel.address.city">
         <div class="col-md-4">{{'CITY' | translate}}</div>
         <div class="col-md-8">{{hotel.address.city}}</div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.phone">
+    <div class="row" ng-if="hotel.phone">
         <div class="col-md-4">{{'FRONT_DESK' | translate}}</div>
         <div class="col-md-8">{{hotel.phone}}</div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.roomService">
+    <div class="row" ng-if="hotel.roomService">
         <div class="col-md-4">{{'ROOM_SERVICE' | translate}}</div>
         <div class="col-md-8">{{hotel.roomService}}</div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.url">
+    <div class="row" ng-if="hotel.url">
         <div class="col-md-4">{{'WEBSITE' | translate}}</div>
         <div class="col-md-8"><a href="{{hotel.url}}">{{hotel.url}}</a></div>
     </div>
-    <div class="row hotel-info" ng-if="hotel.instagramUrl">
+    <div class="row" ng-if="hotel.instagramUrl">
         <div class="col-md-4">{{'INSTAGRAM' | translate}}</div>
         <div class="col-md-8"><a href="{{hotel.instagramUrl}}">{{hotel.instagram}}</a></div>
     </div>

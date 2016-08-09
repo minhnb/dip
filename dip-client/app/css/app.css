@@ -63,18 +63,21 @@ a {
 .list-hotel .box-body button.btn.pull-right {
     margin-left: 10px;
 }
-.list-hotel .hotel-info > div:last-child {
+.list-hotel .hotel-info {
+    clear: both;
+}
+.list-hotel .hotel-info > .row > div:last-child {
     font-weight: 300;
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
     white-space: nowrap;
 }
-.list-hotel .row.hotel-info {
+.list-hotel .hotel-info > .row {
     line-height: 1.42857;
     padding-left: 15px;
 }
-.list-hotel .row.hotel-info > div {
+.list-hotel .hotel-info > .row > div {
     border-top: 1px solid #f4f4f4;
     padding: 8px;
 }
