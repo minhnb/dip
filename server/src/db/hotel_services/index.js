@@ -6,11 +6,14 @@ const Schema = mongoose.Schema;
 
 const amenitySchema = require('../subSchemas/amenity');
 
+const hotelServiceType = require('../../constants/hotelServiceType');
+const utils = require('../../helpers/utils');
+
 const hotelServiceSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['PoolService', 'SpaService', 'RestaurantService']
+        enum: utils.objectToArray(hotelServiceType)
     },
     name: {
         type: String,

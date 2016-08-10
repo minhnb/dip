@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('../config');
+const hotelServiceType = require('../constants/hotelServiceType');
 
 function convertService(service) {
     return {
@@ -9,8 +10,7 @@ function convertService(service) {
         name: service.name,
         instagram: service.instagram,
         location: service.location,
-        // details: service.details,
-        details: "Swimming Pool",//all details must display as Swimming Pool - see http://jira.cvp.io/browse/DIP-162
+        details: getHotelServiceDetails(service.type),
         url: service.url,
         lowRate: service.lowRate,
         highRate: service.highRate,
@@ -23,6 +23,17 @@ function convertService(service) {
         amenities: service.amenities,
         policy: service.policy,
         tax: config.taxPercent
+    }
+}
+
+function getHotelServiceDetails(type) {
+    switch (type) {
+        case hotelServiceType.SPA_SERVICE:
+            return "Spa";
+        case hotelServiceType.RESTAURANT_SERVICE:
+            return "Restaurant";
+        default:
+            return "Swimming Pool";
     }
 }
 

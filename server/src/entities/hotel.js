@@ -20,12 +20,22 @@ function convertHotel(hotel) {
         roomService: hotel.roomService,
         reservable: hotel.reservable,
         services: hotel.services.filter(Boolean).map(s => {
-           return hotelService(s);
+            if (isPopulatedHotelService(s)) {
+                return hotelService(s);
+            }
+            return s;
         }),
         amenities: hotel.amenities,
         featured: hotel.featured,
         distance: hotel.distance
     }
+}
+
+function isPopulatedHotelService(service) {
+    if (service._id) {
+        return true;
+    }
+    return false;
 }
 
 module.exports = convertHotel;

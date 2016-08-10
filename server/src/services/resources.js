@@ -11,6 +11,9 @@ const dipConstant = require('../constants/constants');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
+const hotelServiceType = require('../constants/hotelServiceType');
+const utils = require('../helpers/utils');
+
 const s3 = require('../helpers/s3');
 const crypto = require('crypto');
 const url = require('url');
@@ -139,6 +142,8 @@ resourcesServices.createAggregateSort = function (sort, needDistanceKey) {
     return result.join(' ');
 };
 
+
+
 resourcesServices.createHotel = function (hotel) {
     return resourcesServices.dbCreateHotel(hotel).then(hotel => {
        return entities.hotel(hotel);
@@ -173,6 +178,37 @@ resourcesServices.getListPendingHotel = function () {
     });
 };
 
+
+
+resourcesServices.createHotelService = function (hotelId, hotelService) {
+    return resourcesServices.dbCreateHotelService(hotelId, hotelService).then(hotelService => {
+       return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.getHotelServiceById = function (hotelServiceId) {
+    return entities.hotelService(resourcesServices.dbGetHotelServiceById(hotelServiceId));
+};
+
+resourcesServices.updateHotelServiceImage = function (hotelServiceId, img) {
+    return resourcesServices.dbUpdateHotelServiceImage(hotelServiceId, img).then(hotelService => {
+        return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.updateHotelService = function (hotelServiceId, update) {
+    return resourcesServices.dbUpdateHotelService(hotelServiceId, update).then(hotelService => {
+        return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.deleteHotelService = function (hotelId, hotelServiceId) {
+    return resourcesServices.dbDeleteHotelService(hotelId, hotelServiceId).then(result => {
+        return true;
+    });
+};
+
+
 resourcesServices.dbCreateHotel = function (hotel) {
     if (!hotel.fullAddress) {
         throw new DIPError(dipErrorDictionary.HOTEL_INVALID_ADDRESS);
@@ -203,7 +239,14 @@ resourcesServices.dbUpdateHotelImage = function (hotelId, img) {
 };
 
 resourcesServices.dbGetHotelById = function (hotelId) {
-    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let hotel = await(db.hotels.findById(hotelId)
+        .populate({
+            path: 'services',
+            model: db.hotelServices
+        }));
+    if (!hotel || hotel.deleted) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+    }
     return hotel;
 };
 
@@ -237,6 +280,77 @@ resourcesServices.getExistedHotel = function (hotelId) {
     }
     return hotel;
 };
+
+
+
+resourcesServices.dbCreateHotelService = function (hotelId, hotelService) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    hotelService = resourcesServices.initNormalHotelService(hotelService);
+    let newHotelService = db.hotelServices(hotelService);
+    return newHotelService.save().then((hotelService) => {
+        return db.hotels.update({_id: hotel._id}, {$addToSet: {services: newHotelService}}).then((result) => {
+            return hotelService;
+        });
+    });
+};
+
+resourcesServices.dbUpdateHotelServiceImage = function (hotelServiceId, img) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    }
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotelService.name, hotelServiceId, hotelService.type));
+    if (uploadImage) {
+        if (hotelService.image && hotelService.image.url && hotelService.image.verified && hotelService.image.url != uploadImage.Location) {
+            resourcesServices.deleteHotelImage(hotelService.image.url);
+        }
+        hotelService.image = {
+            url: uploadImage.Location,
+            verified: true
+        };
+        return hotelService.save();
+    } else {
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
+resourcesServices.dbGetHotelServiceById = function (hotelServiceId) {
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    return hotelService;
+};
+
+resourcesServices.dbUpdateHotelService = function (hotelServiceId, update) {
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    update = resourcesServices.initNormalHotelService(update);
+    for (let key in update) {
+        hotelService[key] = update[key];
+    }
+    return hotelService.save();
+};
+
+resourcesServices.dbDeleteHotelService = function (hotelId, hotelServiceId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    if (hotel.services.indexOf(hotelService._id) == -1) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    return db.hotels.update({_id: hotel._id}, {$pull: {services: hotelService._id}}).then((result) => {
+        return db.hotelServices.update({_id: hotelService._id}, {deleted: true}).then((hotelService) => {
+            return hotelService;
+        });
+    });
+};
+
+resourcesServices.getExistedHotelService = function (hotelServiceId) {
+    let hotelService = await(db.hotelServices.findById(hotelServiceId));
+    if (!hotelService || hotelService.deleted) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    return hotelService;
+};
+
+
+
 
 resourcesServices.initNormalHotel = function (hotel) {
     hotel.featured = false;
@@ -293,7 +407,18 @@ resourcesServices.getHotelAddress = function (hotelFullAddress) {
 resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceType) {
     let key = 'hotels';
     if (serviceType) {
-        key = 'pools';
+        switch (serviceType) {
+            case hotelServiceType.POOL_SERVICE:
+                key = 'pools';
+                break;
+            case hotelServiceType.SPA_SERVICE:
+                key = 'spas';
+                break;
+            case hotelServiceType.RESTAURANT_SERVICE:
+                key = 'restaurants';
+                break;
+            default:
+        }
     }
     let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
     let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hotelId + '_' + hash;
@@ -314,6 +439,20 @@ resourcesServices.deleteHotelImage = function (imageURL) {
         console.log(ex);
         throw new DIPError(dipErrorDictionary.S3_ERROR);
     }
+};
+
+resourcesServices.initNormalHotelService = function (hotelService) {
+    if (hotelService.reservable == undefined) {
+        hotelService.reservable = false;
+    }
+    if (hotelService.type) {
+        let hotelServiceTypes = utils.objectToArray(hotelServiceType);
+        let type = hotelService.type + 'Service';
+        if (hotelServiceTypes.indexOf(type) > -1) {
+            hotelService.type = type;
+        }
+    }
+    return hotelService;
 };
 
 module.exports = resourcesServices;

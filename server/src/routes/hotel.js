@@ -47,5 +47,42 @@ router
             let img = ctx.req.file;
             ctx.body = await(resourcesServices.updateHotelImage(hotelId, img));
         })
+    )
+
+    .post('create hotelService', '/:hotelId/service',
+        async(ctx => {
+            let hotelService = ctx.request.body;
+            let hotelId = ctx.params.hotelId;
+            ctx.body = await(resourcesServices.createHotelService(hotelId, hotelService));
+        })
+    )
+    .delete('delete hotelService', '/:hotelId/service/:hotelServiceId',
+        async(ctx => {
+            let hotelId = ctx.params.hotelId;
+            let hotelServiceId = ctx.params.hotelServiceId;
+            let hotelService = await(resourcesServices.deleteHotelService(hotelId, hotelServiceId));
+            ctx.status = 200;
+        })
+    )
+    .get('get hotelService by id', '/service/:hotelServiceId',
+        async(ctx => {
+            let hotelServiceId = ctx.params.hotelServiceId;
+            ctx.body = await(resourcesServices.getHotelServiceById(hotelServiceId));
+        })
+    )
+    .put('update hotelService', '/service/:hotelServiceId',
+        async(ctx => {
+            let hotelServiceId = ctx.params.hotelServiceId;
+            let hotelService = ctx.request.body;
+            ctx.body = await(resourcesServices.updateHotelService(hotelServiceId, hotelService));
+        })
+    )
+    .put('update hotel image', '/service/:hotelServiceId/image',
+        multer().single('image'),
+        async(ctx => {
+            let hotelServiceId = ctx.params.hotelServiceId;
+            let img = ctx.req.file;
+            ctx.body = await(resourcesServices.updateHotelServiceImage(hotelServiceId, img));
+        })
     );
 
