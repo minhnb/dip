@@ -1,0 +1,19 @@
+<div class="col-md-6">
+    <div class="form-group">
+        <label class="control-label">{{'MODULE_NAME' | translate}}</label>
+        <input type="text" required class="form-control" ng-model="module.name"
+               placeholder="{{'MODULE_NAME' | translate}}">
+    </div>
+    <div class="form-group">
+        <label class="control-label">{{'TYPE' | translate}}</label>
+        <select class="form-control select2" style="width: 100%;">
+            <option selected="selected">{{'IN_DOOR' | translate}}</option>
+            <option>{{'OUT_DOOR' | translate}}</option>
+        </select>
+    </div>
+</div>
+<div class="col-md-6">
+    <dip-image-box class="form-group" id="image_box_module"
+                   data-title="{{'PROFILE_PICTURE' | translate}}"
+                   data-alt="Hotel Profile Picture"></dip-image-box>
+</div>

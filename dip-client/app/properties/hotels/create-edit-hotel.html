@@ -1,4 +1,4 @@
-<div class="box box-info create-edit-hotel" ng-show="isShowingCreateEditHotelBox">
+<div class="box box-info create-edit-box" ng-show="isShowingCreateEditHotelBox">
     <div class="box-header with-border">
         <h3 class="box-title">{{ isEditingHotel ? 'EDIT_HOTEL' : 'CREATE_HOTEL' | translate }}</h3>
         <button type="button" class="close pull-right" ng-click="hideCreateEditHotelBox()">
@@ -10,62 +10,7 @@
     <form>
         <div class="box-body">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_NAME' | translate}}</label>
-                        <input type="text" required class="form-control" ng-model="hotel.name"
-                               placeholder="{{'HOTEL_NAME' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'ADDRESS' | translate}}</label>
-                        <input type="text" required class="form-control" ng-model="hotel.fullAddress"
-                               placeholder="{{'ADDRESS' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'NEIGHBORHOOD' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.neighborhood"
-                               placeholder="{{'NEIGHBORHOOD' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'CITY' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.city"
-                               placeholder="{{'CITY' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'FRONT_DESK' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.phone"
-                               placeholder="{{'FRONT_DESK' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'ROOM_SERVICE' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.roomService"
-                               placeholder="{{'ROOM_SERVICE' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'WEBSITE' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.url"
-                               placeholder="{{'WEBSITE' | translate}}">
-                    </div>
-                    <div class="form-group">
-                        <label ng-if="isEditingHotel" class="control-label">{{'INSTAGRAM' | translate}}</label>
-                        <input type="text" class="form-control" ng-model="hotel.instagram"
-                               placeholder="{{'INSTAGRAM' | translate}}">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" id="image_create_hotel">
-                        <div class="image-box" ng-click="browseImage()">
-                            <img ng-if="!isEditingHotel" alt="Hotel Profile Picture" class="img-responsive center-block" style="display: none">
-                            <img ng-if="isEditingHotel && !hotel.imageUrl" alt="{{hotel.name}} Profile Picture" class="img-responsive center-block" style="display: none">
-                            <img ng-if="isEditingHotel && hotel.imageUrl" alt="{{hotel.name}} Profile Picture" class="img-responsive center-block" ng-src="{{hotel.imageUrl}}">
-                            <span class="load-image-spinner" us-spinner spinner-start-active="true" style="display: none"></span>
-                        </div>
-                        <div class="text-center light-font">{{'PROFILE_PICTURE' | translate}}</div>
-                        <br/>
-                        <button type="button" class="btn btn-info center-block" ng-click="browseImage()">{{'UPLOAD' | translate}}</button>
-                        <input type="file" accept="image/*" class="form-control input-upload-img" ng-show="false">
-                    </div>
-                </div>
+                <ng-include src="'/properties/hotels/hotel-form-content.html'"></ng-include>
             </div>
         </div>
         <!-- /.box-body -->

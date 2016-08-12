@@ -1,0 +1,14 @@
+<div class="box box-info list-hotel hotel-profile">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{'LIST_MODULES' | translate }}</h3>
+    </div>
+    <div class="box-body">
+        <div class="row" ng-repeat="service in hotel.services">
+            <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
+        </div>
+    </div>
+    <!--<div class="box-footer text-center">-->
+    <!--<button type="button" class="btn btn-default" ng-click="">{{'PREVIOUS' | translate}}</button>-->
+    <!--<button type="button" class="btn btn-info" ng-click="">{{'NEXT' | translate}}</button>-->
+    <!--</div>-->
+</div>

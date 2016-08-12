@@ -9,6 +9,7 @@ exports.resize = function(buffer, width, format) {
             srcData: buffer,
             width: width,
             format: format
+            // maxBuffer: 20*1024*1024
         }, function (err, stdout, stderr) {
             if (err) reject(err);
             else {

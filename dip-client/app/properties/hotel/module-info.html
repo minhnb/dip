@@ -1,0 +1,17 @@
+<div class="col-md-12 module-header">
+    <button type="button" class="btn btn-default pull-right" title="{{'DELETE' | translate}}" ng-click="deleteModule(service)">
+        <span aria-hidden="true" class="fa fa-trash"></span>
+    </button>
+    <button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditHotelBox(service)">
+        <span aria-hidden="true" class="fa fa-edit"></span>
+    </button>
+</div>
+<div class="col-md-8 hotel-info">
+    <div class="row" ng-if="service.name">
+        <div class="col-md-4">{{'MODULE_NAME' | translate}}</div>
+        <div class="col-md-8">{{service.name}}</div>
+    </div>
+</div>
+<div class="col-md-4" ng-if="service.imageUrl">
+    <img alt="{{service.name}} Profile Picture" class="img-responsive" ng-src="{{service.imageUrl}}"/>
+</div>

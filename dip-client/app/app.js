@@ -10,6 +10,7 @@ var dipApp = angular.module('dipApp', [
     'dipApp.report_hotel_reservations',
     'dipApp.settings',
     'dipApp.properties_hotels',
+    'dipApp.properties_hotel',
     'dipApp.version'
 ]).config(['$locationProvider', '$routeProvider', '$httpProvider', '$translateProvider',
     function ($locationProvider, $routeProvider, $httpProvider, $translateProvider) {

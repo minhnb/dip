@@ -67,6 +67,7 @@ var angular_translate_en = {
     CANCEL: "Cancel",
     DELETE: "Delete",
     EDIT: "Edit",
+    DETAILS: "Details",
     UPLOAD: "Upload",
     NEW_HOTEL: "New Hotel",
     NEXT: "Next",
@@ -89,5 +90,19 @@ var angular_translate_en = {
 
     HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
     ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
-    ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture"
+    ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture",
+
+    HOTEL_PROFILE: "Hotel Profile",
+    HOTEL_INFO: "Hotel Info",
+    NEW_MODULE: "New Swimming Pool",
+
+    CREATE_MODULE: "Create Swimming Pool",
+    MODULE_NAME: "Pool Name",
+    TYPE: "Type",
+    IN_DOOR: "In Door",
+    OUT_DOOR: "Out Door",
+    LIST_MODULES: "List Swimming Pools",
+
+    ERROR_INVALID_HOTEL_SERVICE_PICTURE: "Invalid swimming pool picture",
+    MODULE_DELETE_CONFIRM: "Do you want to delete pool {{ name }} ?"
 };

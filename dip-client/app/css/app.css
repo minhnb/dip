@@ -39,11 +39,11 @@ a {
     position: relative;
 }
 
-.create-edit-hotel .box-body label {
+.create-edit-box label {
     font-weight: 300;
 }
 
-.create-edit-hotel .box-body .image-box {
+.create-edit-box .box-body .image-box {
     margin-bottom: 10px;
     cursor: pointer;
 }
@@ -59,6 +59,7 @@ a {
 }
 .list-hotel .lead {
     float: left;
+    cursor: pointer;
 }
 .list-hotel .box-body button.btn.pull-right {
     margin-left: 10px;
@@ -83,4 +84,12 @@ a {
 }
 .list-hotel img {
     border: 1px solid #f4f4f4;
+}
+
+.list-hotel.hotel-profile .hotel-info > .row:first-child > div {
+    border-top: none;
+}
+
+.module-header {
+    margin-bottom: 10px;
 }
