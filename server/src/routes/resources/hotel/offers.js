@@ -12,7 +12,7 @@ router.get('/',
     validator.offers(true),
     ctx => {
         // TODO: Add filter for price and duration
-        let date = ctx.query.date,
+        let date = utils.convertDate(ctx.query.date),
             service = ctx.query.service,
             day = moment(date).weekday();
 
@@ -24,6 +24,7 @@ router.get('/',
                     {dueDay: {$exists: false}}
                 ],
                 startDay: {$lte: date},
+                offDays: {$nin: [date]},
                 type: 'pass'
             })
             .populate('type')

@@ -60,6 +60,7 @@ const offerSchema = new Schema({
         type: String,
         required: false
     },
+    offDays: [String],
     duration: {
         startTime: {
             type: Number,
