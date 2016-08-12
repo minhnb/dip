@@ -365,6 +365,9 @@ resourcesServices.initNormalHotel = function (hotel) {
     if (hotel.image) {
         delete hotel.image;
     }
+    if (hotel.services) {
+        delete hotel.services;
+    }
 
     if (hotel.fullAddress) {
         let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
@@ -422,6 +425,7 @@ resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceT
     }
     let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
     let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hotelId + '_' + hash;
+    console.log(path);
     let uploadImage = await(s3.uploadResizedImage(img, undefined, path));
     let uploadResizedImage = await(s3.uploadResizedImage(img, dipConstant.HOTEL_IMAGE_WIDTH, path + '_resized'));
     return uploadImage;
