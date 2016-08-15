@@ -44,6 +44,7 @@ dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage, $loca
             return response || $q.when(response);
         },
         responseError: function (response) {
+            console.log(response);
             if (response.status === 401) {
                 // handle the case where the user is not authenticated
                 $localStorage.$reset();

@@ -1,17 +1,21 @@
 <div class="col-md-12 module-header">
-    <button type="button" class="btn btn-default pull-right" title="{{'DELETE' | translate}}" ng-click="deleteModule(service)">
+    <button type="button" class="btn btn-default pull-right" title="{{'DELETE' | translate}}" ng-click="deleteModule(module)">
         <span aria-hidden="true" class="fa fa-trash"></span>
     </button>
-    <button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditHotelBox(service)">
+    <button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditModuleBox(module)">
         <span aria-hidden="true" class="fa fa-edit"></span>
     </button>
 </div>
 <div class="col-md-8 hotel-info">
-    <div class="row" ng-if="service.name">
+    <div class="row" ng-if="module.name">
         <div class="col-md-4">{{'MODULE_NAME' | translate}}</div>
-        <div class="col-md-8">{{service.name}}</div>
+        <div class="col-md-8">{{module.name}}</div>
+    </div>
+    <div class="row" ng-if="module.poolTypeDisplay">
+        <div class="col-md-4">{{'TYPE' | translate}}</div>
+        <div class="col-md-8">{{module.poolTypeDisplay}}</div>
     </div>
 </div>
-<div class="col-md-4" ng-if="service.imageUrl">
-    <img alt="{{service.name}} Profile Picture" class="img-responsive" ng-src="{{service.imageUrl}}"/>
+<div class="col-md-4" ng-if="module.imageUrl">
+    <img alt="{{module.name}} Profile Picture" class="img-responsive" ng-src="{{module.imageUrl}}"/>
 </div>

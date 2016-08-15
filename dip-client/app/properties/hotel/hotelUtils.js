@@ -1,6 +1,8 @@
 dipApp.factory('hotelUtils', [
     function () {
         var hotelUtils = {
+            poolTypes: [],
+            poolTypeMap: [],
             getHotelFullAddress: function (hotel) {
                 var address = [hotel.address.street, hotel.address.city, hotel.address.state];
                 return address.filter(Boolean).join(", ");
@@ -27,6 +29,19 @@ dipApp.factory('hotelUtils', [
                 }
                 return true;
             },
+            convertHotelService: function (hotelService) {
+                if (hotelService.type == MODULE_TYPE_POOL) {
+                    if (!hotelService.poolType) {
+                        hotelService.poolType = POOL_TYPE_OTHERS;
+                    }
+                    hotelService.poolTypeDisplay = this.getPoolTypeDisplay(hotelService.poolType);
+                    
+                }
+                if (hotelService.imageUrl) {
+                    hotelService.imageUrl = hotelService.imageUrl + '_resized';
+                }
+                return hotelService;
+            },
             isValidHotelService: function (hotelService, requiredImage, imageErrorMessage) {
                 if (!hotelService.name) {
                     return false;
@@ -36,6 +51,15 @@ dipApp.factory('hotelUtils', [
                     return false;
                 }
                 return true;
+            },
+            setPoolTypes: function (poolTypes) {
+                this.poolTypes = poolTypes;
+                poolTypes.map(function (poolType) {
+                    hotelUtils.poolTypeMap[poolType.value] = poolType.display;
+                });
+            },
+            getPoolTypeDisplay: function (poolType) {
+                return this.poolTypeMap[poolType];
             }
         };
         return hotelUtils;

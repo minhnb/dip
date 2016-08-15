@@ -101,6 +101,7 @@ var angular_translate_en = {
     TYPE: "Type",
     IN_DOOR: "In Door",
     OUT_DOOR: "Out Door",
+    OTHERS: "Others",
     LIST_MODULES: "List Swimming Pools",
 
     ERROR_INVALID_HOTEL_SERVICE_PICTURE: "Invalid swimming pool picture",

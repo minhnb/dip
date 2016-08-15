@@ -45,9 +45,6 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                             var token = data.JWT;
                             userService.saveUserAccessTokenToLocalStorage(token);
                             userService.getUserInfo();
-                        })
-                        .error(function (data, status, headers, config) {
-                            console.log(status, data);
                         });
                 }
             },
@@ -55,23 +52,16 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                 return $http.get(apiUsersUrl + "/me")
                     .success(function (data, status, headers, config) {
                         userService.saveUserToLocalStorage(data);
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
                     });
             },
             logOut: function () {
                 return $http.post(apiAuthUrl + "/logout", {})
                     .success(function (data, status, headers, config) {
-                        console.log(status);
                         $localStorage.$reset();
                         userService.user = {
                                 info: {},
                                 JWT: ""
                             };
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
                     });
             }
         };

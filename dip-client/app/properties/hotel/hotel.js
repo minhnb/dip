@@ -11,17 +11,32 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
         function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils) {
             $rootScope.isNoMenuPage = false;
             $scope.$parent.pageTitle = "HOTEL_PROFILE";
+            $scope.isShowingHotelProfile = false;
             $scope.isEditingHotel = false;
             $scope.isShowingCreateModule = false;
+            $scope.mapPureHotelService = [];
 
             $scope.hotel = {};
             $scope.module = {};
+
+            $scope.poolTypes = [
+                {display: $scope.translate('OTHERS'), value: POOL_TYPE_OTHERS},
+                {display: $scope.translate('IN_DOOR'), value: POOL_TYPE_INDOOR},
+                {display: $scope.translate('OUT_DOOR'), value: POOL_TYPE_OUTDOOR}
+            ];
+            hotelUtils.setPoolTypes($scope.poolTypes);
 
             $scope.getHotelById = function (hotelId) {
                 hotelService.getHotelById(hotelId)
                     .success(function (data, status) {
                         $scope.stopSpin();
+                        data.services.map(function (module) {
+                            module = hotelUtils.convertHotelService(module);
+                            module.isEditingModuleInfo = false;
+                            $scope.mapPureHotelService[module.id] = Object.assign({}, module);
+                        });
                         $scope.hotel = hotelUtils.convertHotel(data);
+                        $scope.isShowingHotelProfile = true;
                     });
             };
 
@@ -75,9 +90,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                     $scope.hotel.imageUrl = '';
                                     $scope.hotel = hotelUtils.convertHotel(data);
                                     $scope.actionAfterSaveHotel();
-                                })
-                                .error(function (data, status) {
-                                    $scope.handleError(data);
                                 });
                         } else {
                             $scope.hotel = hotelUtils.convertHotel(data);
@@ -127,6 +139,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.initCreateModulePanel = function () {
                 $scope.module = {};
+                $scope.module.poolType = POOL_TYPE_OTHERS;
                 $('#image_box_module > .input-upload-img').val('');
                 $('#image_box_module > .image-box img').hide();
                 $('#image_box_module > .image-box img').attr('src', '');
@@ -148,13 +161,14 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     return;
                 }
                 $scope.startSpin();
-                $scope.module.type = "Pool";
+                $scope.module.type = MODULE_TYPE_POOL;
                 hotelService.createHotelService($scope.hotel.id, $scope.module)
                     .success(function (data, status) {
-                        $scope.updateHotelServiceImage(data.id).then(function () {
-                            $scope.hideCreateModuleBox();
-                            $scope.getHotelById($routeParams.hotelId);
-                        });
+                        $scope.updateHotelServiceImage(data.id)
+                            .success(function () {
+                                $scope.hideCreateModuleBox();
+                                $scope.getHotelById($routeParams.hotelId);
+                            });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -175,6 +189,63 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 }, function () {
 
                 });
+            };
+
+            $scope.showEditModuleBox = function (module) {
+                if (module.imageUrl) {
+                    $('#image_box_module_' + module.id + ' > .image-box img').attr('src', module.imageUrl);
+                    $('#image_box_module_' + module.id + ' > .image-box img').show();
+                }
+                module.isEditingModuleInfo = true;
+            };
+
+            $scope.hideEditModuleBox = function (module) {
+                module.isEditingModuleInfo = false;
+            };
+
+            $scope.discardChangeModule = function (module) {
+                var pureModule = $scope.mapPureHotelService[module.id];
+                for (var key in pureModule) {
+                    module[key] = pureModule[key];
+                }
+            };
+
+            $scope.updateModuleImage = function (moduleId) {
+                var image = $('#image_box_module_' + moduleId + ' > .input-upload-img')[0].files[0];
+                return hotelService.updateHotelServiceImage(moduleId, image)
+                    .success(function (data, status) {
+
+                    })
+                    .error(function (data, status) {
+                        $scope.handleError(data);
+                    });
+            };
+
+            $scope.editModule = function (module) {
+                if (!hotelUtils.isValidHotelService(module, false)) {
+                    return;
+                }
+                $scope.startSpin();
+                hotelService.updateHotelService(module)
+                    .success(function (data, status) {
+                        if ($('#image_box_module_' + module.id + ' > .input-upload-img').val()) {
+                            $scope.updateModuleImage(data.id)
+                                .success(function (data, status) {
+                                    module.imageUrl = data.imageUrl;
+                                    $scope.actionAfterSaveModule(module);
+                                });
+                        } else {
+                            $scope.actionAfterSaveModule(module);
+                        }
+                    })
+                    .error(function (data, status) {
+                        $scope.handleError(data);
+                    });
+            };
+
+            $scope.actionAfterSaveModule = function (module) {
+                $scope.hideEditModuleBox(module);
+                $scope.getHotelById($routeParams.hotelId);
             };
 
             $scope.init = function () {

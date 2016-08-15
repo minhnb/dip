@@ -1,10 +1,21 @@
-<div class="box box-info list-hotel hotel-profile">
+<div class="box box-info list-hotel hotel-profile" ng-show="isShowingHotelProfile">
     <div class="box-header with-border">
         <h3 class="box-title">{{'LIST_MODULES' | translate }}</h3>
     </div>
     <div class="box-body">
-        <div class="row" ng-repeat="service in hotel.services">
-            <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
+        <div class="row" ng-repeat="module in hotel.services">
+            <div ng-show="!module.isEditingModuleInfo">
+                <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
+            </div>
+            <div class="create-edit-box" ng-show="module.isEditingModuleInfo">
+                <form>
+                    <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL' | translate}}</button>
+                        <button type="submit" class="btn btn-info" ng-click="editModule(module)">{{'SAVE' | translate}}</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <!--<div class="box-footer text-center">-->

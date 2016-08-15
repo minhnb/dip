@@ -4,12 +4,7 @@ dipApp.factory('adminService', ['$q', '$http', '$localStorage',
             adminService = {};
         adminService = {
             updateAppContext: function () {
-                return $http.post(apiReportUrl + "/appcontext/update")
-                    .success(function (data, status, headers, config) {
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.post(apiReportUrl + "/appcontext/update");
             }
         };
         return adminService;

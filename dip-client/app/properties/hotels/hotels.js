@@ -63,9 +63,10 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.createHotel($scope.hotel)
                     .success(function (data, status) {
-                        $scope.updateHotelImage(data.id).then(function () {
-                            $scope.actionAfterSaveHotel();
-                        });
+                        $scope.updateHotelImage(data.id)
+                            .success(function () {
+                                $scope.actionAfterSaveHotel();
+                            });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -101,9 +102,6 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                             $scope.updateHotelImage(data.id)
                                 .success(function () {
                                     $scope.actionAfterSaveHotel();
-                                })
-                                .error(function (data, status) {
-                                    $scope.handleError(data);
                                 });
                         } else {
                             $scope.actionAfterSaveHotel();

@@ -5,13 +5,7 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             hotelService = {};
         hotelService = {
             createHotel: function (hotel) {
-                return $http.post(apiHotelUrl, hotel)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.post(apiHotelUrl, hotel);
             },
             updateHotelImage: function (hotelId, image) {
                 var fd = new FormData();
@@ -20,60 +14,24 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
                     {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
-                    })
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
                     });
             },
             getHotelById: function (hotelId) {
-                return $http.get(apiHotelUrl + "/" + hotelId)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.get(apiHotelUrl + "/" + hotelId);
             },
             updateHotel: function (hotel) {
                 var hotelId = hotel.id;
                 delete hotel.services;
-                return $http.put(apiHotelUrl + "/" + hotelId, hotel)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.put(apiHotelUrl + "/" + hotelId, hotel);
             },
             deleteHotel: function (hotelId) {
-                return $http.delete(apiHotelUrl + "/" + hotelId)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.delete(apiHotelUrl + "/" + hotelId);
             },
             getListHotel: function () {
-                return $http.get(apiListHotelUrl + '/pending')
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.get(apiListHotelUrl + '/pending');
             },
             createHotelService: function (hotelId, hotelService) {
-                return $http.post(apiHotelUrl + '/' + hotelId + '/service', hotelService)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.post(apiHotelUrl + '/' + hotelId + '/service', hotelService);
             },
             updateHotelServiceImage: function (hoteServicelId, image) {
                 var fd = new FormData();
@@ -82,32 +40,18 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
                     {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
-                    })
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
                     });
             },
             getHotelServiceById: function (hotelServiceId) {
-                return $http.get(apiHotelUrl + "/service/" + hotelServiceId)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.get(apiHotelUrl + "/service/" + hotelServiceId);
+            },
+            updateHotelService: function (hotelService) {
+                var hotelServiceId = hotelService.id;
+                return $http.put(apiHotelUrl + "/service/" + hotelServiceId, hotelService);
             },
             deleteHotelService: function (hotelId, hotelService) {
                 var hotelServiceId = hotelService.id;
-                return $http.delete(apiHotelUrl + '/' + hotelId + '/service/' + hotelServiceId)
-                    .success(function (data, status, headers, config) {
-
-                    })
-                    .error(function (data, status, headers, config) {
-                        console.log(status, data);
-                    });
+                return $http.delete(apiHotelUrl + '/' + hotelId + '/service/' + hotelServiceId);
             }
         };
         return hotelService;
