@@ -286,7 +286,12 @@ resourcesServices.getExistedHotel = function (hotelId) {
 resourcesServices.dbCreateHotelService = function (hotelId, hotelService) {
     let hotel = resourcesServices.getExistedHotel(hotelId);
     hotelService = resourcesServices.initNormalHotelService(hotelService);
-    let newHotelService = db.hotelServices(hotelService);
+    let newHotelService;
+    if (hotelService.type == hotelServiceType.POOL_SERVICE) {
+        newHotelService = db.poolServices(hotelService);
+    } else  {
+        newHotelService = db.hotelServices(hotelService);
+    }
     return newHotelService.save().then((hotelService) => {
         return db.hotels.update({_id: hotel._id}, {$addToSet: {services: newHotelService}}).then((result) => {
             return hotelService;
@@ -425,7 +430,6 @@ resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceT
     }
     let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
     let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hotelId + '_' + hash;
-    console.log(path);
     let uploadImage = await(s3.uploadResizedImage(img, undefined, path));
     let uploadResizedImage = await(s3.uploadResizedImage(img, dipConstant.HOTEL_IMAGE_WIDTH, path + '_resized'));
     return uploadImage;
