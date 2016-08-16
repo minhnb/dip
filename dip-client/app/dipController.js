@@ -1,9 +1,13 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$translate', 'usSpinnerService', 'userService',
-    function ($scope, $timeout, $rootScope, $location, $translate, usSpinnerService, userService) {
+dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService',
+    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService) {
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
         $rootScope.goToPath = function (path) {
-            $location.path(path);
+            if ($location.$$path == path) {
+                $route.reload();
+            } else {
+                $location.path(path);
+            }
         };
         $scope.okText = "OK";
         $scope.cancelText = "CANCEL";
