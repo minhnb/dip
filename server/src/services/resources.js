@@ -221,6 +221,12 @@ resourcesServices.getPassById = function (passId) {
     return entities.offer(resourcesServices.dbGetPassById(passId));
 };
 
+resourcesServices.deletePass = function (passId) {
+    return resourcesServices.dbDeletePass(passId).then(result => {
+        return true;
+    });
+};
+
 resourcesServices.getPassesByHotel = function (hotelId) {
     return resourcesServices.dbGetPassesByHotel(hotelId).then(offers => {
         return offers.map(entities.offer);
@@ -395,6 +401,14 @@ resourcesServices.dbGetPassById = function (passId) {
     return pass;
 };
 
+resourcesServices.dbDeletePass = function (passId) {
+    let pass = resourcesServices.getExistedPass(passId);
+    if (resourcesServices.isDeletablePass(pass)) {
+        return db.offers.update({_id: pass._id}, {deleted: true});
+    }
+    return Promise.resolve();
+};
+
 resourcesServices.dbGetPassesByHotel = function (hotelId) {
     let hotel = resourcesServices.getExistedHotel(hotelId);
     return db.offers.find({hotel: hotelId});
@@ -533,6 +547,10 @@ resourcesServices.initNormalPass = function (offer) {
         offer.description = offer.passType;
     }
     return offer;
+};
+
+resourcesServices.isDeletablePass = function (offer) {
+    return true;
 };
 
 module.exports = resourcesServices;

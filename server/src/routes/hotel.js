@@ -100,6 +100,12 @@ router
             ctx.body = await(resourcesServices.getPassById(passId));
         })
     )
+    .delete('delete', '/pass/:passId',
+        async(ctx => {
+            let passId = ctx.params.passId;
+            ctx.body = await(resourcesServices.deletePass(passId));
+        })
+    )
     .get('get passes by hotel', '/:hotelId/passes',
         async(ctx => {
             let hotelId = ctx.params.hotelId;
