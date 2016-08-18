@@ -546,6 +546,9 @@ resourcesServices.initNormalHotelService = function (hotelService) {
     if (hotelService._id) {
         delete hotelService._id;
     }
+    if (hotelService.image) {
+        delete hotelService.image;
+    }
     if (hotelService.reservable == undefined) {
         hotelService.reservable = false;
     }
