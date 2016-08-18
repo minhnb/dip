@@ -121,6 +121,11 @@ const offerSchema = new Schema({
     title: {
         type: String,
         required: false
+    },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {
     timestamps: true
@@ -128,6 +133,11 @@ const offerSchema = new Schema({
 offerSchema.pre('save', function(next) {
     this.date = utils.convertDate(this.date);
     next();
+});
+offerSchema.pre('find', function () {
+    if (this._conditions && this._conditions.deleted == undefined) {
+        this._conditions.deleted = false;
+    }
 });
 
 const offerModel = mongoose.model('Offer', offerSchema);
