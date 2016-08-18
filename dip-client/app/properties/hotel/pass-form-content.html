@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">{{'PASS_TYPE' | translate}}</label>
+            <select class="form-control select2" style="width: 100%;" ng-model="pass.passType" ng-change="updatePassTitle(pass)" required>
+                <option ng-if="passTypes.length > 0" ng-repeat="passType in passTypes"
+                        value="{{passType.value}}">{{passType.display}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{'PASS_TITLE' | translate}}</label>
+            <input type="text" required class="form-control" ng-model="pass.title"
+                   placeholder="{{'PASS_TITLE' | translate}}">
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{'POOL_TITLE' | translate}}</label>
+            <select class="form-control select2" style="width: 100%;" ng-model="pass.service">
+                <option ng-if="hotel.services.length > 0" ng-repeat="service in hotel.services"
+                        value="{{service.id}}">{{service.name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <label class="control-label">{{'TIME_PERIOD' | translate}}</label>
+                </div>
+            </div>
+            <div class="row row-grid">
+                <div class="col-md-6">
+                    <div class="input-group timepicker">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input type="text" class="form-control timepicker" data-duration="start"
+                               placeholder="{{'DURATION_START' | translate}}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group timepicker">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input type="text" class="form-control timepicker" data-duration="end"
+                               placeholder="{{'DURATION_END' | translate}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group pass_maximum">
+            <label class="control-label">{{'MAXIMUM_PASSES' | translate}}</label>
+            <input type="text" ng-model="pass.allotmentCount" data-value="{{pass.allotmentCount}}" class="slider form-control" data-slider-min="0"
+                   data-slider-max="50" data-slider-step="1" data-slider-value="10"
+                   data-slider-orientation="horizontal" data-slider-selection="before"
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom">
+        </div>
+        <div class="form-group pass_capacity">
+            <label class="control-label">{{'CAPACITY' | translate}}</label>
+            <input type="text" ng-model="pass.capacity" data-value="{{pass.capacity}}" class="slider form-control" data-slider-min="0"
+                   data-slider-max="20" data-slider-step="1" data-slider-value="10"
+                   data-slider-orientation="horizontal" data-slider-selection="before"
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom">
+        </div>
+        <div class="form-group">
+            <label class="control-label">{{'PRICE' | translate}}</label>
+            <input type="text" class="form-control" ng-model="pass.price"
+                   data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                   data-mask>
+        </div>
+    </div>
+</div>

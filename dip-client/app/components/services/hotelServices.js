@@ -52,6 +52,9 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             deleteHotelService: function (hotelId, hotelService) {
                 var hotelServiceId = hotelService.id;
                 return $http.delete(apiHotelUrl + '/' + hotelId + '/service/' + hotelServiceId);
+            },
+            createPass: function (hotelId, hotelServiceId, pass) {
+                return $http.post(apiHotelUrl + '/' + hotelId + '/service/' + hotelServiceId + '/pass', pass);
             }
         };
         return hotelService;

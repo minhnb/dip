@@ -16,6 +16,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.isShowingCreateModule = false;
             $scope.mapPureHotelService = [];
 
+            $scope.isInitializedCreatePassForm = false;
+
             $scope.hotel = {};
             $scope.module = {};
 
@@ -26,6 +28,13 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             ];
             hotelUtils.setPoolTypes($scope.poolTypes);
 
+            $scope.passTypes = [
+                {display: $scope.translate('PASS_TYPE_POOL_PASS'), value: PASS_TYPE_POOL_PASS},
+                {display: $scope.translate('PASS_TYPE_DAYBED'), value: PASS_TYPE_DAYBED},
+                {display: $scope.translate('PASS_TYPE_CABANA'), value: PASS_TYPE_CABANA}
+            ];
+            hotelUtils.setPassTypes($scope.passTypes);
+
             $scope.getHotelById = function (hotelId) {
                 hotelService.getHotelById(hotelId)
                     .success(function (data, status) {
@@ -33,6 +42,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         data.services.map(function (module) {
                             module = hotelUtils.convertHotelService(module);
                             module.isEditingModuleInfo = false;
+                            module.isAddingPass = false;
+                            module.newPass = $scope.initNewPass(module);
                             $scope.mapPureHotelService[module.id] = Object.assign({}, module);
                         });
                         $scope.hotel = hotelUtils.convertHotel(data);
@@ -246,6 +257,145 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.actionAfterSaveModule = function (module) {
                 $scope.hideEditModuleBox(module);
                 $scope.getHotelById($routeParams.hotelId);
+            };
+
+            $scope.initNewPass = function (module) {
+                var newPass = {};
+                newPass.service = module.id;
+                newPass.allotmentCount = 10;
+                newPass.capacity = 10;
+                newPass.passType = '';
+                return newPass;
+            };
+
+            $scope.showCreatePassBox = function (module) {
+                $scope.initCreatePassForm();
+                var moduleId = module.id;
+                $scope.hotel.services.map(function (module) {
+                    if (module.id == moduleId) {
+                        return;
+                    }
+                    if (module.isAddingPass) {
+                        $scope.hideCreatePassBox(module);
+                    }
+                });
+                module.isAddingPass = true;
+            };
+
+            $scope.hideCreatePassBox = function (module) {
+                module.isAddingPass = false;
+                $scope.isInitializedCreatePassForm = false;
+                module.newPass = $scope.initNewPass(module);
+            };
+
+            $scope.isValidPass = function (newPass, $event) {
+                var form = $($event.currentTarget).parent().parent();
+                if (!newPass.passType) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_TYPE');
+                }
+                if (!newPass.title) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_TITLE');
+                }
+                var startTime = $(form).find('[data-duration="start"]').val();
+                if (startTime == '') {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION_START_TIME');
+                }
+                var endTime = $(form).find('[data-duration="end"]').val();
+                if (endTime == '') {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION_END_TIME');
+                }
+                var allotmentCount = $(form).find('[ng-model="pass.allotmentCount"]').val();
+                if (!allotmentCount) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_MAXIMUM');
+                }
+                var capacity = $(form).find('[ng-model="pass.capacity"]').val();
+                if (!capacity) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_CAPACITY');
+                }
+                var price = parseFloat($(form).find('[ng-model="pass.price"]').inputmask('unmaskedvalue'));
+                if (!price) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_PRICE');
+                }
+                var duration = {};
+                duration.startTime = utils.convertTimeToDuration(startTime);
+                duration.endTime = utils.convertTimeToDuration(endTime);
+                if (duration.startTime >= duration.endTime) {
+                    return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION');
+                }
+                newPass.duration = duration;
+                newPass.capacity = capacity;
+                newPass.allotmentCount = allotmentCount;
+                newPass.price = price * 100;
+                return newPass;
+            };
+
+            $scope.createPass = function (pass, module, $event) {
+                var newPass = $scope.isValidPass(pass, $event);
+                if (!newPass) {
+                    return;
+                }
+                newPass.type = 'pass';
+                newPass.startDay = '0000-01-01';
+                newPass.dueDay = '9999-12-31';
+                $scope.startSpin();
+                hotelService.createPass($scope.hotel.id, module.id, newPass)
+                    .success(function (data, status) {
+                        $scope.stopSpin();
+                        $scope.hideCreatePassBox(module);
+                    })
+                    .error(function (data, status) {
+                        $scope.handleError(data);
+                    });
+            };
+
+            $scope.updatePassTitle = function (pass) {
+                pass.title = hotelUtils.getPassTypeDisplay(pass.passType);
+            };
+
+            $scope.initTimePicker = function () {
+                $('.timepicker input').timepicker({
+                    showInputs: false,
+                    defaultTime: false,
+                    showMeridian: false,
+                    showWidgetOnAddonClick: true
+                });
+                $('.timepicker .input-group-addon').click(function () {
+                    $(this).parent().find('input').data('timepicker').showWidget();
+                });
+
+
+                $('.timepicker input').timepicker().on('show.timepicker', function(e) {
+                    // console.log(e.time);
+                    if ($(this).attr('data-duration') == 'end') {
+                        var duration_start = $(this).parent().parent().parent().find('[data-duration=start]');
+
+                        if ($(duration_start).val()) {
+                            var startTime = $(duration_start).val();
+                            var endTime =  $(this).val();
+                            if (startTime >= endTime) {
+                                $(this).data('timepicker').setTime(startTime);
+                                $(this).data('timepicker').incrementHour();
+                                $(this).data('timepicker').update();
+                            }
+                            return;
+                        }
+                    }
+                    if (!$(this).val()) {
+                        $(this).data('timepicker').setTime(new Date());
+                        $(this).data('timepicker').incrementMinute();
+                        $(this).data('timepicker').update();
+                    }
+                });
+            };
+
+            $scope.initCreatePassForm = function () {
+                if ($scope.isInitializedCreatePassForm) {
+                    return;
+                }
+                $scope.isInitializedCreatePassForm = true;
+                $scope.initTimePicker();
+                $('.slider').slider();
+                $("[data-mask]").inputmask();
             };
 
             $scope.init = function () {

@@ -12,3 +12,7 @@ var MODULE_TYPE_SPA = "Spa";
 var POOL_TYPE_INDOOR = "InDoor";
 var POOL_TYPE_OUTDOOR = "OutDoor";
 var POOL_TYPE_OTHERS = "Others";
+
+var PASS_TYPE_POOL_PASS = "PoolPass";
+var PASS_TYPE_DAYBED = "Daybed";
+var PASS_TYPE_CABANA = "Cabana";

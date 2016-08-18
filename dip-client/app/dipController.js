@@ -38,6 +38,15 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             utils.notyErrorMessage(error.details, true);
         };
 
+        $scope.notifyValidateError = function (message, isTranslated) {
+            var messageContent = message;
+            if (!isTranslated) {
+                messageContent = $scope.translate(message);
+            }
+            utils.notyErrorMessage(messageContent, true);
+            return false;
+        };
+
         $rootScope.initDipApp = function (fn) {
             $scope.startSpin();
             $rootScope.isInit = false;

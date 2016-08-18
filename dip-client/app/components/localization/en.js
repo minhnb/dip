@@ -105,5 +105,29 @@ var angular_translate_en = {
     LIST_MODULES: "List Swimming Pools",
 
     ERROR_INVALID_HOTEL_SERVICE_PICTURE: "Invalid swimming pool picture",
-    MODULE_DELETE_CONFIRM: "Do you want to delete pool {{ name }} ?"
+    MODULE_DELETE_CONFIRM: "Do you want to delete pool {{ name }} ?",
+
+    ADD_PASSES: "Add Passes",
+    PASS: "Pass",
+    PASS_TYPE: "Pass Type",
+    PASS_TITLE: "Pass Title",
+    POOL_TITLE: "Pool Title",
+    TIME_PERIOD: "Time Period",
+    MAXIMUM_PASSES: "Maximum Passes",
+    CAPACITY: "Capacity",
+    DURATION_START: "Start",
+    DURATION_END: "End",
+
+    PASS_TYPE_POOL_PASS: "Pool Pass",
+    PASS_TYPE_DAYBED: "Daybed",
+    PASS_TYPE_CABANA: "Cabana",
+
+    ERROR_INVALID_PASS_TYPE: "Invalid pass type",
+    ERROR_INVALID_PASS_TITLE: "Invalid pass title",
+    ERROR_INVALID_PASS_DURATION_START_TIME: "Invalid start time",
+    ERROR_INVALID_PASS_DURATION_END_TIME: "Invalid end time",
+    ERROR_INVALID_PASS_CAPACITY: "Invalid capacity",
+    ERROR_INVALID_PASS_MAXIMUM: "Invalid maximum passes",
+    ERROR_INVALID_PASS_PRICE: "Invalid price",
+    ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time"
 };

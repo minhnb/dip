@@ -10,15 +10,18 @@
             <div class="create-edit-box" ng-show="module.isEditingModuleInfo">
                 <form>
                     <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
-                    <div class="text-center">
+                    <div class="text-center row-button">
                         <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL' | translate}}</button>
                         <button type="submit" class="btn btn-info" ng-click="editModule(module)">{{'SAVE' | translate}}</button>
                     </div>
                 </form>
             </div>
+            <div class="col-xs-12" ng-show="(module.offers && module.offers.length > 0) || module.isAddingPass">
+                <ng-include src="'/properties/hotel/passes.html'"></ng-include>
+            </div>
         </div>
     </div>
-    <!--<div class="box-footer text-center">-->
+    <!--<div class="box-footer text-center row-button">-->
     <!--<button type="button" class="btn btn-default" ng-click="">{{'PREVIOUS' | translate}}</button>-->
     <!--<button type="button" class="btn btn-info" ng-click="">{{'NEXT' | translate}}</button>-->
     <!--</div>-->

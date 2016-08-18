@@ -93,3 +93,43 @@ a {
 .module-header {
     margin-bottom: 10px;
 }
+
+.pass_maximum .slider-selection, .pass_capacity .slider-selection {
+    background: #00c0ef none repeat scroll 0 0;
+}
+
+.pass_maximum .tooltip, .pass_maximum .tooltip {
+    z-index: 10;
+}
+
+.row-button {
+    padding: 10px;
+}
+.row-button button {
+    min-width: 70px;
+    margin-right: 10px;
+}
+.pass-box {
+    margin-top: 20px;
+}
+
+
+.row.row-grid [class*="col-"] + [class*="col-"] {
+    margin-top: 15px;
+}
+
+@media (min-width: 1200px) {
+    .row.row-grid [class*="col-lg-"] + [class*="col-lg-"] {
+        margin-top: 0;
+    }
+}
+@media (min-width: 992px) {
+    .row.row-grid [class*="col-md-"] + [class*="col-md-"] {
+        margin-top: 0;
+    }
+}
+@media (min-width: 768px) {
+    .row.row-grid [class*="col-sm-"] + [class*="col-sm-"] {
+        margin-top: 0;
+    }
+}

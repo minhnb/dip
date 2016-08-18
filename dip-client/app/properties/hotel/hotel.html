@@ -2,10 +2,12 @@
     <div class="box-header with-border">
         <h3 class="box-title">{{'HOTEL_INFO' | translate}}</h3>
         <div class="box-tools pull-right">
-            <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}" ng-click="showEditHotelBox(hotel)">
+            <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}"
+                    ng-click="showEditHotelBox(hotel)">
                 <span aria-hidden="true" class="fa fa-edit"></span>
             </button>
-            <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}" ng-click="deleteHotel(hotel)">
+            <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}"
+                    ng-click="deleteHotel(hotel)">
                 <span aria-hidden="true" class="fa fa-trash"></span>
             </button>
             <!--<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-angle-down"></i></button>-->
@@ -55,7 +57,7 @@
             <ng-include src="'/properties/hotels/hotel-form-content.html'"></ng-include>
         </div>
     </div>
-    <div class="box-footer text-center" ng-show="isEditingHotel">
+    <div class="box-footer text-center row-button" ng-show="isEditingHotel">
         <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}</button>
         <button type="submit" class="btn btn-info" ng-click="editHotel()">{{'SAVE' | translate}}</button>
     </div>

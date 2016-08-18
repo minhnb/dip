@@ -3,6 +3,8 @@ dipApp.factory('hotelUtils', [
         var hotelUtils = {
             poolTypes: [],
             poolTypeMap: [],
+            passTypes: [],
+            passTypeMap: [],
             getHotelFullAddress: function (hotel) {
                 var address = [hotel.address.street, hotel.address.city, hotel.address.state];
                 return address.filter(Boolean).join(", ");
@@ -60,6 +62,15 @@ dipApp.factory('hotelUtils', [
             },
             getPoolTypeDisplay: function (poolType) {
                 return this.poolTypeMap[poolType];
+            },
+            setPassTypes: function (passTypes) {
+                this.passTypes = passTypes;
+                passTypes.map(function (passType) {
+                    hotelUtils.passTypeMap[passType.value] = passType.display;
+                });
+            },
+            getPassTypeDisplay: function (passType) {
+                return this.passTypeMap[passType];
             }
         };
         return hotelUtils;

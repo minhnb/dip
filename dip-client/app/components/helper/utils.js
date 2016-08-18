@@ -20,6 +20,10 @@ var utils = {
     convertMinuteDurationToTime: function (duration) {
         return moment.utc(duration * 60 * 1000).format(FORMAT_TIME_EVENT);
     },
+    convertTimeToDuration: function (time) {
+        return moment.duration(time).asMinutes();
+
+    },
     formatDipDateToDate: function (dipDate) {
         return moment(dipDate).format(FORMAT_DATE);
     },
