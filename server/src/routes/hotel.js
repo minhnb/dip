@@ -84,5 +84,14 @@ router
             let img = ctx.req.file;
             ctx.body = await(resourcesServices.updateHotelServiceImage(hotelServiceId, img));
         })
+    )
+
+    .post('create pass', '/:hotelId/service/:hotelServiceId/pass',
+        async(ctx => {
+            let pass = ctx.request.body;
+            let hotelId = ctx.params.hotelId;
+            let hotelServiceId = ctx.params.hotelServiceId;
+            ctx.body = await(resourcesServices.createPass(hotelId, hotelServiceId, pass));
+        })
     );
 

@@ -209,6 +209,16 @@ resourcesServices.deleteHotelService = function (hotelId, hotelServiceId) {
 };
 
 
+
+
+resourcesServices.createPass = function (hotelId, hotelServiceId, offer) {
+    return resourcesServices.dbCreatePass(hotelId, hotelServiceId, offer).then(offer => {
+        return entities.offer(offer);
+    });
+};
+
+
+
 resourcesServices.dbCreateHotel = function (hotel) {
     if (!hotel.fullAddress) {
         throw new DIPError(dipErrorDictionary.HOTEL_INVALID_ADDRESS);
@@ -356,6 +366,20 @@ resourcesServices.getExistedHotelService = function (hotelServiceId) {
 
 
 
+resourcesServices.dbCreatePass = function (hotelId, hotelServiceId, offer) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    if (hotel.services.indexOf(hotelService._id) == -1) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    offer.hotel = hotelId;
+    offer.service = hotelServiceId;
+    offer = resourcesServices.initNormalPass(offer);
+    let newOffer = db.offers(offer);
+    return newOffer.save();
+};
+
+
 
 resourcesServices.initNormalHotel = function (hotel) {
     hotel.featured = false;
@@ -461,6 +485,14 @@ resourcesServices.initNormalHotelService = function (hotelService) {
         }
     }
     return hotelService;
+};
+
+resourcesServices.initNormalPass = function (offer) {
+    offer.type = 'pass';
+    if (!offer.description) {
+        offer.description = offer.passType;
+    }
+    return offer;
 };
 
 module.exports = resourcesServices;

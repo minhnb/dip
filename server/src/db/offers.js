@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const utils = require('../helpers/utils');
+const passType = require('../constants/passType');
 
 const Schema = mongoose.Schema;
 
@@ -110,6 +111,15 @@ const offerSchema = new Schema({
     },
     pendingReservationCount: {
         type: Schema.Types.Mixed,
+        required: false
+    },
+    passType: {
+        type: String,
+        required: false,
+        enum: utils.objectToArray(passType)
+    },
+    title: {
+        type: String,
         required: false
     }
 }, {
