@@ -39,12 +39,23 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.getHotelById(hotelId)
                     .success(function (data, status) {
                         var hotel = data;
+                        var serviceMap = [];
+                        if ($scope.hotel.services) {
+                            $scope.hotel.services.map(function (module) {
+                                serviceMap[module.id] = module;
+                            });
+                        }
                         hotel.services.map(function (module) {
                             module = hotelUtils.convertHotelService(module);
                             module.isEditingModuleInfo = false;
                             module.isAddingPass = false;
                             module.newPass = $scope.initNewPass(module);
                             $scope.mapPureHotelService[module.id] = Object.assign({}, module);
+                            if (serviceMap[module.id]) {
+                                module.isEditingModuleInfo = serviceMap[module.id].isEditingModuleInfo;
+                                module.isAddingPass = serviceMap[module.id].isAddingPass;
+                                module.newPass = serviceMap[module.id].newPass;
+                            }
                         });
                         $scope.hotel = hotelUtils.convertHotel(hotel);
                         $scope.getPasses(hotelId).then(function () {
@@ -77,7 +88,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.showEditHotelBox = function (hotel) {
-                $scope.initCreateHotelPanel();
+                $scope.initCreateHotelPanel(true);
                 $scope.startSpin();
                 hotelService.getHotelById(hotel.id)
                     .success(function (data, status) {
@@ -85,7 +96,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         data.neighborhood = data.address.neighborhood;
                         data.city = data.address.city;
                         data.fullAddress = hotelUtils.getHotelFullAddress(data);
-                        $scope.hotel = hotelUtils.convertHotel(data);
+                        var convertedHotel = hotelUtils.convertHotel(data);
+                        for (var key in convertedHotel) {
+                            if (key != 'services') {
+                                $scope.hotel[key] = convertedHotel[key];
+                            }
+                        }
                         $('#image_box_hotel > .image-box img').attr('alt', hotel.name + $scope.translate('PROFILE_PICTURE'));
                         if (hotel.imageUrl) {
                             $('#image_box_hotel > .image-box img').attr('src', hotel.imageUrl);
@@ -95,8 +111,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
             };
 
-            $scope.initCreateHotelPanel = function () {
-                $scope.hotel = {};
+            $scope.initCreateHotelPanel = function (isForEdit) {
+                if (!isForEdit) {
+                    $scope.hotel = {};
+                }
                 $('#image_box_hotel > .input-upload-img').val('');
                 $('#image_box_hotel > .image-box img').hide();
                 $('#image_box_hotel > .image-box img').attr('src', '');
