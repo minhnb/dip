@@ -217,6 +217,17 @@ resourcesServices.createPass = function (hotelId, hotelServiceId, offer) {
     });
 };
 
+resourcesServices.getPassById = function (passId) {
+    return entities.offer(resourcesServices.dbGetPassById(passId));
+};
+
+resourcesServices.getPassesByHotel = function (hotelId) {
+    return resourcesServices.dbGetPassesByHotel(hotelId).then(offers => {
+        return offers.map(entities.offer);
+    });
+};
+
+
 
 
 resourcesServices.dbCreateHotel = function (hotel) {
@@ -377,6 +388,35 @@ resourcesServices.dbCreatePass = function (hotelId, hotelServiceId, offer) {
     offer = resourcesServices.initNormalPass(offer);
     let newOffer = db.offers(offer);
     return newOffer.save();
+};
+
+resourcesServices.dbGetPassById = function (passId) {
+    let pass = resourcesServices.getExistedPass(passId);
+    return pass;
+};
+
+resourcesServices.dbGetPassesByHotel = function (hotelId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    return db.offers.find({hotel: hotelId});
+};
+
+resourcesServices.getExistedOffer = function (offerId, type) {
+    let offer = await(db.offers.findById(offerId));
+    let offerError = dipErrorDictionary.OFFER_NOT_FOUND;
+    if (type == 'pass') {
+        offerError = dipErrorDictionary.PASS_NOT_FOUND;
+    }
+    if (!offer || offer.deleted) {
+        throw new DIPError(offerError);
+    }
+    if (offer.type != type) {
+        throw new DIPError(offerError);
+    }
+    return offer;
+};
+
+resourcesServices.getExistedPass = function (passId) {
+    return resourcesServices.getExistedOffer(passId, 'pass');
 };
 
 

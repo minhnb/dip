@@ -26,7 +26,15 @@ function convertOffer(offer) {
         //     ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
         // },
         price: offer.price,
-        type: convertOfferType(offer.type)
+        type: isPopulatedOfferType(offer.type) ? convertOfferType(offer.type) : offer.type,
+        service: offer.service,
+        hotel: offer.hotel,
+        passType: offer.passType,
+        title: offer.title,
+        days: offer.days,
+        startDay: offer.startDay,
+        dueDay: offer.dueDay,
+        offDays: offer.offDays,
     };
 
     if (offer.reservationCount) {
@@ -35,6 +43,14 @@ function convertOffer(offer) {
 
     return obj;
 }
+
+function isPopulatedOfferType(type) {
+    if (type._id) {
+        return true;
+    }
+    return false;
+}
+
 convertOffer.type = convertOfferType;
 
 module.exports = convertOffer;

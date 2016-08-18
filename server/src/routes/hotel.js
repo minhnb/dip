@@ -93,5 +93,17 @@ router
             let hotelServiceId = ctx.params.hotelServiceId;
             ctx.body = await(resourcesServices.createPass(hotelId, hotelServiceId, pass));
         })
+    )
+    .get('get pass by id', '/pass/:passId',
+        async(ctx => {
+            let passId = ctx.params.passId;
+            ctx.body = await(resourcesServices.getPassById(passId));
+        })
+    )
+    .get('get passes by hotel', '/:hotelId/passes',
+        async(ctx => {
+            let hotelId = ctx.params.hotelId;
+            ctx.body = await(resourcesServices.getPassesByHotel(hotelId));
+        })
     );
 

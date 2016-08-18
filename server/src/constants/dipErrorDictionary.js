@@ -343,5 +343,10 @@ module.exports = {
         status: 404,
         code: "HOTEL_ADDRESS_NOT_FOUND",
         details: "Address not found"
-    }
+    },
+    PASS_NOT_FOUND: {
+        status: 404,
+        code: "PASS_NOT_FOUND",
+        details: "Pass not found"
+    },
 };
