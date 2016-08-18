@@ -38,18 +38,43 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.getHotelById = function (hotelId) {
                 hotelService.getHotelById(hotelId)
                     .success(function (data, status) {
-                        $scope.stopSpin();
-                        data.services.map(function (module) {
+                        var hotel = data;
+                        hotel.services.map(function (module) {
                             module = hotelUtils.convertHotelService(module);
                             module.isEditingModuleInfo = false;
                             module.isAddingPass = false;
                             module.newPass = $scope.initNewPass(module);
                             $scope.mapPureHotelService[module.id] = Object.assign({}, module);
                         });
-                        $scope.hotel = hotelUtils.convertHotel(data);
-                        $scope.isShowingHotelProfile = true;
+                        $scope.hotel = hotelUtils.convertHotel(hotel);
+                        $scope.getPasses(hotelId).then(function () {
+                            $scope.isShowingHotelProfile = true;
+                            $scope.stopSpin();
+                        });
                     });
             };
+
+            $scope.getPasses = function (hotelId) {
+                $scope.startSpin();
+                return hotelService.getPassesByHotel(hotelId)
+                    .success(function (data, status) {
+                        var passes = data;
+                        var moduleMapById = [];
+                        $scope.hotel.services.map(function (module) {
+                            module.passes = [];
+                            moduleMapById[module.id] = module;
+                        });
+                        passes.map(function (pass) {
+                            if (moduleMapById[pass.service]) {
+                                pass.poolTitle = moduleMapById[pass.service].name;
+                                pass.timePeriod = hotelUtils.getPassTimePeriod(pass.duration);
+                                pass.displayPrice = utils.displayMoney(pass.price);
+                                moduleMapById[pass.service].passes.push(pass);
+                            }
+                        });
+
+                    });
+            }
 
             $scope.showEditHotelBox = function (hotel) {
                 $scope.initCreateHotelPanel();
@@ -340,8 +365,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.createPass($scope.hotel.id, module.id, newPass)
                     .success(function (data, status) {
-                        $scope.stopSpin();
-                        $scope.hideCreatePassBox(module);
+                        $scope.getPasses($scope.hotel.id).then(function () {
+                            $scope.hideCreatePassBox(module);
+                            $scope.stopSpin();
+                        });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);

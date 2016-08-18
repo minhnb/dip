@@ -1,0 +1,43 @@
+<div class="col-xs-12 module-header">
+    <button type="button" class="btn btn-default pull-right" title="{{'DELETE' | translate}}" ng-click="">
+        <span aria-hidden="true" class="fa fa-trash"></span>
+    </button>
+    <button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="">
+        <span aria-hidden="true" class="fa fa-edit"></span>
+    </button>
+</div>
+<div class="col-md-6 hotel-info">
+    <div class="row">
+        <div class="col-md-4">{{'PASS_TYPE' | translate}}</div>
+        <div class="col-md-8">{{pass.passType}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'PASS_TITLE' | translate}}</div>
+        <div class="col-md-8">{{pass.title}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'POOL_TITLE' | translate}}</div>
+        <div class="col-md-8">{{pass.poolTitle}}</div>
+    </div>
+</div>
+<div class="col-md-6 hotel-info">
+    <div class="row">
+        <div class="col-md-4">{{'TIME_PERIOD' | translate}}</div>
+        <div class="col-md-8">{{pass.timePeriod}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'MAXIMUM_PASSES' | translate}}</div>
+        <div class="col-md-8">{{pass.allotmentCount}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'CAPACITY' | translate}}</div>
+        <div class="col-md-8">{{pass.capacity}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'PRICE' | translate}}</div>
+        <div class="col-md-8">{{pass.displayPrice}}</div>
+    </div>
+</div>
+<div class="col-xs-12 text-center">
+    <div class="passes-row"></div>
+</div>

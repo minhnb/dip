@@ -71,6 +71,9 @@ dipApp.factory('hotelUtils', [
             },
             getPassTypeDisplay: function (passType) {
                 return this.passTypeMap[passType];
+            },
+            getPassTimePeriod: function (duration) {
+                return utils.convertMinuteDurationToTime(duration.startTime) + " - " + utils.convertMinuteDurationToTime(duration.endTime);
             }
         };
         return hotelUtils;

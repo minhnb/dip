@@ -55,6 +55,12 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             },
             createPass: function (hotelId, hotelServiceId, pass) {
                 return $http.post(apiHotelUrl + '/' + hotelId + '/service/' + hotelServiceId + '/pass', pass);
+            },
+            getPassById: function (passId) {
+                return $http.get(apiHotelUrl + "/pass/" + passId);
+            },
+            getPassesByHotel: function (hotelId) {
+                return $http.get(apiHotelUrl + "/" + hotelId + "/passes");
             }
         };
         return hotelService;

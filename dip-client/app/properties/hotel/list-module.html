@@ -3,7 +3,7 @@
         <h3 class="box-title">{{'LIST_MODULES' | translate }}</h3>
     </div>
     <div class="box-body">
-        <div class="row" ng-repeat="module in hotel.services">
+        <div class="row module-info" ng-repeat="module in hotel.services">
             <div ng-show="!module.isEditingModuleInfo">
                 <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
             </div>
@@ -16,8 +16,11 @@
                     </div>
                 </form>
             </div>
-            <div class="col-xs-12" ng-show="(module.offers && module.offers.length > 0) || module.isAddingPass">
+            <div class="col-xs-12" ng-show="(module.passes && module.passes.length > 0) || module.isAddingPass">
                 <ng-include src="'/properties/hotel/passes.html'"></ng-include>
+            </div>
+            <div class="col-xs-12 text-center">
+                <div class="module-row"></div>
             </div>
         </div>
     </div>
