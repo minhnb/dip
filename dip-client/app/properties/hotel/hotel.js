@@ -74,7 +74,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         });
 
                     });
-            }
+            };
 
             $scope.showEditHotelBox = function (hotel) {
                 $scope.initCreateHotelPanel();
@@ -373,6 +373,23 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     .error(function (data, status) {
                         $scope.handleError(data);
                     });
+            };
+
+            $scope.deletePass = function (pass) {
+                utils.notyConfirm($scope.translate('PASS_DELETE_CONFIRM', {name: pass.title}), $scope.okText, $scope.cancelText, function () {
+                    $scope.startSpin();
+                    hotelService.deletePass(pass.id)
+                        .success(function (data, status) {
+                            $scope.getPasses($routeParams.hotelId).then(function () {
+                                $scope.stopSpin();
+                            });
+                        })
+                        .error(function (data, status) {
+                            $scope.handleError(data);
+                        });
+                }, function () {
+
+                });
             };
 
             $scope.updatePassTitle = function (pass) {

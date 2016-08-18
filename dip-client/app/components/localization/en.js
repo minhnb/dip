@@ -129,5 +129,7 @@ var angular_translate_en = {
     ERROR_INVALID_PASS_CAPACITY: "Invalid capacity",
     ERROR_INVALID_PASS_MAXIMUM: "Invalid maximum passes",
     ERROR_INVALID_PASS_PRICE: "Invalid price",
-    ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time"
+    ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time",
+
+    PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?"
 };
