@@ -100,10 +100,18 @@ router
             ctx.body = await(resourcesServices.getPassById(passId));
         })
     )
-    .delete('delete', '/pass/:passId',
+    .put('update pass', '/pass/:passId',
         async(ctx => {
             let passId = ctx.params.passId;
-            ctx.body = await(resourcesServices.deletePass(passId));
+            let pass = ctx.request.body;
+            ctx.body = await(resourcesServices.updatePass(passId, pass));
+        })
+    )
+    .delete('delete pass', '/pass/:passId',
+        async(ctx => {
+            let passId = ctx.params.passId;
+            let pass = await(resourcesServices.deletePass(passId));
+            ctx.status = 200;
         })
     )
     .get('get passes by hotel', '/:hotelId/passes',

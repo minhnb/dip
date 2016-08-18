@@ -221,6 +221,12 @@ resourcesServices.getPassById = function (passId) {
     return entities.offer(resourcesServices.dbGetPassById(passId));
 };
 
+resourcesServices.updatePass = function (passId, pass) {
+    return resourcesServices.dbUpdatePass(passId, pass).then(offer => {
+        return entities.offer(offer);
+    })
+};
+
 resourcesServices.deletePass = function (passId) {
     return resourcesServices.dbDeletePass(passId).then(result => {
         return true;
@@ -389,9 +395,9 @@ resourcesServices.dbCreatePass = function (hotelId, hotelServiceId, offer) {
     if (hotel.services.indexOf(hotelService._id) == -1) {
         throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
     }
+    offer = resourcesServices.initNormalPass(offer);
     offer.hotel = hotelId;
     offer.service = hotelServiceId;
-    offer = resourcesServices.initNormalPass(offer);
     let newOffer = db.offers(offer);
     return newOffer.save();
 };
@@ -399,6 +405,15 @@ resourcesServices.dbCreatePass = function (hotelId, hotelServiceId, offer) {
 resourcesServices.dbGetPassById = function (passId) {
     let pass = resourcesServices.getExistedPass(passId);
     return pass;
+};
+
+resourcesServices.dbUpdatePass = function (passId, update) {
+    let pass = resourcesServices.getExistedPass(passId);
+    update = resourcesServices.initNormalPass(update);
+    for (let key in update) {
+        pass[key] = update[key];
+    }
+    return pass.save();
 };
 
 resourcesServices.dbDeletePass = function (passId) {
@@ -528,6 +543,9 @@ resourcesServices.deleteHotelImage = function (imageURL) {
 };
 
 resourcesServices.initNormalHotelService = function (hotelService) {
+    if (hotelService._id) {
+        delete hotelService._id;
+    }
     if (hotelService.reservable == undefined) {
         hotelService.reservable = false;
     }
@@ -542,6 +560,24 @@ resourcesServices.initNormalHotelService = function (hotelService) {
 };
 
 resourcesServices.initNormalPass = function (offer) {
+    if (offer._id) {
+        delete offer._id;
+    }
+    if (offer.baseId) {
+        delete offer.baseId;
+    }
+    // if (offer.service) {
+    //     delete offer.service;
+    // }
+    if (offer.hotel) {
+        delete offer.hotel;
+    }
+    if (offer.reservationCount) {
+        delete offer.reservationCount;
+    }
+    if (offer.pendingReservationCount) {
+        delete offer.pendingReservationCount;
+    }
     offer.type = 'pass';
     if (!offer.description) {
         offer.description = offer.passType;
