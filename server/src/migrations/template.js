@@ -35,7 +35,7 @@ let getCollection = async (collectionName => {
     return connection.db.collection(collectionName);
 });
 
-let getDocuments = async ((collection, query) => {
+let getDocuments = (collection, query) => {
     return new Promise((resolve, reject) => {
         collection.find(query).toArray((err, data) => {
             if (err) {
@@ -45,9 +45,9 @@ let getDocuments = async ((collection, query) => {
             }
         });
     });
-});
+};
 
-let getOneDocument = async ((collection, query) => {
+let getOneDocument = (collection, query) => {
     return new Promise((resolve, reject) => {
         collection.findOne(query, (err, data) => {
             if (err) {
@@ -57,11 +57,11 @@ let getOneDocument = async ((collection, query) => {
             }
         });
     });
-});
+};
 
-let updateDocuments = async ((collection, query, update) => {
+let updateDocuments = (collection, query, update) => {
     return new Promise((resolve, reject) => {
-        collection.update(query, update, (err, result) => {
+        collection.updateMany(query, update, (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -69,4 +69,26 @@ let updateDocuments = async ((collection, query, update) => {
             }
         });
     });
-});
+};
+
+let insertDocuments = (collection, documents) => {
+    return new Promise((resolve, reject) => {
+        collection.insert(documents, (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+        });
+    });
+};
+
+let removeDocuments = (collection, query, forced) => {
+    return new Promise((resolve, reject) => {
+        if (!forced && (!query || query == {})) {
+            reject('Trying to remove whole collection without setting forced params');
+        } else {
+            collection.remove(query, (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            });
+        }
+    });
+};

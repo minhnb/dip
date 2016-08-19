@@ -215,8 +215,11 @@ userSchema.methods.setPassword = function(password) {
     }
     this.encryptedPassword = this.encryptPassword(password);
 };
+userSchema.methods.hasPassword = function() {
+    return this.encryptedPassword !== undefined && this.encryptedPassword !== null;
+};
 userSchema.methods.checkPassword = function(password) {
-    return this.encryptedPassword === this.encryptPassword(password);
+    return this.hasPassword() && this.encryptedPassword === this.encryptPassword(password);
 };
 userSchema.methods.encryptPassword = function (password) {
     return crypto.pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString('hex');

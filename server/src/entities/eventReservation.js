@@ -10,6 +10,7 @@ module.exports = function(reservation) {
     }
     let host = service(reservation.event.ref.host);
     host.displayName = utils.getHotelDisplayName(reservation.event.ref.hotel);
+    host.address = reservation.event.ref.hotel.address;
     return {
         id: reservation._id,
         email: reservation.user.email,

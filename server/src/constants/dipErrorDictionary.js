@@ -333,5 +333,20 @@ module.exports = {
         status: 400,
         code: "STRIPE_INVALID_TOKEN",
         details: "Invalid stripe token"
-    }
+    },
+    HOTEL_INVALID_ADDRESS: {
+        status: 400,
+        code: "HOTEL_INVALID_ADDRESS",
+        details: "Invalid full address"
+    },
+    HOTEL_ADDRESS_NOT_FOUND: {
+        status: 404,
+        code: "HOTEL_ADDRESS_NOT_FOUND",
+        details: "Address not found"
+    },
+    PASS_NOT_FOUND: {
+        status: 404,
+        code: "PASS_NOT_FOUND",
+        details: "Pass not found"
+    },
 };

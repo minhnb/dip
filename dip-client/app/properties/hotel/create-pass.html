@@ -1,0 +1,7 @@
+<form>
+    <ng-include src="'/properties/hotel/pass-form-content.html'"></ng-include>
+    <div class="row text-center row-button">
+        <button type="button" class="btn btn-default" ng-click="hideCreatePassBox(module)">{{'CANCEL' | translate}}</button>
+        <button type="submit" class="btn btn-info" ng-click="createPass(pass, module, $event)">{{'ADD_PASS' | translate}}</button>
+    </div>
+</form>

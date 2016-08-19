@@ -1,0 +1,27 @@
+<div class="box create-edit-box pass-box">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ 'PASSES' | translate }}</h3>
+    </div>
+    <div class="box-body">
+        <div class="row" ng-repeat="pass in [module.newPass]" ng-if="module.isAddingPass">
+            <div class="col-xs-12" id="new_pass_{{module.id}}">
+                <ng-include src="'/properties/hotel/create-pass.html'"></ng-include>
+            </div>
+        </div>
+        <div class="row pass-info" ng-repeat="pass in module.passes">
+            <ng-include src="'/properties/hotel/pass-info.html'" ng-if="!pass.isEditingPassInfo"></ng-include>
+            <div class="col-xs-12" id="pass_{{pass.id}}" ng-if="pass.isEditingPassInfo">
+                <form>
+                    <ng-include src="'/properties/hotel/pass-form-content.html'"></ng-include>
+                    <div class="text-center row-button">
+                        <button type="button" class="btn btn-default" ng-click="discardChangePass(pass)">{{'CANCEL' | translate}}</button>
+                        <button type="submit" class="btn btn-info" ng-click="editPass(pass, module, $event)">{{'SAVE' | translate}}</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-12 text-center">
+                <div class="passes-row"></div>
+            </div>
+        </div>
+    </div>
+</div>

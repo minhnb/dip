@@ -1,0 +1,45 @@
+<div class="col-xs-12">
+    <p class="lead" ng-click="goToPath('/properties/hotel/' + hotel.id)">{{hotel.name}}</p>
+    <!--<button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditHotelBox(hotel)">-->
+        <!--<span aria-hidden="true" class="fa fa-edit"></span>-->
+    <!--</button>-->
+    <!--<button type="button" class="btn btn-default pull-right" title="{{'DELETE' | translate}}" ng-click="deleteHotel(hotel)">-->
+        <!--<span aria-hidden="true" class="fa fa-trash"></span>-->
+    <!--</button>-->
+    <button type="button" class="btn btn-default pull-right" title="{{'DETAILS' | translate}}" ng-click="goToPath('/properties/hotel/' + hotel.id)">
+        <span aria-hidden="true" class="fa fa-folder-open-o"></span>
+    </button>
+</div>
+<div class="col-md-8 hotel-info">
+    <div class="row" ng-if="hotel.fullAddress">
+        <div class="col-md-4">{{'ADDRESS' | translate}}</div>
+        <div class="col-md-8">{{hotel.fullAddress}}</div>
+    </div>
+    <div class="row" ng-if="hotel.address.neighborhood">
+        <div class="col-md-4">{{'NEIGHBORHOOD' | translate}}</div>
+        <div class="col-md-8">{{hotel.address.neighborhood}}</div>
+    </div>
+    <div class="row" ng-if="hotel.address.city">
+        <div class="col-md-4">{{'CITY' | translate}}</div>
+        <div class="col-md-8">{{hotel.address.city}}</div>
+    </div>
+    <div class="row" ng-if="hotel.phone">
+        <div class="col-md-4">{{'FRONT_DESK' | translate}}</div>
+        <div class="col-md-8">{{hotel.phone}}</div>
+    </div>
+    <div class="row" ng-if="hotel.roomService">
+        <div class="col-md-4">{{'ROOM_SERVICE' | translate}}</div>
+        <div class="col-md-8">{{hotel.roomService}}</div>
+    </div>
+    <div class="row" ng-if="hotel.url">
+        <div class="col-md-4">{{'WEBSITE' | translate}}</div>
+        <div class="col-md-8"><a href="{{hotel.url}}">{{hotel.url}}</a></div>
+    </div>
+    <div class="row" ng-if="hotel.instagramUrl">
+        <div class="col-md-4">{{'INSTAGRAM' | translate}}</div>
+        <div class="col-md-8"><a href="{{hotel.instagramUrl}}">{{hotel.instagram}}</a></div>
+    </div>
+</div>
+<div class="col-md-4" ng-if="hotel.imageUrl" ng-click="goToPath('/properties/hotel/' + hotel.id)">
+    <img alt="{{hotel.name}} Profile Picture" class="img-responsive" ng-src="{{hotel.imageUrl}}"/>
+</div>

@@ -1,0 +1,47 @@
+<div class="col-md-8">
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_NAME' | translate}}</label>
+        <input type="text" required class="form-control" ng-model="hotel.name"
+               placeholder="{{'HOTEL_NAME' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'ADDRESS' | translate}}</label>
+        <input type="text" required class="form-control" ng-model="hotel.fullAddress"
+               placeholder="{{'ADDRESS' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'NEIGHBORHOOD' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.neighborhood"
+               placeholder="{{'NEIGHBORHOOD' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'CITY' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.city"
+               placeholder="{{'CITY' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'FRONT_DESK' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.phone"
+               placeholder="{{'FRONT_DESK' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'ROOM_SERVICE' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.roomService"
+               placeholder="{{'ROOM_SERVICE' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'WEBSITE' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.url"
+               placeholder="{{'WEBSITE' | translate}}">
+    </div>
+    <div class="form-group">
+        <label ng-if="isEditingHotel" class="control-label">{{'INSTAGRAM' | translate}}</label>
+        <input type="text" class="form-control" ng-model="hotel.instagram"
+               placeholder="{{'INSTAGRAM' | translate}}">
+    </div>
+</div>
+<div class="col-md-4">
+    <dip-image-box class="form-group" id="image_box_hotel"
+                   data-title="{{'PROFILE_PICTURE' | translate}}"
+                   data-alt="Hotel Profile Picture"></dip-image-box>
+</div>

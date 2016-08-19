@@ -12,17 +12,7 @@ angular.module('dipApp.login', ['ngRoute'])
             $scope.username = "";
             $scope.password = "";
 
-            $scope.init = function () {
-                userService.initUser();
-                if (userService.user && userService.user.JWT) {
-                    // console.log("user already login");
-                    $location.path('/dashboard');
-                }
-            };
-            $scope.init();
-
             $scope.login = function () {
-                console.log($scope.username, $scope.password);
                 if (!$scope.username || !$scope.password) {
                     return;
                 }
@@ -36,7 +26,29 @@ angular.module('dipApp.login', ['ngRoute'])
             };
 
             $scope.showLoginError = function () {
-                utils.showMessageBoxWithSound('#message-box-sound-login-failed', 'fail');
+                utils.notyErrorMessage('Wrong username or password.Please check and try again.', true);
             };
+
+            $scope.initRememberCheckbox = function () {
+                $(function () {
+                    $('input').iCheck({
+                        checkboxClass: 'icheckbox_square-blue',
+                        radioClass: 'iradio_square-blue',
+                        increaseArea: '20%' // optional
+                    });
+                });
+            };
+
+            $scope.init = function () {
+                userService.initUser();
+                if (userService.user && userService.user.JWT) {
+                    // console.log("user already login");
+                    $location.path('/dashboard');
+                } else {
+                    $scope.initRememberCheckbox();
+                    $scope.stopSpin();
+                }
+            };
+            $scope.init();
 
         }]);

@@ -11,6 +11,16 @@ const dipConstant = require('../constants/constants');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
+const hotelServiceType = require('../constants/hotelServiceType');
+const utils = require('../helpers/utils');
+
+const s3 = require('../helpers/s3');
+const crypto = require('crypto');
+const url = require('url');
+
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
+
 var resourcesServices = {};
 
 resourcesServices.isSupportLocationByCoordinates = function (longitude, latitude) {
@@ -36,10 +46,10 @@ resourcesServices.dbSearchNearestHotels =  function(searchKey, condition, longit
     let needDistanceKey = false;
 
     if (condition == undefined) {
-        aggregateCondition = {};
-    } else {
-        aggregateCondition = condition;
+        condition = {};
     }
+    condition.deleted = false;
+    aggregateCondition = condition;
 
     if (longitude && latitude) {
         let coordinates = [];
@@ -130,6 +140,463 @@ resourcesServices.createAggregateSort = function (sort, needDistanceKey) {
     result.push('_id');
 
     return result.join(' ');
+};
+
+
+
+resourcesServices.createHotel = function (hotel) {
+    return resourcesServices.dbCreateHotel(hotel).then(hotel => {
+       return entities.hotel(hotel);
+    });
+};
+
+resourcesServices.getHotelById = function (hotelId) {
+    return entities.hotel(resourcesServices.dbGetHotelById(hotelId));
+};
+
+resourcesServices.updateHotelImage = function (hotelId, img) {
+    return resourcesServices.dbUpdateHotelImage(hotelId, img).then(hotel => {
+        return entities.hotel(hotel);
+    });
+};
+
+resourcesServices.updateHotel = function (hotelId, update) {
+    return resourcesServices.dbUpdateHotel(hotelId, update).then(hotel => {
+        return entities.hotel(hotel);
+    });
+};
+
+resourcesServices.deleteHotel = function (hotelId) {
+    return resourcesServices.dbDeleteHotel(hotelId).then(result => {
+        return true;
+    });
+};
+
+resourcesServices.getListPendingHotel = function () {
+    return resourcesServices.dbGetListPendingHotel().then(hotels => {
+        return hotels.map(entities.hotel);
+    });
+};
+
+
+
+resourcesServices.createHotelService = function (hotelId, hotelService) {
+    return resourcesServices.dbCreateHotelService(hotelId, hotelService).then(hotelService => {
+       return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.getHotelServiceById = function (hotelServiceId) {
+    return entities.hotelService(resourcesServices.dbGetHotelServiceById(hotelServiceId));
+};
+
+resourcesServices.updateHotelServiceImage = function (hotelServiceId, img) {
+    return resourcesServices.dbUpdateHotelServiceImage(hotelServiceId, img).then(hotelService => {
+        return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.updateHotelService = function (hotelServiceId, update) {
+    return resourcesServices.dbUpdateHotelService(hotelServiceId, update).then(hotelService => {
+        return entities.hotelService(hotelService);
+    });
+};
+
+resourcesServices.deleteHotelService = function (hotelId, hotelServiceId) {
+    return resourcesServices.dbDeleteHotelService(hotelId, hotelServiceId).then(result => {
+        return true;
+    });
+};
+
+
+
+
+resourcesServices.createPass = function (hotelId, hotelServiceId, offer) {
+    return resourcesServices.dbCreatePass(hotelId, hotelServiceId, offer).then(offer => {
+        return entities.offer(offer);
+    });
+};
+
+resourcesServices.getPassById = function (passId) {
+    return entities.offer(resourcesServices.dbGetPassById(passId));
+};
+
+resourcesServices.updatePass = function (passId, pass) {
+    return resourcesServices.dbUpdatePass(passId, pass).then(offer => {
+        return entities.offer(offer);
+    })
+};
+
+resourcesServices.deletePass = function (passId) {
+    return resourcesServices.dbDeletePass(passId).then(result => {
+        return true;
+    });
+};
+
+resourcesServices.getPassesByHotel = function (hotelId) {
+    return resourcesServices.dbGetPassesByHotel(hotelId).then(offers => {
+        return offers.map(entities.offer);
+    });
+};
+
+
+
+
+resourcesServices.dbCreateHotel = function (hotel) {
+    if (!hotel.fullAddress) {
+        throw new DIPError(dipErrorDictionary.HOTEL_INVALID_ADDRESS);
+    }
+    hotel = resourcesServices.initNormalHotel(hotel);
+    let newHotel = db.hotels(hotel);
+    return newHotel.save();
+};
+
+resourcesServices.dbUpdateHotelImage = function (hotelId, img) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    }
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name, hotelId, null));
+    if (uploadImage) {
+        if (hotel.image && hotel.image.url && hotel.image.verified && hotel.image.url != uploadImage.Location) {
+            resourcesServices.deleteHotelImage(hotel.image.url);
+        }
+        hotel.image = {
+            url: uploadImage.Location,
+            verified: true
+        };
+        return hotel.save();
+    } else {
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
+resourcesServices.dbGetHotelById = function (hotelId) {
+    let hotel = await(db.hotels.findById(hotelId)
+        .populate({
+            path: 'services',
+            model: db.hotelServices
+        }));
+    if (!hotel || hotel.deleted) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+    }
+    return hotel;
+};
+
+resourcesServices.dbUpdateHotel = function (hotelId, update) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    update = resourcesServices.initNormalHotel(update);
+    for (let key in update) {
+        hotel[key] = update[key];
+    }
+    return hotel.save();
+};
+
+resourcesServices.dbDeleteHotel = function (hotelId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    return db.hotels.update({_id: hotel._id}, {deleted: true});
+};
+
+resourcesServices.dbGetListPendingHotel = function () {
+    let condition = {};
+    condition.active = false;
+    let sort = {_id: -1};
+    return db.hotels.find(condition).sort(sort).exec().then(hotels => {
+        return hotels;
+    });
+};
+
+resourcesServices.getExistedHotel = function (hotelId) {
+    let hotel = await(db.hotels.findById(hotelId));
+    if (!hotel || hotel.deleted) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
+    }
+    return hotel;
+};
+
+
+
+resourcesServices.dbCreateHotelService = function (hotelId, hotelService) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    hotelService = resourcesServices.initNormalHotelService(hotelService);
+    let newHotelService;
+    if (hotelService.type == hotelServiceType.POOL_SERVICE) {
+        newHotelService = db.poolServices(hotelService);
+    } else  {
+        newHotelService = db.hotelServices(hotelService);
+    }
+    return newHotelService.save().then((hotelService) => {
+        return db.hotels.update({_id: hotel._id}, {$addToSet: {services: newHotelService}}).then((result) => {
+            return hotelService;
+        });
+    });
+};
+
+resourcesServices.dbUpdateHotelServiceImage = function (hotelServiceId, img) {
+    if (!img) {
+        throw new DIPError(dipErrorDictionary.NO_IMAGE_SPECIFIED);
+    }
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotelService.name, hotelServiceId, hotelService.type));
+    if (uploadImage) {
+        if (hotelService.image && hotelService.image.url && hotelService.image.verified && hotelService.image.url != uploadImage.Location) {
+            resourcesServices.deleteHotelImage(hotelService.image.url);
+        }
+        hotelService.image = {
+            url: uploadImage.Location,
+            verified: true
+        };
+        return hotelService.save();
+    } else {
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
+resourcesServices.dbGetHotelServiceById = function (hotelServiceId) {
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    return hotelService;
+};
+
+resourcesServices.dbUpdateHotelService = function (hotelServiceId, update) {
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    update = resourcesServices.initNormalHotelService(update);
+    for (let key in update) {
+        hotelService[key] = update[key];
+    }
+    return hotelService.save();
+};
+
+resourcesServices.dbDeleteHotelService = function (hotelId, hotelServiceId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    if (hotel.services.indexOf(hotelService._id) == -1) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    return db.hotels.update({_id: hotel._id}, {$pull: {services: hotelService._id}}).then((result) => {
+        return db.hotelServices.update({_id: hotelService._id}, {deleted: true}).then((hotelService) => {
+            return hotelService;
+        });
+    });
+};
+
+resourcesServices.getExistedHotelService = function (hotelServiceId) {
+    let hotelService = await(db.hotelServices.findById(hotelServiceId));
+    if (!hotelService || hotelService.deleted) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    return hotelService;
+};
+
+
+
+resourcesServices.dbCreatePass = function (hotelId, hotelServiceId, offer) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    let hotelService = resourcesServices.getExistedHotelService(hotelServiceId);
+    if (hotel.services.indexOf(hotelService._id) == -1) {
+        throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+    }
+    offer = resourcesServices.initNormalPass(offer);
+    offer.hotel = hotelId;
+    offer.service = hotelServiceId;
+    let newOffer = db.offers(offer);
+    return newOffer.save();
+};
+
+resourcesServices.dbGetPassById = function (passId) {
+    let pass = resourcesServices.getExistedPass(passId);
+    return pass;
+};
+
+resourcesServices.dbUpdatePass = function (passId, update) {
+    let pass = resourcesServices.getExistedPass(passId);
+    update = resourcesServices.initNormalPass(update);
+    if (update.service != pass.service) {
+        let hotel = resourcesServices.getExistedHotel(pass.hotel);
+        let hotelService = resourcesServices.getExistedHotelService(update.service);
+        if (hotel.services.indexOf(hotelService._id) == -1) {
+            throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+        }
+    }
+    for (let key in update) {
+        pass[key] = update[key];
+    }
+    return pass.save();
+};
+
+resourcesServices.dbDeletePass = function (passId) {
+    let pass = resourcesServices.getExistedPass(passId);
+    if (resourcesServices.isDeletablePass(pass)) {
+        return db.offers.update({_id: pass._id}, {deleted: true});
+    }
+    return Promise.resolve();
+};
+
+resourcesServices.dbGetPassesByHotel = function (hotelId) {
+    let hotel = resourcesServices.getExistedHotel(hotelId);
+    return db.offers.find({hotel: hotelId});
+};
+
+resourcesServices.getExistedOffer = function (offerId, type) {
+    let offer = await(db.offers.findById(offerId));
+    let offerError = dipErrorDictionary.OFFER_NOT_FOUND;
+    if (type == 'pass') {
+        offerError = dipErrorDictionary.PASS_NOT_FOUND;
+    }
+    if (!offer || offer.deleted) {
+        throw new DIPError(offerError);
+    }
+    if (offer.type != type) {
+        throw new DIPError(offerError);
+    }
+    return offer;
+};
+
+resourcesServices.getExistedPass = function (passId) {
+    return resourcesServices.getExistedOffer(passId, 'pass');
+};
+
+
+
+resourcesServices.initNormalHotel = function (hotel) {
+    hotel.featured = false;
+    hotel.reservable = false;
+    hotel.active = false;
+    if (hotel._id) {
+        delete hotel._id;
+    }
+    if (hotel.dipLocation) {
+        delete hotel.dipLocation;
+    }
+    if (hotel.image) {
+        delete hotel.image;
+    }
+    if (hotel.services) {
+        delete hotel.services;
+    }
+
+    if (hotel.fullAddress) {
+        let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
+        hotel.address = hotelAddressData.address;
+        hotel.coordinates = hotelAddressData.coordinates;
+    }
+
+    hotel.address.city = hotel.city;
+    hotel.address.neighborhood = hotel.neighborhood;
+    delete hotel.city;
+    delete hotel.neighborhood;
+
+    return hotel;
+};
+
+resourcesServices.getHotelAddress = function (hotelFullAddress) {
+    return geocoder.geocode(hotelFullAddress)
+        .then(data => {
+            if (data.length == 0) {
+                throw new DIPError(dipErrorDictionary.HOTEL_ADDRESS_NOT_FOUND);
+            }
+            let hotelAddressData = {
+                address: {},
+                coordinates: []
+            };
+            hotelAddressData.address.street = hotelFullAddress.split(",")[0];
+            if (data.length > 0) {
+                hotelAddressData.address.state = data[0].administrativeLevels.level1short;
+                hotelAddressData.coordinates.push(data[0].longitude);
+                hotelAddressData.coordinates.push(data[0].latitude);
+            }
+
+            let tmpAddArr = hotelFullAddress.split(" ");
+            hotelAddressData.address.postalCode = tmpAddArr[tmpAddArr.length - 1];
+
+            return hotelAddressData;
+        });
+};
+
+resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceType) {
+    let key = 'hotels';
+    if (serviceType) {
+        switch (serviceType) {
+            case hotelServiceType.POOL_SERVICE:
+                key = 'pools';
+                break;
+            case hotelServiceType.SPA_SERVICE:
+                key = 'spas';
+                break;
+            case hotelServiceType.RESTAURANT_SERVICE:
+                key = 'restaurants';
+                break;
+            default:
+        }
+    }
+    let hash = crypto.createHash('md5').update(img.buffer).digest("hex");
+    let path = key + '/' + hotelName.replace(/ /g, "_").toLowerCase() + '_' + hotelId + '_' + hash;
+    let uploadImage = await(s3.uploadResizedImage(img, undefined, path));
+    let uploadResizedImage = await(s3.uploadResizedImage(img, dipConstant.HOTEL_IMAGE_WIDTH, path + '_resized'));
+    return uploadImage;
+};
+
+resourcesServices.deleteHotelImage = function (imageURL) {
+    if (!imageURL) {
+        return;
+    }
+    try {
+        let path = url.parse(imageURL).pathname.substr(1);
+        let paths = [path, path + '_resized'];
+        let deletedHotelImages = await(s3.deleteImages(paths));
+    } catch (ex) {
+        console.log(ex);
+        throw new DIPError(dipErrorDictionary.S3_ERROR);
+    }
+};
+
+resourcesServices.initNormalHotelService = function (hotelService) {
+    if (hotelService._id) {
+        delete hotelService._id;
+    }
+    if (hotelService.image) {
+        delete hotelService.image;
+    }
+    if (hotelService.reservable == undefined) {
+        hotelService.reservable = false;
+    }
+    if (hotelService.type) {
+        let hotelServiceTypes = utils.objectToArray(hotelServiceType);
+        let type = hotelService.type + 'Service';
+        if (hotelServiceTypes.indexOf(type) > -1) {
+            hotelService.type = type;
+        }
+    }
+    return hotelService;
+};
+
+resourcesServices.initNormalPass = function (offer) {
+    if (offer._id) {
+        delete offer._id;
+    }
+    if (offer.baseId) {
+        delete offer.baseId;
+    }
+    // if (offer.service) {
+    //     delete offer.service;
+    // }
+    if (offer.hotel) {
+        delete offer.hotel;
+    }
+    if (offer.reservationCount) {
+        delete offer.reservationCount;
+    }
+    if (offer.pendingReservationCount) {
+        delete offer.pendingReservationCount;
+    }
+    offer.type = 'pass';
+    if (!offer.description) {
+        offer.description = offer.passType;
+    }
+    return offer;
+};
+
+resourcesServices.isDeletablePass = function (offer) {
+    return true;
 };
 
 module.exports = resourcesServices;

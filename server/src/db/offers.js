@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const utils = require('../helpers/utils');
+const passType = require('../constants/passType');
 
 const Schema = mongoose.Schema;
 
@@ -111,6 +112,20 @@ const offerSchema = new Schema({
     pendingReservationCount: {
         type: Schema.Types.Mixed,
         required: false
+    },
+    passType: {
+        type: String,
+        required: false,
+        enum: utils.objectToArray(passType)
+    },
+    title: {
+        type: String,
+        required: false
+    },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {
     timestamps: true
@@ -118,6 +133,11 @@ const offerSchema = new Schema({
 offerSchema.pre('save', function(next) {
     this.date = utils.convertDate(this.date);
     next();
+});
+offerSchema.pre('find', function () {
+    if (this._conditions && this._conditions.deleted == undefined) {
+        this._conditions.deleted = false;
+    }
 });
 
 const offerModel = mongoose.model('Offer', offerSchema);

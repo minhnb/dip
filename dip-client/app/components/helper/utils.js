@@ -6,9 +6,9 @@ var utils = {
     },
     getObjectValueByKey: function(object, key) {
         if (!key) return null;
-        let keys = key.split('.');
-        let result = object[keys[0]];
-        for (let i = 1; i < keys.length; i++) {
+        var keys = key.split('.');
+        var result = object[keys[0]];
+        for (var i = 1; i < keys.length; i++) {
             if (result == undefined) return null;
             result = result[keys[i]];
         }
@@ -20,12 +20,16 @@ var utils = {
     convertMinuteDurationToTime: function (duration) {
         return moment.utc(duration * 60 * 1000).format(FORMAT_TIME_EVENT);
     },
+    convertTimeToDuration: function (time) {
+        return moment.duration(time).asMinutes();
+
+    },
     formatDipDateToDate: function (dipDate) {
         return moment(dipDate).format(FORMAT_DATE);
     },
     displayMoney: function (money) {
         if (!money) return "";
-        let result = Math.round(money / 100).toFixed(2);
+        var result = Math.round(money / 100).toFixed(2);
         return "$" + result;
     },
     showMessageBoxWithSound: function (messageBoxIdWithHashTag, soundName) {
@@ -39,13 +43,40 @@ var utils = {
         });
         $(messageBoxIdWithHashTag).toggleClass("open");
     },
-    notyMessage: function (message, type) {
-        noty({text: message, layout: 'topRight', type: type, timeout: NOTY_TIME_OUT});
+    notyMessage: function (message, type, hasSound) {
+        if (hasSound) {
+            var soundName = 'alert';
+            if (type == 'error') {
+                soundName = 'fail';
+            }
+            document.getElementById('audio-' + soundName).play();
+        }
+        noty({text: message, layout: 'topRight', theme: 'relax', type: type, timeout: NOTY_TIME_OUT});
     },
-    notySuccessMessage: function (message) {
-        this.notyMessage(message, 'success');
+    notySuccessMessage: function (message, hasSound) {
+        this.notyMessage(message, 'success', hasSound);
     },
-    notyErrorMessage: function (message) {
-        this.notyMessage(message, 'error');
+    notyErrorMessage: function (message, hasSound) {
+        this.notyMessage(message, 'error', hasSound);
+    },
+    notyConfirm: function (message, okText, cancelText, okFunction, cancelFunction) {
+        noty({
+            text: message,
+            layout: 'center',
+            theme: 'relax',
+            modal: true,
+            buttons: [
+                {addClass: 'btn btn-info', text: okText, onClick: function($noty) {
+                    $noty.close();
+                    okFunction();
+                }
+                },
+                {addClass: 'btn btn-danger', text: cancelText, onClick: function($noty) {
+                    $noty.close();
+                    cancelFunction();
+                }
+                }
+            ]
+        });
     }
 };

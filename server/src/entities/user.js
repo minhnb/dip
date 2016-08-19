@@ -31,6 +31,8 @@ function convertUser(user, currentUser) {
         data.membership = user.account.defaultSubscription ? convertMembership(user.account.subscriptions.id(user.account.defaultSubscription)) : undefined;
         data.private = user.privateMode;
         data.refCode = user.account.refCode;
+
+        data.hasPassword = user.hasPassword();
     }
     return data;
 }

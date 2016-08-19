@@ -1,0 +1,22 @@
+<div class="panel-body">
+    <button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateEditHotelBox"
+            ng-click="showCreateHotelBox()">{{'NEW_HOTEL' | translate}}
+    </button>
+</div>
+
+<ng-include src="'/properties/hotels/create-edit-hotel.html'"></ng-include>
+
+<div class="box box-info list-hotel" ng-show="isShowingListHotels">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{'LIST_HOTELS' | translate }}</h3>
+    </div>
+    <div class="box-body">
+        <div class="row" ng-repeat="hotel in list">
+            <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>
+        </div>
+    </div>
+    <!--<div class="box-footer text-center row-button">-->
+        <!--<button type="button" class="btn btn-default" ng-click="">{{'PREVIOUS' | translate}}</button>-->
+        <!--<button type="button" class="btn btn-info" ng-click="">{{'NEXT' | translate}}</button>-->
+    <!--</div>-->
+</div>

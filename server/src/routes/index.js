@@ -21,6 +21,8 @@ const hooks = require('./hooks');
 const resources = require('./resources');
 const locations = require('./locations');
 const admin = require('./admin');
+const hotels = require('./hotels');
+const hotel = require('./hotel');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
@@ -46,3 +48,6 @@ router.use('/hooks', hooks.routes(), hooks.allowedMethods());
 router.use('/resources', resources.routes(), resources.allowedMethods());
 router.use('/locations', locations.routes(), locations.allowedMethods());
 router.use('/admin', admin.routes(), admin.allowedMethods());
+
+router.use('/hotels', hotels.routes(), hotels.allowedMethods());
+router.use('/hotel', hotel.routes(), hotel.allowedMethods());

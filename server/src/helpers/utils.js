@@ -76,12 +76,13 @@ function getFullName(listNames, separator) {
 
 function getHotelDisplayName(hotel) {
     if (!hotel) return '';
-    let listNames = [];
-    listNames.push(hotel.name);
-    if (hotel.address) {
-        listNames.push(hotel.address.neighborhood);
-    }
-    return getFullName(listNames, ", ");
+    return hotel.name;
+    // let listNames = [];
+    // listNames.push(hotel.name);
+    // if (hotel.address) {
+    //     listNames.push(hotel.address.neighborhood);
+    // }
+    // return getFullName(listNames, ", ");
 }
 
 function objectToArray(object) {

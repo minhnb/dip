@@ -10,10 +10,6 @@ const hotelSchema = new Schema({
         type: String,
         required: true
     },
-    location: {
-        type: String,
-        required: false
-    },
     details: String,
     url: String,
     instagram: String,
@@ -39,7 +35,6 @@ const hotelSchema = new Schema({
     phone: String,
     roomService: String,
     reservable: Boolean,
-    amenities: [String],
     services: [{
         type: Schema.ObjectId,
         ref: 'HotelService'
@@ -59,11 +54,21 @@ const hotelSchema = new Schema({
             },
             name: String
         }]
+    },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {
     timestamps: true
 });
 hotelSchema.index({name: 'text'});
+hotelSchema.pre('find', function () {
+    if (this._conditions && this._conditions.deleted == undefined) {
+        this._conditions.deleted = false;
+    }
+});
 
 const hotelModel = mongoose.model('Hotel', hotelSchema);
 

@@ -16,21 +16,21 @@ router
             adminServices.updateAppContext(ctx.app.context);
         }
     )
-    .get('event reservation report', '/report/reservation/hotels',
+    .get('event reservation report', '/reports/reservations/hotels',
         ctx => {
             return reportServices.getListHotelReservations().then(reservations => {
                 ctx.body = reservations;
             });
         }
     )
-    .get('hotel reservation report', '/report/reservation/events',
+    .get('hotel reservation report', '/reports/reservations/events',
         ctx => {
             return reportServices.getListEventReservations().then(reservations => {
                 ctx.body = reservations;
             });
         }
     )
-    .get('users report', '/report/users',
+    .get('users report', '/reports/users',
         ctx => {
             return reportServices.getListDIPUsers().then(users => {
                 ctx.body = users;
