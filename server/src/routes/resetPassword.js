@@ -67,7 +67,8 @@ router.post('Request password reset', '/',
                         }
                     });
                 } else {
-                    ctx.status = 400;
+                    throw new DIPError(dipErrorDictionary.USER_NOT_FOUND);
+                    // ctx.status = 400;
                 }
             });
     }
