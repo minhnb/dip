@@ -410,6 +410,13 @@ resourcesServices.dbGetPassById = function (passId) {
 resourcesServices.dbUpdatePass = function (passId, update) {
     let pass = resourcesServices.getExistedPass(passId);
     update = resourcesServices.initNormalPass(update);
+    if (update.service != pass.service) {
+        let hotel = resourcesServices.getExistedHotel(pass.hotel);
+        let hotelService = resourcesServices.getExistedHotelService(update.service);
+        if (hotel.services.indexOf(hotelService._id) == -1) {
+            throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+        }
+    }
     for (let key in update) {
         pass[key] = update[key];
     }
