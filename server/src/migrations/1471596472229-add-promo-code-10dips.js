@@ -14,14 +14,43 @@ dotenv.load({
 
 const connectionPromise = require('./db');
 
+const promos = [
+    {
+        code: '10dips',
+        amount: 1000, // $10 = 1,000 cents
+        type: 'DIP_CREDIT',
+        taxType: 'AFTER_TAX',
+        usageLimit: -1, // How many users can use this promo code at most?
+        usageCount: 0,
+        startDay: '2016-08-19',
+        dueDay: '9999-01-01', // Hack: Use far away day as a replacement for no-due-day
+        condition: {
+            amenityTypes: [],
+            events: [],
+            hotelServices: [],
+            hotels: [],
+            offers: [],
+            serviceTypes: []
+        },
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+];
+
 const up = async (function(next) {
-    let collection = await (getCollection('users'));
-    return next();
+    let collection = await (getCollection('promotions'));
+    insertDocuments(collection, promos).then(() => {
+        next();
+    }, next);
 });
 
 const down = async (function(next) {
-    let collection = await (getCollection('users'));
-    return next();
+    let collection = await (getCollection('promotions'));
+    let codes = promos.forEach(promo => promo.code),
+        query = {code: {$in: codes}};
+    removeDocuments(collection, query).then(() => {
+        next();
+    }, next);
 });
 
 exports = module.exports = {
@@ -35,7 +64,7 @@ let getCollection = async (collectionName => {
     return connection.db.collection(collectionName);
 });
 
-let getDocuments = (collection, query) => {
+let getDocuments = async ((collection, query) => {
     return new Promise((resolve, reject) => {
         collection.find(query).toArray((err, data) => {
             if (err) {
@@ -45,7 +74,7 @@ let getDocuments = (collection, query) => {
             }
         });
     });
-};
+});
 
 let getOneDocument = (collection, query) => {
     return new Promise((resolve, reject) => {
