@@ -123,6 +123,7 @@ a {
 .module-row {
     height: 1px;
     border-top: 3px solid #d2d6de;
+    margin-top: 15px;
 }
 .row.module-info:last-child .module-row {
     border: none;
