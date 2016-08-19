@@ -14,43 +14,35 @@ dotenv.load({
 
 const connectionPromise = require('./db');
 
-const promos = [
+const locations = [
     {
-        code: '10dips',
-        amount: 1000, // $10 = 1,000 cents
-        type: 'DIP_CREDIT',
-        taxType: 'AFTER_TAX',
-        usageLimit: -1, // How many users can use this promo code at most?
-        usageCount: 0,
-        startDay: '2016-08-19',
-        dueDay: '9999-01-01', // Hack: Use far away day as a replacement for no-due-day
-        condition: {
-            amenityTypes: [],
-            events: [],
-            hotelServices: [],
-            hotels: [],
-            offers: [],
-            serviceTypes: []
-        },
-        createdAt: new Date(),
-        updatedAt: new Date()
+        _id: 'dallas',
+        name: 'Dallas',
+        description: 'Texas',
+        supported: false,
+        order: 3
+    },
+    {
+        _id: 'santa_fe',
+        name: 'Santa Fe',
+        description: 'California',
+        supported: false,
+        order: 4
     }
 ];
 
 const up = async (function(next) {
-    let collection = await (getCollection('promotions'));
-    insertDocuments(collection, promos).then(() => {
-        next();
-    }, next);
+    let collection = await (getCollection('diplocations'));
+    let ids = locations.map(location => location._id),
+        query = {_id: {$in: ids}};
+    await (removeDocuments(collection, query));
+    return next();
 });
 
 const down = async (function(next) {
-    let collection = await (getCollection('promotions'));
-    let codes = promos.map(promo => promo.code),
-        query = {code: {$in: codes}};
-    removeDocuments(collection, query).then(() => {
-        next();
-    }, next);
+    let collection = await (getCollection('diplocations'));
+    await (insertDocuments(collection, locations));
+    return next();
 });
 
 exports = module.exports = {
@@ -64,7 +56,7 @@ let getCollection = async (collectionName => {
     return connection.db.collection(collectionName);
 });
 
-let getDocuments = async ((collection, query) => {
+let getDocuments = (collection, query) => {
     return new Promise((resolve, reject) => {
         collection.find(query).toArray((err, data) => {
             if (err) {
@@ -74,7 +66,7 @@ let getDocuments = async ((collection, query) => {
             }
         });
     });
-});
+};
 
 let getOneDocument = (collection, query) => {
     return new Promise((resolve, reject) => {
