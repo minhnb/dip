@@ -74,6 +74,32 @@ dipApp.factory('hotelUtils', [
             },
             getPassTimePeriod: function (duration) {
                 return utils.convertMinuteDurationToTime(duration.startTime) + " - " + utils.convertMinuteDurationToTime(duration.endTime);
+            },
+            convertPass: function (pass) {
+                pass.timePeriod = hotelUtils.getPassTimePeriod(pass.duration);
+                pass.displayPrice = utils.displayMoney(pass.price);
+                pass.price = pass.price/100;
+                pass.startTime = utils.convertMinuteDurationToTime(pass.duration.startTime);
+                pass.endTime = utils.convertMinuteDurationToTime(pass.duration.endTime);
+                return pass;
+            },
+            updateEditingObject: function (editingObject, latestObject, oldObject, ignoreKeys) {
+                for (var key in oldObject) {
+                    if (ignoreKeys.indexOf(key) == -1) {
+                        if (latestObject[key] != oldObject[key] && oldObject[key] == editingObject[key]) {
+                            editingObject[key] = latestObject[key];
+                        }
+                    }
+                }
+                return editingObject;
+            },
+            updateEditingModule: function (editingModule, module, oldModule) {
+                var ignoreKeys = ['isEditingModuleInfo', 'isAddingPass', 'newPass', 'passes'];
+                return hotelUtils.updateEditingObject(editingModule, module, oldModule, ignoreKeys);
+            },
+            updateEditingPass: function (editingPass, pass, oldPass) {
+                var ignoreKeys = ['isEditingPassInfo'];
+                return hotelUtils.updateEditingObject(editingPass, pass, oldPass, ignoreKeys);
             }
         };
         return hotelUtils;

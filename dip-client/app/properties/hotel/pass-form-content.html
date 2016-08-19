@@ -35,7 +35,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                         </div>
-                        <input type="text" class="form-control timepicker" data-duration="start"
+                        <input type="text" class="form-control timepicker" data-duration="start" ng-model="pass.startTime"
                                placeholder="{{'DURATION_START' | translate}}">
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                         </div>
-                        <input type="text" class="form-control timepicker" data-duration="end"
+                        <input type="text" class="form-control timepicker" data-duration="end" ng-model="pass.endTime"
                                placeholder="{{'DURATION_END' | translate}}">
                     </div>
                 </div>
@@ -53,14 +53,14 @@
         <div class="form-group pass_maximum">
             <label class="control-label">{{'MAXIMUM_PASSES' | translate}}</label>
             <input type="text" ng-model="pass.allotmentCount" data-value="{{pass.allotmentCount}}" class="slider form-control" data-slider-min="0"
-                   data-slider-max="50" data-slider-step="1" data-slider-value="10"
+                   data-slider-max="50" data-slider-step="1" data-slider-value="{{pass.allotmentCount}}"
                    data-slider-orientation="horizontal" data-slider-selection="before"
                    data-slider-tooltip="always" data-slider-tooltip-position="bottom">
         </div>
         <div class="form-group pass_capacity">
             <label class="control-label">{{'CAPACITY' | translate}}</label>
             <input type="text" ng-model="pass.capacity" data-value="{{pass.capacity}}" class="slider form-control" data-slider-min="0"
-                   data-slider-max="20" data-slider-step="1" data-slider-value="10"
+                   data-slider-max="20" data-slider-step="1" data-slider-value="{{pass.capacity}}"
                    data-slider-orientation="horizontal" data-slider-selection="before"
                    data-slider-tooltip="always" data-slider-tooltip-position="bottom">
         </div>
@@ -72,3 +72,5 @@
         </div>
     </div>
 </div>
+<div ng-show="false" ng-if="!pass.id && module.isAddingPass" ng-init="initPassFormWithId('new_pass_', module.id)"></div>
+<div ng-show="false" ng-if="pass.isEditingPassInfo" ng-init="initPassFormWithId('pass_', pass.id)"></div>

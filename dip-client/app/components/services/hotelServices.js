@@ -21,8 +21,9 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             },
             updateHotel: function (hotel) {
                 var hotelId = hotel.id;
-                delete hotel.services;
-                return $http.put(apiHotelUrl + "/" + hotelId, hotel);
+                var update = Object.assign({}, hotel);
+                delete update.services;
+                return $http.put(apiHotelUrl + "/" + hotelId, update);
             },
             deleteHotel: function (hotelId) {
                 return $http.delete(apiHotelUrl + "/" + hotelId);
@@ -61,6 +62,10 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             },
             getPassesByHotel: function (hotelId) {
                 return $http.get(apiHotelUrl + "/" + hotelId + "/passes");
+            },
+            updatePass: function (pass) {
+                var passId = pass.id;
+                return $http.put(apiHotelUrl + '/pass/' + passId, pass);
             },
             deletePass: function (passId) {
                 return $http.delete(apiHotelUrl + "/pass/" + passId);

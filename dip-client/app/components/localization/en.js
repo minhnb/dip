@@ -108,6 +108,7 @@ var angular_translate_en = {
     MODULE_DELETE_CONFIRM: "Do you want to delete pool {{ name }} ?",
 
     ADD_PASSES: "Add Passes",
+    ADD_PASS: "Add Pass",
     PASS: "Pass",
     PASS_TYPE: "Pass Type",
     PASS_TITLE: "Pass Title",
