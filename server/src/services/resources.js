@@ -12,6 +12,7 @@ const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
 const hotelServiceType = require('../constants/hotelServiceType');
+const passType = require('../constants/passType');
 const utils = require('../helpers/utils');
 
 const s3 = require('../helpers/s3');
@@ -592,7 +593,17 @@ resourcesServices.initNormalPass = function (offer) {
     if (!offer.description) {
         offer.description = offer.passType;
     }
+    offer.amenities = resourcesServices.getAmenitiesByPassType(offer.passType);
     return offer;
+};
+
+resourcesServices.getAmenitiesByPassType = function (offerPassType) {
+    let amenity = offerPassType;
+    if (amenity == passType.PASS_TYPE_POOL_PASS) {
+        amenity = hotelServiceType.POOL_SERVICE;
+    }
+    let amenities = [amenity.toLowerCase()];
+    return amenities;
 };
 
 resourcesServices.isDeletablePass = function (offer) {
