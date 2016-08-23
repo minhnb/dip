@@ -25,7 +25,7 @@ dipApp.factory('hotelUtils', [
                 if (!hotel.name || !hotel.fullAddress) {
                     return false;
                 }
-                if (requiredImage && !$('#image_create_hotel > .input-upload-img').val()) {
+                if (requiredImage && !$('#image_box_hotel > .input-upload-img').val()) {
                     utils.notyErrorMessage(imageErrorMessage, true);
                     return false;
                 }
