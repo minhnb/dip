@@ -411,7 +411,7 @@ resourcesServices.dbGetPassById = function (passId) {
 resourcesServices.dbUpdatePass = function (passId, update) {
     let pass = resourcesServices.getExistedPass(passId);
     update = resourcesServices.initNormalPass(update);
-    if (update.service != pass.service) {
+    if (update.service != undefined && update.service != pass.service) {
         let hotel = resourcesServices.getExistedHotel(pass.hotel);
         let hotelService = resourcesServices.getExistedHotelService(update.service);
         if (hotel.services.indexOf(hotelService._id) == -1) {
@@ -590,10 +590,12 @@ resourcesServices.initNormalPass = function (offer) {
         delete offer.pendingReservationCount;
     }
     offer.type = 'pass';
-    if (!offer.description) {
-        offer.description = offer.passType;
+    if (offer.passType) {
+        if (!offer.description) {
+            offer.description = offer.passType;
+        }
+        offer.amenities = resourcesServices.getAmenitiesByPassType(offer.passType);
     }
-    offer.amenities = resourcesServices.getAmenitiesByPassType(offer.passType);
     return offer;
 };
 
