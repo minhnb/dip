@@ -32,7 +32,7 @@ var utils = {
     },
     displayMoney: function (money) {
         if (!money) return "";
-        var result = Math.round(money / 100).toFixed(2);
+        var result = (money / 100.0).toFixed(2);
         return "$" + result;
     },
     showMessageBoxWithSound: function (messageBoxIdWithHashTag, soundName) {
