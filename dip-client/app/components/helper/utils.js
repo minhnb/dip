@@ -27,6 +27,9 @@ var utils = {
     formatDipDateToDate: function (dipDate) {
         return moment(dipDate).format(FORMAT_DATE);
     },
+    formatDateToDipDate: function (date) {
+        return moment(date).format(FORMAT_DIP_DATE);
+    },
     displayMoney: function (money) {
         if (!money) return "";
         var result = Math.round(money / 100).toFixed(2);

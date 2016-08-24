@@ -47,7 +47,7 @@ a {
     margin-bottom: 10px;
     cursor: pointer;
 }
-.light-font {
+.light-font, .light-font h1, .light-font h2, .light-font h3, .light-font h4, .light-font p, .light-font span {
     font-weight: 300;
 }
 
@@ -128,6 +128,178 @@ a {
 .row.module-info:last-child .module-row {
     border: none;
 }
+
+.box.calendar-pass {
+    border: none;
+    margin-bottom: 5px;
+    box-shadow: none;
+}
+.box.calendar-pass .box-header {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+}
+.box.calendar-pass .box-header .box-title {
+    font-size: 14px;
+}
+.box.calendar-pass .box-header .fa-angle-collapse-button {
+    min-width: 20px;
+}
+.pass-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.pool-pass {
+    background-color: #c2185b;
+    color: #c2185b;
+    border-color: #c2185b;
+}
+.daybed {
+    background-color: #0097a7;
+    color: #0097a7;
+    border-color: #0097a7;
+}
+.cabana {
+    background-color: #009e11;
+    color: #009e11;
+    border-color: #009e11;
+}
+.box.calendar-pass.pass-content {
+    border-bottom: 1px solid #d2d6de;
+}
+.box.calendar-pass > .box-header > .pass-time-period {
+    display: inline-block;
+    font-size: 10px;
+    margin-left: 30px;
+}
+.box.calendar-pass > .box-body.main-box-body {
+    padding-left: 20px;
+}
+.dip-vertical-checkbox {
+    display: inline-block;
+    margin: 0 8px;
+}
+.dip-vertical-checkbox:first-child {
+    margin-left: 0;
+}
+.dip-vertical-checkbox span {
+    display: block;
+    font-size: 10px;
+    text-align: center;
+}
+.box.calendar-pass .box-body > .row {
+    margin-bottom: 15px;
+}
+label.time-label {
+    font-size: 10px;
+    padding-top: 10px;
+}
+.calendar-selected-day {
+    padding: 20px;
+    font-size: 18px;
+}
+.calendar-row {
+    border-bottom: 1px solid #f4f4f4;
+    border-right: 1px solid #f4f4f4;
+    display: table;
+}
+.calendar-cell {
+    border-left: 1px solid #f4f4f4;
+    float: left;
+    min-width: 90px;
+    min-height: 90px;
+    position: relative;
+    padding-top: 25px;
+}
+.calendar-header .calendar-cell {
+    border-top: 3px solid #f4f4f4;
+    padding: 15px;
+    min-height: 1px;
+}
+.calendar-row span.day-number {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 10px;
+}
+.calendar-line {
+    border-radius: 0;
+    display: block;
+    height: 5px;
+    margin-bottom: 10px;
+    width: 101%;
+    margin-left: -1px;
+}
+.pass-calendar {
+
+}
+.pass-calendar .fc-view-container .fc-view > table {
+    border-color: #f4f4f4;
+    border-top-width: 3px;
+}
+.pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 300;
+}
+.fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
+    border-color: #f4f4f4;
+}
+.fc th {
+    border-top-width: 3px;
+}
+.pass-calendar .fc-widget-header {
+    background: none;
+}
+.pass-calendar .fc-row:first-child > table {
+    border-top: 3px solid #f4f4f4;
+}
+.pass-calendar .fc-event {
+    height: 5px;
+    border-radius: 0;
+}
+.pass-calendar .fc-day-grid-event {
+    margin: 0 0 5px -1px;
+}
+.pass-calendar .fc-toolbar h2 {
+    font-weight: 300;
+    font-size: 18px;
+}
+.pass-calendar .fc-day-number {
+    font-size: 10px;
+    padding: 5px;
+}
+.pass-calendar .fc-toolbar button {
+    border-radius: 0 !important;
+    box-shadow: none;
+}
+.fc-button {
+    background-color: transparent;
+}
+.pass-calendar .fc-icon-left-single-arrow::after, .pass-calendar .fc-icon-right-single-arrow::after {
+    font-weight: 100 !important;
+    color: #ddd;
+}
+.pass-calendar .fc-scroller.fc-day-grid-container {
+    height: auto !important;
+    overflow: hidden !important;
+}
+.pass-calendar .fc-event-container .tooltip {
+    position: fixed;
+}
+.pass-calendar .fc-event-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
+    background-color: #3c8dbc;
+    font-size: 10px;
+    white-space:pre-wrap;
+}
+.pass-calendar .fc-event-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
+    border-top-color: #3c8dbc;
+}
+
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
     margin-top: 15px;

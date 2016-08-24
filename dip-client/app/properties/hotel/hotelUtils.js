@@ -81,6 +81,8 @@ dipApp.factory('hotelUtils', [
                 pass.price = pass.price/100;
                 pass.startTime = utils.convertMinuteDurationToTime(pass.duration.startTime);
                 pass.endTime = utils.convertMinuteDurationToTime(pass.duration.endTime);
+                pass.displayStartDay = pass.startDay == '0000-01-01' ? '' : utils.formatDipDateToDate(pass.startDay);
+                pass.displayDueDay = pass.dueDay == '9999-12-31' ? '' : utils.formatDipDateToDate(pass.dueDay);
                 return pass;
             },
             updateEditingObject: function (editingObject, latestObject, oldObject, ignoreKeys) {

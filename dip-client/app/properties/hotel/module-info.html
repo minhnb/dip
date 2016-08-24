@@ -5,7 +5,7 @@
     <button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditModuleBox(module)">
         <span aria-hidden="true" class="fa fa-edit"></span>
     </button>
-    <button type="button" class="btn btn-default pull-right" title="{{'ADD_PASSES' | translate}}" ng-click="showCreatePassBox(module)">
+    <button type="button" class="btn btn-default pull-right" ng-show="!module.isMappingToCalendar" title="{{'ADD_PASSES' | translate}}" ng-click="showCreatePassBox(module)">
         <span aria-hidden="true" class="fa fa-plus-circle"></span>
     </button>
 </div>

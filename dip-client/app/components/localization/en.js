@@ -131,6 +131,29 @@ var angular_translate_en = {
     ERROR_INVALID_PASS_MAXIMUM: "Invalid maximum passes",
     ERROR_INVALID_PASS_PRICE: "Invalid price",
     ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time",
+    ERROR_INVALID_PASS_START_DAY_DUE_DATE: "Start date must be smaller than due day",
 
-    PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?"
+    PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?",
+
+    MAP_PASS_TO_CALENDAR: "Map pass to calendar",
+    BACK_TO_LIST_VIEW: "Back to list view",
+
+    WEEK_DAY_MONDAY: "Mon",
+    WEEK_DAY_TUESDAY: "Tue",
+    WEEK_DAY_WEDNESDAY: "Wed",
+    WEEK_DAY_THURSDAY: "Thu",
+    WEEK_DAY_FRIDAY: "Fri",
+    WEEK_DAY_SATURDAY: "Sat",
+    WEEK_DAY_SUNDAY: "Sun",
+
+    WEEK_DAY_MONDAY_FULL: "Monday",
+    WEEK_DAY_TUESDAY_FULL: "Tuesday",
+    WEEK_DAY_WEDNESDAY_FULL: "Wednesday",
+    WEEK_DAY_THURSDAY_FULL: "Thursday",
+    WEEK_DAY_FRIDAY_FULL: "Friday",
+    WEEK_DAY_SATURDAY_FULL: "Saturday",
+    WEEK_DAY_SUNDAY_FULL: "Sunday",
+
+    FROM: "From",
+    TO: "To"
 };
