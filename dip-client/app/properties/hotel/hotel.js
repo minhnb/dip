@@ -704,8 +704,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $(form).find('.timepicker input').timepicker({
                     showInputs: false,
                     defaultTime: false,
-                    showMeridian: false,
-                    showWidgetOnAddonClick: true
+                    // showMeridian: false,
+                    showWidgetOnAddonClick: true,
                 });
                 $(form).find('.timepicker .input-group-addon').click(function () {
                     $(this).parent().find('input').data('timepicker').showWidget();

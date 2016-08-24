@@ -3,7 +3,7 @@ var FORMAT_DATE = "MM-DD-YYYY";
 var FORMAT_DATE_BOOTSTRAP_CALENDAR = "mm-dd-yyyy";
 var FORMAT_DATE_SELECTED_DATE_CALENDAR = "dddd, MMM D, YYYY";
 var FORMAT_TIME = "h:mm a";
-var FORMAT_TIME_EVENT = "h:mm a";
+var FORMAT_TIME_EVENT = "h:mm A";
 var FORMAT_DIP_DATE = 'YYYY-MM-DD';
 
 var NOTY_TIME_OUT = 5000;
