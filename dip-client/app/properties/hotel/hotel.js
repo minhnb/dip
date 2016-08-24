@@ -181,7 +181,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 converted_module.isEditingModuleInfo = false;
                 converted_module.isAddingPass = false;
                 converted_module.newPass = $scope.initNewPass(converted_module);
-                converted_module.isMappingToCalendar = true;
+                converted_module.isMappingToCalendar = false;
                 return converted_module;
             };
 
