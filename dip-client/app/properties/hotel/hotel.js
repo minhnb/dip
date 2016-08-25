@@ -458,7 +458,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 if (!capacity) {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_CAPACITY');
                 }
-                var price = parseFloat($(form).find('[ng-model="pass.price"]').inputmask('unmaskedvalue'));
+                var price = parseFloat($(form).find('[ng-model="pass.displayPrice"]').inputmask('unmaskedvalue'));
                 if (!price) {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_PRICE');
                 }

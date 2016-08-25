@@ -303,12 +303,12 @@ label.time-label {
 .pass-calendar .fc-event-container .tooltip {
     position: fixed;
 }
-.pass-box .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
+.pass-box .pass-tooltip-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
     background-color: #3c8dbc;
     font-size: 10px;
     white-space:pre-wrap;
 }
-.pass-calendar .fc-event-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
+.pass-calendar .pass-tooltip-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
     border-top-color: #3c8dbc;
 }
 .calendar-pass.pass-content .tooltip.top {

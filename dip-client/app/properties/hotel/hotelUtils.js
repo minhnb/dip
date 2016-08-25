@@ -78,7 +78,6 @@ dipApp.factory('hotelUtils', [
             convertPass: function (pass) {
                 pass.timePeriod = hotelUtils.getPassTimePeriod(pass.duration);
                 pass.displayPrice = utils.displayMoney(pass.price);
-                pass.price = pass.price/100;
                 pass.startTime = utils.convertMinuteDurationToTime(pass.duration.startTime);
                 pass.endTime = utils.convertMinuteDurationToTime(pass.duration.endTime);
                 pass.displayStartDay = pass.startDay == '0000-01-01' ? '' : utils.formatDipDateToDate(pass.startDay);
