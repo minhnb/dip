@@ -40,7 +40,7 @@ a {
 }
 
 .create-edit-box label {
-    font-weight: 300;
+    /*font-weight: 300;*/
 }
 
 .create-edit-box .image-box {
@@ -48,9 +48,11 @@ a {
     cursor: pointer;
 }
 .light-font, .light-font h1, .light-font h2, .light-font h3, .light-font h4, .light-font p, .light-font span {
-    font-weight: 300;
+    /*font-weight: 300;*/
 }
-
+.lead {
+    font-weight: normal;
+}
 .box-header .btn-app {
     margin-bottom: 0;
     margin-top: 0;
@@ -72,7 +74,7 @@ a {
     clear: both;
 }
 .list-hotel .hotel-info > .row > div:last-child {
-    font-weight: 300;
+    /*font-weight: 300;*/
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
@@ -248,7 +250,7 @@ label.time-label {
 .pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
     padding-top: 10px;
     padding-bottom: 10px;
-    font-weight: 300;
+    /*font-weight: 300;*/
 }
 .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
     border-color: #dddddd;
@@ -270,7 +272,7 @@ label.time-label {
     margin: 0 0 5px -1px;
 }
 .pass-calendar .fc-toolbar h2 {
-    font-weight: 300;
+    /*font-weight: 300;*/
     font-size: 18px;
 }
 .pass-calendar .fc-day-number {
