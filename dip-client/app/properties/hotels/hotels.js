@@ -16,6 +16,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.isShowingListHotels = false;
             $scope.hotelProfilePicture = "";
             $scope.isEditingHotel = false;
+            $scope.isShowingButtonCreateHotel = false;
 
             $scope.hotel = {};
             $scope.list = [];
@@ -144,6 +145,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(hotelUtils.convertHotel);
                 $scope.isShowingListHotels = $scope.list.length > 0;
+                $scope.isShowingButtonCreateHotel = true;
             };
 
             $scope.init = function () {

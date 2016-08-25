@@ -4,6 +4,12 @@
     <!--</button>-->
 <!--</div>-->
 
+<div class="text-center">
+    <a class="btn btn-app" ng-show="!isShowingListHotels && isShowingButtonCreateHotel" ng-click="showCreateHotelBox()">
+        <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
+    </a>
+</div>
+
 <ng-include src="'/properties/hotels/create-edit-hotel.html'"></ng-include>
 
 <div class="box box-info list-hotel" ng-show="isShowingListHotels">
