@@ -112,6 +112,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 return hotelService.getPassesByHotel(hotelId)
                     .success(function (data, status) {
                         var passes = data;
+                        $scope.mapPass = [];
                         $scope.hotel.services.map(function (module) {
                             module.passes = [];
                             $scope.mapHotelService[module.id] = module;
@@ -765,7 +766,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.reRenderPassCalendar = function (moduleId, needReInit) {
                 if (needReInit) {
-                    $scope.initPassCalendarForm('#pass_calendar_' + moduleId);
+                    $scope.initPassCalendar('#pass_calendar_' + moduleId);
                 }
                 $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('render');
                 $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('refetchEvents');
