@@ -46,11 +46,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                         data.city = data.address.city;
                         data.fullAddress = hotelUtils.getHotelFullAddress(data);
                         $scope.hotel = data;
-                        $('#image_box_hotel > .image-box img').attr('alt', hotel.name + $scope.translate('PROFILE_PICTURE'));
-                        if (hotel.imageUrl) {
-                            $('#image_box_hotel > .image-box img').attr('src', hotel.imageUrl);
-                            $('#image_box_hotel > .image-box img').show();
-                        }
+                        $('#image_box_hotel').trigger('setImage', [hotel.imageUrl, hotel.name]);
                         $scope.isEditingHotel = true;
                         $scope.showCreateEditHotelBox();
                     });
@@ -75,9 +71,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.initCreateHotelPanel = function () {
                 $scope.hotel = {};
-                $('#image_box_hotel > .input-upload-img').val('');
-                $('#image_box_hotel > .image-box img').hide();
-                $('#image_box_hotel > .image-box img').attr('src', '');
+                $('#image_box_hotel').trigger('clearImageBox');
             };
 
             $scope.updateHotelImage = function (hotelId) {

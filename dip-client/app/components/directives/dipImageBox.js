@@ -10,6 +10,20 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                 var imageAlt = attrs.alt || '';
                 $(element).find('.image-box-title').html(imageTitle);
                 $(element).find('.image-box img').attr('alt', imageAlt);
+                $(element).bind('clearImageBox', function () {
+                    $(element).find('.input-upload-img').val('');
+                    $(element).find('.image-box img').hide();
+                    $(element).find('.image-box img').attr('src', '');
+                    $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_UPLOAD_PICTURE'));
+                });
+                $(element).bind('setImage', function (event, imageUrl, name) {
+                    $(element).find('.image-box img').attr('alt', name + $scope.translate('PROFILE_PICTURE'));
+                    if (imageUrl) {
+                        $(element).find('.image-box img').attr('src', imageUrl);
+                        $(element).find('.image-box img').show();
+                        $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_CHANGE_PICTURE'));
+                    }
+                });
             }
 
             setTimeout(initImageBox, 0);
@@ -34,6 +48,7 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                             imageBoxPreview.find('.image-box > img').attr('src', e.target.result);
                             imageBoxPreview.find('.image-box > img').show();
                             imageBoxPreview.find('.image-box > .load-image-spinner').hide();
+                            imageBoxPreview.find('.image-box').attr('title', $scope.translate('CLICK_TO_CHANGE_PICTURE'));
                         };
 
                         reader.readAsDataURL($(inputElement)[0].files[0]);

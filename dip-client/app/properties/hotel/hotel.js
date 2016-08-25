@@ -200,11 +200,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                 $scope.hotel[key] = convertedHotel[key];
                             }
                         }
-                        $('#image_box_hotel > .image-box img').attr('alt', hotel.name + $scope.translate('PROFILE_PICTURE'));
-                        if (hotel.imageUrl) {
-                            $('#image_box_hotel > .image-box img').attr('src', hotel.imageUrl);
-                            $('#image_box_hotel > .image-box img').show();
-                        }
+                        $('#image_box_hotel').trigger('setImage', [hotel.imageUrl, hotel.name]);
                         $scope.isEditingHotel = true;
                     });
             };
@@ -213,9 +209,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 if (!isForEdit) {
                     $scope.hotel = {};
                 }
-                $('#image_box_hotel > .input-upload-img').val('');
-                $('#image_box_hotel > .image-box img').hide();
-                $('#image_box_hotel > .image-box img').attr('src', '');
+                $('#image_box_hotel').trigger('clearImageBox');
             };
 
             $scope.updateHotelImage = function (hotelId) {
@@ -296,9 +290,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.initCreateModulePanel = function () {
                 $scope.module = {};
                 $scope.module.poolType = POOL_TYPE_OTHERS;
-                $('#image_box_module > .input-upload-img').val('');
-                $('#image_box_module > .image-box img').hide();
-                $('#image_box_module > .image-box img').attr('src', '');
+                $('#image_box_module').trigger('clearImageBox');
             };
 
             $scope.updateHotelServiceImage = function (hotelId) {
@@ -353,8 +345,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     .success(function () {
                         $scope.stopSpin();
                         if (module.imageUrl) {
-                            $('#image_box_module_' + module.id + ' > .image-box img').attr('src', module.imageUrl);
-                            $('#image_box_module_' + module.id + ' > .image-box img').show();
+                            $('#image_box_module_' + module.id).trigger('setImage', [module.imageUrl, module.name]);
                         }
                         module.isEditingModuleInfo = true;
                     })
@@ -445,11 +436,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 if (!newPass.title) {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_TITLE');
                 }
-                var startTime = $(form).find('[data-duration="start"]').val();
+                var startTime = $(form).find('[data-duration="start"]').data('timepicker').getTime();
                 if (startTime == '') {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION_START_TIME');
                 }
-                var endTime = $(form).find('[data-duration="end"]').val();
+                var endTime = $(form).find('[data-duration="end"]').data('timepicker').getTime();
                 if (endTime == '') {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION_END_TIME');
                 }
@@ -466,8 +457,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_PRICE');
                 }
                 var duration = {};
-                duration.startTime = utils.convertTimeToDuration(startTime);
-                duration.endTime = utils.convertTimeToDuration(endTime);
+                duration.startTime = utils.convertTimeWithMeridianToDuration(startTime);
+                duration.endTime = utils.convertTimeWithMeridianToDuration(endTime);
                 if (duration.startTime >= duration.endTime) {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_DURATION');
                 }

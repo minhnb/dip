@@ -22,7 +22,9 @@ var utils = {
     },
     convertTimeToDuration: function (time) {
         return moment.duration(time).asMinutes();
-
+    },
+    convertTimeWithMeridianToDuration: function (time) {
+        return moment.duration(moment(time, [FORMAT_TIME_EVENT]).format('HH:mm')).asMinutes();
     },
     formatDipDateToDate: function (dipDate) {
         return moment(dipDate).format(FORMAT_DATE);

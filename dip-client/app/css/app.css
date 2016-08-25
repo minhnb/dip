@@ -35,7 +35,7 @@ a {
 .image-box {
     width: 100%;
     min-height: 250px;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #dddddd;
     position: relative;
 }
 
@@ -43,7 +43,7 @@ a {
     font-weight: 300;
 }
 
-.create-edit-box .box-body .image-box {
+.create-edit-box .image-box {
     margin-bottom: 10px;
     cursor: pointer;
 }
@@ -83,7 +83,7 @@ a {
     padding: 8px;
 }
 .list-hotel img {
-    border: 1px solid #f4f4f4;
+    border: 1px solid #dddddd;
 }
 
 .list-hotel.hotel-profile .hotel-info > .row:first-child > div {
@@ -203,12 +203,12 @@ label.time-label {
     font-size: 18px;
 }
 .calendar-row {
-    border-bottom: 1px solid #f4f4f4;
-    border-right: 1px solid #f4f4f4;
+    border-bottom: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
     display: table;
 }
 .calendar-cell {
-    border-left: 1px solid #f4f4f4;
+    border-left: 1px solid #dddddd;
     float: left;
     min-width: 90px;
     min-height: 90px;
@@ -216,7 +216,7 @@ label.time-label {
     padding-top: 25px;
 }
 .calendar-header .calendar-cell {
-    border-top: 3px solid #f4f4f4;
+    border-top: 3px solid #dddddd;
     padding: 15px;
     min-height: 1px;
 }
@@ -238,7 +238,7 @@ label.time-label {
 
 }
 .pass-calendar .fc-view-container .fc-view > table {
-    border-color: #f4f4f4;
+    border-color: #dddddd;
     border-top-width: 3px;
 }
 .pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
@@ -247,7 +247,7 @@ label.time-label {
     font-weight: 300;
 }
 .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
-    border-color: #f4f4f4;
+    border-color: #dddddd;
 }
 .fc th {
     border-top-width: 3px;
@@ -256,7 +256,7 @@ label.time-label {
     background: none;
 }
 .pass-calendar .fc-row:first-child > table {
-    border-top: 3px solid #f4f4f4;
+    border-top: 3px solid #dddddd;
 }
 .pass-calendar .fc-event {
     height: 5px;

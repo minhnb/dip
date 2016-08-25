@@ -91,6 +91,8 @@ var angular_translate_en = {
     HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
     ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
     ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture",
+    CLICK_TO_UPLOAD_PICTURE: "Click here to upload the profile picture",
+    CLICK_TO_CHANGE_PICTURE: "Click here to change the profile picture",
 
     HOTEL_PROFILE: "Hotel Profile",
     HOTEL_INFO: "Hotel Info",
