@@ -2,7 +2,7 @@
 
 const router = require('koa-router')();
 const multer = require('koa-multer');
-const auth = require('../helpers/passport_auth');
+const auth = require('../auth');
 
 const utils = require('../helpers/utils');
 const resourcesServices = require('../services/resources');
@@ -13,11 +13,15 @@ const await = require('asyncawait/await');
 module.exports = router;
 
 router
-    .use('/', auth.authenticate(), utils.isAdmin)
+    .use('/', auth.isPartnerOrAdmin)
+    .get('get hotel list', '/', async (ctx => {
+        ctx.body = await(resourcesServices.getHotelList(ctx.state.user));
+    }))
     .post('create hotel', '/',
         async(ctx => {
+            let user = ctx.state.user;
             let hotel = ctx.request.body;
-            ctx.body = await(resourcesServices.createHotel(hotel));
+            ctx.body = await(resourcesServices.createHotel(user, hotel));
         })
     )
     .get('get hotel by id', '/:hotelId',
@@ -28,39 +32,44 @@ router
     )
     .put('update hotel', '/:hotelId',
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
             let hotel = ctx.request.body;
-            ctx.body = await(resourcesServices.updateHotel(hotelId, hotel));
+            ctx.body = await(resourcesServices.updateHotel(user, hotelId, hotel));
         })
     )
     .delete('delete hotel', '/:hotelId',
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
-            let hotel = await(resourcesServices.deleteHotel(hotelId));
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
+            let hotel = await(resourcesServices.deleteHotel(user, hotelId));
             ctx.status = 200;
         })
     )
     .put('update hotel image', '/:hotelId/image',
         multer().single('image'),
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
             let img = ctx.req.file;
-            ctx.body = await(resourcesServices.updateHotelImage(hotelId, img));
+            ctx.body = await(resourcesServices.updateHotelImage(user, hotelId, img));
         })
     )
 
     .post('create hotelService', '/:hotelId/service',
         async(ctx => {
-            let hotelService = ctx.request.body;
+            let user = ctx.state.user,
+                hotelService = ctx.request.body;
             let hotelId = ctx.params.hotelId;
-            ctx.body = await(resourcesServices.createHotelService(hotelId, hotelService));
+            ctx.body = await(resourcesServices.createHotelService(user, hotelId, hotelService));
         })
     )
     .delete('delete hotelService', '/:hotelId/service/:hotelServiceId',
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
             let hotelServiceId = ctx.params.hotelServiceId;
-            let hotelService = await(resourcesServices.deleteHotelService(hotelId, hotelServiceId));
+            let hotelService = await(resourcesServices.deleteHotelService(user, hotelId, hotelServiceId));
             ctx.status = 200;
         })
     )
@@ -70,28 +79,33 @@ router
             ctx.body = await(resourcesServices.getHotelServiceById(hotelServiceId));
         })
     )
-    .put('update hotelService', '/service/:hotelServiceId',
+    .put('update hotelService', '/:hotelId/service/:hotelServiceId',
         async(ctx => {
-            let hotelServiceId = ctx.params.hotelServiceId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId,
+                hotelServiceId = ctx.params.hotelServiceId;
             let hotelService = ctx.request.body;
-            ctx.body = await(resourcesServices.updateHotelService(hotelServiceId, hotelService));
+            ctx.body = await(resourcesServices.updateHotelService(user, hotelId, hotelServiceId, hotelService));
         })
     )
-    .put('update hotel image', '/service/:hotelServiceId/image',
+    .put('update hotel image', '/:hotelId/service/:hotelServiceId/image',
         multer().single('image'),
         async(ctx => {
-            let hotelServiceId = ctx.params.hotelServiceId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId,
+                hotelServiceId = ctx.params.hotelServiceId;
             let img = ctx.req.file;
-            ctx.body = await(resourcesServices.updateHotelServiceImage(hotelServiceId, img));
+            ctx.body = await(resourcesServices.updateHotelServiceImage(user, hotelId, hotelServiceId, img));
         })
     )
 
     .post('create pass', '/:hotelId/service/:hotelServiceId/pass',
         async(ctx => {
             let pass = ctx.request.body;
-            let hotelId = ctx.params.hotelId;
-            let hotelServiceId = ctx.params.hotelServiceId;
-            ctx.body = await(resourcesServices.createPass(hotelId, hotelServiceId, pass));
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId,
+                hotelServiceId = ctx.params.hotelServiceId;
+            ctx.body = await(resourcesServices.createPass(user, hotelId, hotelServiceId, pass));
         })
     )
     .get('get pass by id', '/pass/:passId',
@@ -102,21 +116,24 @@ router
     )
     .put('update pass', '/pass/:passId',
         async(ctx => {
-            let passId = ctx.params.passId;
+            let user = ctx.state.user,
+                passId = ctx.params.passId;
             let pass = ctx.request.body;
-            ctx.body = await(resourcesServices.updatePass(passId, pass));
+            ctx.body = await(resourcesServices.updatePass(user, passId, pass));
         })
     )
     .delete('delete pass', '/pass/:passId',
         async(ctx => {
-            let passId = ctx.params.passId;
-            let pass = await(resourcesServices.deletePass(passId));
+            let user = ctx.state.user,
+                passId = ctx.params.passId;
+            let pass = await(resourcesServices.deletePass(user, passId));
             ctx.status = 200;
         })
     )
     .get('get passes by hotel', '/:hotelId/passes',
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
             ctx.body = await(resourcesServices.getPassesByHotel(hotelId));
         })
     );

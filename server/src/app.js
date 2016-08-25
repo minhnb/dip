@@ -114,8 +114,8 @@ app.on('error', function (err, ctx) {
     console.error('server error', err, ctx);
 });
 
-const auth = require('./helpers/passport_auth'); // Initialize auth strategies
-app.use(auth.passport.initialize());
+const passport = require('./auth/passport'); // Initialize auth strategies
+app.use(passport.initialize());
 
 // response
 app.use(router.routes(), router.allowedMethods());

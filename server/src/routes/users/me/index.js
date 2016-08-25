@@ -7,7 +7,7 @@ const multer = require('koa-multer');
 const db = require('../../../db');
 const entities = require('../../../entities');
 
-const auth = require('../../../helpers/passport_auth');
+const auth = require('../../../auth');
 const validator = require('../../../helpers/input_validator');
 const s3 = require('../../../helpers/s3');
 const imageUtils = require('../../../helpers/image');

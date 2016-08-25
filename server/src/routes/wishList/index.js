@@ -10,7 +10,7 @@ const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 const db = require('../../db');
 const entities = require('../../entities');
 
-const auth = require('../../helpers/passport_auth');
+const auth = require('../../auth');
 const validator = require('../../validators');
 
 const dipErrorDictionary = require('../../constants/dipErrorDictionary');

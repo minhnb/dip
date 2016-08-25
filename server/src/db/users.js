@@ -104,7 +104,7 @@ const userSchema = new Schema({
     }],
     role: {
         type: String,
-        enum: ['admin', 'user'],
+        enum: ['admin', 'user', 'partner'],
         required: true,
         default: 'user'
     }
@@ -122,6 +122,9 @@ userSchema.pre('validate', function(next) {
 userSchema.pre('save', function(next) {
     if (this.dob) {
         this.dob = utils.convertDate(this.dob);
+    }
+    if (this.isNew) {
+        this.wasNew = true;
     }
     next();
 });
@@ -238,6 +241,13 @@ userSchema.methods.generateJWT = function() {
 };
 userSchema.methods.setRefCode = function(code) {
     this.account.refCode = code;
+};
+
+userSchema.methods.isAdmin = function() {
+    return this.role == 'admin';
+};
+userSchema.methods.isPartner = function() {
+    return this.role == 'partner';
 };
 
 /**

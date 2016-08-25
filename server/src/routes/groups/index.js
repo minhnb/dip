@@ -3,7 +3,7 @@
 const router = require('koa-router')();
 const multer = require('koa-multer');
 const db = require('../../db');
-const auth = require('../../helpers/passport_auth');
+const auth = require('../../auth');
 
 const groupHandler = require('./group.handler');
 const messageHandler = require('./message.handler');

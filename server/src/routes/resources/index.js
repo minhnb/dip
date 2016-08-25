@@ -7,7 +7,7 @@ const specialOffer = require('./specialOffer');
 const hotel = require('./hotel');
 const entities = require('../../entities');
 
-const auth = require('../../helpers/passport_auth');
+const auth = require('../../auth');
 const validator = require('../../validators');
 const utils = require('../../helpers/utils');
 
