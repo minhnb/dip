@@ -41,7 +41,7 @@ a {
 
 .create-edit-box label {
     /*font-weight: 300;*/
-    font-weight: normal;
+    font-weight: 600;
 }
 
 .create-edit-box .image-box {
@@ -73,6 +73,9 @@ a {
 }
 .list-hotel .hotel-info {
     clear: both;
+}
+.list-hotel .hotel-info > .row > div:first-child {
+    font-weight: 600;
 }
 .list-hotel .hotel-info > .row > div:last-child {
     /*font-weight: 300;*/
@@ -305,6 +308,13 @@ label.time-label {
 }
 .pass-calendar .fc-event-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
     border-top-color: #3c8dbc;
+}
+a.back-button {
+    color: inherit;
+    font-size: 20px;
+    margin-left: -5px;
+    margin-right: 5px;
+    padding: 5px;
 }
 
 

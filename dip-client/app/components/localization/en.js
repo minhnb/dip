@@ -73,6 +73,8 @@ var angular_translate_en = {
     NEW_HOTEL: "New Hotel",
     NEXT: "Next",
     PREVIOUS: "Previous",
+    GO_BACK: "Go back",
+    BACK: "Back",
 
     CREATE_HOTEL: "Create Hotel",
     EDIT_HOTEL: "Edit Hotel",
