@@ -35,7 +35,7 @@ a {
 .image-box {
     width: 100%;
     min-height: 250px;
-    border: 1px solid #dddddd;
+    border: 1px solid #cccccc;
     position: relative;
 }
 
@@ -93,7 +93,7 @@ a {
     padding: 8px;
 }
 .list-hotel img {
-    border: 1px solid #dddddd;
+    border: 1px solid #cccccc;
 }
 
 .list-hotel.hotel-profile .hotel-info > .row:first-child > div {
@@ -132,7 +132,7 @@ a {
 }
 .module-row {
     height: 1px;
-    border-top: 3px solid #d2d6de;
+    border-top: 2px solid #00c0ef;
     margin-top: 15px;
 }
 .row.module-info:last-child .module-row {
@@ -213,12 +213,12 @@ label.time-label {
     font-size: 18px;
 }
 .calendar-row {
-    border-bottom: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
     display: table;
 }
 .calendar-cell {
-    border-left: 1px solid #dddddd;
+    border-left: 1px solid #cccccc;
     float: left;
     min-width: 90px;
     min-height: 90px;
@@ -226,7 +226,7 @@ label.time-label {
     padding-top: 25px;
 }
 .calendar-header .calendar-cell {
-    border-top: 3px solid #dddddd;
+    border-top: 3px solid #cccccc;
     padding: 15px;
     min-height: 1px;
 }
@@ -248,16 +248,17 @@ label.time-label {
 
 }
 .pass-calendar .fc-view-container .fc-view > table {
-    border-color: #dddddd;
+    border-color: #cccccc;
     border-top-width: 3px;
 }
 .pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
     padding-top: 10px;
     padding-bottom: 10px;
     /*font-weight: 300;*/
+    font-weight: normal;
 }
 .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
-    border-color: #dddddd;
+    border-color: #cccccc;
 }
 .fc th {
     border-top-width: 3px;
@@ -266,7 +267,7 @@ label.time-label {
     background: none;
 }
 .pass-calendar .fc-row:first-child > table {
-    border-top: 3px solid #dddddd;
+    border-top: 3px solid #cccccc;
 }
 .pass-calendar .fc-event {
     height: 5px;
@@ -289,6 +290,7 @@ label.time-label {
 }
 .fc-button {
     background-color: transparent;
+    border-color: #cccccc;
 }
 .pass-calendar .fc-icon-left-single-arrow::after, .pass-calendar .fc-icon-right-single-arrow::after {
     font-weight: 100 !important;
@@ -301,13 +303,16 @@ label.time-label {
 .pass-calendar .fc-event-container .tooltip {
     position: fixed;
 }
-.pass-calendar .fc-event-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
+.pass-box .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
     background-color: #3c8dbc;
     font-size: 10px;
     white-space:pre-wrap;
 }
 .pass-calendar .fc-event-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
     border-top-color: #3c8dbc;
+}
+.calendar-pass.pass-content .tooltip.top {
+    left: 0 !important;
 }
 a.back-button {
     color: inherit;

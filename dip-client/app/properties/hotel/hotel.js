@@ -488,6 +488,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.createPass($scope.hotel.id, newPass.service, newPass)
                     .success(function (data, status) {
                         $scope.getPasses($scope.hotel.id).then(function () {
+                            if ($scope.mapHotelService[newPass.service].isMappingToCalendar) {
+                                $scope.reRenderPassCalendar(newPass.service, true);
+                            }
                             $scope.hideCreatePassBox(module);
                             $scope.stopSpin();
                         });
@@ -558,7 +561,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         if (isChangeModule) {
                             $scope.getPasses($scope.hotel.id).then(function () {
                                 $scope.hideEditPassBox(pass);
-                                $scope.reRenderPassCalendar(pass.service);
+                                $scope.reRenderPassCalendar(pass.service, true);
                                 $scope.stopSpin();
                             });
                         } else {
@@ -627,7 +630,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 setTimeout(function () {
                     $scope.$apply();
-                    $scope.reRenderPassCalendar(module.id);
+                    $scope.reRenderPassCalendar(module.id, true);
                     $scope.stopSpin();
                 }, 0);
             };
@@ -670,7 +673,15 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.getDataToolTipContent = function (pass) {
                 var content = $scope.getDisplayDays(pass.days);
-                content += '<br/>' + pass.displayStartDay + ' - ' + pass.displayDueDay;
+                if (pass.displayStartDay && pass.displayDueDay) {
+                    if (content) {
+                        content += '<br/>';
+                    }
+                    content += pass.displayStartDay + ' - ' + pass.displayDueDay;
+                }
+                if (!content) {
+                    content = $scope.translate('CLICK_TO_SET_DETAILS_FOR_PASS');
+                }
                 return content;
             };
 
@@ -680,7 +691,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 var displayDays = [], current = '', i, j;
                 for (i = 0; i < days.length;) {
                     current = $scope.daysInWeek[days[i]].display;
-                    for (j = i+1; j < days.length; j++) {
+                    for (j = i + 1; j < days.length; j++) {
                         if (days[j] == days[i] + j - i) {
                             continue;
                         } else {
@@ -752,44 +763,51 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $(form).find("[data-mask]").inputmask();
             };
 
-            $scope.reRenderPassCalendar = function (moduleId) {
+            $scope.reRenderPassCalendar = function (moduleId, needReInit) {
+                if (needReInit) {
+                    $scope.initPassCalendarForm('#pass_calendar_' + moduleId);
+                }
                 $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('render');
                 $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('refetchEvents');
             };
 
+            $scope.initPassCalendarForm = function (calendarId) {
+                // $(calendarId).find('.calendar-pass.box .box-header').tooltip({html: true});
+                $(calendarId).find('.calendar-pass.box .box-header').click(function (e) {
+                    $(this).parent().find('> .box-body').collapse('toggle');
+                    var arrowRight = 'fa-angle-right';
+                    var arrowDown = 'fa-angle-down';
+                    if ($(this).find('i').hasClass(arrowRight)) {
+                        $(this).find('i').removeClass(arrowRight);
+                        $(this).find('i').addClass(arrowDown);
+                    } else {
+                        $(this).find('i').removeClass(arrowDown);
+                        $(this).find('i').addClass(arrowRight);
+                    }
+                });
+                $(calendarId).find('.dip-vertical-checkbox input').iCheck({
+                    checkboxClass: 'icheckbox_minimal-blue'
+                });
+                $(calendarId).find('.dip-vertical-checkbox input').on('ifChanged', function () {
+                    var passId = $(this).data('pass-id');
+                    var days = [];
+                    $('#pass_calendar_content_' + passId).find('.icheckbox_minimal-blue input:checked').each(function () {
+                        days.push($(this).data('day'));
+                    });
+                    if ($scope.mapPass[passId]) {
+                        $scope.mapPass[passId].days = days;
+                        $scope.updatePassDays($scope.mapPass[passId]);
+                    }
+                    $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
+                });
+                $(calendarId).find('input.datepicker').datepicker({
+                    format: FORMAT_DATE_BOOTSTRAP_CALENDAR
+                });
+            };
+
             $scope.initPassCalendar = function (calendarId) {
                 setTimeout(function () {
-                    $(calendarId).find('.calendar-pass.box .box-header').tooltip({html: true});
-                    $(calendarId).find('.calendar-pass.box .box-header').click(function (e) {
-                        $(this).parent().find('> .box-body').collapse('toggle');
-                        var arrowRight = 'fa-angle-right';
-                        var arrowDown = 'fa-angle-down';
-                        if ($(this).find('i').hasClass(arrowRight)) {
-                            $(this).find('i').removeClass(arrowRight);
-                            $(this).find('i').addClass(arrowDown);
-                        } else {
-                            $(this).find('i').removeClass(arrowDown);
-                            $(this).find('i').addClass(arrowRight);
-                        }
-                    });
-                    $(calendarId).find('.dip-vertical-checkbox input').iCheck({
-                        checkboxClass: 'icheckbox_minimal-blue'
-                    });
-                    $(calendarId).find('.dip-vertical-checkbox input').on('ifChanged', function () {
-                        var passId = $(this).data('pass-id');
-                        var days = [];
-                        $('#pass_calendar_content_' + passId).find('.icheckbox_minimal-blue input:checked').each(function () {
-                            days.push($(this).data('day'));
-                        });
-                        if ($scope.mapPass[passId]) {
-                            $scope.mapPass[passId].days = days;
-                            $scope.updatePassDays($scope.mapPass[passId]);
-                        }
-                        $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
-                    });
-                    $(calendarId).find('input.datepicker').datepicker({
-                        format: FORMAT_DATE_BOOTSTRAP_CALENDAR
-                    });
+                    $scope.initPassCalendarForm(calendarId);
                     $(calendarId).find('input.datepicker').datepicker().on('changeDate', function (e) {
                         var passId = $(this).data('pass-id');
                         if (!$scope.mapPass[passId]) {
@@ -810,7 +828,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
                     $(calendarId).find('.pass-calendar').fullCalendar({
                         fixedWeekCount: false,
-                        columnFormat: 'dddd',
+                        // columnFormat: 'dddd',
                         // titleFormat: FORMAT_DATE_SELECTED_DATE_CALENDAR,
                         header: {
                             center: 'title',
@@ -821,10 +839,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         events: function (start, end, timezone, callback) {
                             callback($scope.passCalendarGenerateEventSource(calendarId, start, end, timezone, this.view));
                         },
-                        eventRender: function(event, element) {
+                        eventRender: function (event, element) {
                             if (event.toolTipContent) {
                                 element.tooltip({
-                                    title: event.toolTipContent
+                                    title: event.toolTipContent,
+                                    container: calendarId
                                 });
                             }
                         }

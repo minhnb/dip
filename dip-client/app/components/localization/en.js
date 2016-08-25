@@ -160,5 +160,7 @@ var angular_translate_en = {
     WEEK_DAY_SUNDAY_FULL: "Sunday",
 
     FROM: "From",
-    TO: "To"
+    TO: "To",
+
+    CLICK_TO_SET_DETAILS_FOR_PASS: "Click here to set details<br/>for the pass"
 };
