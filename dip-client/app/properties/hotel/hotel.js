@@ -25,6 +25,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.module = {};
             $scope.pureHotel = {};
 
+            var endDate = config.END_DAY;
+            if (endDate) {
+                // console.log(endDate);
+                endDate = moment(endDate);
+            }
+
             $scope.poolTypes = [
                 {display: $scope.translate('OTHERS'), value: POOL_TYPE_OTHERS},
                 {display: $scope.translate('IN_DOOR'), value: POOL_TYPE_INDOOR},
@@ -801,32 +807,36 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     }
                     $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
                 });
-                $(calendarId).find('input.datepicker').datepicker({
+                var datePickerData = {
                     format: FORMAT_DATE_BOOTSTRAP_CALENDAR
+                };
+                if (endDate) {
+                    datePickerData.endDate = endDate.format(FORMAT_DATE);
+                }
+                $(calendarId).find('input.datepicker').datepicker(datePickerData);
+                $(calendarId).find('input.datepicker').datepicker().on('changeDate', function (e) {
+                    var passId = $(this).data('pass-id');
+                    if (!$scope.mapPass[passId]) {
+                        return;
+                    }
+                    var startDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"').datepicker('getDate');
+                    var dueDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"').datepicker('getDate');
+                    if (isFinite(startDay) && isFinite(dueDay)) {
+                        if (startDay > dueDay) {
+                            return $scope.notifyValidateError('ERROR_INVALID_PASS_START_DAY_DUE_DATE');
+                        }
+                        $scope.mapPass[passId].startDay = utils.formatDateToDipDate(startDay);
+                        $scope.mapPass[passId].dueDay = utils.formatDateToDipDate(dueDay);
+                        $scope.updatePassStartDayAndDueDay($scope.mapPass[passId]);
+                        $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
+                    }
+
                 });
             };
 
             $scope.initPassCalendar = function (calendarId) {
                 setTimeout(function () {
                     $scope.initPassCalendarForm(calendarId);
-                    $(calendarId).find('input.datepicker').datepicker().on('changeDate', function (e) {
-                        var passId = $(this).data('pass-id');
-                        if (!$scope.mapPass[passId]) {
-                            return;
-                        }
-                        var startDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"').datepicker('getDate');
-                        var dueDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"').datepicker('getDate');
-                        if (isFinite(startDay) && isFinite(dueDay)) {
-                            if (startDay > dueDay) {
-                                return $scope.notifyValidateError('ERROR_INVALID_PASS_START_DAY_DUE_DATE');
-                            }
-                            $scope.mapPass[passId].startDay = utils.formatDateToDipDate(startDay);
-                            $scope.mapPass[passId].dueDay = utils.formatDateToDipDate(dueDay);
-                            $scope.updatePassStartDayAndDueDay($scope.mapPass[passId]);
-                            $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
-                        }
-
-                    });
                     $(calendarId).find('.pass-calendar').fullCalendar({
                         fixedWeekCount: false,
                         eventOrder: "order",
@@ -847,6 +857,18 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                     title: event.toolTipContent,
                                     container: calendarId
                                 });
+                            }
+                        },
+                        viewRender: function(view, element) {
+                            if (endDate) {
+                                var format = 'YYYY/MM/DD';
+                                if (endDate.format(format) < view.intervalEnd.format(format)) {
+                                    $(calendarId + " .fc-next-button").attr("disabled", "disabled");
+                                    return false;
+                                }
+                                else {
+                                    $(calendarId + " .fc-next-button").removeAttr('disabled');
+                                }
                             }
                         }
                     });
