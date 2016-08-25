@@ -13,7 +13,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.$parent.pageTitle = "HOTELS";
             $scope.isShowingCreateEditHotelBox = false;
             $scope.isShowingProfileImage = false;
-            $scope.isShowingListHotels = false;
+            $scope.isShowingListHotels = true;
             $scope.hotelProfilePicture = "";
             $scope.isEditingHotel = false;
             $scope.isShowingButtonCreateHotel = false;
@@ -28,7 +28,8 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.hideCreateEditHotelBox = function () {
                 $scope.isShowingCreateEditHotelBox = false;
-                $scope.isShowingListHotels = $scope.list.length > 0;
+                // $scope.isShowingListHotels = $scope.list.length > 0;
+                $scope.isShowingListHotels = true;
             };
 
             $scope.showCreateHotelBox = function () {
@@ -144,8 +145,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(hotelUtils.convertHotel);
-                $scope.isShowingListHotels = $scope.list.length > 0;
-                $scope.isShowingButtonCreateHotel = true;
+                // $scope.isShowingListHotels = $scope.list.length > 0;
             };
 
             $scope.init = function () {

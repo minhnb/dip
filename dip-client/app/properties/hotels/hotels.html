@@ -5,7 +5,7 @@
 <!--</div>-->
 
 <div class="text-center">
-    <a class="btn btn-app" ng-show="!isShowingListHotels && isShowingButtonCreateHotel" ng-click="showCreateHotelBox()">
+    <a class="btn btn-app" ng-show="isShowingButtonCreateHotel && !isShowingListHotels" ng-click="showCreateHotelBox()">
         <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
     </a>
 </div>
