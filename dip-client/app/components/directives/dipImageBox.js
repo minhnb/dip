@@ -32,9 +32,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                 var imageBoxPreview = $(element);
                 $(imageBoxPreview).find('.input-upload-img').change(function () {
                     var inputElement = this;
-                    imageBoxPreview.find('.image-box > .load-image-spinner').show();
 
                     if ($(inputElement)[0].files && $(inputElement)[0].files[0]) {
+                        imageBoxPreview.find('.image-box > .load-image-spinner').show();
                         var maxFileSize = MAX_IMAGE_SIZE_MB * 1024 * 1024;
                         if ($(inputElement)[0].files[0].size > maxFileSize) {
                             imageBoxPreview.find('.image-box > .load-image-spinner').hide();
