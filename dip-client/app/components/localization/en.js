@@ -37,7 +37,7 @@ var angular_translate_en = {
 
     EXPORT_DATA: "Export Data",
     USERS_REPORT: "Users Report",
-    LIST_USERS: "List Users",
+    LIST_USERS: "Users List",
     EMAIL: "Email",
     NAME: "Name",
     BIRTHDAY: "Birthday",
@@ -45,7 +45,7 @@ var angular_translate_en = {
     SIGN_UP_DATE: "Sign Up Date",
 
     HOTEL_RESERVATIONS_REPORT: "Hotel Reservations Report",
-    LIST_HOTEL_RESERVATIONS: "List Hotel Reservations",
+    LIST_HOTEL_RESERVATIONS: "Hotel Reservations List",
     HOTEL: "Hotel",
     PASS_DATE: "Pass Date",
     PASSES: "Passes",
@@ -56,10 +56,10 @@ var angular_translate_en = {
 
     EVENT_RESERVATIONS_REPORT: "Event Reservations Report",
     LIST_EVENT_RESERVATIONS: "List Event Reservations",
-    HOST: "Host",
+    HOST: "Hotel",
     EVENT: "Event",
     EVENT_TIME: "Event Time",
-    COUNT: "Count",
+    COUNT: "Quantity",
     PRICE: "Price",
 
 
@@ -89,7 +89,7 @@ var angular_translate_en = {
     NEIGHBORHOOD: "Neighborhood",
     PROFILE_PICTURE: "Profile picture",
 
-    LIST_HOTELS: "List Hotels",
+    LIST_HOTELS: "Hotels List",
 
     HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
     ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
@@ -101,7 +101,7 @@ var angular_translate_en = {
     HOTEL_INFO: "Hotel Info",
     NEW_MODULE: "New Swimming Pool",
 
-    CREATE_MODULE: "Create Swimming Pool",
+    CREATE_MODULE: "New Swimming Pool",
     MODULE_NAME: "Pool Name",
     TYPE: "Type",
     IN_DOOR: "In Door",
@@ -162,5 +162,9 @@ var angular_translate_en = {
     FROM: "From",
     TO: "To",
 
-    CLICK_TO_SET_DETAILS_FOR_PASS: "Click here to set details<br/>for the pass"
+    CLICK_TO_SET_DETAILS_FOR_PASS: "Click here to set details<br/>for the pass",
+    FULL_NAME: "Full name",
+    PASSWORD: "Password",
+    RETYPE_PASSWORD: "Retype password",
+    AGREE_TERMS: "I agree to the <a href='{{ href }}'>terms"
 };
