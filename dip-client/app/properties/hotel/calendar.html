@@ -10,7 +10,7 @@
                 <div class="box calendar-pass pass-content"
                      ng-repeat="pass in module.passesMapByPassType[passType.value] track by $index"
                      id="pass_calendar_content_{{pass.id}}">
-                    <div class="box-header" ng-init="setPassColorByIndex(pass, $index)"
+                    <div class="box-header"
                          data-original-title="{{getDataToolTipContent(pass)}}" data-toggle="tooltip">
                         <div class="pass-color" style="background-color: {{pass.passColor}}"></div>
                         <p class="box-title">{{pass.title}}</p>

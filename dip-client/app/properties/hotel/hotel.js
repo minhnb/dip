@@ -23,6 +23,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.hotel = {};
             $scope.module = {};
+            $scope.pureHotel = {};
 
             $scope.poolTypes = [
                 {display: $scope.translate('OTHERS'), value: POOL_TYPE_OTHERS},
@@ -84,11 +85,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 return hotelService.getHotelById(hotelId)
                     .success(function (data, status) {
                         var hotel = hotelUtils.convertHotel(data);
-                        for (var key in hotel) {
-                            if (key != 'services') {
-                                $scope.hotel[key] = hotel[key];
-                            }
-                        }
+                        hotelUtils.updateObjectInfo($scope.hotel, hotel, ['services']);
                         $scope.stopSpin();
                     })
                     .error(function (data, status) {
@@ -117,11 +114,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         var passes = data;
                         $scope.hotel.services.map(function (module) {
                             module.passes = [];
-                            module.passesMapByPassType = [];
-                            for (var i = 0; i < $scope.passTypes.length; i++) {
-                                var passType = $scope.passTypes[i];
-                                module.passesMapByPassType[passType.value] = [];
-                            }
                             $scope.mapHotelService[module.id] = module;
                         });
                         passes.map(function (pass) {
@@ -130,12 +122,29 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                 pass.isEditingPassInfo = false;
                                 $scope.mapHotelService[pass.service].passes.push(pass);
                                 $scope.mapPurePass[pass.id] = Object.assign({}, pass);
-                                $scope.mapHotelService[pass.service].passesMapByPassType[pass.passType].push(pass);
                             }
                             $scope.mapPass[pass.id] = pass;
                         });
-
+                        $scope.updatePassesMapByPassType();
                     });
+            };
+
+            $scope.updatePassesMapByPassType = function () {
+                $scope.hotel.services.map(function (module) {
+                    module.passesMapByPassType = [];
+                    for (var i = 0; i < $scope.passTypes.length; i++) {
+                        var passType = $scope.passTypes[i];
+                        module.passesMapByPassType[passType.value] = [];
+                    }
+                });
+                for (var key in $scope.mapPass) {
+                    var pass = $scope.mapPass[key];
+                    if ($scope.mapHotelService[pass.service]) {
+                        var index = $scope.mapHotelService[pass.service].passesMapByPassType[pass.passType].length;
+                        $scope.setPassColorByIndex(pass, index);
+                        $scope.mapHotelService[pass.service].passesMapByPassType[pass.passType].push(pass);
+                    }
+                }
             };
 
             $scope.bindingModules = function (services) {
@@ -153,7 +162,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.hotel.services = services.map(function (module) {
                     var converted_module = $scope.convertModule(module);
                     var pureModule = Object.assign({}, $scope.mapPureHotelService[module.id]);
-                    $scope.mapPureHotelService[module.id] = Object.assign({}, converted_module);
                     if (serviceMap[module.id]) {
                         if (serviceMap[module.id].isEditingModuleInfo) {
                             converted_module.isEditingModuleInfo = true;
@@ -195,11 +203,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         data.city = data.address.city;
                         data.fullAddress = hotelUtils.getHotelFullAddress(data);
                         var convertedHotel = hotelUtils.convertHotel(data);
-                        for (var key in convertedHotel) {
-                            if (key != 'services') {
-                                $scope.hotel[key] = convertedHotel[key];
-                            }
-                        }
+                        hotelUtils.updateObjectInfo($scope.hotel, convertedHotel, ['services']);
+                        hotelUtils.updateObjectInfo($scope.pureHotel, convertedHotel, ['services']);
                         $('#image_box_hotel').trigger('setImage', [hotel.imageUrl, hotel.name]);
                         $scope.isEditingHotel = true;
                     });
@@ -247,17 +252,14 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.actionAfterSaveHotel = function (data) {
                 var hotel = hotelUtils.convertHotel(data);
-                for (var key in hotel) {
-                    if (key != 'services') {
-                        $scope.hotel[key] = hotel[key];
-                    }
-                }
+                hotelUtils.updateObjectInfo($scope.hotel, hotel, ['services']);
                 $scope.stopSpin();
                 $scope.isEditingHotel = false;
             };
 
             $scope.cancelEditHotel = function () {
                 $scope.isEditingHotel = false;
+                hotelUtils.updateObjectInfo($scope.hotel, $scope.pureHotel, ['services']);
             };
 
             $scope.deleteHotel = function (hotel) {
@@ -342,8 +344,14 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.showEditModuleBox = function (module) {
                 $scope.startSpin();
                 hotelService.getHotelServiceById(module.id)
-                    .success(function () {
+                    .success(function (data, status) {
                         $scope.stopSpin();
+                        var convertedModule = hotelUtils.convertHotelService(data);
+                        hotelUtils.updateObjectInfo(module, convertedModule, []);
+                        if (!$scope.mapPureHotelService[module.id]) {
+                            $scope.mapPureHotelService[module.id] = {};
+                        }
+                        hotelUtils.updateObjectInfo($scope.mapPureHotelService[module.id], convertedModule, []);
                         if (module.imageUrl) {
                             $('#image_box_module_' + module.id).trigger('setImage', [module.imageUrl, module.name]);
                         }
@@ -360,9 +368,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.discardChangeModule = function (module) {
                 var pureModule = $scope.mapPureHotelService[module.id];
-                for (var key in pureModule) {
-                    module[key] = pureModule[key];
-                }
+                hotelUtils.updateObjectInfo(module, pureModule, []);
                 $scope.hideEditModuleBox(module);
                 setTimeout(function () {
                     $scope.$apply();
@@ -513,9 +519,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.getPassById(pass.id)
                     .success(function (data, status) {
                         var convertedPass = hotelUtils.convertPass(data);
-                        for (var key in convertedPass) {
-                            pass[key] = convertedPass[key];
+                        hotelUtils.updateObjectInfo(pass, convertedPass, []);
+                        if (!$scope.mapPurePass[pass.id]) {
+                            $scope.mapPurePass[pass.id] = {};
                         }
+                        hotelUtils.updateObjectInfo($scope.mapPurePass[pass.id], convertedPass, []);
                         setTimeout(function () {
                             pass.isEditingPassInfo = true;
                             $scope.stopSpin();
@@ -533,11 +541,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.discardChangePass = function (pass) {
                 var purePass = $scope.mapPurePass[pass.id];
-                for (var key in purePass) {
-                    if (pass[key] != purePass[key]) {
-                        pass[key] = purePass[key];
-                    }
-                }
+                hotelUtils.updateObjectInfo(pass, purePass, []);
             };
 
             $scope.editPass = function (pass, module, $event) {
@@ -546,6 +550,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     return;
                 }
                 var isChangeModule = module.id != pass.service;
+                var isChangePassType = pass.passType != $scope.mapPurePass[pass.id].passType;
                 $scope.startSpin();
                 hotelService.updatePass(updatePass)
                     .success(function (data, status) {
@@ -553,9 +558,13 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         if (isChangeModule) {
                             $scope.getPasses($scope.hotel.id).then(function () {
                                 $scope.hideEditPassBox(pass);
+                                $scope.reRenderPassCalendar(pass.service);
                                 $scope.stopSpin();
                             });
                         } else {
+                            if (isChangePassType) {
+                                $scope.updatePassesMapByPassType();
+                            }
                             $scope.hideEditPassBox(pass);
                             $scope.stopSpin();
                         }
@@ -615,6 +624,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.passMapToCalendar = function (module) {
                 module.isMappingToCalendar = true;
+                $scope.startSpin();
+                setTimeout(function () {
+                    $scope.$apply();
+                    $scope.reRenderPassCalendar(module.id);
+                    $scope.stopSpin();
+                }, 0);
             };
 
             $scope.passShowListView = function (module) {
@@ -737,6 +752,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $(form).find("[data-mask]").inputmask();
             };
 
+            $scope.reRenderPassCalendar = function (moduleId) {
+                $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('render');
+                $('#pass_calendar_' + moduleId).find('.pass-calendar').fullCalendar('refetchEvents');
+            };
+
             $scope.initPassCalendar = function (calendarId) {
                 setTimeout(function () {
                     $(calendarId).find('.calendar-pass.box .box-header').tooltip({html: true});
@@ -809,7 +829,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             }
                         }
                     });
-                }, 1000);
+                }, 0);
             };
 
             $scope.passCalendarGenerateEventSource = function (calendarId, start, end, timezone, calendarView) {

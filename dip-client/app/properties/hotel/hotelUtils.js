@@ -102,6 +102,18 @@ dipApp.factory('hotelUtils', [
             updateEditingPass: function (editingPass, pass, oldPass) {
                 var ignoreKeys = ['isEditingPassInfo'];
                 return hotelUtils.updateEditingObject(editingPass, pass, oldPass, ignoreKeys);
+            },
+            updateObjectInfo: function (obj, newInfo, ignoreKeys) {
+                if (!ignoreKeys) {
+                    ignoreKeys = [];
+                }
+                for (var key in newInfo) {
+                    if (ignoreKeys.indexOf(key) == -1) {
+                        if (obj[key] != newInfo[key]) {
+                            obj[key] = newInfo[key];
+                        }
+                    }
+                }
             }
         };
         return hotelUtils;
