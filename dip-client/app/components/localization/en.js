@@ -63,6 +63,7 @@ var angular_translate_en = {
     PRICE: "Price",
 
 
+    CREATE_NEW: "Create New",
     SAVE: "Save",
     CANCEL: "Cancel",
     DELETE: "Delete",

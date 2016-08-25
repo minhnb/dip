@@ -51,6 +51,10 @@ a {
     font-weight: 300;
 }
 
+.box-header .btn-app {
+    margin-bottom: 0;
+    margin-top: 0;
+}
 .list-hotel .box-body > .row {
     margin-bottom: 30px;
 }
