@@ -321,6 +321,9 @@ a.back-button {
     margin-right: 5px;
     padding: 5px;
 }
+.form-control[disabled], fieldset[disabled] .form-control {
+    cursor: inherit !important;
+}
 
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
