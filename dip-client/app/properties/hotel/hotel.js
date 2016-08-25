@@ -829,6 +829,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
                     $(calendarId).find('.pass-calendar').fullCalendar({
                         fixedWeekCount: false,
+                        eventOrder: "order",
                         // columnFormat: 'dddd',
                         // titleFormat: FORMAT_DATE_SELECTED_DATE_CALENDAR,
                         header: {
@@ -912,7 +913,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             var pass = listPasses[j];
                             var event = {
                                 title: '',
-                                start: dayString
+                                start: dayString,
+                                order: j
                             };
                             if (pass.days.indexOf(dayInWeek) > -1 && moment.utc(pass.startDay) <= day && moment.utc(pass.dueDay) >= day) {
                                 event.color = pass.passColor;
