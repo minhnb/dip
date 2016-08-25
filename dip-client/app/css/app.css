@@ -41,6 +41,7 @@ a {
 
 .create-edit-box label {
     /*font-weight: 300;*/
+    font-weight: normal;
 }
 
 .create-edit-box .image-box {
