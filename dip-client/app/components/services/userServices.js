@@ -63,6 +63,13 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                                 JWT: ""
                             };
                     });
+            },
+            signUp: function (user) {
+                user.role = config.ROLE;
+                if (!user.gender) {
+                    user.gender = 'na';
+                }
+                return $http.post(apiAuthUrl + "/signup", user);
             }
         };
         return userService;

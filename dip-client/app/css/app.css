@@ -6,6 +6,7 @@ a {
     cursor: pointer;
 }
 
+/*-------------------------HOTEL PROFILE--------------------------*/
 .dip-report-pass {
     min-width: 150px;
 }
@@ -329,6 +330,22 @@ a.back-button {
 .form-control[disabled], fieldset[disabled] .form-control {
     cursor: inherit !important;
 }
+/*-------------------------END HOTEL PROFILE--------------------------*/
+
+/*-------------------LOGIN - REGISTER--------------------------*/
+.login-box, .register-box  {
+    margin: 50px auto;
+}
+.register-box form {
+    margin-bottom: 15px;
+}
+.register-logo {
+
+}
+.register-logo img {
+    width: 40%;
+}
+/*-------------------END LOGIN - REGISTER--------------------------*/
 
 
 .row.row-grid [class*="col-"] + [class*="col-"] {

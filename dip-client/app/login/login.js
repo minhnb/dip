@@ -21,12 +21,8 @@ angular.module('dipApp.login', ['ngRoute'])
                         $location.path('/dashboard');
                     })
                     .error(function (data, status) {
-                        $scope.showLoginError();
+                        $scope.handleError(data);
                     });
-            };
-
-            $scope.showLoginError = function () {
-                utils.notyErrorMessage('Wrong username or password.Please check and try again.', true);
             };
 
             $scope.initRememberCheckbox = function () {

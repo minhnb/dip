@@ -163,8 +163,18 @@ var angular_translate_en = {
     TO: "To",
 
     CLICK_TO_SET_DETAILS_FOR_PASS: "Click here to set details<br/>for the pass",
+
+    REGISTER: "Register",
+    REGISTER_NEW_DIP_PARTNER: "Register a new DIP Partner",
     FULL_NAME: "Full name",
     PASSWORD: "Password",
-    RETYPE_PASSWORD: "Retype password",
-    AGREE_TERMS: "I agree to the <a href='{{ href }}'>terms"
+    CONFIRM_PASSWORD: "Confirm password",
+    AGREE_TERMS_BEGIN: "I agree to the ",
+    TERMS: "terms",
+    AGREE_TERMS_END: "",
+    ALREADY_DIP_PARTNER: "I'm already a DIP Partner",
+
+    ERROR_INVALID_EMAIL: "Invalid email",
+    ERROR_PASSWORD_NOT_MATCH: "Whoops, password and confirm password don't match",
+    ERROR_INVALID_PASSWORD: "Your password must have 6 or more characters, at least 1 digit"
 };

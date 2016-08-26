@@ -863,11 +863,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             if (endDate) {
                                 var format = 'YYYY/MM/DD';
                                 if (endDate.format(format) < view.intervalEnd.format(format)) {
-                                    $(calendarId + " .fc-next-button").attr("disabled", "disabled");
+                                    $(calendarId + " .fc-next-button").prop('disabled', true);
                                     return false;
                                 }
                                 else {
-                                    $(calendarId + " .fc-next-button").removeAttr('disabled');
+                                    $(calendarId + " .fc-next-button").prop('disabled', false);
                                 }
                             }
                         }
