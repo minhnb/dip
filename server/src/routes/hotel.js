@@ -14,9 +14,6 @@ module.exports = router;
 
 router
     .use('/', auth.isPartnerOrAdmin)
-    .get('get hotel list', '/', async (ctx => {
-        ctx.body = await(resourcesServices.getHotelList(ctx.state.user));
-    }))
     .post('create hotel', '/',
         async(ctx => {
             let user = ctx.state.user;

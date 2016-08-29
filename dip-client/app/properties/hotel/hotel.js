@@ -302,9 +302,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $('#image_box_module').trigger('clearImageBox');
             };
 
-            $scope.updateHotelServiceImage = function (hotelId) {
+            $scope.updateHotelServiceImage = function (hotelServiceId) {
                 var image = $('#image_box_module > .input-upload-img')[0].files[0];
-                return hotelService.updateHotelServiceImage(hotelId, image)
+                return hotelService.updateHotelServiceImage($scope.hotel.id, hotelServiceId, image)
                     .success(function (data, status) {
 
                     })
@@ -384,7 +384,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.updateModuleImage = function (moduleId) {
                 var image = $('#image_box_module_' + moduleId + ' > .input-upload-img')[0].files[0];
-                return hotelService.updateHotelServiceImage(moduleId, image)
+                return hotelService.updateHotelServiceImage($scope.hotel.id, moduleId, image)
                     .success(function (data, status) {
 
                     })
@@ -398,7 +398,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     return;
                 }
                 $scope.startSpin();
-                hotelService.updateHotelService(module)
+                hotelService.updateHotelService($scope.hotel.id, module)
                     .success(function (data, status) {
                         if ($('#image_box_module_' + module.id + ' > .input-upload-img').val()) {
                             $scope.updateModuleImage(data.id)

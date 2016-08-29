@@ -12,9 +12,13 @@ const await = require('asyncawait/await');
 module.exports = router;
 
 router
-    .use('/', auth.authenticate(), utils.isAdmin)
+    .use('/', auth.authenticate(), auth.isPartnerOrAdmin)
     .get('get pending hotels', '/pending',
+        utils.isAdmin,
         async(ctx => {
             ctx.body = await(resourcesServices.getListPendingHotel());
         })
-    );
+    )
+    .get('get hotel list', '/', async (ctx => {
+        ctx.body = await(resourcesServices.getHotelList(ctx.state.user));
+    }));
