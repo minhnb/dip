@@ -53,7 +53,7 @@ angular.module('dipApp.signup', ['ngRoute'])
 
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
-                $('.register-box form').validator();
+                $('.register-box form').validator().off('focusout.bs.validator');
                 $('.register-box form input:first').focus();
             };
 

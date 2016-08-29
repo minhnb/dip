@@ -349,6 +349,9 @@ a.back-button {
     display: inline-block;
     float: none;
 }
+.modal .login-box {
+    margin: 10px auto;
+}
 /*-------------------END LOGIN - REGISTER--------------------------*/
 
 

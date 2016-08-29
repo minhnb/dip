@@ -1,5 +1,6 @@
 dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService',
     function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService) {
+        $scope.showNgView = false;
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
         $rootScope.goToPath = function (path) {
@@ -59,6 +60,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         };
 
         $scope.initTemplate = function () {
+            $scope.showNgView = true;
+            setTimeout(function () {
+                $scope.$apply();
+            }, 0);
             $scope.okText = $scope.translate($scope.okText);
             $scope.cancelText = $scope.translate($scope.cancelText);
 

@@ -182,6 +182,14 @@ var angular_translate_en = {
     REMEMBER_ME: "Remember Me",
     SIGN_IN: "Sign in",
     FORGOT_PASSWORD: "I forgot my password",
-    REGISTER_NEW_MEMBERSHIP: "Register a new membership"
+    REGISTER_NEW_MEMBERSHIP: "Register a new membership",
 
+    RESET_PASSWORD: "Reset Password",
+    SEND: "Send",
+    RESET_PASSWORD_CHECK_EMAIL: "Please check your email for instructions to reset your password",
+    RESET_PASSWORD_SUCCESSFULLY: "Your password was updated",
+    TOKEN: "Token",
+    NEW_PASSWORD: "New Password",
+    RESET: "Reset",
+    ALREADY_HAS_TOKEN: "I already had reset password token"
 };

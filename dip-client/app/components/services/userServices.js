@@ -2,6 +2,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
     function ($q, $http, $localStorage) {
         var apiAuthUrl = config.DIP_API + "auth",
             apiUsersUrl = config.DIP_API + "users",
+            apiResetPasswordUrl = config.DIP_API + "resetpassword",
             userService = {};
         userService = {
             user: {
@@ -70,6 +71,12 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                     user.gender = 'na';
                 }
                 return $http.post(apiAuthUrl + "/signup", user);
+            },
+            sendResetPasswordTokenToEmail: function (email) {
+                return $http.post(apiResetPasswordUrl, {email: email});
+            },
+            resetPassword: function (token, password) {
+                return $http.put(apiResetPasswordUrl + "/" + token, {password: password});
             }
         };
         return userService;

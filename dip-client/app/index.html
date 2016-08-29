@@ -64,9 +64,9 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="dip-app-body" ng-view ng-if="isNoMenuPage"></div>
+<div class="dip-app-body" ng-view ng-if="isNoMenuPage" ng-show="showNgView"></div>
 
-<div class="wrapper" ng-if="!isNoMenuPage">
+<div class="wrapper" ng-if="!isNoMenuPage" ng-show="showNgView">
     <dip-top-bar></dip-top-bar>
     <dip-menu></dip-menu>
     <!-- Content Wrapper. Contains page content -->

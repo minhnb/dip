@@ -22,11 +22,11 @@
             </div>
             <div class="row text-center">
                 <!--<div class="col-sm-8">-->
-                    <!--<div class="checkbox icheck">-->
-                        <!--<label>-->
-                            <!--<input type="checkbox" checked> {{'REMEMBER_ME' | translate}}-->
-                        <!--</label>-->
-                    <!--</div>-->
+                <!--<div class="checkbox icheck">-->
+                <!--<label>-->
+                <!--<input type="checkbox" checked> {{'REMEMBER_ME' | translate}}-->
+                <!--</label>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!-- /.col -->
                 <div class="col-sm-8 col-xs-12">
@@ -45,10 +45,80 @@
         <!--</div>-->
         <!-- /.social-auth-links -->
 
-        <a href="#">{{'FORGOT_PASSWORD' | translate}}</a><br>
-        <a ng-click="goToPath('/signup')" class="text-center">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
-
+        <a data-target="#forgot_password_modal" data-toggle="modal" ng-click="modalResetPasswordSetFocus()">{{'FORGOT_PASSWORD'
+            | translate}}</a><br>
+        <a ng-click="goToPath('/signup')">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
     </div>
     <!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
+
+<!--modal-->
+<div class="modal fade" id="forgot_password_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button">
+                    <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">{{'RESET_PASSWORD' | translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="login-box send-email-box" ng-show="!alreadyHasToken">
+                    <form role="form" ng-submit="sendEmail()">
+                        <div class="form-group has-feedback">
+                            <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}"
+                                   ng-model="email"
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                                   data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
+                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-sm-8 col-xs-12">
+                                <button class="btn btn-primary btn-block btn-flat">{{'SEND' | translate}}</button>
+                            </div>
+                        </div>
+                        <a ng-click="showResetPasswordForm()">{{'ALREADY_HAS_TOKEN' | translate}}</a>
+                    </form>
+                </div>
+                <div class="login-box reset-password-box" ng-show="alreadyHasToken">
+                    <form role="form" ng-submit="resetPassword()">
+                        <div class="form-group has-feedback">
+                            <input type="password" class="form-control" ng-model="token"
+                                   placeholder="{{'TOKEN' | translate}}" required>
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="password" class="form-control" placeholder="{{'NEW_PASSWORD' | translate}}"
+                                   pattern="(?=.*\d).{6,}" ng-model="newPassword"
+                                   id="input_password" data-error="{{'ERROR_INVALID_PASSWORD' | translate}}" required>
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="password" class="form-control" placeholder="{{'CONFIRM_PASSWORD' | translate}}"
+                                   data-match="#input_password"
+                                   data-match-error="{{'ERROR_PASSWORD_NOT_MATCH' | translate}}"
+                                   required ng-model="confirmPassword">
+                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-sm-8 col-xs-12">
+                                <button class="btn btn-primary btn-block btn-flat">{{'RESET' | translate}}</button>
+                            </div>
+                        </div>
+                        <a ng-click="showEmailForm()">{{'BACK' | translate}}</a>
+                    </form>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{'CANCEL' | translate}}-->
+            <!--</button>-->
+            <!--</div>-->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
