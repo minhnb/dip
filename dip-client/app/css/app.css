@@ -354,6 +354,30 @@ a.back-button {
 }
 /*-------------------END LOGIN - REGISTER--------------------------*/
 
+/*------------------------USER PROFILE-----------------------------*/
+.user-profile .box-body {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+.user-profile .list-group-item {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.user-profile .list-group-item  * {
+    display: inline-block;
+}
+.user-profile .list-group-item *:first-child {
+    margin-right: 20px;
+}
+.user-profile .list-group-item:first-child {
+    border-top: none;
+}
+.user-profile .list-group-item:last-child {
+    border-bottom: none;
+}
+
+/*------------------------END USER PROFILE-----------------------------*/
+
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
     margin-top: 15px;

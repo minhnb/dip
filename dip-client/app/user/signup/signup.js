@@ -2,7 +2,7 @@
 angular.module('dipApp.signup', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/signup', {
-            templateUrl: 'signup/signup.html',
+            templateUrl: 'user/signup/signup.html',
             controller: 'SignUpController'
         });
     }])

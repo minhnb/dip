@@ -30,7 +30,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                 if (!$localStorage.user) {
                     $localStorage.user = {};
                 }
-                $localStorage.user.info = JSON.stringify(user);
+                $localStorage.user.info = user;
             },
             saveUserAccessTokenToLocalStorage: function (token) {
                 if (!$localStorage.user) {
@@ -52,7 +52,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
             getUserInfo: function () {
                 return $http.get(apiUsersUrl + "/me")
                     .success(function (data, status, headers, config) {
-                        userService.saveUserToLocalStorage(data);
+                        userService.saveUserToLocalStorage(data.user);
                     });
             },
             logOut: function () {

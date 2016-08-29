@@ -2,7 +2,7 @@
 angular.module('dipApp.login', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
-            templateUrl: 'login/login.html',
+            templateUrl: 'user/login/login.html',
             controller: 'LoginController'
         });
     }])
@@ -23,6 +23,7 @@ angular.module('dipApp.login', ['ngRoute'])
                 }
                 userService.login($scope.username, $scope.password)
                     .success(function (data, status) {
+                        $scope.$parent.initUser();
                         $location.path('/dashboard');
                     })
                     .error(function (data, status) {

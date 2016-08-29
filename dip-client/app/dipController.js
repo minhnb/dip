@@ -1,8 +1,10 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService',
-    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService) {
+dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'userUtils',
+    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, userUtils) {
         $scope.showNgView = false;
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
+        $scope.currentUser = {};
+
         $rootScope.goToPath = function (path) {
             if ($location.$$path == path) {
                 $route.reload();
@@ -13,7 +15,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $scope.okText = "OK";
         $scope.cancelText = "CANCEL";
 
-        $scope.startSpin = function(){
+        $scope.startSpin = function () {
             if ($rootScope.isNoMenuPage) {
 
             } else {
@@ -22,7 +24,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             usSpinnerService.spin('dip-spinner');
         };
 
-        $scope.stopSpin = function(){
+        $scope.stopSpin = function () {
             usSpinnerService.stop('dip-spinner');
         };
 
@@ -46,6 +48,11 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             }
             utils.notyErrorMessage(messageContent, true);
             return false;
+        };
+
+        $scope.initUser = function () {
+            userService.initUser();
+            $scope.currentUser = userUtils.convertUser(userService.user.info);
         };
 
         $rootScope.initDipApp = function (fn) {
@@ -73,6 +80,8 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 // console.log('init template');
             }
         };
+
+        $scope.initUser();
         setTimeout(function () {
             $scope.initTemplate();
         }, 1000);

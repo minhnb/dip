@@ -19,3 +19,9 @@ var POOL_TYPE_OTHERS = "Others";
 var PASS_TYPE_POOL_PASS = "PoolPass";
 var PASS_TYPE_DAYBED = "Daybed";
 var PASS_TYPE_CABANA = "Cabana";
+
+var ROLE_ADMIN = "admin";
+var ROLE_PARTNER = "partner";
+var ROLE_USER = "user";
+
+var DEFAULT_AVATAR = "images/default-avatar.png";

@@ -6,6 +6,7 @@ var dipApp = angular.module('dipApp', [
     'dipApp.login',
     'dipApp.signup',
     'dipApp.dashboard',
+    'dipApp.profile',
     'dipApp.report_users',
     'dipApp.report_event_reservations',
     'dipApp.report_hotel_reservations',

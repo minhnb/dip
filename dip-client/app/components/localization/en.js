@@ -26,6 +26,10 @@ var angular_translate_en = {
     PROFILE: "Profile",
     SIGN_OUT: "Sign out",
 
+    DIP_ADMIN: "DIP Admin",
+    DIP_PARTNER: "DIP Partner",
+    DIP_USER: "DIP User",
+
     FOOTER_RIGHT: "DIP Admin",
     FOOTER_COPYRIGHT: "Copyright &copy; 2016",
     FOOTER_COPYRIGHT_HREF: "DIP",
@@ -43,6 +47,7 @@ var angular_translate_en = {
     BIRTHDAY: "Birthday",
     MEMBERSHIP: "Membership",
     SIGN_UP_DATE: "Sign Up Date",
+    PHONE: "Phone",
 
     HOTEL_RESERVATIONS_REPORT: "Hotel Reservations Report",
     LIST_HOTEL_RESERVATIONS: "Hotel Reservations List",
