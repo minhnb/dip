@@ -336,14 +336,18 @@ a.back-button {
 .login-box, .register-box  {
     margin: 50px auto;
 }
-.register-box form {
+.register-box form, .login-box form {
     margin-bottom: 15px;
 }
-.register-logo {
-
+.login-box a {
+    line-height: 30px;
 }
-.register-logo img {
+.register-logo img, .login-logo img {
     width: 40%;
+}
+.row.text-center [class*="col-"] {
+    display: inline-block;
+    float: none;
 }
 /*-------------------END LOGIN - REGISTER--------------------------*/
 

@@ -176,5 +176,12 @@ var angular_translate_en = {
 
     ERROR_INVALID_EMAIL: "Invalid email",
     ERROR_PASSWORD_NOT_MATCH: "Whoops, password and confirm password don't match",
-    ERROR_INVALID_PASSWORD: "Your password must have 6 or more characters, at least 1 digit"
+    ERROR_INVALID_PASSWORD: "Your password must have 6 or more characters, at least 1 digit",
+
+    SIGN_IN_HEADER: "Sign in to start your session",
+    REMEMBER_ME: "Remember Me",
+    SIGN_IN: "Sign in",
+    FORGOT_PASSWORD: "I forgot my password",
+    REGISTER_NEW_MEMBERSHIP: "Register a new membership"
+
 };

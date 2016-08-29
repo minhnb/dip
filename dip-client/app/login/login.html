@@ -1,102 +1,52 @@
-<!--<div class="login-container">-->
-    <!--<div class="login-box animated fadeInDown">-->
-        <!--<div class="login-logo"></div>-->
-        <!--<div class="login-body">-->
-            <!--<div class="login-title"><strong>Welcome</strong>, Please login</div>-->
-            <!--<form class="form-horizontal">-->
-                <!--<div class="form-group">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<input type="text" class="form-control" placeholder="Username" ng-model="username"/>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<input type="password" class="form-control" placeholder="Password" ng-model="password"/>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<div class="col-md-6">-->
-                        <!--<a href="#" class="btn btn-link btn-block">Forgot your password?</a>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-6">-->
-                        <!--<button class="btn btn-info btn-block" ng-click="login()">Log In</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</form>-->
-        <!--</div>-->
-        <!--<div class="login-footer">-->
-            <!--<div class="pull-left">-->
-                <!--&copy; 2016 DIP-->
-            <!--</div>-->
-            <!--<div class="pull-right">-->
-                <!--<a href="#">About</a> |-->
-                <!--<a href="#">Privacy</a> |-->
-                <!--<a href="#">Contact Us</a>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; danger with sound &ndash;&gt;-->
-<!--<div class="message-box message-box-danger animated fadeIn" data-sound="fail" id="message-box-sound-login-failed">-->
-    <!--<div class="mb-container">-->
-        <!--<div class="mb-middle">-->
-            <!--<div class="mb-title"><span class="fa fa-times"></span> UNAUTHORIZED</div>-->
-            <!--<div class="mb-content">-->
-                <!--<p>Wrong username or password.Please check and try again.</p>-->
-            <!--</div>-->
-            <!--<div class="mb-footer">-->
-                <!--<button class="btn btn-default btn-lg pull-right mb-control-close">Close</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; end danger with sound &ndash;&gt;-->
-
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Admin</b>LTE</a>
+        <img src="images/logo.png" alt="DIP logo">
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">{{'SIGN_IN_HEADER' | translate}}</p>
 
-        <form>
+        <form role="form" ng-submit="login()">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username">
+                <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                       data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password">
+                <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password"
+                       required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <div class="help-block with-errors"></div>
             </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox"> Remember Me
-                        </label>
-                    </div>
-                </div>
+            <div class="row text-center">
+                <!--<div class="col-sm-8">-->
+                    <!--<div class="checkbox icheck">-->
+                        <!--<label>-->
+                            <!--<input type="checkbox" checked> {{'REMEMBER_ME' | translate}}-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!-- /.col -->
-                <div class="col-xs-4">
-                    <button class="btn btn-primary btn-block btn-flat" ng-click="login()">Sign In</button>
+                <div class="col-sm-8 col-xs-12">
+                    <button class="btn btn-primary btn-block btn-flat">{{'SIGN_IN' | translate}}</button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
 
-        <div class="social-auth-links text-center">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-                Facebook</a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-                Google+</a>
-        </div>
+        <!--<div class="social-auth-links text-center">-->
+        <!--<p>- OR -</p>-->
+        <!--<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using-->
+        <!--Facebook</a>-->
+        <!--<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using-->
+        <!--Google+</a>-->
+        <!--</div>-->
         <!-- /.social-auth-links -->
 
-        <a href="#">I forgot my password</a><br>
-        <a ng-click="goToPath('/signup')" class="text-center">Register a new membership</a>
+        <a href="#">{{'FORGOT_PASSWORD' | translate}}</a><br>
+        <a ng-click="goToPath('/signup')" class="text-center">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
 
     </div>
     <!-- /.login-box-body -->

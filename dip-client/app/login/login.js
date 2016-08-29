@@ -35,13 +35,19 @@ angular.module('dipApp.login', ['ngRoute'])
                 });
             };
 
+            $scope.initForm = function () {
+                $scope.initRememberCheckbox();
+                $('.login-box form').validator();
+                $('.login-box form input:first').focus();
+            };
+
             $scope.init = function () {
                 userService.initUser();
                 if (userService.user && userService.user.JWT) {
                     // console.log("user already login");
                     $location.path('/dashboard');
                 } else {
-                    $scope.initRememberCheckbox();
+                    $scope.initForm();
                     $scope.stopSpin();
                 }
             };
