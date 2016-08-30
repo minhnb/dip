@@ -780,6 +780,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.initPassCalendarForm = function (calendarId) {
                 // $(calendarId).find('.calendar-pass.box .box-header').tooltip({html: true});
+                $(calendarId).find('.calendar-pass.box .box-header').unbind('click');
                 $(calendarId).find('.calendar-pass.box .box-header').click(function (e) {
                     $(this).parent().find('> .box-body').collapse('toggle');
                     var arrowRight = 'fa-angle-right';
@@ -814,6 +815,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     datePickerData.endDate = endDate.format(FORMAT_DATE);
                 }
                 $(calendarId).find('input.datepicker').datepicker(datePickerData);
+                $(calendarId).find('input.datepicker').datepicker().off('changeDate');
                 $(calendarId).find('input.datepicker').datepicker().on('changeDate', function (e) {
                     var passId = $(this).data('pass-id');
                     if (!$scope.mapPass[passId]) {
