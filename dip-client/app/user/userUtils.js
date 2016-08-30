@@ -20,21 +20,34 @@ dipApp.factory('userUtils', [
             },
             getDisplayAvatar: function (avatar) {
                 if (avatar && avatar.url) {
-                    return avatar.url;
+                    return avatar.url + '?t=' + (new Date()).getTime();
                 }
                 return DEFAULT_AVATAR;
+            },
+            getFirstNameFromFullName: function (fullName) {
+                var names = fullName.split(' ').filter(Boolean);
+                if (names.length > 1) {
+                    names.pop();
+                }
+                return names.join(' ');
+            },
+            getLastNameFromFullName: function (fullName) {
+                var names = fullName.split(' ').filter(Boolean);
+                if (names.length > 1) {
+                    return names[names.length - 1];
+                }
+                return '';
             },
             convertUser: function (user) {
                 user.fullName = userUtils.getUserFullName(user);
                 user.translateRole = userUtils.getUserRole(user.role);
                 user.displayCreatedDay = moment(user.createdAt).format(FORMAT_DATE);
-                user.avatarUrl = userUtils.getDisplayAvatar(user.avatar);
+                user.avatarUrl = userUtils.getDisplayAvatar(user.picture);
                 if (user.dob) {
                     user.birthday = utils.formatDipDateToDate(user.dob);
                 } else {
-                    user.birthday = '09/19/1989';
+                    user.birthday = '';
                 }
-                user.phone = '0903878199';
 
                 return user;
             }

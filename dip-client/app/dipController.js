@@ -38,7 +38,11 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
 
         $scope.handleError = function (error) {
             $scope.stopSpin();
-            utils.notyErrorMessage(error.details, true);
+            var message = error.details;
+            if (!message) {
+                message = status;
+            }
+            utils.notyErrorMessage(message, true);
         };
 
         $scope.notifyValidateError = function (message, isTranslated) {
@@ -53,6 +57,14 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $scope.initUser = function () {
             userService.initUser();
             $scope.currentUser = userUtils.convertUser(userService.user.info);
+            userService.getUserInfo()
+                .success(function (data, status) {
+                    var convertedUser = userUtils.convertUser(data.user);
+                    utils.updateObjectInfo($scope.currentUser, convertedUser);
+                })
+                .error(function (data, status) {
+                    $scope.handleError(data);
+                });
         };
 
         $rootScope.initDipApp = function (fn) {

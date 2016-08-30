@@ -84,35 +84,13 @@ dipApp.factory('hotelUtils', [
                 pass.displayDueDay = pass.dueDay == '9999-12-31' ? '' : utils.formatDipDateToDate(pass.dueDay);
                 return pass;
             },
-            updateEditingObject: function (editingObject, latestObject, oldObject, ignoreKeys) {
-                for (var key in oldObject) {
-                    if (ignoreKeys.indexOf(key) == -1) {
-                        if (latestObject[key] != oldObject[key] && oldObject[key] == editingObject[key]) {
-                            editingObject[key] = latestObject[key];
-                        }
-                    }
-                }
-                return editingObject;
-            },
             updateEditingModule: function (editingModule, module, oldModule) {
                 var ignoreKeys = ['isEditingModuleInfo', 'isAddingPass', 'newPass', 'passes'];
-                return hotelUtils.updateEditingObject(editingModule, module, oldModule, ignoreKeys);
+                return utils.updateEditingObject(editingModule, module, oldModule, ignoreKeys);
             },
             updateEditingPass: function (editingPass, pass, oldPass) {
                 var ignoreKeys = ['isEditingPassInfo'];
-                return hotelUtils.updateEditingObject(editingPass, pass, oldPass, ignoreKeys);
-            },
-            updateObjectInfo: function (obj, newInfo, ignoreKeys) {
-                if (!ignoreKeys) {
-                    ignoreKeys = [];
-                }
-                for (var key in newInfo) {
-                    if (ignoreKeys.indexOf(key) == -1) {
-                        if (obj[key] != newInfo[key]) {
-                            obj[key] = newInfo[key];
-                        }
-                    }
-                }
+                return utils.updateEditingObject(editingPass, pass, oldPass, ignoreKeys);
             }
         };
         return hotelUtils;

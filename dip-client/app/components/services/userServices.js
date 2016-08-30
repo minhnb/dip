@@ -77,6 +77,18 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
             },
             resetPassword: function (token, password) {
                 return $http.put(apiResetPasswordUrl + "/" + token, {password: password});
+            },
+            updateUser: function (user) {
+                return $http.put(apiUsersUrl + "/me", {user: user});
+            },
+            updateUserAvatar: function (image) {
+                var fd = new FormData();
+                fd.append('image', image);
+                return $http.put(apiUsersUrl + "/me/avatar", fd,
+                    {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    });
             }
         };
         return userService;

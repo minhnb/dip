@@ -8,8 +8,18 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
             function initImageBox() {
                 var imageTitle = attrs.title || '';
                 var imageAlt = attrs.alt || '';
+                var imgClass = attrs.imgClass;
+                var borderColor = attrs.borderCorlor || '';
                 $(element).find('.image-box-title').html(imageTitle);
                 $(element).find('.image-box img').attr('alt', imageAlt);
+                if (borderColor) {
+                    $(element).find('.image-box').css({
+                       'border-color': borderColor
+                    });
+                }
+                if (imgClass) {
+                    $(element).find('.image-box img').addClass(imgClass);
+                }
                 $(element).bind('clearImageBox', function () {
                     $(element).find('.input-upload-img').val('');
                     $(element).find('.image-box img').hide();
