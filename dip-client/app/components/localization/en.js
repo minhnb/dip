@@ -66,7 +66,8 @@ var angular_translate_en = {
     HOST: "Hotel",
     EVENT: "Event",
     EVENT_TIME: "Event Time",
-    COUNT: "Quantity",
+    COUNT: "Count",
+    QUANTITY: "Quantity",
     PRICE: "Price",
 
 
