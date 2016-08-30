@@ -73,6 +73,7 @@ var angular_translate_en = {
     CANCEL: "Cancel",
     DELETE: "Delete",
     EDIT: "Edit",
+    CHANGE: "Change",
     DETAILS: "Details",
     UPLOAD: "Upload",
     NEW_HOTEL: "New Hotel",
@@ -197,5 +198,7 @@ var angular_translate_en = {
     TOKEN: "Token",
     NEW_PASSWORD: "New Password",
     RESET: "Reset",
-    ALREADY_HAS_TOKEN: "I already had reset password token"
+    ALREADY_HAS_TOKEN: "I already had reset password token",
+
+    CHANGE_PASSWORD: "Change Password"
 };

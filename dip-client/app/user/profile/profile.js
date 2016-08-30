@@ -114,6 +114,29 @@ angular.module('dipApp.profile', ['ngRoute'])
                     });
             };
 
+            $scope.initChangePasswordModal = function () {
+                $('#change_password_modal input').val('');
+                $('#change_password_modal form').validator().off('focusout.bs.validator');
+            };
+
+            $scope.changePassword = function () {
+                if (!$scope.password || !$scope.newPassword || $scope.newPassword != $scope.confirmPassword) {
+                    return;
+                }
+                var user = {
+                    oldPassword: $scope.password,
+                    newPassword: $scope.newPassword
+                };
+                userService.updateUser(user)
+                    .success(function (data, status) {
+                        $('#change_password_modal').modal('hide');
+                        $('#change_password_modal form').validator('destroy');
+                    })
+                    .error(function (data, status) {
+                        $scope.handleError(data);
+                    });
+            };
+
             $scope.actionAfterSaveUserInfo = function () {
                 $scope.stopSpin();
                 $scope.actionAfterLoadUserInfo($scope.user);
