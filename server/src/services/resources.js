@@ -503,7 +503,7 @@ resourcesServices.getExistedOffer = async (function (offerId, type) {
 resourcesServices.getExistedPass = function (passId, user) {
     let pass = await (resourcesServices.getExistedOffer(passId, 'pass'));
     let hotel = await (db.hotels.findById(pass.hotel).exec());
-    if (user && user.isPartner() && !user._id.equal(hotel.owner)) {
+    if (user && user.isPartner() && !user._id.equals(hotel.owner)) {
         throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
     }
     return pass;
