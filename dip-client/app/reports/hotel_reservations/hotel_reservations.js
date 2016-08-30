@@ -13,7 +13,7 @@ angular.module('dipApp.report_hotel_reservations', ['ngRoute'])
             $rootScope.isNoMenuPage = false;
             $scope.$parent.pageTitle = "HOTEL_RESERVATIONS_REPORT";
             $scope.tableTitle = "LIST_HOTEL_RESERVATIONS";
-            $scope.headers = ["EMAIL", "NAME", "Hotel", "PASS_DATE", "PASSES", "BEFORE_TAX", "TAX", "TOTAL", "PURCHASED_DATE"];
+            $scope.headers = ["EMAIL", "FULL_NAME", "Hotel", "PASS_DATE", "PURCHASE_DETAILS", "SUB_TOTAL", "TAX", "TOTAL", "PURCHASED_DATE"];
             $scope.columns = ["user.username", "user.fullName", "hotel.name", "passDate", "passes", "beforeTax", "tax", "price", "purchasedDate"];
             $scope.rows = [];
 

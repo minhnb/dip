@@ -55,9 +55,11 @@ var angular_translate_en = {
     PASS_DATE: "Pass Date",
     PASSES: "Passes",
     BEFORE_TAX: "Before Tax",
+    SUB_TOTAL: "Sub Total",
     TAX: "Tax",
     TOTAL: "Total",
-    PURCHASED_DATE: "Purchased Date",
+    PURCHASED_DATE: "Purchase Date",
+    PURCHASE_DETAILS: "Purchase Details",
 
     EVENT_RESERVATIONS_REPORT: "Event Reservations Report",
     LIST_EVENT_RESERVATIONS: "List Event Reservations",
