@@ -5,6 +5,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $scope.isInitTemplate = false;
         $scope.currentUser = {};
 
+        $scope.ROLE_ADMIN = ROLE_ADMIN;
+        $scope.ROLE_PARTNER = ROLE_PARTNER;
+        $scope.ROLE_USER = ROLE_USER;
+
         $rootScope.goToPath = function (path) {
             if ($location.$$path == path) {
                 $route.reload();
@@ -65,6 +69,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 .error(function (data, status) {
                     $scope.handleError(data);
                 });
+        };
+
+        $scope.userHasRole = function (roles) {
+            return roles.indexOf($scope.currentUser.role) > -1;
         };
 
         $rootScope.initDipApp = function (fn) {

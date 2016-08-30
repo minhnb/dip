@@ -45,7 +45,6 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                         .success(function (data, status, headers, config) {
                             var token = data.JWT;
                             userService.saveUserAccessTokenToLocalStorage(token);
-                            userService.getUserInfo();
                         });
                 }
             },

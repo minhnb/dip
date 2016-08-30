@@ -26,10 +26,12 @@ angular.module('dipApp.signup', ['ngRoute'])
                 if (!$scope.isValidUser($scope.user)) {
                     return;
                 }
+                $scope.startSpin();
                 userService.signUp($scope.user)
                     .success(function (data, status) {
                         userService.login($scope.user.email, $scope.user.password)
                             .success(function (data, status) {
+                                $scope.stopSpin();
                                 $location.path('/dashboard');
                             })
                             .error(function (data, status) {

@@ -6,8 +6,8 @@ angular.module('dipApp.login', ['ngRoute'])
             controller: 'LoginController'
         });
     }])
-    .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService',
-        function ($scope, $timeout, $rootScope, $location, userService) {
+    .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
+        function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
             $rootScope.isNoMenuPage = true;
             $scope.username = "";
             $scope.password = "";
@@ -21,10 +21,19 @@ angular.module('dipApp.login', ['ngRoute'])
                 if (!$scope.username || !$scope.password) {
                     return;
                 }
+                $scope.startSpin();
                 userService.login($scope.username, $scope.password)
                     .success(function (data, status) {
-                        $scope.$parent.initUser();
-                        $location.path('/dashboard');
+                        userService.getUserInfo()
+                            .success(function (data, status) {
+                                $scope.stopSpin();
+                                var convertedUser = userUtils.convertUser(data.user);
+                                utils.updateObjectInfo($scope.$parent.currentUser, convertedUser);
+                                $location.path('/dashboard');
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -35,8 +44,10 @@ angular.module('dipApp.login', ['ngRoute'])
                 if (!$scope.email || !utils.isValidEmailAddress($scope.email)) {
                     return;
                 }
+                $scope.startSpin();
                 userService.sendResetPasswordTokenToEmail($scope.email)
                     .success(function (data, status) {
+                        $scope.stopSpin();
                         utils.notySuccessMessage($scope.translate('RESET_PASSWORD_CHECK_EMAIL', true));
                         $scope.alreadyHasToken = true;
                     })
@@ -49,8 +60,10 @@ angular.module('dipApp.login', ['ngRoute'])
                 if (!$scope.token || !$scope.newPassword || $scope.newPassword != $scope.confirmPassword) {
                     return;
                 }
+                $scope.startSpin();
                 userService.resetPassword($scope.token, $scope.newPassword)
                     .success(function (data, status) {
+                        $scope.stopSpin();
                         utils.notySuccessMessage($scope.translate('RESET_PASSWORD_SUCCESSFULLY', true));
                         $('#forgot_password_modal').modal('hide');
                     })
