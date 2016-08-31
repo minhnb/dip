@@ -6,7 +6,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">{{'SIGN_IN_HEADER' | translate}}</p>
 
-        <form role="form" ng-submit="login()">
+        <form role="form">
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
@@ -30,7 +30,7 @@
                 <!--</div>-->
                 <!-- /.col -->
                 <div class="col-sm-8 col-xs-12">
-                    <button class="btn btn-primary btn-block btn-flat">{{'SIGN_IN' | translate}}</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">{{'SIGN_IN' | translate}}</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -64,7 +64,7 @@
             </div>
             <div class="modal-body">
                 <div class="login-box send-email-box" ng-show="!alreadyHasToken">
-                    <form role="form" ng-submit="sendEmail()">
+                    <form role="form">
                         <div class="form-group has-feedback">
                             <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}"
                                    ng-model="email"
@@ -75,14 +75,14 @@
                         </div>
                         <div class="row text-center">
                             <div class="col-sm-8 col-xs-12">
-                                <button class="btn btn-primary btn-block btn-flat">{{'SEND' | translate}}</button>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">{{'SEND' | translate}}</button>
                             </div>
                         </div>
                         <a ng-click="showResetPasswordForm()">{{'ALREADY_HAS_TOKEN' | translate}}</a>
                     </form>
                 </div>
                 <div class="login-box reset-password-box" ng-show="alreadyHasToken">
-                    <form role="form" ng-submit="resetPassword()">
+                    <form role="form">
                         <div class="form-group has-feedback">
                             <input type="password" class="form-control" ng-model="token"
                                    placeholder="{{'TOKEN' | translate}}" required>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="row text-center">
                             <div class="col-sm-8 col-xs-12">
-                                <button class="btn btn-primary btn-block btn-flat">{{'RESET' | translate}}</button>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat">{{'RESET' | translate}}</button>
                             </div>
                         </div>
                         <a ng-click="showEmailForm()">{{'BACK' | translate}}</a>

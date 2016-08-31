@@ -50,6 +50,19 @@ dipApp.factory('userUtils', [
                 }
 
                 return user;
+            },
+            handleSubmitForm: function (e, submitFunction) {
+                var element = e.currentTarget;
+                if (e.isDefaultPrevented()) {
+                    $(element).find('input[ng-model="user.confirmPassword"]').parent()
+                        .find('.help-block.with-errors > ul > li').each(function (index, value) {
+                        if (index > 0) {
+                            $(this).remove();
+                        }
+                    })
+                } else {
+                    submitFunction();
+                }
             }
         };
         return userUtils;

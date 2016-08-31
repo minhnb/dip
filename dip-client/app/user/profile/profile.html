@@ -8,7 +8,7 @@
                         <span aria-hidden="true" class="fa fa-edit"></span>
                     </button>
                 </div>
-                <form role="form" ng-submit="editUser()">
+                <form role="form">
                     <div class="col-sm-6">
                         <dip-image-box ng-show="isEditingProfile" id="image_box_profile"
                                        data-img-class="profile-user-img img-responsive img-circle"
@@ -95,7 +95,7 @@
             </div>
             <div class="modal-body">
                 <div class="login-box reset-password-box">
-                    <form role="form" ng-submit="changePassword()">
+                    <form role="form">
                         <div class="form-group has-feedback">
                             <input type="password" class="form-control" ng-model="password"
                                    placeholder="{{'PASSWORD' | translate}}" required>

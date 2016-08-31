@@ -6,8 +6,8 @@ angular.module('dipApp.signup', ['ngRoute'])
             controller: 'SignUpController'
         });
     }])
-    .controller('SignUpController', ['$scope', '$timeout', '$rootScope', '$location', 'userService',
-        function ($scope, $timeout, $rootScope, $location, userService) {
+    .controller('SignUpController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
+        function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
             $rootScope.isNoMenuPage = true;
             $rootScope.pageTitle = "REGISTER";
             $scope.user = {};
@@ -57,7 +57,9 @@ angular.module('dipApp.signup', ['ngRoute'])
 
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
-                $('.register-box form').validator().off('focusout.bs.validator');
+                $('.register-box form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.signUp);
+                });
                 $('.register-box form input:first').focus();
             };
 

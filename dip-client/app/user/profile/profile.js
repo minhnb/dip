@@ -41,7 +41,9 @@ angular.module('dipApp.profile', ['ngRoute'])
                                 format: FORMAT_DATE_BOOTSTRAP_CALENDAR,
                                 zIndexOffset: 1050
                             });
-                            $('form').validator().off('focusout.bs.validator');
+                            $('form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                                userUtils.handleSubmitForm(e, $scope.editUser);
+                            });
                         }, 0);
                     })
                     .error(function (data, status) {
@@ -116,7 +118,9 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.initChangePasswordModal = function () {
                 $('#change_password_modal input').val('');
-                $('#change_password_modal form').validator().off('focusout.bs.validator');
+                $('#change_password_modal form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.changePassword);
+                });
             };
 
             $scope.changePassword = function () {

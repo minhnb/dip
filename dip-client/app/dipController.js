@@ -113,7 +113,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             if (!$rootScope.isNoMenuPage && !$scope.isInitTemplate) {
                 $scope.isInitTemplate = true;
                 utils.load_script('adminLTE/dist/js/app.js');
-                console.log('init template');
+                // console.log('init template');
             }
         };
 
