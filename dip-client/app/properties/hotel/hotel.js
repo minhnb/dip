@@ -10,7 +10,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
     .controller('HotelProfileController', ['$scope', '$timeout', '$rootScope', '$location', '$routeParams', 'hotelService', 'hotelUtils',
         function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils) {
             $rootScope.isNoMenuPage = false;
-            $scope.$parent.pageTitle = "HOTEL_PROFILE";
+            $rootScope.pageTitle = "HOTEL_PROFILE";
             $scope.isShowingHotelProfile = false;
             $scope.isEditingHotel = false;
             $scope.isShowingCreateModule = false;

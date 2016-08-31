@@ -63,7 +63,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             if (userService.user && userService.user.info) {
                 $scope.currentUser = userUtils.convertUser(userService.user.info);
             }
-            userService.getUserInfo()
+            if (!userService.user.JWT) {
+                return Promise.resolve();
+            }
+            return userService.getUserInfo()
                 .success(function (data, status) {
                     var convertedUser = userUtils.convertUser(data.user);
                     utils.updateObjectInfo($scope.currentUser, convertedUser);
@@ -75,6 +78,17 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
 
         $scope.userHasRole = function (roles) {
             return roles.indexOf($scope.currentUser.role) > -1;
+        };
+
+        $scope.getDipWebsiteRole = function () {
+            return config.ROLE;
+        };
+
+        $scope.getPageTitle = function () {
+            var prefix = $scope.translate(userUtils.getUserRole(config.ROLE));
+            var suffix = $scope.translate($rootScope.pageTitle);
+            var pageTitle = [prefix, suffix];
+            return pageTitle.filter(Boolean).join(' | ');
         };
 
         $rootScope.initDipApp = function (fn) {
@@ -99,7 +113,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             if (!$rootScope.isNoMenuPage && !$scope.isInitTemplate) {
                 $scope.isInitTemplate = true;
                 utils.load_script('adminLTE/dist/js/app.js');
-                // console.log('init template');
+                console.log('init template');
             }
         };
 

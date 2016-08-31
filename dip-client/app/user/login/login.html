@@ -47,7 +47,7 @@
 
         <a data-target="#forgot_password_modal" data-toggle="modal" ng-click="modalResetPasswordSetFocus()">{{'FORGOT_PASSWORD'
             | translate}}</a><br>
-        <a ng-click="goToPath('/signup')">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
+        <a ng-click="goToPath('/signup')" ng-if="getDipWebsiteRole() == ROLE_PARTNER">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
     </div>
     <!-- /.login-box-body -->
 </div>

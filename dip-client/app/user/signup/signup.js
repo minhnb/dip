@@ -9,6 +9,7 @@ angular.module('dipApp.signup', ['ngRoute'])
     .controller('SignUpController', ['$scope', '$timeout', '$rootScope', '$location', 'userService',
         function ($scope, $timeout, $rootScope, $location, userService) {
             $rootScope.isNoMenuPage = true;
+            $rootScope.pageTitle = "REGISTER";
             $scope.user = {};
             $scope.isValidUser = function (user) {
                 if (!user.email || !user.firstName || !user.password || !user.confirmPassword) {

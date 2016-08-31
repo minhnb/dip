@@ -10,7 +10,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Starter</title>
+    <title ng-if="!showNgView">DIP</title>
+    <title ng-if="showNgView">{{getPageTitle()}}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -99,9 +100,9 @@
 <script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
 <script src="bower_components/angular-translate/angular-translate.min.js"></script>
 
+<script src="components/helper/constant.js"></script>
 <script src="components/config/config.js"></script>
 <script src="components/localization/en.js"></script>
-<script src="components/helper/constant.js"></script>
 <script src="components/helper/utils.js"></script>
 
 <script src="app.js"></script>

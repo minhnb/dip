@@ -38,9 +38,16 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                 }
                 $localStorage.user.JWT = "JWT " + token;
             },
+            clear: function () {
+                $localStorage.$reset();
+                userService.user = {
+                    info: {},
+                    JWT: ""
+                };
+            },
             login: function (username, password) {
                 if (username && password) {
-                    var user = {username: username, password: password};
+                    var user = {username: username, password: password, role: config.ROLE};
                     return $http.post(apiAuthUrl + "/login", user)
                         .success(function (data, status, headers, config) {
                             var token = data.JWT;
@@ -57,11 +64,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
             logOut: function () {
                 return $http.post(apiAuthUrl + "/logout", {})
                     .success(function (data, status, headers, config) {
-                        $localStorage.$reset();
-                        userService.user = {
-                                info: {},
-                                JWT: ""
-                            };
+                        userService.clear();
                     });
             },
             signUp: function (user) {

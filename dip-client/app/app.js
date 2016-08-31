@@ -29,7 +29,7 @@ var dipApp = angular.module('dipApp', [
 
         $translateProvider.translations('en', angular_translate_en);
         $translateProvider.preferredLanguage('en');
-}]);
+    }]);
 
 
 dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage, $location) {
@@ -63,7 +63,7 @@ dipApp.run(['$rootScope', '$location', '$localStorage', function ($rootScope, $l
 
         } else {
             var noTokenPages = ['/signup', '/login'];
-            if (noTokenPages.indexOf(next.originalPath) == -1) {
+            if (noTokenPages.indexOf(next.originalPath) == -1 || (noTokenPages.indexOf(next.originalPath) == 0 && config.ROLE == ROLE_ADMIN)) {
                 $location.path('/login');
             }
         }

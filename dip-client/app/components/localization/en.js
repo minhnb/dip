@@ -173,6 +173,7 @@ var angular_translate_en = {
 
     CLICK_TO_SET_DETAILS_FOR_PASS: "Click here to set details<br/>for the pass",
 
+    LOGIN: "Login",
     REGISTER: "Register",
     REGISTER_NEW_DIP_PARTNER: "Register a new DIP Partner",
     FULL_NAME: "Full name",
@@ -192,7 +193,7 @@ var angular_translate_en = {
     REMEMBER_ME: "Remember Me",
     SIGN_IN: "Sign in",
     FORGOT_PASSWORD: "I forgot my password",
-    REGISTER_NEW_MEMBERSHIP: "Register a new membership",
+    REGISTER_NEW_MEMBERSHIP: "Register a new DIP Partner",
 
     RESET_PASSWORD: "Reset Password",
     SEND: "Send",
@@ -203,5 +204,7 @@ var angular_translate_en = {
     RESET: "Reset",
     ALREADY_HAS_TOKEN: "I already had reset password token",
 
-    CHANGE_PASSWORD: "Change Password"
+    CHANGE_PASSWORD: "Change Password",
+
+    UNAUTHORIZED: "Unauthorized"
 };

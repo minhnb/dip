@@ -9,6 +9,7 @@ angular.module('dipApp.login', ['ngRoute'])
     .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
         function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
             $rootScope.isNoMenuPage = true;
+            $rootScope.pageTitle = "LOGIN";
             $scope.username = "";
             $scope.password = "";
             $scope.email = "";
@@ -25,8 +26,19 @@ angular.module('dipApp.login', ['ngRoute'])
                 userService.login($scope.username, $scope.password)
                     .success(function (data, status) {
                         $scope.stopSpin();
-                        $scope.$parent.initUser();
-                        $location.path('/dashboard');
+                        $scope.$parent.initUser()
+                            .success(function (data, status) {
+                                if (data.user.role == config.ROLE) {
+                                    $location.path('/dashboard');
+                                } else {
+                                    userService.logOut().then(function () {
+                                        $scope.notifyValidateError('UNAUTHORIZED');
+                                    });
+                                }
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);

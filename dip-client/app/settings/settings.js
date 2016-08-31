@@ -10,7 +10,7 @@ angular.module('dipApp.settings', ['ngRoute'])
     .controller('SettingsController', ['$scope', '$timeout', '$rootScope', '$location', 'adminService',
         function ($scope, $timeout, $rootScope, $location, adminService) {
             $rootScope.isNoMenuPage = false;
-            $scope.$parent.pageTitle = "SETTINGS";
+            $rootScope.pageTitle = "SETTINGS";
             
             $scope.updateAppContext = function () {
                 adminService.updateAppContext()

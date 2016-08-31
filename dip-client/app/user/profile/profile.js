@@ -9,7 +9,7 @@ angular.module('dipApp.profile', ['ngRoute'])
     .controller('ProfileController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
         function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
             $rootScope.isNoMenuPage = false;
-            $scope.$parent.pageTitle = "PROFILE";
+            $rootScope.pageTitle = "PROFILE";
             $scope.isShowingUserProfile = false;
             $scope.isEditingProfile = false;
             $scope.user = {};
