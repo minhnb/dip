@@ -32,6 +32,7 @@ angular.module('dipApp.signup', ['ngRoute'])
                         userService.login($scope.user.email, $scope.user.password)
                             .success(function (data, status) {
                                 $scope.stopSpin();
+                                $scope.$parent.initUser();
                                 $location.path('/dashboard');
                             })
                             .error(function (data, status) {

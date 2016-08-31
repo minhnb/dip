@@ -24,16 +24,9 @@ angular.module('dipApp.login', ['ngRoute'])
                 $scope.startSpin();
                 userService.login($scope.username, $scope.password)
                     .success(function (data, status) {
-                        userService.getUserInfo()
-                            .success(function (data, status) {
-                                $scope.stopSpin();
-                                var convertedUser = userUtils.convertUser(data.user);
-                                utils.updateObjectInfo($scope.$parent.currentUser, convertedUser);
-                                $location.path('/dashboard');
-                            })
-                            .error(function (data, status) {
-                                $scope.handleError(data);
-                            });
+                        $scope.stopSpin();
+                        $scope.$parent.initUser();
+                        $location.path('/dashboard');
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);

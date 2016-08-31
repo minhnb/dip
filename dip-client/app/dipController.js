@@ -60,7 +60,9 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
 
         $scope.initUser = function () {
             userService.initUser();
-            $scope.currentUser = userUtils.convertUser(userService.user.info);
+            if (userService.user && userService.user.info) {
+                $scope.currentUser = userUtils.convertUser(userService.user.info);
+            }
             userService.getUserInfo()
                 .success(function (data, status) {
                     var convertedUser = userUtils.convertUser(data.user);
