@@ -6,6 +6,7 @@ a {
     cursor: pointer;
 }
 
+/*-------------------------HOTEL PROFILE--------------------------*/
 .dip-report-pass {
     min-width: 150px;
 }
@@ -35,22 +36,31 @@ a {
 .image-box {
     width: 100%;
     min-height: 250px;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #cccccc;
     position: relative;
 }
 
 .create-edit-box label {
-    font-weight: 300;
+    /*font-weight: 300;*/
+    font-weight: 600;
 }
 
-.create-edit-box .box-body .image-box {
+.create-edit-box .image-box {
     margin-bottom: 10px;
     cursor: pointer;
 }
-.light-font {
-    font-weight: 300;
+.light-font, .light-font h1, .light-font h2, .light-font h3, .light-font h4, .light-font p, .light-font span {
+    /*font-weight: 300;*/
 }
-
+.lead {
+    font-weight: normal;
+}
+.box-header .btn-app {
+    margin-bottom: 0;
+    margin-top: 0;
+    background: #2e91d3;
+    color: #fff;
+}
 .list-hotel .box-body > .row {
     margin-bottom: 30px;
 }
@@ -67,8 +77,11 @@ a {
 .list-hotel .hotel-info {
     clear: both;
 }
+.list-hotel .hotel-info > .row > div:first-child {
+    font-weight: 600;
+}
 .list-hotel .hotel-info > .row > div:last-child {
-    font-weight: 300;
+    /*font-weight: 300;*/
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
@@ -83,7 +96,7 @@ a {
     padding: 8px;
 }
 .list-hotel img {
-    border: 1px solid #f4f4f4;
+    border: 1px solid #cccccc;
 }
 
 .list-hotel.hotel-profile .hotel-info > .row:first-child > div {
@@ -122,11 +135,276 @@ a {
 }
 .module-row {
     height: 1px;
-    border-top: 3px solid #d2d6de;
+    border-top: 2px solid #00c0ef;
+    margin-top: 15px;
 }
 .row.module-info:last-child .module-row {
     border: none;
 }
+
+.box.calendar-pass {
+    border: none;
+    margin-bottom: 5px;
+    box-shadow: none;
+}
+.box.calendar-pass .box-header {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+}
+.box.calendar-pass .box-header .box-title {
+    font-size: 14px;
+}
+.box.calendar-pass .box-header .fa-angle-collapse-button {
+    min-width: 20px;
+}
+.pass-color {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.pool-pass {
+    background-color: #c2185b;
+    color: #c2185b;
+    border-color: #c2185b;
+}
+.daybed {
+    background-color: #0097a7;
+    color: #0097a7;
+    border-color: #0097a7;
+}
+.cabana {
+    background-color: #009e11;
+    color: #009e11;
+    border-color: #009e11;
+}
+.box.calendar-pass.pass-content {
+    border-bottom: 1px solid #d2d6de;
+}
+.box.calendar-pass > .box-header > .pass-time-period {
+    display: inline-block;
+    font-size: 10px;
+    margin-left: 30px;
+}
+.box.calendar-pass > .box-body.main-box-body {
+    padding-left: 20px;
+}
+.dip-vertical-checkbox {
+    display: inline-block;
+    margin: 0 8px;
+}
+.dip-vertical-checkbox:first-child {
+    margin-left: 0;
+}
+.dip-vertical-checkbox span {
+    display: block;
+    font-size: 10px;
+    text-align: center;
+}
+.box.calendar-pass .box-body > .row {
+    margin-bottom: 15px;
+}
+label.time-label {
+    font-size: 10px;
+    padding-top: 10px;
+}
+.calendar-selected-day {
+    padding: 20px;
+    font-size: 18px;
+}
+.calendar-row {
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    display: table;
+}
+.calendar-cell {
+    border-left: 1px solid #cccccc;
+    float: left;
+    min-width: 90px;
+    min-height: 90px;
+    position: relative;
+    padding-top: 25px;
+}
+.calendar-header .calendar-cell {
+    border-top: 3px solid #cccccc;
+    padding: 15px;
+    min-height: 1px;
+}
+.calendar-row span.day-number {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 10px;
+}
+.calendar-line {
+    border-radius: 0;
+    display: block;
+    height: 5px;
+    margin-bottom: 10px;
+    width: 101%;
+    margin-left: -1px;
+}
+.pass-calendar {
+
+}
+.pass-calendar .fc-view-container .fc-view > table {
+    border-color: #cccccc;
+    border-top-width: 3px;
+}
+.pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*font-weight: 300;*/
+    font-weight: normal;
+}
+.fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
+    border-color: #cccccc;
+}
+.fc th {
+    border-top-width: 3px;
+}
+.pass-calendar .fc-widget-header {
+    background: none;
+}
+.pass-calendar .fc-row:first-child > table {
+    border-top: 3px solid #cccccc;
+}
+.pass-calendar .fc-event {
+    height: 5px;
+    border-radius: 0;
+}
+.pass-calendar .fc-day-grid-event {
+    margin: 0 0 5px -1px;
+}
+.pass-calendar .fc-toolbar h2 {
+    /*font-weight: 300;*/
+    font-size: 18px;
+}
+.pass-calendar .fc-day-number {
+    font-size: 10px;
+    padding: 5px;
+}
+.pass-calendar .fc-toolbar button {
+    border-radius: 0 !important;
+    box-shadow: none;
+}
+.fc-button {
+    background-color: transparent;
+    border-color: #cccccc;
+}
+.fc-button:disabled {
+    background-color: #e9e9e9;
+}
+.pass-calendar .fc-icon-left-single-arrow::after, .pass-calendar .fc-icon-right-single-arrow::after {
+    font-weight: 100 !important;
+    color: #ddd;
+}
+.pass-calendar .fc-scroller.fc-day-grid-container {
+    height: auto !important;
+    overflow: hidden !important;
+}
+.pass-calendar .fc-event-container .tooltip {
+    position: fixed;
+}
+.pass-box .pass-tooltip-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
+    background-color: #3c8dbc;
+    font-size: 10px;
+    white-space:pre-wrap;
+}
+.pass-calendar .pass-tooltip-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
+    border-top-color: #3c8dbc;
+}
+.calendar-pass.pass-content .tooltip.top {
+    left: 0 !important;
+}
+a.back-button {
+    color: inherit;
+    font-size: 20px;
+    margin-left: -5px;
+    margin-right: 5px;
+    padding: 5px;
+}
+.form-control[disabled], fieldset[disabled] .form-control {
+    cursor: inherit !important;
+}
+/*-------------------------END HOTEL PROFILE--------------------------*/
+
+/*-------------------LOGIN - REGISTER--------------------------*/
+.login-box, .register-box  {
+    margin: 50px auto;
+}
+.register-box form, .login-box form {
+    margin-bottom: 15px;
+}
+.login-box a {
+    line-height: 30px;
+}
+.register-logo img, .login-logo img {
+    width: 40%;
+}
+.row.text-center [class*="col-"] {
+    display: inline-block;
+    float: none;
+}
+.modal .login-box {
+    margin: 10px auto;
+}
+/*-------------------END LOGIN - REGISTER--------------------------*/
+
+/*------------------------USER PROFILE-----------------------------*/
+.user-profile .box-body {
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+.user-profile .list-group-item {
+    padding: 15px 20px 5px 20px;
+}
+.user-profile .list-group-item > * {
+    display: inline-block;
+}
+.user-profile .list-group-item > *:first-child {
+    margin-right: 20px;
+}
+.user-profile .list-group-item:first-child {
+    border-top: none;
+}
+.user-profile .list-group-item:last-child {
+    border-bottom: none;
+}
+.user-profile .box-tools {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    z-index: 1;
+}
+.user-profile .form-group {
+    margin-bottom: 10px;
+    width: 100%;
+    display: block;
+    margin-left: -13px;
+}
+.user-profile .form-group[name="full-name"] {
+    margin: 0 auto;
+    max-width: 300px;
+}
+.user-profile .row.text-center.row-button {
+    clear: both;
+}
+.profile-user-img {
+    margin-bottom: 15px;
+}
+.user-profile .image-box {
+    border-color: transparent;
+    min-height: 1px;
+}
+.user-profile dip-image-box button {
+    display: none;
+}
+    /*------------------------END USER PROFILE-----------------------------*/
+
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
     margin-top: 15px;

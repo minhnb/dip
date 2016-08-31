@@ -21,6 +21,7 @@ const hooks = require('./hooks');
 const resources = require('./resources');
 const locations = require('./locations');
 const admin = require('./admin');
+const partner = require('./partner');
 const hotels = require('./hotels');
 const hotel = require('./hotel');
 
@@ -47,7 +48,9 @@ router.use('/plans', membershipTypes.routes(), membershipTypes.allowedMethods())
 router.use('/hooks', hooks.routes(), hooks.allowedMethods());
 router.use('/resources', resources.routes(), resources.allowedMethods());
 router.use('/locations', locations.routes(), locations.allowedMethods());
+
 router.use('/admin', admin.routes(), admin.allowedMethods());
+router.use('/partner', partner.routes(), partner.allowedMethods());
 
 router.use('/hotels', hotels.routes(), hotels.allowedMethods());
 router.use('/hotel', hotel.routes(), hotel.allowedMethods());

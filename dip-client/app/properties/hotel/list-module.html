@@ -1,6 +1,11 @@
 <div class="box box-info list-hotel hotel-profile" ng-show="isShowingHotelProfile">
     <div class="box-header with-border">
         <h3 class="box-title">{{'LIST_MODULES' | translate }}</h3>
+        <div class="pull-right">
+            <a class="btn btn-app" ng-show="!isShowingCreateModule" ng-click="showCreateModuleBox()">
+                <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
+            </a>
+        </div>
     </div>
     <div class="box-body">
         <div class="row module-info" ng-repeat="module in hotel.services">

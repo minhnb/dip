@@ -1,7 +1,7 @@
 "use strict";
 
 const router = require('koa-router')();
-const auth = require('../helpers/passport_auth');
+const auth = require('../auth');
 const utils = require('../helpers/utils');
 const adminServices = require('../services/admin');
 const reportServices = require('../services/report');
@@ -18,7 +18,7 @@ router
     )
     .get('event reservation report', '/reports/reservations/hotels',
         ctx => {
-            return reportServices.getListHotelReservations().then(reservations => {
+            return reportServices.getListHotelReservations(ctx.state.user).then(reservations => {
                 ctx.body = reservations;
             });
         }

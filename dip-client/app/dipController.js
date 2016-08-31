@@ -1,7 +1,14 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService',
-    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService) {
+dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'userUtils',
+    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, userUtils) {
+        $scope.showNgView = false;
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
+        $scope.currentUser = {};
+
+        $scope.ROLE_ADMIN = ROLE_ADMIN;
+        $scope.ROLE_PARTNER = ROLE_PARTNER;
+        $scope.ROLE_USER = ROLE_USER;
+
         $rootScope.goToPath = function (path) {
             if ($location.$$path == path) {
                 $route.reload();
@@ -12,7 +19,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $scope.okText = "OK";
         $scope.cancelText = "CANCEL";
 
-        $scope.startSpin = function(){
+        $scope.startSpin = function () {
             if ($rootScope.isNoMenuPage) {
 
             } else {
@@ -21,7 +28,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             usSpinnerService.spin('dip-spinner');
         };
 
-        $scope.stopSpin = function(){
+        $scope.stopSpin = function () {
             usSpinnerService.stop('dip-spinner');
         };
 
@@ -35,7 +42,11 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
 
         $scope.handleError = function (error) {
             $scope.stopSpin();
-            utils.notyErrorMessage(error.details, true);
+            var message = error.details;
+            if (!message) {
+                message = status;
+            }
+            utils.notyErrorMessage(message, true);
         };
 
         $scope.notifyValidateError = function (message, isTranslated) {
@@ -45,6 +56,25 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             }
             utils.notyErrorMessage(messageContent, true);
             return false;
+        };
+
+        $scope.initUser = function () {
+            userService.initUser();
+            if (userService.user && userService.user.info) {
+                $scope.currentUser = userUtils.convertUser(userService.user.info);
+            }
+            userService.getUserInfo()
+                .success(function (data, status) {
+                    var convertedUser = userUtils.convertUser(data.user);
+                    utils.updateObjectInfo($scope.currentUser, convertedUser);
+                })
+                .error(function (data, status) {
+                    $scope.handleError(data);
+                });
+        };
+
+        $scope.userHasRole = function (roles) {
+            return roles.indexOf($scope.currentUser.role) > -1;
         };
 
         $rootScope.initDipApp = function (fn) {
@@ -59,6 +89,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         };
 
         $scope.initTemplate = function () {
+            $scope.showNgView = true;
+            setTimeout(function () {
+                $scope.$apply();
+            }, 0);
             $scope.okText = $scope.translate($scope.okText);
             $scope.cancelText = $scope.translate($scope.cancelText);
 
@@ -68,6 +102,8 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 // console.log('init template');
             }
         };
+
+        $scope.initUser();
         setTimeout(function () {
             $scope.initTemplate();
         }, 1000);

@@ -1,8 +1,20 @@
 <div class="box create-edit-box pass-box">
     <div class="box-header with-border">
         <h3 class="box-title">{{ 'PASSES' | translate }}</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-default" title="{{'MAP_PASS_TO_CALENDAR' | translate}}"
+                    ng-click="passMapToCalendar(module)"
+                    ng-show="!module.isMappingToCalendar && needShowPassMapCalendarAndListButtons(module)">
+                <span aria-hidden="true" class="fa fa-calendar"></span>
+            </button>
+            <button type="button" class="btn btn-default" title="{{'BACK_TO_LIST_VIEW' | translate}}"
+                    ng-click="passShowListView(module)"
+                    ng-show="module.isMappingToCalendar && needShowPassMapCalendarAndListButtons(module)">
+                <span aria-hidden="true" class="fa fa-list"></span>
+            </button>
+        </div>
     </div>
-    <div class="box-body">
+    <div class="box-body" ng-show="!module.isMappingToCalendar">
         <div class="row" ng-repeat="pass in [module.newPass]" ng-if="module.isAddingPass">
             <div class="col-xs-12" id="new_pass_{{module.id}}">
                 <ng-include src="'/properties/hotel/create-pass.html'"></ng-include>
@@ -14,8 +26,12 @@
                 <form>
                     <ng-include src="'/properties/hotel/pass-form-content.html'"></ng-include>
                     <div class="text-center row-button">
-                        <button type="button" class="btn btn-default" ng-click="discardChangePass(pass)">{{'CANCEL' | translate}}</button>
-                        <button type="submit" class="btn btn-info" ng-click="editPass(pass, module, $event)">{{'SAVE' | translate}}</button>
+                        <button type="button" class="btn btn-default" ng-click="discardChangePass(pass)">{{'CANCEL' |
+                            translate}}
+                        </button>
+                        <button type="submit" class="btn btn-info" ng-click="editPass(pass, module, $event)">{{'SAVE' |
+                            translate}}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -24,4 +40,10 @@
             </div>
         </div>
     </div>
+    <div class="box-body pass-tooltip-container" ng-show="module.isMappingToCalendar" id="pass_calendar_{{module.id}}">
+        <ng-include src="'/properties/hotel/calendar.html'"></ng-include>
+    </div>
 </div>
+
+<ng-include src="'/properties/hotel/pass-form-content.html'" ng-show="false"></ng-include>
+<ng-include src="'/properties/hotel/create-pass.html'" ng-show="false"></ng-include>

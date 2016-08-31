@@ -9,7 +9,7 @@ const mailer = require('../../../mailer');
 const stripe = require('../../../helpers/stripe');
 const config = require('../../../config');
 
-const auth = require('../../../helpers/passport_auth');
+const auth = require('../../../auth');
 
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');

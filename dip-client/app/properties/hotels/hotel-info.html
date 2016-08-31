@@ -7,7 +7,7 @@
         <!--<span aria-hidden="true" class="fa fa-trash"></span>-->
     <!--</button>-->
     <button type="button" class="btn btn-default pull-right" title="{{'DETAILS' | translate}}" ng-click="goToPath('/properties/hotel/' + hotel.id)">
-        <span aria-hidden="true" class="fa fa-folder-open-o"></span>
+        <span aria-hidden="true" class="fa fa-eye"></span>
     </button>
 </div>
 <div class="col-md-8 hotel-info">
@@ -33,11 +33,11 @@
     </div>
     <div class="row" ng-if="hotel.url">
         <div class="col-md-4">{{'WEBSITE' | translate}}</div>
-        <div class="col-md-8"><a href="{{hotel.url}}">{{hotel.url}}</a></div>
+        <div class="col-md-8"><a href="{{hotel.url}}" target="_blank">{{hotel.url}}</a></div>
     </div>
     <div class="row" ng-if="hotel.instagramUrl">
         <div class="col-md-4">{{'INSTAGRAM' | translate}}</div>
-        <div class="col-md-8"><a href="{{hotel.instagramUrl}}">{{hotel.instagram}}</a></div>
+        <div class="col-md-8"><a href="{{hotel.instagramUrl}}" target="_blank">{{hotel.instagram}}</a></div>
     </div>
 </div>
 <div class="col-md-4" ng-if="hotel.imageUrl" ng-click="goToPath('/properties/hotel/' + hotel.id)">

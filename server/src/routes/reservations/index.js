@@ -7,7 +7,7 @@ const hotels = require('./hotels');
 const db = require('../../db');
 const entities = require('../../entities');
 
-const auth = require('../../helpers/passport_auth');
+const auth = require('../../auth');
 
 module.exports = router;
 

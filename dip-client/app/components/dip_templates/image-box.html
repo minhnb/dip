@@ -1,9 +1,9 @@
-<div class="image-box" ng-click="browseImage()">
+<div class="image-box" ng-click="browseImage()" title="{{'CLICK_TO_UPLOAD_PICTURE' | translate}}">
     <img alt="Hotel Profile Picture" class="img-responsive center-block" style="display: none">
     <span class="load-image-spinner" us-spinner spinner-start-active="true" style="display: none"></span>
 </div>
-<div class="text-center light-font image-box-title"></div>
-<br/>
+<!--<div class="text-center light-font image-box-title"></div>-->
+<!--<br/>-->
 <button type="button" class="btn btn-info center-block" ng-click="browseImage()">{{'UPLOAD' | translate}}
 </button>
 <input type="file" accept="image/*" class="form-control input-upload-img" ng-show="false">

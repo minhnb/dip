@@ -4,7 +4,7 @@ const router = require('koa-router')();
 const db = require('../../db');
 const entities = require('../../entities');
 
-const auth = require('../../helpers/passport_auth');
+const auth = require('../../auth');
 const validator = require('../../helpers/input_validator');
 
 const meRouter = require('./me');

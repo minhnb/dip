@@ -4,7 +4,9 @@
 var dipApp = angular.module('dipApp', [
     'ngRoute', 'ngStorage', 'angularSpinner', 'pascalprecht.translate',
     'dipApp.login',
+    'dipApp.signup',
     'dipApp.dashboard',
+    'dipApp.profile',
     'dipApp.report_users',
     'dipApp.report_event_reservations',
     'dipApp.report_hotel_reservations',
@@ -56,11 +58,14 @@ dipApp.factory('authInterceptor', function ($rootScope, $q, $localStorage, $loca
 });
 
 dipApp.run(['$rootScope', '$location', '$localStorage', function ($rootScope, $location, $localStorage) {
-    $rootScope.$on('$routeChangeStart', function (event) {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
         if ($localStorage.user && $localStorage.user.JWT) {
 
         } else {
-            $location.path('/login');
+            var noTokenPages = ['/signup', '/login'];
+            if (noTokenPages.indexOf(next.originalPath) == -1) {
+                $location.path('/login');
+            }
         }
     });
 }]);

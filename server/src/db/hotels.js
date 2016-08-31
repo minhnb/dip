@@ -59,6 +59,11 @@ const hotelSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    owner: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        required: false
     }
 }, {
     timestamps: true

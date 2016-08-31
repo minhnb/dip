@@ -16,6 +16,7 @@ function convertUser(user, currentUser) {
         username: user.username,
         gender: user.gender,
         picture: user.avatar,
+        role: user.role,
         // leave isFriend empty if no currentUser passed in
         isFriend: currentUser ? currentUser.friends.some(f => f.equals(user._id)) : undefined
     };
@@ -44,7 +45,8 @@ convertUser.reference = function(user) {
         lastName: user.lastName,
         fullName: `${user.firstName} ${user.lastName}`,
         username: user.username,
-        picture: user.avatar
+        picture: user.avatar,
+        role: user.role
     };
 };
 

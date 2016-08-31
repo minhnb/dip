@@ -2,6 +2,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
     function ($q, $http, $localStorage) {
         var apiAuthUrl = config.DIP_API + "auth",
             apiUsersUrl = config.DIP_API + "users",
+            apiResetPasswordUrl = config.DIP_API + "resetpassword",
             userService = {};
         userService = {
             user: {
@@ -29,7 +30,7 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                 if (!$localStorage.user) {
                     $localStorage.user = {};
                 }
-                $localStorage.user.info = JSON.stringify(user);
+                $localStorage.user.info = user;
             },
             saveUserAccessTokenToLocalStorage: function (token) {
                 if (!$localStorage.user) {
@@ -44,14 +45,13 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                         .success(function (data, status, headers, config) {
                             var token = data.JWT;
                             userService.saveUserAccessTokenToLocalStorage(token);
-                            userService.getUserInfo();
                         });
                 }
             },
             getUserInfo: function () {
                 return $http.get(apiUsersUrl + "/me")
                     .success(function (data, status, headers, config) {
-                        userService.saveUserToLocalStorage(data);
+                        userService.saveUserToLocalStorage(data.user);
                     });
             },
             logOut: function () {
@@ -62,6 +62,31 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                                 info: {},
                                 JWT: ""
                             };
+                    });
+            },
+            signUp: function (user) {
+                user.role = config.ROLE;
+                if (!user.gender) {
+                    user.gender = 'na';
+                }
+                return $http.post(apiAuthUrl + "/signup", user);
+            },
+            sendResetPasswordTokenToEmail: function (email) {
+                return $http.post(apiResetPasswordUrl, {email: email});
+            },
+            resetPassword: function (token, password) {
+                return $http.put(apiResetPasswordUrl + "/" + token, {password: password});
+            },
+            updateUser: function (user) {
+                return $http.put(apiUsersUrl + "/me", {user: user});
+            },
+            updateUserAvatar: function (image) {
+                var fd = new FormData();
+                fd.append('image', image);
+                return $http.put(apiUsersUrl + "/me/avatar", fd,
+                    {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
                     });
             }
         };

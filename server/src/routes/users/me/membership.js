@@ -6,7 +6,7 @@ const db = require('../../../db');
 const entities = require('../../../entities');
 const convertMembership = require('../../../entities/membership');
 
-const auth = require('../../../helpers/passport_auth');
+const auth = require('../../../auth');
 const validator = require('../../../helpers/input_validator');
 const stripe = require('../../../helpers/stripe');
 
