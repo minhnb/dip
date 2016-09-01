@@ -56,11 +56,13 @@ angular.module('dipApp.signup', ['ngRoute'])
             };
 
             $scope.initForm = function () {
-                $scope.initRememberCheckbox();
                 $('.register-box form').validator().off('focusout.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.signUp);
                 });
                 $('.register-box form input:first').focus();
+                setTimeout(function () {
+                    $scope.initRememberCheckbox();
+                }, 0);
             };
 
             $scope.init = function () {

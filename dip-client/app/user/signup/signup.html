@@ -36,12 +36,15 @@
             </div>
             <div class="row row-grid">
                 <div class="col-sm-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox" checked> {{'AGREE_TERMS_BEGIN' | translate}}<a
-                                href="http://www.thedipapp.com/terms-of-service/" target="_blank">{{'TERMS' |
-                            translate}}</a>{{'AGREE_TERMS_END' | translate}}
-                        </label>
+                    <div class="form-group">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox" checked data-error="{{'ERROR_MUST_ACCEPT_TERM' | translate}}" required> {{'AGREE_TERMS_BEGIN' | translate}}<a
+                                    href="http://www.thedipapp.com/terms-of-service/" target="_blank">{{'TERMS' |
+                                translate}}</a>{{'AGREE_TERMS_END' | translate}}
+                            </label>
+                        </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <!-- /.col -->

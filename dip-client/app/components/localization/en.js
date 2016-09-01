@@ -192,6 +192,7 @@ var angular_translate_en = {
     ERROR_INVALID_EMAIL: "Invalid email",
     ERROR_PASSWORD_NOT_MATCH: "Whoops, password and confirm password don't match",
     ERROR_INVALID_PASSWORD: "Your password must have 6 or more characters, at least 1 digit",
+    ERROR_MUST_ACCEPT_TERM: "You must agree to the terms",
     ERROR_INVALID_PHONE_NUMBER: "Invalid phone number",
 
     SIGN_IN_HEADER: "Sign in to start your session",

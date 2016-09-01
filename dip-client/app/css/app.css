@@ -368,6 +368,9 @@ a.back-button {
 .register-box form, .login-box form {
     margin-bottom: 15px;
 }
+form .checkbox.icheck label {
+    color: #666;
+}
 .login-box a {
     line-height: 30px;
 }
