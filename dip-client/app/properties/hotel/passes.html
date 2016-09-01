@@ -7,7 +7,7 @@
             </button>
             <button type="button" class="btn btn-default btn-big" title="{{'MAP_PASS_TO_CALENDAR' | translate}}"
                     ng-click="passMapToCalendar(module)"
-                    ng-show="!module.isMappingToCalendar && needShowPassMapCalendarAndListButtons(module)">
+                    ng-show="!module.isMappingToCalendar && needShowPassMapCalendarAndListButtons(module) && module.passes && module.passes.length > 0">
                 <span aria-hidden="true" class="fa fa-calendar"></span>
             </button>
             <button type="button" class="btn btn-default btn-big" title="{{'BACK_TO_LIST_VIEW' | translate}}"
