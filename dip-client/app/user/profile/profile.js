@@ -41,7 +41,7 @@ angular.module('dipApp.profile', ['ngRoute'])
                                 format: FORMAT_DATE_BOOTSTRAP_CALENDAR,
                                 zIndexOffset: 1050
                             });
-                            $('form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                            $('.user-profile form').validator().off('focusout.bs.validator').on('submit', function (e) {
                                 userUtils.handleSubmitForm(e, $scope.editUser);
                             });
                         }, 0);
@@ -61,7 +61,7 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.hideEditProfile = function () {
                 $scope.isEditingProfile = false;
-                $('form').validator('destroy');
+                $('.user-profile form').validator('destroy');
             };
 
             $scope.discardChangeUser = function () {

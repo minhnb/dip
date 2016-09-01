@@ -53,7 +53,7 @@ dipApp.factory('userUtils', [
             },
             handleSubmitForm: function (e, submitFunction) {
                 var element = e.currentTarget;
-                if (e.isDefaultPrevented()) {
+                if ($(element).data('bs.validator').isIncomplete() || $(element).data('bs.validator').hasErrors()) {
                     $(element).find('input[ng-model="user.confirmPassword"]').parent()
                         .find('.help-block.with-errors > ul > li').each(function (index, value) {
                         if (index > 0) {
