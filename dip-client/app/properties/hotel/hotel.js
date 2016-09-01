@@ -500,6 +500,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             }
                             $scope.hideCreatePassBox(module);
                             $scope.stopSpin();
+                            utils.notySuccessMessage($scope.translate('ADD_PASS_SUCCESS_PROMPT'), true);
                         });
                     })
                     .error(function (data, status) {

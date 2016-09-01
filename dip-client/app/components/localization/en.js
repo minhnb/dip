@@ -150,6 +150,8 @@ var angular_translate_en = {
     ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time",
     ERROR_INVALID_PASS_START_DAY_DUE_DATE: "Start date must be smaller than due day",
 
+    ADD_PASS_SUCCESS_PROMPT: "Your pass is added successfully. Click the calendar to proceed with mapping it.",
+
     PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?",
 
     MAP_PASS_TO_CALENDAR: "Map pass to calendar",

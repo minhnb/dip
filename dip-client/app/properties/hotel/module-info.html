@@ -1,13 +1,10 @@
 <div class="col-md-12 module-header" ng-show="!module.isAddingPass">
     <div class="pull-right">
-        <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}" ng-click="deleteModule(module)">
-            <span aria-hidden="true" class="fa fa-trash"></span>
-        </button>
         <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}" ng-click="showEditModuleBox(module)">
             <span aria-hidden="true" class="fa fa-edit"></span>
         </button>
-        <button type="button" class="btn btn-default" ng-show="!module.isMappingToCalendar" title="{{'ADD_PASSES' | translate}}" ng-click="showCreatePassBox(module)">
-            <span aria-hidden="true" class="fa fa-plus-circle"></span>
+        <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}" ng-click="deleteModule(module)">
+            <span aria-hidden="true" class="fa fa-trash"></span>
         </button>
     </div>
 </div>
