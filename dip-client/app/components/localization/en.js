@@ -206,9 +206,10 @@ var angular_translate_en = {
     RESET_PASSWORD_CHECK_EMAIL: "Please check your email for instructions to reset your password",
     RESET_PASSWORD_SUCCESSFULLY: "Your password was updated",
     TOKEN: "Token",
+    VERIFICATION_CODE: "Verification code",
     NEW_PASSWORD: "New Password",
     RESET: "Reset",
-    ALREADY_HAS_TOKEN: "I already had reset password token",
+    ALREADY_HAS_TOKEN: "I already had reset password verification code",
 
     CHANGE_PASSWORD: "Change Password",
 
