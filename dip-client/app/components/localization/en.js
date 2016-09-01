@@ -79,6 +79,7 @@ var angular_translate_en = {
     EDIT: "Edit",
     CHANGE: "Change",
     DETAILS: "Details",
+    SEE_DETAILS: "See details",
     UPLOAD: "Upload",
     NEW_HOTEL: "New Hotel",
     NEXT: "Next",

@@ -53,11 +53,19 @@ a {
 .lead {
     font-weight: normal;
 }
-.box-header .btn-app {
-    margin-bottom: 0;
-    margin-top: 0;
-    background: #2e91d3;
+.dip-btn-app {
     color: #fff;
+    font-size: 12px;
+    height: 60px;
+    margin: 0 0 0 10px;
+    min-width: 80px;
+    padding: 15px 5px;
+    position: relative;
+    text-align: center;
+}
+.dip-btn-app > .fa, .dip-btn-app > .glyphicon, .dip-btn-app > .ion {
+    display: block;
+    font-size: 20px;
 }
 .list-hotel .box-body > .row {
     margin-bottom: 30px;
