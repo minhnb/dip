@@ -1,10 +1,11 @@
-<div class="box box-info list-hotel hotel-profile module-row" ng-show="isShowingHotelProfile">
+<div class="box box-info list-hotel hotel-profile module-box" ng-show="isShowingHotelProfile">
     <div class="box-header with-border">
         <h3 class="box-title">{{'SWIMMING_POOL' | translate }}</h3>
         <div class="pull-right">
-            <a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateModule" ng-click="showCreateModuleBox()">
-                <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
-            </a>
+            <button type="button" class="btn btn-default btn-big" ng-show="!isShowingCreateModule"
+                    title="{{'CREATE_NEW' | translate}}" ng-click="showCreateModuleBox()">
+                <span aria-hidden="true" class="fa fa-plus-circle"></span>
+            </button>
         </div>
     </div>
     <div class="box-body">
@@ -19,8 +20,12 @@
                 <form>
                     <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
                     <div class="text-center row-button">
-                        <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL' | translate}}</button>
-                        <button type="submit" class="btn btn-info" ng-click="editModule(module)">{{'SAVE' | translate}}</button>
+                        <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL'
+                            | translate}}
+                        </button>
+                        <button type="submit" class="btn btn-info" ng-click="editModule(module)">{{'SAVE' |
+                            translate}}
+                        </button>
                     </div>
                 </form>
             </div>
