@@ -1,29 +1,10 @@
-<!--<div class="panel-body" ng-show="isShowingHotelProfile">-->
-    <!--<button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateModule"-->
-            <!--ng-click="showCreateModuleBox()">{{'NEW_MODULE' | translate}}-->
-    <!--</button>-->
-<!--</div>-->
-
-<div class="box box-info create-edit-box" ng-show="isShowingCreateModule">
-    <div class="box-header with-border">
-        <h3 class="box-title">{{ 'CREATE_MODULE' | translate }}</h3>
-        <button type="button" class="close pull-right" ng-click="hideCreateModuleBox()">
-            <span aria-hidden="true">×</span>
-        </button>
+<form>
+    <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
+    <div class="text-center row-button">
+        <button type="button" class="btn btn-default" ng-click="hideCreateModuleBox()">{{'CANCEL' | translate}}</button>
+        <button type="submit" class="btn btn-info" ng-click="createModule()">{{'ADD' | translate}}</button>
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
-    <form>
-        <div class="box-body">
-            <div class="row">
-                <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
-            </div>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer text-center row-button">
-            <button type="button" class="btn btn-default" ng-click="hideCreateModuleBox()">{{'CANCEL' | translate}}</button>
-            <button type="submit" class="btn btn-info" ng-click="createModule()">{{'SAVE' | translate}}</button>
-        </div>
-        <!-- /.box-footer -->
-    </form>
+</form>
+<div class="col-xs-12 text-center">
+    <div class="module-row"></div>
 </div>

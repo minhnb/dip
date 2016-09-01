@@ -38,6 +38,8 @@ a {
     min-height: 250px;
     border: 1px solid #cccccc;
     position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .create-edit-box label {
@@ -45,10 +47,6 @@ a {
     font-weight: 600;
 }
 
-.create-edit-box .image-box {
-    margin-bottom: 10px;
-    cursor: pointer;
-}
 .light-font, .light-font h1, .light-font h2, .light-font h3, .light-font h4, .light-font p, .light-font span {
     /*font-weight: 300;*/
 }
@@ -135,11 +133,19 @@ a {
 }
 .module-row {
     height: 1px;
-    border-top: 2px solid #00c0ef;
+    border-top: 2px solid #c0c0c0;
     margin-top: 15px;
 }
 .row.module-info:last-child .module-row {
     border: none;
+}
+.box.module-row {
+    margin-top: 30px;
+    border-top: 3px solid #c0c0c0;
+    box-shadow: none;
+}
+.modal .login-box {
+    margin: 10px auto;
 }
 
 .box.calendar-pass {
@@ -330,6 +336,9 @@ a.back-button {
 .form-control[disabled], fieldset[disabled] .form-control {
     cursor: inherit !important;
 }
+.form-add-object {
+    margin-bottom: 20px;
+}
 /*-------------------------END HOTEL PROFILE--------------------------*/
 
 /*-------------------LOGIN - REGISTER--------------------------*/
@@ -348,9 +357,6 @@ a.back-button {
 .row.text-center [class*="col-"] {
     display: inline-block;
     float: none;
-}
-.modal .login-box {
-    margin: 10px auto;
 }
 /*-------------------END LOGIN - REGISTER--------------------------*/
 

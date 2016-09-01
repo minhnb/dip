@@ -3,8 +3,8 @@
         <a class="back-button" ng-click="goToPath('/properties/hotels')" title="{{'GO_BACK' | translate}}">
             <i class="fa fa-angle-left"></i>
         </a>
-        <h3 class="box-title">{{'HOTEL_INFO' | translate}}</h3>
-        <div class="box-tools pull-right">
+        <h3 class="box-title">{{'HOTEL' | translate}}</h3>
+        <div class="box-tools pull-right" ng-show="!isEditingHotel">
             <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}"
                     ng-click="showEditHotelBox(hotel)">
                 <span aria-hidden="true" class="fa fa-edit"></span>
@@ -16,8 +16,8 @@
             <!--<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-angle-down"></i></button>-->
         </div>
     </div>
-    <form>
-        <div class="box-body">
+    <div class="box-body">
+        <form>
             <div class="row" ng-show="!isEditingHotel">
                 <div class="col-md-8 hotel-info">
                     <div class="row" ng-if="hotel.name">
@@ -60,14 +60,11 @@
             <div class="row create-edit-box" ng-show="isEditingHotel">
                 <ng-include src="'/properties/hotels/hotel-form-content.html'"></ng-include>
             </div>
-        </div>
-        <div class="box-footer text-center row-button" ng-show="isEditingHotel">
-            <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}</button>
-            <button type="submit" class="btn btn-info" ng-click="editHotel()">{{'SAVE' | translate}}</button>
-        </div>
-    </form>
+            <div class="text-center row-button" ng-show="isEditingHotel">
+                <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}</button>
+                <button type="submit" class="btn btn-info" ng-click="editHotel()">{{'SAVE' | translate}}</button>
+            </div>
+        </form>
+        <ng-include src="'/properties/hotel/list-module.html'"></ng-include>
+    </div>
 </div>
-
-<ng-include src="'/properties/hotel/create-module.html'"></ng-include>
-
-<ng-include src="'/properties/hotel/list-module.html'"></ng-include>

@@ -1,6 +1,6 @@
-<div class="box box-info list-hotel hotel-profile" ng-show="isShowingHotelProfile">
+<div class="box box-info list-hotel hotel-profile module-row" ng-show="isShowingHotelProfile">
     <div class="box-header with-border">
-        <h3 class="box-title">{{'LIST_MODULES' | translate }}</h3>
+        <h3 class="box-title">{{'SWIMMING_POOL' | translate }}</h3>
         <div class="pull-right">
             <a class="btn btn-app" ng-show="!isShowingCreateModule" ng-click="showCreateModuleBox()">
                 <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
@@ -8,6 +8,9 @@
         </div>
     </div>
     <div class="box-body">
+        <div class="row create-edit-box form-add-object" ng-show="isShowingCreateModule">
+            <ng-include src="'/properties/hotel/create-module.html'"></ng-include>
+        </div>
         <div class="row module-info" ng-repeat="module in hotel.services">
             <div ng-show="!module.isEditingModuleInfo">
                 <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
