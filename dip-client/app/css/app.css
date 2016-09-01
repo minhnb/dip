@@ -177,6 +177,10 @@ a {
 }
 .box.calendar-pass .box-header .box-title {
     font-size: 14px;
+    max-width: calc(100% - 120px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .box.calendar-pass .box-header .fa-angle-collapse-button {
     min-width: 20px;
@@ -209,8 +213,8 @@ a {
 }
 .box.calendar-pass > .box-header > .pass-time-period {
     display: inline-block;
-    font-size: 10px;
-    margin-left: 30px;
+    font-size: 12px;
+    float: right;
 }
 .box.calendar-pass > .box-body.main-box-body {
     padding-left: 20px;
@@ -224,14 +228,14 @@ a {
 }
 .dip-vertical-checkbox span {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     text-align: center;
 }
 .box.calendar-pass .box-body > .row {
     margin-bottom: 15px;
 }
 label.time-label {
-    font-size: 10px;
+    font-size: 12px;
     padding-top: 10px;
 }
 .calendar-selected-day {
@@ -260,7 +264,7 @@ label.time-label {
     position: absolute;
     right: 5px;
     top: 5px;
-    font-size: 10px;
+    font-size: 12px;
 }
 .calendar-line {
     border-radius: 0;
@@ -307,7 +311,7 @@ label.time-label {
     font-size: 18px;
 }
 .pass-calendar .fc-day-number {
-    font-size: 10px;
+    font-size: 12px;
     padding: 5px;
 }
 .pass-calendar .fc-toolbar button {
@@ -334,7 +338,7 @@ label.time-label {
 }
 .pass-box .pass-tooltip-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
     background-color: #3c8dbc;
-    font-size: 10px;
+    font-size: 12px;
     white-space:pre-wrap;
 }
 .pass-calendar .pass-tooltip-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
