@@ -815,16 +815,36 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 if (endDate) {
                     datePickerData.endDate = endDate.format(FORMAT_DATE);
                 }
+                $(calendarId).find('input.datepicker').datepicker('destroy');
                 $(calendarId).find('input.datepicker').datepicker(datePickerData);
                 $(calendarId).find('input.datepicker').datepicker().off('changeDate');
                 $(calendarId).find('input.datepicker').datepicker().on('changeDate', function (e) {
+                    $(this).datepicker('hide');
+
                     var passId = $(this).data('pass-id');
                     if (!$scope.mapPass[passId]) {
                         return;
                     }
-                    var startDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"').datepicker('getDate');
-                    var dueDay = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"').datepicker('getDate');
-                    if (isFinite(startDay) && isFinite(dueDay)) {
+                    var startDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"');
+                    var dueDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"');
+                    var startDay = startDayDatePicker.datepicker('getDate');
+                    var dueDay = dueDayDatePicker.datepicker('getDate');
+                    if ($(this).attr('ng-model') == 'pass.displayStartDay') {
+                        if (startDay) {
+                            var dueDayDatePickerData = {};
+                            utils.updateObjectInfo(dueDayDatePickerData, datePickerData, []);
+                            dueDayDatePickerData.startDate = moment(startDay).format(FORMAT_DATE);
+                            dueDayDatePicker.datepicker('destroy');
+                            dueDayDatePicker.datepicker(dueDayDatePickerData);
+                        }
+                    }
+                    if ($(this).attr('ng-model') == 'pass.displayStartDay' && !dueDay) {
+                        dueDayDatePicker.focus();
+                    }
+                    if ($(this).attr('ng-model') == 'pass.displayDueDay' && !startDay) {
+                        dueDayDatePicker.focus();
+                    }
+                    if (startDay && dueDay) {
                         if (startDay > dueDay) {
                             return $scope.notifyValidateError('ERROR_INVALID_PASS_START_DAY_DUE_DATE');
                         }
@@ -833,7 +853,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         $scope.updatePassStartDayAndDueDay($scope.mapPass[passId]);
                         $(calendarId).find('.pass-calendar').fullCalendar('refetchEvents');
                     }
-
                 });
             };
 

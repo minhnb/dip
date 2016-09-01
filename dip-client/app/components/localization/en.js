@@ -113,6 +113,7 @@ var angular_translate_en = {
     NEW_MODULE: "New Swimming Pool",
 
     CREATE_MODULE: "New Swimming Pool",
+    ADD_MODULE: "Add Swimming Pool",
     MODULE_NAME: "Pool Name",
     TYPE: "Type",
     IN_DOOR: "In Door",

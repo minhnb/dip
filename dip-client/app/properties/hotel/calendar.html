@@ -27,7 +27,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" class="form-control datepicker" data-pass-id="{{pass.id}}"
-                                           ng-model="pass.displayStartDay">
+                                           ng-model="pass.displayStartDay" readonly>
                                 </div>
                             </div>
                         </div>
@@ -41,11 +41,11 @@
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" class="form-control datepicker" data-pass-id="{{pass.id}}"
-                                           ng-model="pass.displayDueDay">
+                                           ng-model="pass.displayDueDay" readonly>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" ng-show="pass.displayStartDay && pass.displayDueDay">
                             <div class="col-xs-12">
                                 <div class="dip-vertical-checkbox" ng-repeat="day in daysInWeek">
                                     <input type="checkbox" class="minimal" data-day="{{day.value}}"
