@@ -20,10 +20,12 @@ const membershipTypes = require('./membershipTypes');
 const hooks = require('./hooks');
 const resources = require('./resources');
 const locations = require('./locations');
+
 const admin = require('./admin');
 const partner = require('./partner');
 const hotels = require('./hotels');
 const hotel = require('./hotel');
+const reports = require('./reports');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
@@ -51,6 +53,7 @@ router.use('/locations', locations.routes(), locations.allowedMethods());
 
 router.use('/admin', admin.routes(), admin.allowedMethods());
 router.use('/partner', partner.routes(), partner.allowedMethods());
+router.use('/reports', reports.routes(), reports.allowedMethods());
 
 router.use('/hotels', hotels.routes(), hotels.allowedMethods());
 router.use('/hotel', hotel.routes(), hotel.allowedMethods());
