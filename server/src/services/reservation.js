@@ -801,10 +801,12 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
             });
         });
     });
-    let date = passes[0].date;
+    let date = passes[0].date,
+        thumbImg = reservation.hotel.ref.image.url;
     let data = {
         customerName: user.nameOrEmail,
         hotelName: reservation.hotel.ref.name,
+        thumbImg: thumbImg,
         chargeAmount: (chargeAmount / 100).toFixed(2),
         passes: passes,
         date: date
@@ -815,4 +817,5 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
         recipients = recipients.concat(hotel.emails.reservation);
     }
     mailer.adminHotelReservationConfirmation(recipients, data);
+    mailer.userReservationConfirmation([user.email], data);
 }

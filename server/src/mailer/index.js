@@ -39,6 +39,13 @@ var templatesInfo = {
     adminHotelReservationConfirmation: {
         name: 'reservation-confirmation-for-hotel',
         subject: 'Reservation Confirmed'
+    },
+    /**
+     * @exports mailer.userReservationConfirmation
+     */
+    userReservationConfirmation: {
+        name: 'reservation-confirmation-for-user',
+        subject: 'Reservation Confirmed'
     }
 };
 
