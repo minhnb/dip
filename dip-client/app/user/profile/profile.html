@@ -40,9 +40,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-phone"></i>
                                         </div>
-                                        <input type="tel" class="form-control" placeholder="{{'PHONE' | translate}}"
+                                        <input type="text" class="form-control" placeholder="{{'PHONE' | translate}}"
                                                data-error="{{'ERROR_INVALID_PHONE_NUMBER' | translate}}"
-                                               ng-model="user.phone" pattern="^\+?(\d+|(-\d+)|(\(\d+\)))+">
+                                               ng-model="user.phone" pattern="^\+?(\d+|(-\d+)|(\(\d+\)))+" ng-pattern-restrict="^[+\-()0-9]*$">
                                     </div>
                                     <span class="glyphicon form-control-feedback"></span>
                                     <div class="help-block with-errors"></div>
