@@ -360,7 +360,7 @@ a.back-button {
 .form-add-object {
     margin-bottom: 20px;
 }
-input.form-control.datepicker[readonly] {
+input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly] {
     background-color: #fff;
 }
 /*-------------------------END HOTEL PROFILE--------------------------*/
@@ -431,6 +431,8 @@ form .checkbox.icheck label {
 }
 .profile-user-img {
     margin-bottom: 15px;
+    width: 100px;
+    height: 100px;
 }
 .user-profile .image-box {
     border-color: transparent;

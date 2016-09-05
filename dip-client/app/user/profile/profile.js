@@ -39,7 +39,8 @@ angular.module('dipApp.profile', ['ngRoute'])
                             $scope.$apply();
                             $('.user-birthday').datepicker({
                                 format: FORMAT_DATE_BOOTSTRAP_CALENDAR,
-                                zIndexOffset: 1050
+                                zIndexOffset: 1050,
+                                endDate: moment(new Date()).format(FORMAT_DATE)
                             });
                             $('.user-profile form').validator().off('focusout.bs.validator').on('submit', function (e) {
                                 userUtils.handleSubmitForm(e, $scope.editUser);
