@@ -30,7 +30,7 @@ var utils = {
         return moment(dipDate).format(FORMAT_DATE);
     },
     formatDateToDipDate: function (date) {
-        return moment(date).format(FORMAT_DIP_DATE);
+        return moment(new Date(date)).format(FORMAT_DIP_DATE);
     },
     displayMoney: function (money) {
         if (!money) return "";

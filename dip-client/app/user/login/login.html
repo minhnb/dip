@@ -6,18 +6,28 @@
     <div class="login-box-body">
         <p class="login-box-msg">{{'SIGN_IN_HEADER' | translate}}</p>
 
-        <form role="form">
+        <form role="form" dip-smart-validate-form>
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                       data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
+                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                           data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
+                </div>
+                <span class="glyphicon form-control-feedback"></span>
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password"
-                       required>
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-lock"></i>
+                    </div>
+                    <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password"
+                           required>
+                </div>
+                <span class="glyphicon form-control-feedback"></span>
                 <div class="help-block with-errors"></div>
             </div>
             <div class="row text-center">
@@ -64,13 +74,18 @@
             </div>
             <div class="modal-body">
                 <div class="login-box send-email-box" ng-show="!alreadyHasToken">
-                    <form role="form">
+                    <form role="form" dip-smart-validate-form>
                         <div class="form-group has-feedback">
-                            <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}"
-                                   ng-model="email"
-                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
-                                   data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
-                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}"
+                                       ng-model="email"
+                                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
+                                       data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
+                            </div>
+                            <span class="glyphicon form-control-feedback"></span>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="row text-center">
@@ -82,26 +97,41 @@
                     </form>
                 </div>
                 <div class="login-box reset-password-box" ng-show="alreadyHasToken">
-                    <form role="form">
+                    <form role="form" dip-smart-validate-form>
                         <div class="form-group has-feedback">
-                            <input type="password" class="form-control" ng-model="token"
-                                   placeholder="{{'VERIFICATION_CODE' | translate}}" required>
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <input type="password" class="form-control" ng-model="token"
+                                       placeholder="{{'VERIFICATION_CODE' | translate}}" required>
+                            </div>
+                            <span class="glyphicon form-control-feedback"></span>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group has-feedback">
-                            <input type="password" class="form-control" placeholder="{{'NEW_PASSWORD' | translate}}"
-                                   pattern="(?=.*\d).{6,}" ng-model="newPassword"
-                                   id="input_password" data-error="{{'ERROR_INVALID_PASSWORD' | translate}}" required>
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <input type="password" class="form-control" placeholder="{{'NEW_PASSWORD' | translate}}"
+                                       pattern="(?=.*\d).{6,}" ng-model="newPassword"
+                                       id="input_password" data-error="{{'ERROR_INVALID_PASSWORD' | translate}}" required>
+                            </div>
+                            <span class="glyphicon form-control-feedback"></span>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group has-feedback">
-                            <input type="password" class="form-control" placeholder="{{'CONFIRM_PASSWORD' | translate}}"
-                                   data-match="#input_password"
-                                   data-match-error="{{'ERROR_PASSWORD_NOT_MATCH' | translate}}"
-                                   required ng-model="confirmPassword">
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <input type="password" class="form-control" placeholder="{{'CONFIRM_PASSWORD' | translate}}"
+                                       data-match="#input_password"
+                                       data-match-error="{{'ERROR_PASSWORD_NOT_MATCH' | translate}}"
+                                       required ng-model="confirmPassword">
+                            </div>
+                            <span class="glyphicon form-control-feedback"></span>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="row text-center">

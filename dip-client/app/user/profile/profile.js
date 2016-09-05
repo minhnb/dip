@@ -35,17 +35,6 @@ angular.module('dipApp.profile', ['ngRoute'])
                         $scope.actionAfterLoadUserInfo(data.user);
                         $scope.isEditingProfile = true;
                         $scope.stopSpin();
-                        setTimeout(function () {
-                            $scope.$apply();
-                            $('.user-birthday').datepicker({
-                                format: FORMAT_DATE_BOOTSTRAP_CALENDAR,
-                                zIndexOffset: 1050,
-                                endDate: moment(new Date()).format(FORMAT_DATE)
-                            });
-                            $('.user-profile form').validator().off('focusout.bs.validator').on('submit', function (e) {
-                                userUtils.handleSubmitForm(e, $scope.editUser);
-                            });
-                        }, 0);
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -62,7 +51,7 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.hideEditProfile = function () {
                 $scope.isEditingProfile = false;
-                $('.user-profile form').validator('destroy');
+                $('.user-profile form').validator('reset');
             };
 
             $scope.discardChangeUser = function () {
@@ -119,9 +108,6 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.initChangePasswordModal = function () {
                 $('#change_password_modal input').val('');
-                $('#change_password_modal form').validator().off('focusout.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.changePassword);
-                });
             };
 
             $scope.changePassword = function () {
@@ -135,7 +121,7 @@ angular.module('dipApp.profile', ['ngRoute'])
                 userService.updateUser(user)
                     .success(function (data, status) {
                         $('#change_password_modal').modal('hide');
-                        $('#change_password_modal form').validator('destroy');
+                        $('#change_password_modal form').validator('reset');
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -150,9 +136,17 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getUserInfo();
-                // setTimeout(function () {
-                //     $scope.$apply();
-                // }, 0);
+                $('.user-birthday').datepicker({
+                    format: FORMAT_DATE_BOOTSTRAP_CALENDAR,
+                    zIndexOffset: 1050,
+                    endDate: moment(new Date()).format(FORMAT_DATE)
+                });
+                $('.user-profile form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.editUser);
+                });
+                $('#change_password_modal form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.changePassword);
+                });
             };
 
             $rootScope.initDipApp($scope.init);

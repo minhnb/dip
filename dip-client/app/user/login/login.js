@@ -115,13 +115,13 @@ angular.module('dipApp.login', ['ngRoute'])
 
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
-                $('.dip-app-body .login-box:first form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                $('.dip-app-body .login-box:first form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.login);
                 });
-                $('.modal .login-box:nth-child(1) form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                $('.modal .login-box:nth-child(1) form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.sendEmail);
                 });
-                $('.modal .login-box:nth-child(2) form').validator().off('focusout.bs.validator').on('submit', function (e) {
+                $('.modal .login-box:nth-child(2) form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.resetPassword);
                 });
                 $('.login-box-body form input:first').focus();

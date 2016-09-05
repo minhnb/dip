@@ -6,7 +6,7 @@
     <div class="register-box-body">
         <p class="login-box-msg">{{'REGISTER_NEW_DIP_PARTNER' | translate}}</p>
 
-        <form role="form">
+        <form role="form" dip-smart-validate-form>
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="user.email"
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox" checked data-error="{{'ERROR_MUST_ACCEPT_TERM' | translate}}" required> {{'AGREE_TERMS_BEGIN' | translate}}<a
+                                <input type="checkbox" checked required> {{'AGREE_TERMS_BEGIN' | translate}}<a
                                     href="http://www.thedipapp.com/terms-of-service/" target="_blank">{{'TERMS' |
                                 translate}}</a>{{'AGREE_TERMS_END' | translate}}
                             </label>
