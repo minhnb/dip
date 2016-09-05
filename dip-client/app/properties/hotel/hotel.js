@@ -825,8 +825,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     if (!$scope.mapPass[passId]) {
                         return;
                     }
-                    var startDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"');
-                    var dueDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"');
+                    var startDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayStartDay"]');
+                    var dueDayDatePicker = $('#pass_calendar_content_' + passId + ' input.datepicker[ng-model="pass.displayDueDay"]');
                     var startDay = startDayDatePicker.datepicker('getDate');
                     var dueDay = dueDayDatePicker.datepicker('getDate');
                     if ($(this).attr('ng-model') == 'pass.displayStartDay') {
