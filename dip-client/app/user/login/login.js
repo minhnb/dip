@@ -89,6 +89,11 @@ angular.module('dipApp.login', ['ngRoute'])
             };
 
             $scope.showEmailForm = function () {
+                $scope.email = "";
+                $scope.token = "";
+                $scope.newPassword = "";
+                $scope.confirmPassword = "";
+                $('#forgot_password_modal form').validator('reset');
                 $scope.alreadyHasToken = false;
                 $scope.modalResetPasswordSetFocus();
             };

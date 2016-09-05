@@ -45,7 +45,7 @@
         <!--</div>-->
         <!-- /.social-auth-links -->
 
-        <a data-target="#forgot_password_modal" data-toggle="modal" ng-click="modalResetPasswordSetFocus()">{{'FORGOT_PASSWORD'
+        <a data-target="#forgot_password_modal" data-toggle="modal" ng-click="showEmailForm()">{{'FORGOT_PASSWORD'
             | translate}}</a><br>
         <a ng-click="goToPath('/signup')" ng-if="getDipWebsiteRole() == ROLE_PARTNER">{{'REGISTER_NEW_MEMBERSHIP' | translate}}</a>
     </div>
