@@ -9,13 +9,22 @@ dipApp.factory('hotelUtils', [
                 var address = [hotel.address.street, hotel.address.city, hotel.address.state];
                 return address.filter(Boolean).join(", ");
             },
+            getInstagramUrl: function (instagram) {
+                if (!instagram) {
+                    return '';
+                }
+                var instagramOrigin = "https://www.instagram.com/";
+                if (instagram[0] == '#') {
+                    return instagramOrigin + 'explore/tags/' + instagram.substring(1, instagram.length);
+                }
+                if (instagram[0] == '@') {
+                    return instagramOrigin + instagram.substring(1, instagram.length);
+                }
+                return instagramOrigin + instagram;
+            },
             convertHotel: function (hotel) {
                 hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
-                if (hotel.instagram) {
-                    hotel.instagramUrl = "https://www.instagram.com/" + hotel.instagram.replace('@', '');
-                } else {
-                    hotel.instagramUrl = "";
-                }
+                hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
                 if (hotel.imageUrl) {
                     hotel.imageUrl = hotel.imageUrl + '_resized';
                 }
