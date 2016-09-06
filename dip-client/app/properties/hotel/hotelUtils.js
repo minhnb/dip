@@ -23,11 +23,13 @@ dipApp.factory('hotelUtils', [
                 return instagramOrigin + instagram;
             },
             getFullUrWithProtocol: function (url) {
+                if (!url) {
+                    return '';
+                }
                 if (url.indexOf('http' == -1)) {
                     return 'http://' + url;
                 }
                 return url;
-
             },
             convertHotel: function (hotel) {
                 hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);

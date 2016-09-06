@@ -1,6 +1,6 @@
 dipApp.factory('reportService', ['$q', '$http', '$localStorage',
     function ($q, $http, $localStorage) {
-        var apiReportUrl = config.DIP_API + "admin/reports",
+        var apiReportUrl = config.DIP_API + "reports",
             reportService = {};
         reportService = {
             getUserReport: function () {
