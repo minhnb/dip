@@ -23,6 +23,6 @@ angular.module('dipApp.dashboard', ['ngRoute'])
                 }
                 $scope.stopSpin();
             };
-
-            $rootScope.initDipApp($scope.init);
+            $location.path('/properties/hotels');
+            // $rootScope.initDipApp($scope.init);
         }]);

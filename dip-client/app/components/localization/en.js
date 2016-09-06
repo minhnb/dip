@@ -2,6 +2,7 @@ var angular_translate_en = {
     HOME: "Home",
     DASHBOARD: "Dashboard",
     REPORT: "Report",
+    REPORTS: "Reports",
     USERS: "Users",
     EVENT_RESERVATIONS: "Event Reservations",
     HOTEL_RESERVATIONS: "Hotel Reservations",
