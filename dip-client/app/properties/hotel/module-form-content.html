@@ -1,14 +1,18 @@
 <div class="col-md-8">
-    <div class="form-group">
+    <div class="form-group has-feedback">
         <label class="control-label">{{'MODULE_NAME' | translate}}</label>
         <input type="text" required class="form-control" ng-model="module.name"
                placeholder="{{'MODULE_NAME' | translate}}">
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
     </div>
-    <div class="form-group" ng-show="false">
+    <div class="form-group has-feedback" ng-show="false">
         <label class="control-label">{{'TYPE' | translate}}</label>
         <select class="form-control select2" style="width: 100%;" ng-model="module.poolType">
             <option ng-if="poolTypes.length > 0" ng-repeat="poolType in poolTypes" value="{{poolType.value}}">{{poolType.display}}</option>
         </select>
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 <div class="col-md-4">

@@ -25,6 +25,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                     $(element).find('.image-box img').hide();
                     $(element).find('.image-box img').attr('src', '');
                     $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_UPLOAD_PICTURE'));
+                    $(element).find('.image-box').css({
+                        'min-height': ''
+                    });
                 });
                 $(element).bind('setImage', function (event, imageUrl, name) {
                     $(element).find('.image-box img').attr('alt', name + $scope.translate('PROFILE_PICTURE'));
@@ -32,6 +35,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                         $(element).find('.image-box img').attr('src', imageUrl);
                         $(element).find('.image-box img').show();
                         $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_CHANGE_PICTURE'));
+                        $(element).find('.image-box').css({
+                            'min-height': '1px'
+                        });
                     }
                 });
             }
@@ -59,6 +65,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                             imageBoxPreview.find('.image-box > img').show();
                             imageBoxPreview.find('.image-box > .load-image-spinner').hide();
                             imageBoxPreview.find('.image-box').attr('title', $scope.translate('CLICK_TO_CHANGE_PICTURE'));
+                            imageBoxPreview.find('.image-box').css({
+                                'min-height': '1px'
+                            });
                         };
 
                         reader.readAsDataURL($(inputElement)[0].files[0]);

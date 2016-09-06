@@ -34,7 +34,7 @@ a {
 /*-------------------------HOTEL PROFILE--------------------------*/
 .image-box {
     width: 100%;
-    min-height: 250px;
+    min-height: 15vw;
     border: 1px solid #cccccc;
     position: relative;
     margin-bottom: 10px;
@@ -360,7 +360,7 @@ a.back-button {
 .form-add-object {
     margin-bottom: 20px;
 }
-input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly] {
+input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly], input.form-control.timepicker[readonly] {
     background-color: #fff;
 }
 /*-------------------------END HOTEL PROFILE--------------------------*/
@@ -388,7 +388,19 @@ form .checkbox.icheck label {
     display: inline-block;
     float: none;
 }
-/*-------------------END LOGIN - REGISTER--------------------------*/
+.input-group .input-group-addon i {
+    min-width: 14px;
+}
+.has-error .input-group .input-group-addon {
+    border-color: #dd4b39;
+}
+.has-success .input-group .input-group-addon {
+    border-color: #00a65a;
+}
+.has-feedback select.form-control {
+    padding-right: 12px;
+}
+    /*-------------------END LOGIN - REGISTER--------------------------*/
 
 /*------------------------USER PROFILE-----------------------------*/
 .user-profile .box-body {

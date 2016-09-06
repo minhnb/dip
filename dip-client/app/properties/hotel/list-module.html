@@ -17,13 +17,13 @@
                 <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
             </div>
             <div class="create-edit-box" ng-show="module.isEditingModuleInfo">
-                <form>
+                <form role="form" dip-smart-validate-form name="edit-module">
                     <ng-include src="'/properties/hotel/module-form-content.html'"></ng-include>
                     <div class="text-center row-button">
                         <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL'
                             | translate}}
                         </button>
-                        <button type="submit" class="btn btn-info" ng-click="editModule(module)">{{'SAVE' |
+                        <button type="submit" class="btn btn-info" ng-click="editModule(module, $event)">{{'SAVE' |
                             translate}}
                         </button>
                     </div>

@@ -27,7 +27,7 @@ var utils = {
         return moment.duration(moment(time, [FORMAT_TIME_EVENT]).format('HH:mm')).asMinutes();
     },
     formatDipDateToDate: function (dipDate) {
-        return moment(dipDate).format(FORMAT_DATE);
+        return moment(new Date(dipDate)).format(FORMAT_DATE);
     },
     formatDateToDipDate: function (date) {
         return moment(new Date(date)).format(FORMAT_DIP_DATE);

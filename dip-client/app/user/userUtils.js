@@ -41,7 +41,7 @@ dipApp.factory('userUtils', [
             convertUser: function (user) {
                 user.fullName = userUtils.getUserFullName(user);
                 user.translateRole = userUtils.getUserRole(user.role);
-                user.displayCreatedDay = moment(user.createdAt).format(FORMAT_DATE);
+                user.displayCreatedDay = utils.formatDipDateToDate(user.createdAt);
                 user.avatarUrl = userUtils.getDisplayAvatar(user.picture);
                 if (user.dob) {
                     user.birthday = utils.formatDipDateToDate(user.dob);
@@ -51,9 +51,15 @@ dipApp.factory('userUtils', [
 
                 return user;
             },
+            isValidFormValidator: function (form) {
+               if ($(form).data('bs.validator').isIncomplete() || $(form).data('bs.validator').hasErrors()) {
+                   return false;
+               }
+               return true;
+            },
             handleSubmitForm: function (e, submitFunction) {
                 var element = e.currentTarget;
-                if ($(element).data('bs.validator').isIncomplete() || $(element).data('bs.validator').hasErrors()) {
+                if (!userUtils.isValidFormValidator(element)) {
                     $(element).find('input[ng-model="user.confirmPassword"]').parent()
                         .find('.help-block.with-errors > ul > li').each(function (index, value) {
                         if (index > 0) {

@@ -7,8 +7,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             controller: 'HotelProfileController'
         });
     }])
-    .controller('HotelProfileController', ['$scope', '$timeout', '$rootScope', '$location', '$routeParams', 'hotelService', 'hotelUtils',
-        function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils) {
+    .controller('HotelProfileController', ['$scope', '$timeout', '$rootScope', '$location', '$routeParams', 'hotelService', 'hotelUtils', 'userUtils',
+        function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils, userUtils) {
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "HOTEL_PROFILE";
             $scope.isShowingHotelProfile = false;
@@ -27,8 +27,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             var endDate = config.END_DAY;
             if (endDate) {
-                // console.log(endDate);
-                endDate = moment(endDate);
+                endDate = moment(new Date(endDate));
             }
 
             $scope.poolTypes = [
@@ -206,6 +205,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.getHotelById(hotel.id)
                     .success(function (data, status) {
                         $scope.stopSpin();
+                        $('form[name="edit-hotel"]').validator('reset');
                         data.neighborhood = data.address.neighborhood;
                         data.city = data.address.city;
                         data.fullAddress = hotelUtils.getHotelFullAddress(data);
@@ -290,6 +290,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.showCreateModuleBox = function () {
                 $scope.initCreateModulePanel();
                 $scope.isShowingCreateModule = true;
+                $('form[name="create-module"]').validator('reset');
             };
 
             $scope.hideCreateModuleBox = function () {
@@ -348,7 +349,20 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 });
             };
 
-            $scope.showEditModuleBox = function (module) {
+            $scope.initFormValidator = function (form, focus) {
+                if ($(form).length == 0) {
+                    return;
+                }
+                if (!$(form).data('bs.validator')) {
+                    $(form).validator({
+                        focus: focus
+                    }).off('focusout.bs.validator input.bs.validator');
+                }
+                $(form).validator('reset');
+            };
+
+            $scope.showEditModuleBox = function (module, $event) {
+                $scope.initFormValidator($($event.currentTarget).closest('.row.module-info').find('form'), true);
                 $scope.startSpin();
                 hotelService.getHotelServiceById(module.id)
                     .success(function (data, status) {
@@ -393,7 +407,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
             };
 
-            $scope.editModule = function (module) {
+            $scope.editModule = function (module, $event) {
+                if (!userUtils.isValidFormValidator($($event.currentTarget).closest('form'))) {
+                    return;
+                }
                 if (!hotelUtils.isValidHotelService(module, false)) {
                     return;
                 }
@@ -442,7 +459,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.isValidPass = function (newPass, $event) {
-                var form = $($event.currentTarget).parent().parent();
+                var form = $($event.currentTarget).closest('form');
+                if (!userUtils.isValidFormValidator(form)) {
+                    return false;
+                }
                 if (!newPass.passType) {
                     return $scope.notifyValidateError('ERROR_INVALID_PASS_TYPE');
                 }
@@ -721,8 +741,17 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 return displayDays.join(', ');
             };
 
-            $scope.updatePassTitle = function (pass) {
+            $scope.updatePassTitle = function (pass, $event) {
                 pass.title = hotelUtils.getPassTypeDisplay(pass.passType);
+                setTimeout(function () {
+                    var selector = '';
+                    if (pass.id) {
+                        selector = '#pass_' + pass.id;
+                    } else {
+                        selector = '#new_pass_' + pass.service;
+                    }
+                    $(selector).find('form input[ng-model="pass.title"]').trigger('change');
+                }, 0);
             };
 
             $scope.initTimePicker = function (form) {
@@ -730,7 +759,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     showInputs: false,
                     defaultTime: false,
                     // showMeridian: false,
-                    showWidgetOnAddonClick: true,
+                    showWidgetOnAddonClick: true
                 });
                 $(form).find('.timepicker .input-group-addon').click(function () {
                     $(this).parent().find('input').data('timepicker').showWidget();
@@ -739,7 +768,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
                 $(form).find('.timepicker input').timepicker().on('show.timepicker', function (e) {
                     if ($(this).attr('data-duration') == 'end') {
-                        var duration_start = $(this).parent().parent().parent().find('[data-duration=start]');
+                        var duration_start = $(this).closest('form').find('[data-duration=start]');
 
                         if ($(duration_start).val()) {
                             var startTime = $(duration_start).val();
@@ -758,11 +787,15 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         $(this).data('timepicker').update();
                     }
                 });
+                $(form).find('.timepicker input').keydown(function (e) {
+                    e.preventDefault();
+                });
             };
 
             $scope.initPassFormWithId = function (key, id) {
                 var elementId = '#' + key + id;
                 $scope.initPassForm($(elementId));
+                $scope.initFormValidator($(elementId).find('form'), false);
             };
 
             $scope.initPassForm = function (form) {
@@ -833,7 +866,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         if (startDay) {
                             var dueDayDatePickerData = {};
                             utils.updateObjectInfo(dueDayDatePickerData, datePickerData, []);
-                            dueDayDatePickerData.startDate = moment(startDay).format(FORMAT_DATE);
+                            dueDayDatePickerData.startDate = utils.formatDipDateToDate(startDay);
                             dueDayDatePicker.datepicker('destroy');
                             dueDayDatePicker.datepicker(dueDayDatePickerData);
                         }
@@ -881,7 +914,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                 });
                             }
                         },
-                        viewRender: function(view, element) {
+                        viewRender: function (view, element) {
                             if (endDate) {
                                 var format = 'YYYY/MM/DD';
                                 if (endDate.format(format) < view.intervalEnd.format(format)) {
@@ -938,7 +971,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     if (pass.startDay == '0000-01-01' || pass.dueDay == '9999-12-31') {
                         return;
                     }
-                    if (moment(pass.startDay) > calendarView.intervalEnd || moment(pass.dueDay) < calendarView.intervalStart) {
+                    if (moment(new Date(pass.startDay)) > calendarView.intervalEnd || moment(new Date(pass.dueDay)) < calendarView.intervalStart) {
                         return;
                     }
                     listPasses.push(pass);
@@ -975,6 +1008,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getHotelProfile($routeParams.hotelId);
+                $('form[name="edit-hotel"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.editHotel);
+                });
+                $('form[name="create-module"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.createModule);
+                });
             };
 
             $rootScope.initDipApp($scope.init);

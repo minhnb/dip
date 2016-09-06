@@ -7,8 +7,8 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             controller: 'HotelController'
         });
     }])
-    .controller('HotelController', ['$scope', '$timeout', '$rootScope', '$location', 'hotelService', 'hotelUtils',
-        function ($scope, $timeout, $rootScope, $location, hotelService, hotelUtils) {
+    .controller('HotelController', ['$scope', '$timeout', '$rootScope', '$location', 'hotelService', 'hotelUtils', 'userUtils',
+        function ($scope, $timeout, $rootScope, $location, hotelService, hotelUtils, userUtils) {
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "LIST_HOTELS";
             $scope.isShowingCreateEditHotelBox = false;
@@ -74,6 +74,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.initCreateHotelPanel = function () {
                 $scope.hotel = {};
                 $('#image_box_hotel').trigger('clearImageBox');
+                $('form[name="create-hotel"]').validator('reset');
             };
 
             $scope.updateHotelImage = function (hotelId) {
@@ -150,6 +151,9 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getListHotel();
+                $('form[name="create-hotel"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                    userUtils.handleSubmitForm(e, $scope.createHotel);
+                });
             };
 
             $rootScope.initDipApp($scope.init);

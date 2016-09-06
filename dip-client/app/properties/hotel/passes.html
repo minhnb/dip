@@ -2,7 +2,9 @@
     <div class="box-header with-border">
         <h3 class="box-title">{{ 'PASS' | translate }}</h3>
         <div class="pull-right">
-            <button type="button" class="btn btn-default btn-big" ng-show="!module.isMappingToCalendar && !module.isAddingPass" title="{{'ADD_PASS' | translate}}" ng-click="showCreatePassBox(module)">
+            <button type="button" class="btn btn-default btn-big"
+                    ng-show="!module.isMappingToCalendar && !module.isAddingPass" title="{{'ADD_PASS' | translate}}"
+                    ng-click="showCreatePassBox(module)">
                 <span aria-hidden="true" class="fa fa-plus-circle"></span>
             </button>
             <button type="button" class="btn btn-default btn-big" title="{{'MAP_PASS_TO_CALENDAR' | translate}}"
@@ -26,7 +28,7 @@
         <div class="row pass-info" ng-repeat="pass in module.passes">
             <ng-include src="'/properties/hotel/pass-info.html'" ng-if="!pass.isEditingPassInfo"></ng-include>
             <div class="col-xs-12" id="pass_{{pass.id}}" ng-if="pass.isEditingPassInfo">
-                <form>
+                <form role="form" dip-smart-validate-form name="edit-pass">
                     <ng-include src="'/properties/hotel/pass-form-content.html'"></ng-include>
                     <div class="text-center row-button">
                         <button type="button" class="btn btn-default" ng-click="discardChangePass(pass)">{{'CANCEL' |

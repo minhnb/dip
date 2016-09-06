@@ -1,6 +1,6 @@
 <div class="col-md-12 module-header" ng-show="!module.isAddingPass">
     <div class="pull-right">
-        <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}" ng-click="showEditModuleBox(module)">
+        <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}" ng-click="showEditModuleBox(module, $event)">
             <span aria-hidden="true" class="fa fa-edit"></span>
         </button>
         <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}" ng-click="deleteModule(module)">

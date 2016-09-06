@@ -7,7 +7,7 @@
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form>
+    <form role="form" dip-smart-validate-form name="create-hotel">
         <div class="box-body">
             <div class="row">
                 <ng-include src="'/properties/hotels/hotel-form-content.html'"></ng-include>
@@ -16,8 +16,8 @@
         <!-- /.box-body -->
         <div class="box-footer text-center row-button">
             <button type="button" class="btn btn-default" ng-click="hideCreateEditHotelBox()">{{'CANCEL' | translate}}</button>
-            <button ng-if="!isEditingHotel" type="submit" class="btn btn-info" ng-click="createHotel()">{{'ADD' | translate}}</button>
-            <button ng-if="isEditingHotel" type="submit" class="btn btn-info" ng-click="editHotel()">{{'SAVE' | translate}}</button>
+            <button ng-if="!isEditingHotel" type="submit" class="btn btn-info">{{'ADD' | translate}}</button>
+            <button ng-if="isEditingHotel" type="submit" class="btn btn-info">{{'SAVE' | translate}}</button>
         </div>
         <!-- /.box-footer -->
     </form>

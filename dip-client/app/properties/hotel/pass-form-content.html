@@ -1,29 +1,39 @@
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="form-group has-feedback">
             <label class="control-label">{{'PASS_TYPE' | translate}}</label>
-            <select class="form-control select2" style="width: 100%;" ng-model="pass.passType" ng-change="updatePassTitle(pass)" required>
+            <select class="form-control select2" style="width: 100%;" ng-model="pass.passType"
+                    ng-change="updatePassTitle(pass)" required>
+                <option value=""></option>
                 <option ng-if="passTypes.length > 0" ng-repeat="passType in passTypes"
                         value="{{passType.value}}">{{passType.display}}
                 </option>
             </select>
+            <!--<span class="glyphicon form-control-feedback"></span>-->
+            <div class="help-block with-errors"></div>
         </div>
-        <div class="form-group">
+        <div class="form-group has-feedback">
             <label class="control-label">{{'PASS_TITLE' | translate}}</label>
             <input type="text" required class="form-control" ng-model="pass.title"
                    placeholder="{{'PASS_TITLE' | translate}}">
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
         </div>
-        <div class="form-group" ng-show="false">
+        <div class="form-group has-feedback" ng-show="false">
             <label class="control-label">{{'POOL_TITLE' | translate}}</label>
             <select class="form-control select2" style="width: 100%;" ng-model="pass.service">
                 <option ng-if="hotel.services.length > 0" ng-repeat="service in hotel.services"
                         value="{{service.id}}">{{service.name}}
                 </option>
             </select>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
         </div>
         <div class="form-group">
             <label class="control-label">{{'POOL_TITLE' | translate}}</label>
             <input type="text" required class="form-control" ng-model="module.name" disabled>
+            <!--<span class="glyphicon form-control-feedback"></span>-->
+            <!--<div class="help-block with-errors"></div>-->
         </div>
     </div>
     <div class="col-md-6">
@@ -35,44 +45,56 @@
             </div>
             <div class="row row-grid">
                 <div class="col-md-6">
-                    <div class="input-group timepicker">
-                        <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
+                    <div class="form-group has-feedback">
+                        <div class="input-group timepicker">
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <input type="text" class="form-control timepicker" data-duration="start"
+                                   ng-model="pass.startTime" placeholder="{{'DURATION_START' | translate}}" required>
                         </div>
-                        <input type="text" class="form-control timepicker" data-duration="start" ng-model="pass.startTime"
-                               placeholder="{{'DURATION_START' | translate}}">
+                        <span class="glyphicon form-control-feedback"></span>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group timepicker">
-                        <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
+                    <div class="form-group has-feedback">
+                        <div class="input-group timepicker">
+                            <div class="input-group-addon">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                            <input type="text" class="form-control timepicker" data-duration="end"
+                                   ng-model="pass.endTime" placeholder="{{'DURATION_END' | translate}}" required>
                         </div>
-                        <input type="text" class="form-control timepicker" data-duration="end" ng-model="pass.endTime"
-                               placeholder="{{'DURATION_END' | translate}}">
+                        <span class="glyphicon form-control-feedback"></span>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="form-group pass_maximum">
             <label class="control-label">{{'MAXIMUM_PASSES' | translate}}</label>
-            <input type="text" ng-model="pass.allotmentCount" data-value="{{pass.allotmentCount}}" class="slider form-control" data-slider-min="1"
+            <input type="text" ng-model="pass.allotmentCount" data-value="{{pass.allotmentCount}}"
+                   class="slider form-control" data-slider-min="1"
                    data-slider-max="50" data-slider-step="1" data-slider-value="{{pass.allotmentCount}}"
                    data-slider-orientation="horizontal" data-slider-selection="before"
-                   data-slider-tooltip="always" data-slider-tooltip-position="bottom">
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom" required>
         </div>
         <div class="form-group pass_capacity">
             <label class="control-label">{{'CAPACITY' | translate}}</label>
-            <input type="text" ng-model="pass.capacity" data-value="{{pass.capacity}}" class="slider form-control" data-slider-min="1"
+            <input type="text" ng-model="pass.capacity" data-value="{{pass.capacity}}" class="slider form-control"
+                   data-slider-min="1"
                    data-slider-max="20" data-slider-step="1" data-slider-value="{{pass.capacity}}"
                    data-slider-orientation="horizontal" data-slider-selection="before"
-                   data-slider-tooltip="always" data-slider-tooltip-position="bottom">
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom" required>
         </div>
-        <div class="form-group">
+        <div class="form-group has-feedback">
             <label class="control-label">{{'PRICE' | translate}}</label>
             <input type="text" class="form-control" ng-model="pass.displayPrice"
                    data-inputmask="'alias': 'numeric', 'allowMinus': false, 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
-                   data-mask>
+                   data-mask required>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
         </div>
     </div>
 </div>
