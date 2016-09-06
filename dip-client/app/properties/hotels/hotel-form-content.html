@@ -44,14 +44,17 @@
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'WEBSITE' | translate}}</label>
         <input type="text" class="form-control" ng-model="hotel.url"
-               placeholder="{{'WEBSITE' | translate}}">
+               placeholder="{{'WEBSITE' | translate}}"
+               pattern="^(http[s]?:\/\/)?([0-9a-z\-]+\.)+[0-9a-z\-]+(\/[^/\s]+)*\/?([?#].*)?$"
+               data-error="{{'ERROR_INVALID_URL' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'INSTAGRAM' | translate}}</label>
         <input type="text" class="form-control" ng-model="hotel.instagram"
-               placeholder="{{'INSTAGRAM' | translate}}">
+               placeholder="{{'INSTAGRAM' | translate}}" pattern="^[@#][^@#]+"
+               data-error="{{'ERROR_INVALID_INSTAGRAM' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
         <div class="help-block with-errors"></div>
     </div>

@@ -109,6 +109,9 @@ var angular_translate_en = {
     CLICK_TO_UPLOAD_PICTURE: "Click here to upload the profile picture",
     CLICK_TO_CHANGE_PICTURE: "Click here to change the profile picture",
 
+    ERROR_INVALID_URL: "Invalid url",
+    ERROR_INVALID_INSTAGRAM: "Instagram handle must like @username or #hashtag",
+
     HOTEL_PROFILE: "Hotel Profile",
     HOTEL_INFO: "Hotel Info",
     NEW_MODULE: "New Swimming Pool",

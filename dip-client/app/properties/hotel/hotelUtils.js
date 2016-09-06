@@ -22,9 +22,17 @@ dipApp.factory('hotelUtils', [
                 }
                 return instagramOrigin + instagram;
             },
+            getFullUrWithProtocol: function (url) {
+                if (url.indexOf('http' == -1)) {
+                    return 'http://' + url;
+                }
+                return url;
+
+            },
             convertHotel: function (hotel) {
                 hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
                 hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
+                hotel.fullUrl = hotelUtils.getFullUrWithProtocol(hotel.url);
                 if (hotel.imageUrl) {
                     hotel.imageUrl = hotel.imageUrl + '_resized';
                 }
