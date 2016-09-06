@@ -186,13 +186,13 @@ var angular_translate_en = {
     PASSWORD: "Password",
     CONFIRM_PASSWORD: "Confirm password",
     AGREE_TERMS_BEGIN: "I agree to the ",
-    TERMS: "terms",
+    TERMS: "Terms of Service",
     AGREE_TERMS_END: "",
     ALREADY_DIP_PARTNER: "I'm already a DIP Partner",
 
     ERROR_INVALID_EMAIL: "Invalid email",
     ERROR_PASSWORD_NOT_MATCH: "Whoops, password and confirm password don't match",
-    ERROR_INVALID_PASSWORD: "Your password must have 6 or more characters, at least 1 digit",
+    ERROR_INVALID_PASSWORD: "Your password must contain 6 or more characters and at least 1 digit included",
     ERROR_MUST_ACCEPT_TERM: "You must agree to the terms",
     ERROR_INVALID_PHONE_NUMBER: "Invalid phone number",
 
