@@ -107,6 +107,7 @@ angular.module('dipApp.profile', ['ngRoute'])
             };
 
             $scope.initChangePasswordModal = function () {
+                $('#change_password_modal form').validator('reset');
                 $('#change_password_modal input').val('');
             };
 
@@ -121,7 +122,6 @@ angular.module('dipApp.profile', ['ngRoute'])
                 userService.updateUser(user)
                     .success(function (data, status) {
                         $('#change_password_modal').modal('hide');
-                        $('#change_password_modal form').validator('reset');
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
