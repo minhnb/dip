@@ -151,7 +151,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getListHotel();
-                $('form[name="create-hotel"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('form[name="create-hotel"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.createHotel);
                 });
             };

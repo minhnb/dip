@@ -355,7 +355,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 }
                 if (!$(form).data('bs.validator')) {
                     $(form).validator({
-                        focus: focus
+                        focus: focus,
+                        disable: false
                     }).off('focusout.bs.validator input.bs.validator');
                 }
                 $(form).validator('reset');
@@ -1008,10 +1009,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getHotelProfile($routeParams.hotelId);
-                $('form[name="edit-hotel"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('form[name="edit-hotel"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.editHotel);
                 });
-                $('form[name="create-module"]').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('form[name="create-module"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.createModule);
                 });
             };

@@ -141,10 +141,10 @@ angular.module('dipApp.profile', ['ngRoute'])
                     zIndexOffset: 1050,
                     endDate: moment(new Date()).format(FORMAT_DATE)
                 });
-                $('.user-profile form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('.user-profile form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.editUser);
                 });
-                $('#change_password_modal form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('#change_password_modal form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.changePassword);
                 });
             };

@@ -58,7 +58,7 @@ angular.module('dipApp.signup', ['ngRoute'])
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
                 $('form input[type="checkbox"]').attr('data-error', $scope.translate('ERROR_MUST_ACCEPT_TERM'));
-                $('.register-box form').validator().off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
+                $('.register-box form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
                     userUtils.handleSubmitForm(e, $scope.signUp);
                 });
                 $('.register-box form input:first').focus();
