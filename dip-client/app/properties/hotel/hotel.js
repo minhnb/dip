@@ -7,8 +7,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             controller: 'HotelProfileController'
         });
     }])
-    .controller('HotelProfileController', ['$scope', '$timeout', '$rootScope', '$location', '$routeParams', 'hotelService', 'hotelUtils', 'userUtils',
-        function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils, userUtils) {
+    .controller('HotelProfileController', ['$scope', '$timeout', '$rootScope', '$location', '$routeParams', 'hotelService', 'hotelUtils', 'formValidatorUtils',
+        function ($scope, $timeout, $rootScope, $location, $routeParams, hotelService, hotelUtils, formValidatorUtils) {
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "HOTEL_PROFILE";
             $scope.isShowingHotelProfile = false;
@@ -353,11 +353,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 if ($(form).length == 0) {
                     return;
                 }
+                if (focus == undefined) {
+                    focus = false;
+                }
                 if (!$(form).data('bs.validator')) {
-                    $(form).validator({
-                        focus: focus,
-                        disable: false
-                    }).off('focusout.bs.validator input.bs.validator');
+                    formValidatorUtils.initDIPFormValidatorWithAdditionalOptions(form, {focus: focus});
                 }
                 $(form).validator('reset');
             };
@@ -409,7 +409,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.editModule = function (module, $event) {
-                if (!userUtils.isValidFormValidator($($event.currentTarget).closest('form'))) {
+                if (!formValidatorUtils.isValidFormValidator($($event.currentTarget).closest('form'))) {
                     return;
                 }
                 if (!hotelUtils.isValidHotelService(module, false)) {
@@ -461,7 +461,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.isValidPass = function (newPass, $event) {
                 var form = $($event.currentTarget).closest('form');
-                if (!userUtils.isValidFormValidator(form)) {
+                if (!formValidatorUtils.isValidFormValidator(form)) {
                     return false;
                 }
                 if (!newPass.passType) {
@@ -1009,12 +1009,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getHotelProfile($routeParams.hotelId);
-                $('form[name="edit-hotel"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.editHotel);
-                });
-                $('form[name="create-module"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.createModule);
-                });
+                formValidatorUtils.initDIPDefaultFormValidator($('form[name="edit-hotel"]'), $scope.editHotel);
+                formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-module"]'), $scope.createModule);
             };
 
             $rootScope.initDipApp($scope.init);

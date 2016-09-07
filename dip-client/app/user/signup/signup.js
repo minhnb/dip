@@ -6,8 +6,8 @@ angular.module('dipApp.signup', ['ngRoute'])
             controller: 'SignUpController'
         });
     }])
-    .controller('SignUpController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
-        function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
+    .controller('SignUpController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'formValidatorUtils',
+        function ($scope, $timeout, $rootScope, $location, userService, formValidatorUtils) {
             $rootScope.isNoMenuPage = true;
             $rootScope.pageTitle = "REGISTER";
             $scope.user = {};
@@ -47,10 +47,13 @@ angular.module('dipApp.signup', ['ngRoute'])
 
             $scope.initRememberCheckbox = function () {
                 $(function () {
-                    $('input').iCheck({
+                    $('form input[type="checkbox"]').iCheck({
                         checkboxClass: 'icheckbox_square-blue',
                         radioClass: 'iradio_square-blue',
                         increaseArea: '20%' // optional
+                    });
+                    $('form input[type="checkbox"]').on('ifChanged', function () {
+                        $(this).trigger('change');
                     });
                 });
             };
@@ -58,9 +61,7 @@ angular.module('dipApp.signup', ['ngRoute'])
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
                 $('form input[type="checkbox"]').attr('data-error', $scope.translate('ERROR_MUST_ACCEPT_TERM'));
-                $('.register-box form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.signUp);
-                });
+                formValidatorUtils.initDIPDefaultFormValidator($('.register-box form'), $scope.signUp);
                 $('.register-box form input:first').focus();
             };
 

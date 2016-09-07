@@ -155,7 +155,7 @@ var angular_translate_en = {
     ERROR_INVALID_PASS_DURATION: "Start time must be smaller than end time",
     ERROR_INVALID_PASS_START_DAY_DUE_DATE: "Start date must be smaller than due day",
 
-    ADD_PASS_SUCCESS_PROMPT: "Your pass is added successfully. Click the calendar to proceed with mapping it.",
+    ADD_PASS_SUCCESS_PROMPT: "Your pass is added successfully. Click the calendar to proceed with mapping it",
 
     PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?",
 
@@ -199,6 +199,7 @@ var angular_translate_en = {
     ERROR_INVALID_PASSWORD: "Your password must contain 6 or more characters and at least 1 digit included",
     ERROR_MUST_ACCEPT_TERM: "You must agree to the terms",
     ERROR_INVALID_PHONE_NUMBER: "Invalid phone number",
+    ERROR_EXISTING_PASSWORD: "Existing password. Please enter a different one to change your password",
 
     SIGN_IN_HEADER: "Sign in to start your session",
     REMEMBER_ME: "Remember Me",
