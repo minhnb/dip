@@ -28,12 +28,14 @@ reportServices.getListDIPUsers = function () {
     })
 };
 
-reportServices.getListEventReservations = function () {
-    let condition = {type: 'EventReservation'};
+reportServices.getListEventReservations = async (function (user) {
+    // let condition = {type: 'EventReservation'};
+    let condition = await (_buildCondition(user, 'EventReservation'));
+    if (!condition) throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
     return reservationServices.dbGetReservation(condition, true).then(reservations => {
         return reservations.map(entities.eventReservationReport);
     });
-};
+});
 
 reportServices.getListHotelReservations = async (function (user) {
     // let condition = {type: 'HotelReservation'};
@@ -72,6 +74,13 @@ var _buildCondition = reportServices.buildCondition = async ((user, reservationT
             let hotelIds = await(db.hotels.find({owner: user}).select('_id').exec());
             hotelIds = hotelIds.map(h => h._id);
             condition['hotel.ref'] = {$in: hotelIds};
+            return condition;
+        } else if (reservationType == 'EventReservation') {
+            let hotelIds = await(db.hotels.find({owner: user}).select('_id').exec());
+            hotelIds = hotelIds.map(h => h._id);
+            let eventIds = await(db.events.find({hotel: {$in: hotelIds}}).select('_id').exec());
+            eventIds = eventIds.map(e => e._id);
+            condition['event.ref'] = {$in: eventIds};
             return condition;
         } else {
             return null;

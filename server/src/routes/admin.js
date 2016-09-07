@@ -25,7 +25,7 @@ router
     )
     .get('hotel reservation report', '/reports/reservations/events',
         ctx => {
-            return reportServices.getListEventReservations().then(reservations => {
+            return reportServices.getListEventReservations(ctx.state.user).then(reservations => {
                 ctx.body = reservations;
             });
         }

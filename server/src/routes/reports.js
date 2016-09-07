@@ -16,9 +16,10 @@ router.use('/', auth.isPartnerOrAdmin)
         }
     )
     .get('event reservation report', '/reservations/events',
-        utils.isAdmin,
+        // Allow partner to see reservations for events at their hotels
+        // utils.isAdmin,
         ctx => {
-            return reportServices.getListEventReservations().then(reservations => {
+            return reportServices.getListEventReservations(ctx.state.user).then(reservations => {
                 ctx.body = reservations;
             });
         }
