@@ -453,6 +453,14 @@ form .checkbox.icheck label {
 .user-profile dip-image-box button {
     display: none;
 }
+.user-panel > .image > img {
+    width: 45px;
+    height: 45px;
+}
+.sidebar-collapse .user-panel > .image > img {
+    width: 30px;
+    height: 30px;
+}
     /*------------------------END USER PROFILE-----------------------------*/
 
 
