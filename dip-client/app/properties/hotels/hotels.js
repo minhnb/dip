@@ -7,8 +7,8 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             controller: 'HotelController'
         });
     }])
-    .controller('HotelController', ['$scope', '$timeout', '$rootScope', '$location', 'hotelService', 'hotelUtils', 'userUtils',
-        function ($scope, $timeout, $rootScope, $location, hotelService, hotelUtils, userUtils) {
+    .controller('HotelController', ['$scope', '$timeout', '$rootScope', '$location', 'hotelService', 'hotelUtils', 'formValidatorUtils',
+        function ($scope, $timeout, $rootScope, $location, hotelService, hotelUtils, formValidatorUtils) {
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "LIST_HOTELS";
             $scope.isShowingCreateEditHotelBox = false;
@@ -151,9 +151,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getListHotel();
-                $('form[name="create-hotel"]').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.createHotel);
-                });
+                formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-hotel"]'), $scope.createHotel);
             };
 
             $rootScope.initDipApp($scope.init);

@@ -6,8 +6,8 @@ angular.module('dipApp.login', ['ngRoute'])
             controller: 'LoginController'
         });
     }])
-    .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
-        function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
+    .controller('LoginController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'formValidatorUtils',
+        function ($scope, $timeout, $rootScope, $location, userService, formValidatorUtils) {
             $rootScope.isNoMenuPage = true;
             $rootScope.pageTitle = "LOGIN";
             $scope.username = "";
@@ -115,15 +115,9 @@ angular.module('dipApp.login', ['ngRoute'])
 
             $scope.initForm = function () {
                 $scope.initRememberCheckbox();
-                $('.dip-app-body .login-box:first form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.login);
-                });
-                $('.modal .login-box:nth-child(1) form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.sendEmail);
-                });
-                $('.modal .login-box:nth-child(2) form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.resetPassword);
-                });
+                formValidatorUtils.initDIPDefaultFormValidator($('.dip-app-body .login-box:first form'), $scope.login);
+                formValidatorUtils.initDIPDefaultFormValidator($('.modal .login-box:nth-child(1) form'), $scope.sendEmail);
+                formValidatorUtils.initDIPDefaultFormValidator($('.modal .login-box:nth-child(2) form'), $scope.resetPassword);
                 $('.login-box-body form input:first').focus();
             };
 

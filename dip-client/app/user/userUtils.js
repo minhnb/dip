@@ -50,25 +50,6 @@ dipApp.factory('userUtils', [
                 }
 
                 return user;
-            },
-            isValidFormValidator: function (form) {
-               if ($(form).data('bs.validator').isIncomplete() || $(form).data('bs.validator').hasErrors()) {
-                   return false;
-               }
-               return true;
-            },
-            handleSubmitForm: function (e, submitFunction) {
-                var element = e.currentTarget;
-                if (!userUtils.isValidFormValidator(element)) {
-                    $(element).find('input[ng-model="user.confirmPassword"]').parent()
-                        .find('.help-block.with-errors > ul > li').each(function (index, value) {
-                        if (index > 0) {
-                            $(this).remove();
-                        }
-                    })
-                } else {
-                    submitFunction();
-                }
             }
         };
         return userUtils;

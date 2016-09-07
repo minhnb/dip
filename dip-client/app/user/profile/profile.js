@@ -6,8 +6,8 @@ angular.module('dipApp.profile', ['ngRoute'])
             controller: 'ProfileController'
         });
     }])
-    .controller('ProfileController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils',
-        function ($scope, $timeout, $rootScope, $location, userService, userUtils) {
+    .controller('ProfileController', ['$scope', '$timeout', '$rootScope', '$location', 'userService', 'userUtils', 'formValidatorUtils',
+        function ($scope, $timeout, $rootScope, $location, userService, userUtils, formValidatorUtils) {
             $rootScope.isNoMenuPage = false;
             $rootScope.pageTitle = "PROFILE";
             $scope.isShowingUserProfile = false;
@@ -141,12 +141,8 @@ angular.module('dipApp.profile', ['ngRoute'])
                     zIndexOffset: 1050,
                     endDate: moment(new Date()).format(FORMAT_DATE)
                 });
-                $('.user-profile form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.editUser);
-                });
-                $('#change_password_modal form').validator({disable: false}).off('focusout.bs.validator input.bs.validator').on('submit', function (e) {
-                    userUtils.handleSubmitForm(e, $scope.changePassword);
-                });
+                formValidatorUtils.initDIPDefaultFormValidator($('.user-profile form'), $scope.editUser);
+                formValidatorUtils.initDIPDefaultFormValidator($('#change_password_modal form'), $scope.changePassword);
             };
 
             $rootScope.initDipApp($scope.init);
