@@ -108,6 +108,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         $scope.getPasses(hotelId).then(function () {
                             $scope.isShowingHotelProfile = true;
                             $scope.stopSpin();
+
+                            formValidatorUtils.initDIPDefaultFormValidator($('form[name="edit-hotel"]'), $scope.editHotel);
+                            formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-module"]'), $scope.createModule);
                         });
                     });
             };
@@ -1009,8 +1012,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.init = function () {
                 $scope.getHotelProfile($routeParams.hotelId);
-                formValidatorUtils.initDIPDefaultFormValidator($('form[name="edit-hotel"]'), $scope.editHotel);
-                formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-module"]'), $scope.createModule);
             };
 
             $rootScope.initDipApp($scope.init);

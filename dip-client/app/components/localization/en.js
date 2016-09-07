@@ -200,6 +200,7 @@ var angular_translate_en = {
     ERROR_MUST_ACCEPT_TERM: "You must agree to the terms",
     ERROR_INVALID_PHONE_NUMBER: "Invalid phone number",
     ERROR_EXISTING_PASSWORD: "Existing password. Please enter a different one to change your password",
+    ERROR_INPUT_REQUIRED: "Please fill out this field",
 
     SIGN_IN_HEADER: "Sign in to start your session",
     REMEMBER_ME: "Remember Me",

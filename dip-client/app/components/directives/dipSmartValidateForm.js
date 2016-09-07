@@ -3,6 +3,11 @@ dipApp.directive('dipSmartValidateForm', ['$location', function ($location) {
         restrict: 'A',
         link: function ($scope, element, attrs) {
             function initSmartValidateForm() {
+                $(element).find('input:required').each(function () {
+                    if ($(this).attr('data-error') == undefined) {
+                        $(this).attr('data-error', $scope.translate('ERROR_INPUT_REQUIRED'));
+                    }
+                });
                 $(element).find('input').keydown(function (e) {
                     var group = $(this).closest('.form-group');
                     group.find('.form-control-feedback')
