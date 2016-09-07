@@ -18,11 +18,11 @@ angular.module('dipApp.dashboard', ['ngRoute'])
 
             $scope.init = function () {
                 load_scripts();
-                if (!$scope.isInitTemplate) {
-                    $scope.initTemplate();
-                }
                 $scope.stopSpin();
             };
+            if (!$scope.isInitTemplate) {
+                $scope.initTemplate();
+            }
             $location.path('/properties/hotels');
             // $rootScope.initDipApp($scope.init);
         }]);
