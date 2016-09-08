@@ -35,6 +35,16 @@ router
             ctx.body = await(resourcesServices.updateHotel(user, hotelId, hotel));
         })
     )
+    .put('update hotel status', '/:hotelId/status',
+        auth.isAdmin,
+        async(ctx => {
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId,
+                status = ctx.request.body.active;
+            let hotel = await(resourcesServices.updateHotelStatus(user, hotelId, status));
+            ctx.status = 200;
+        })
+    )
     .delete('delete hotel', '/:hotelId',
         async(ctx => {
             let user = ctx.state.user,

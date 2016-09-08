@@ -174,6 +174,12 @@ resourcesServices.updateHotel = function (user, hotelId, update) {
     });
 };
 
+resourcesServices.updateHotelStatus = function (user, hotelId, status) {
+    return resourcesServices.dbUpdateHotelStatus(user, hotelId, status).then(result => {
+        return true;
+    });
+};
+
 resourcesServices.deleteHotel = function (user, hotelId) {
     return resourcesServices.dbDeleteHotel(user, hotelId).then(result => {
         return true;
@@ -328,6 +334,12 @@ resourcesServices.dbUpdateHotel = async (function (user, hotelId, update) {
         hotel[key] = update[key];
     }
     return hotel.save();
+});
+
+resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, status) {
+    let hotel = await (_checkHotelPermission(user, hotelId));
+    status = status ? true : false;
+    return db.hotels.update({_id: hotel._id}, {active: status});
 });
 
 resourcesServices.dbDeleteHotel = async (function (user, hotelId) {
