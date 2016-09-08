@@ -2,6 +2,7 @@ dipApp.factory('formValidatorUtils', [
     function () {
         var formValidatorUtils = {
             initDIPFormValidatorWithOptions: function (form, options, submitFunction) {
+                $(form).validator().unbind('submit');
                 $(form).validator('destroy');
                 $(form).validator(options).off('focusout.bs.validator input.bs.validator')
                     .on('submit', function (e) {
