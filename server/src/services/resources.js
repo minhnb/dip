@@ -180,8 +180,14 @@ resourcesServices.deleteHotel = function (user, hotelId) {
     });
 };
 
-resourcesServices.getListPendingHotel = function () {
-    return resourcesServices.dbGetListPendingHotel().then(hotels => {
+resourcesServices.getListPendingHotel = function (user) {
+    return resourcesServices.dbGetListPendingHotel(user).then(hotels => {
+        return hotels.map(entities.hotel);
+    });
+};
+
+resourcesServices.getListApprovedHotel = function (user) {
+    return resourcesServices.dbGetListApprovedHotel(user).then(hotels => {
         return hotels.map(entities.hotel);
     });
 };
@@ -330,13 +336,24 @@ resourcesServices.dbDeleteHotel = async (function (user, hotelId) {
     return db.hotels.update({_id: hotel._id}, {deleted: true});
 });
 
-resourcesServices.dbGetListPendingHotel = function () {
+resourcesServices.dbGetListHotelByStatus = function (user, status) {
     let condition = {};
-    condition.active = false;
+    condition.active = status;
+    if (!user.isAdmin()) {
+        condition.owner = user;
+    }
     let sort = {_id: -1};
     return db.hotels.find(condition).sort(sort).exec().then(hotels => {
         return hotels;
     });
+};
+
+resourcesServices.dbGetListPendingHotel = function (user) {
+    return resourcesServices.dbGetListHotelByStatus(user, false);
+};
+
+resourcesServices.dbGetListApprovedHotel = function (user) {
+    return resourcesServices.dbGetListHotelByStatus(user, true);
 };
 
 resourcesServices.getExistedHotel = function (hotelId) {

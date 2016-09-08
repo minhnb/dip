@@ -13,12 +13,18 @@ module.exports = router;
 
 router
     .use('/', auth.authenticate(), auth.isPartnerOrAdmin)
-    .get('get pending hotels', '/pending',
-        utils.isAdmin,
+    .get('get hotel list', '/',
         async(ctx => {
-            ctx.body = await(resourcesServices.getListPendingHotel());
+            ctx.body = await(resourcesServices.getHotelList(ctx.state.user));
         })
     )
-    .get('get hotel list', '/', async (ctx => {
-        ctx.body = await(resourcesServices.getHotelList(ctx.state.user));
-    }));
+    .get('get approved hotels', '/approved',
+        async(ctx => {
+            ctx.body = await(resourcesServices.getListApprovedHotel(ctx.state.user));
+        })
+    )
+    .get('get pending hotels', '/pending',
+        async(ctx => {
+            ctx.body = await(resourcesServices.getListPendingHotel(ctx.state.user));
+        })
+    );
