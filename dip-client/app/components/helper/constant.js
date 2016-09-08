@@ -25,3 +25,7 @@ var ROLE_PARTNER = "partner";
 var ROLE_USER = "user";
 
 var DEFAULT_AVATAR = "images/default-avatar.png";
+
+var HOTEL_STATUS_APPROVED = 'approved';
+var HOTEL_STATUS_PENDING = 'pending';
+var HOTEL_STATUS_ALL = 'all';

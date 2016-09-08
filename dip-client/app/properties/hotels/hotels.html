@@ -1,11 +1,12 @@
 <!--<div class="panel-body">-->
-    <!--<button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateEditHotelBox"-->
-            <!--ng-click="showCreateHotelBox()">{{'NEW_HOTEL' | translate}}-->
-    <!--</button>-->
+<!--<button class="btn btn-info pull-right" type="button" ng-show="!isShowingCreateEditHotelBox"-->
+<!--ng-click="showCreateHotelBox()">{{'NEW_HOTEL' | translate}}-->
+<!--</button>-->
 <!--</div>-->
 
 <div class="text-center">
-    <a class="btn btn-info dip-btn-app" ng-show="isShowingButtonCreateHotel && !isShowingListHotels" ng-click="showCreateHotelBox()">
+    <a class="btn btn-info dip-btn-app" ng-show="isShowingButtonCreateHotel && !isShowingListHotels"
+       ng-click="showCreateHotelBox()">
         <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
     </a>
 </div>
@@ -13,21 +14,39 @@
 <ng-include src="'/properties/hotels/create-edit-hotel.html'"></ng-include>
 
 <div class="box box-info list-hotel" ng-show="isShowingListHotels">
-    <div class="box-header with-border">
-        <!--<h3 class="box-title">{{'LIST_HOTELS' | translate }}</h3>-->
-        <div class="pull-right">
-            <a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateEditHotelBox" ng-click="showCreateHotelBox()">
-                <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
-            </a>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_APPROVED)">{{'HOTEL_STATUS_APPROVED'
+                | translate}}</a></li>
+            <li class="tab-pending-hotel"><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_PENDING)">{{'HOTEL_STATUS_PENDING' |
+                translate}}</a></li>
+            <li><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_ALL)">{{'HOTEL_STATUS_ALL' |
+                translate}}</a></li>
+            <div class="pull-right">
+                <a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateEditHotelBox"
+                   ng-click="showCreateHotelBox()">
+                    <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
+                </a>
+            </div>
+        </ul>
+        <div class="tab-content">
+            <div>
+            </div>
+            <!--<div class="box-header with-border">-->
+            <!--&lt;!&ndash;<h3 class="box-title">{{'LIST_HOTELS' | translate }}</h3>&ndash;&gt;-->
+            <!--<div class="pull-right">-->
+            <!--<a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateEditHotelBox" ng-click="showCreateHotelBox()">-->
+            <!--<i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}-->
+            <!--</a>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="box-body">
+                <div class="row" ng-repeat="hotel in list">
+                    <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>
+                </div>
+            </div>
+            <!--<div class="box-footer text-center row-button">-->
+            <!--<button type="button" class="btn btn-default" ng-click="">{{'PREVIOUS' | translate}}</button>-->
+            <!--<button type="button" class="btn btn-info" ng-click="">{{'NEXT' | translate}}</button>-->
+            <!--</div>-->
         </div>
-    </div>
-    <div class="box-body">
-        <div class="row" ng-repeat="hotel in list">
-            <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>
-        </div>
-    </div>
-    <!--<div class="box-footer text-center row-button">-->
-        <!--<button type="button" class="btn btn-default" ng-click="">{{'PREVIOUS' | translate}}</button>-->
-        <!--<button type="button" class="btn btn-info" ng-click="">{{'NEXT' | translate}}</button>-->
-    <!--</div>-->
-</div>

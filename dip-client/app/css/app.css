@@ -363,6 +363,33 @@ a.back-button {
 input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly], input.form-control.timepicker[readonly] {
     background-color: #fff;
 }
+.label.label-form {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 12px;
+    margin-top: 4px;
+    padding: 5px 10px;
+    font-weight: 500;
+}
+.box .label.label-form.hotel-status {
+    float: left;
+    margin-right: 5px;
+}
+.box .nav-tabs-custom > .nav-tabs > li {
+    margin-top: -3px;
+    border-top-width: 3px;
+}
+.box .nav-tabs-custom > .nav-tabs > li.active {
+    border-top-color: #00a65a;
+}
+.box .nav-tabs-custom > .nav-tabs > li > a {
+    padding: 30px 15px;
+    min-width: 120px;
+    text-align: center;
+}
+.box .nav-tabs-custom .btn.dip-btn-app {
+    margin: 10px;
+}
 /*-------------------------END HOTEL PROFILE--------------------------*/
 
 /*-------------------LOGIN - REGISTER--------------------------*/

@@ -220,5 +220,9 @@ var angular_translate_en = {
 
     CHANGE_PASSWORD: "Change Password",
 
-    UNAUTHORIZED: "Unauthorized"
+    UNAUTHORIZED: "Unauthorized",
+
+    HOTEL_STATUS_APPROVED: "Approved",
+    HOTEL_STATUS_PENDING: "Pending",
+    HOTEL_STATUS_ALL: "All Status"
 };

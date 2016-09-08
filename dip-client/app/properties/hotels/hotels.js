@@ -18,6 +18,12 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.isEditingHotel = false;
             $scope.isShowingButtonCreateHotel = false;
 
+            $scope.HOTEL_STATUS_APPROVED = HOTEL_STATUS_APPROVED;
+            $scope.HOTEL_STATUS_PENDING = HOTEL_STATUS_PENDING;
+            $scope.HOTEL_STATUS_ALL = HOTEL_STATUS_ALL;
+
+            $scope.filterHotelStatus = $scope.HOTEL_STATUS_APPROVED;
+
             $scope.hotel = {};
             $scope.list = [];
 
@@ -112,6 +118,10 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.actionAfterSaveHotel = function () {
                 $scope.stopSpin();
                 $scope.hideCreateEditHotelBox();
+                if ($scope.filterHotelStatus == $scope.HOTEL_STATUS_APPROVED) {
+                    $scope.filterHotelStatus = $scope.HOTEL_STATUS_PENDING;
+                    $('.box.list-hotel > .nav-tabs-custom > ul > li.tab-pending-hotel > a').tab('show');
+                }
                 $scope.getListHotel();
             };
 
@@ -134,7 +144,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.getListHotel = function () {
                 $scope.startSpin();
-                hotelService.getListHotel()
+                hotelService.getListHotel($scope.filterHotelStatus)
                     .success(function (data, status) {
                         $scope.displayListHotel(data);
                         $scope.stopSpin();
@@ -147,6 +157,14 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(hotelUtils.convertHotel);
                 // $scope.isShowingListHotels = $scope.list.length > 0;
+            };
+
+            $scope.loadListHotelByStatus = function (hotelStatus) {
+                if ($scope.filterHotelStatus == hotelStatus) {
+                    return;
+                }
+                $scope.filterHotelStatus = hotelStatus;
+                $scope.getListHotel();
             };
 
             $scope.init = function () {

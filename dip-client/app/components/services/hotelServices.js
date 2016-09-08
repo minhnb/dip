@@ -28,8 +28,18 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             deleteHotel: function (hotelId) {
                 return $http.delete(apiHotelUrl + "/" + hotelId);
             },
-            getListHotel: function () {
-                return $http.get(apiListHotelUrl);
+            getListHotel: function (hotelStatus) {
+                var apiUrl = apiListHotelUrl;
+                switch (hotelStatus) {
+                    case HOTEL_STATUS_APPROVED:
+                        apiUrl += '/approved';
+                        break;
+                    case HOTEL_STATUS_PENDING:
+                        apiUrl += '/pending';
+                        break;
+                    default:
+                }
+                return $http.get(apiUrl);
             },
             createHotelService: function (hotelId, hotelService) {
                 return $http.post(apiHotelUrl + '/' + hotelId + '/service', hotelService);
