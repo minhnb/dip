@@ -108,6 +108,8 @@ var angular_translate_en = {
     ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture",
     CLICK_TO_UPLOAD_PICTURE: "Click here to upload the profile picture",
     CLICK_TO_CHANGE_PICTURE: "Click here to change the profile picture",
+    HOTEL_APPROVE_CONFIRM: "Do you want to approve hotel {{ name }} ?",
+    HOTEL_UNAPPROVE_CONFIRM: "Do you want to decline hotel {{ name }} ?",
 
     ERROR_INVALID_URL: "Invalid url",
     ERROR_INVALID_INSTAGRAM: "Instagram handle must like @username or #hashtag",
@@ -224,5 +226,9 @@ var angular_translate_en = {
 
     HOTEL_STATUS_APPROVED: "Approved",
     HOTEL_STATUS_PENDING: "Pending",
-    HOTEL_STATUS_ALL: "All Status"
+    HOTEL_STATUS_ALL: "All Status",
+    HOTEL_STATUS: "Status",
+
+    TOGGLE_TO_APPROVE: "Toggle to approve hotel",
+    TOGGLE_TO_UNAPPROVE: "Toggle to decline hotel"
 };

@@ -100,12 +100,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.getHotelProfile = function (hotelId) {
                 $scope.startSpin();
-                $scope.getHotelById(hotelId)
+                return $scope.getHotelById(hotelId)
                     .success(function (data, status) {
                         var hotel = data;
                         $scope.bindingModules(hotel.services);
                         $scope.startSpin();
-                        $scope.getPasses(hotelId).then(function () {
+                        return $scope.getPasses(hotelId).then(function () {
                             $scope.isShowingHotelProfile = true;
                             $scope.stopSpin();
 
@@ -289,6 +289,24 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 });
             };
 
+            $scope.toggleHotelStatus = function (hotel) {
+                var newStatus = !hotel.active;
+                utils.notyConfirm($scope.translate(newStatus ? 'HOTEL_APPROVE_CONFIRM' : 'HOTEL_UNAPPROVE_CONFIRM', {name: hotel.name}),
+                    $scope.okText, $scope.cancelText, function () {
+                        $scope.startSpin();
+                        var hotelId = hotel.id;
+                        hotelService.changeHotelStatus(hotelId, newStatus)
+                            .success(function (data, status) {
+                                $scope.stopSpin();
+                                hotel.active = newStatus;
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
+                    }, function () {
+
+                    });
+            };
 
             $scope.showCreateModuleBox = function () {
                 $scope.initCreateModulePanel();

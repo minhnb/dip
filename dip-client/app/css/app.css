@@ -32,6 +32,9 @@ a {
 }
 
 /*-------------------------HOTEL PROFILE--------------------------*/
+.pull-right .switch {
+    float: left;
+}
 .image-box {
     width: 100%;
     min-height: 15vw;
@@ -488,7 +491,8 @@ form .checkbox.icheck label {
     width: 30px;
     height: 30px;
 }
-    /*------------------------END USER PROFILE-----------------------------*/
+/*------------------------END USER PROFILE-----------------------------*/
+
 
 
 .row.row-grid [class*="col-"] + [class*="col-"] {

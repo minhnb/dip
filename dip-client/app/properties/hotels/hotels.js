@@ -154,6 +154,25 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     });
             };
 
+            $scope.toggleHotelStatus = function (hotel) {
+                var newStatus = !hotel.active;
+                utils.notyConfirm($scope.translate(newStatus ? 'HOTEL_APPROVE_CONFIRM' : 'HOTEL_UNAPPROVE_CONFIRM', {name: hotel.name}),
+                    $scope.okText, $scope.cancelText, function () {
+                    $scope.startSpin();
+                    var hotelId = hotel.id;
+                    hotelService.changeHotelStatus(hotelId, newStatus)
+                        .success(function (data, status) {
+                            $scope.stopSpin();
+                            hotel.active = newStatus;
+                        })
+                        .error(function (data, status) {
+                            $scope.handleError(data);
+                        });
+                }, function () {
+
+                });
+            };
+
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(hotelUtils.convertHotel);
                 // $scope.isShowingListHotels = $scope.list.length > 0;
