@@ -28,7 +28,7 @@ angular.module('dipApp.login', ['ngRoute'])
                         $scope.stopSpin();
                         $scope.$parent.initUser()
                             .success(function (data, status) {
-                                if (data.user.role == config.ROLE) {
+                                if (data.user.role == config.ROLE || (data.user.role == ROLE_ADMIN && config.ROLE == ROLE_PARTNER)) {
                                     $location.path('/dashboard');
                                 } else {
                                     userService.logOut().then(function () {
