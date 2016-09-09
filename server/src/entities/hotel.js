@@ -28,6 +28,7 @@ function convertHotel(hotel) {
         amenities: hotel.amenities,
         featured: hotel.featured,
         distance: hotel.distance,
+        dipLocation: hotel.dipLocation,
         active: hotel.active
     }
 }

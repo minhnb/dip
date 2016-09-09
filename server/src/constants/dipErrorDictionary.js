@@ -344,6 +344,11 @@ module.exports = {
         code: "HOTEL_ADDRESS_NOT_FOUND",
         details: "Address not found"
     },
+    HOTEL_NEED_LOCATION_BEFORE_APPROVE: {
+        status: 400,
+        code: "HOTEL_NEED_LOCATION_BEFORE_APPROVE",
+        details: "Please set location for hotel before approve"
+    },
     PASS_NOT_FOUND: {
         status: 404,
         code: "PASS_NOT_FOUND",

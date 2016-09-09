@@ -339,6 +339,9 @@ resourcesServices.dbUpdateHotel = async (function (user, hotelId, update) {
 resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, status) {
     let hotel = await (_checkHotelPermission(user, hotelId));
     status = status ? true : false;
+    if (status && !hotel.dipLocation) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NEED_LOCATION_BEFORE_APPROVE);
+    }
     return db.hotels.update({_id: hotel._id}, {active: status});
 });
 
@@ -552,9 +555,9 @@ resourcesServices.initNormalHotel = function (hotel) {
     if (hotel._id) {
         delete hotel._id;
     }
-    if (hotel.dipLocation) {
-        delete hotel.dipLocation;
-    }
+    // if (hotel.dipLocation) {
+    //     delete hotel.dipLocation;
+    // }
     if (hotel.image) {
         delete hotel.image;
     }
