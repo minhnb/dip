@@ -230,5 +230,7 @@ var angular_translate_en = {
     HOTEL_STATUS: "Status",
 
     TOGGLE_TO_APPROVE: "Toggle to approve hotel",
-    TOGGLE_TO_UNAPPROVE: "Toggle to decline hotel"
+    TOGGLE_TO_UNAPPROVE: "Toggle to decline hotel",
+    HOTEL_DIP_LOCATION: "Location",
+    ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE: "Please set location for hotel before approve"
 };

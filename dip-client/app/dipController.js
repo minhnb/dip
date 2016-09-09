@@ -1,9 +1,11 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'userUtils',
-    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, userUtils) {
+dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'hotelService', 'userUtils',
+    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, hotelService, userUtils) {
         $scope.showNgView = false;
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
         $scope.currentUser = {};
+        $scope.dipLocations = [];
+        $scope.mapDipLocations = [];
 
         $scope.ROLE_ADMIN = ROLE_ADMIN;
         $scope.ROLE_PARTNER = ROLE_PARTNER;
@@ -70,6 +72,13 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 .success(function (data, status) {
                     var convertedUser = userUtils.convertUser(data.user);
                     utils.updateObjectInfo($scope.currentUser, convertedUser);
+                    hotelService.getListDipLocation()
+                        .success(function (data, status) {
+                            $scope.dipLocations = data;
+                            $scope.dipLocations.map(function (location) {
+                                $scope.mapDipLocations[location.id] = location;
+                            });
+                        });
                 })
                 .error(function (data, status) {
                     $scope.handleError(data);

@@ -38,6 +38,7 @@ dipApp.factory('hotelUtils', [
                 if (hotel.imageUrl) {
                     hotel.imageUrl = hotel.imageUrl + '_resized';
                 }
+                hotel.displayActive = hotel.active;
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {

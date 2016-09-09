@@ -82,6 +82,9 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             },
             deletePass: function (passId) {
                 return $http.delete(apiHotelUrl + "/pass/" + passId);
+            },
+            getListDipLocation: function () {
+                return $http.get(config.DIP_API + 'locations');
             }
         };
         return hotelService;

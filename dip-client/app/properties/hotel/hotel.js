@@ -290,21 +290,33 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.toggleHotelStatus = function (hotel) {
-                var newStatus = !hotel.active;
-                utils.notyConfirm($scope.translate(newStatus ? 'HOTEL_APPROVE_CONFIRM' : 'HOTEL_UNAPPROVE_CONFIRM', {name: hotel.name}),
+                hotel.displayActive = !hotel.displayActive;
+                if (hotel.displayActive && !hotel.dipLocation) {
+                    $scope.notifyValidateError('ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE');
+                    setTimeout(function () {
+                        hotel.displayActive = !hotel.displayActive;
+                        $scope.$apply();
+                    }, 500);
+                    return;
+                }
+                utils.notyConfirm($scope.translate(hotel.displayActive ? 'HOTEL_APPROVE_CONFIRM' : 'HOTEL_UNAPPROVE_CONFIRM', {name: hotel.name}),
                     $scope.okText, $scope.cancelText, function () {
                         $scope.startSpin();
                         var hotelId = hotel.id;
-                        hotelService.changeHotelStatus(hotelId, newStatus)
+                        hotelService.changeHotelStatus(hotelId, hotel.displayActive)
                             .success(function (data, status) {
                                 $scope.stopSpin();
-                                hotel.active = newStatus;
+                                hotel.active = hotel.displayActive;
                             })
                             .error(function (data, status) {
                                 $scope.handleError(data);
+                                hotel.displayActive = !hotel.displayActive;
                             });
                     }, function () {
-
+                        hotel.displayActive = !hotel.displayActive;
+                        setTimeout(function () {
+                            $scope.$apply();
+                        },0);
                     });
             };
 

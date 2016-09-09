@@ -7,8 +7,8 @@
         <div class="pull-right" ng-show="!isEditingHotel">
             <span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid"
                   ng-model="hotel.active"
-                  title="{{hotel.active ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"
-                  ng-class="{ checked:hotel.active, disabled:undefined }"
+                  title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"
+                  ng-class="{ checked:hotel.displayActive, disabled:undefined }"
                   ng-click="toggleHotelStatus(hotel)">
                 <small></small>
                 <input type="checkbox" style="display:none" ng-model="hotel.active"
@@ -52,6 +52,10 @@
                     <div class="row" ng-if="hotel.address.city">
                         <div class="col-md-4">{{'CITY' | translate}}</div>
                         <div class="col-md-8">{{hotel.address.city}}</div>
+                    </div>
+                    <div class="row" ng-if="hotel.dipLocation">
+                        <div class="col-md-4">{{'HOTEL_DIP_LOCATION' | translate}}</div>
+                        <div class="col-md-8">{{hotel.dipLocation ? mapDipLocations[hotel.dipLocation].name : ''}}</div>
                     </div>
                     <div class="row" ng-if="hotel.phone">
                         <div class="col-md-4">{{'FRONT_DESK' | translate}}</div>

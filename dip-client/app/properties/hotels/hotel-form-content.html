@@ -28,6 +28,16 @@
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
+        <label class="control-label">{{'HOTEL_DIP_LOCATION' | translate}}</label>
+        <select class="form-control select2" style="width: 100%;" ng-model="hotel.dipLocation">
+            <option ng-if="dipLocations.length > 0" ng-repeat="location in dipLocations"
+                    value="{{location.id}}">{{location.name}}
+            </option>
+        </select>
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
+    </div>
+    <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'FRONT_DESK' | translate}}</label>
         <input type="text" class="form-control" ng-model="hotel.phone"
                placeholder="{{'FRONT_DESK' | translate}}">
@@ -47,7 +57,6 @@
                placeholder="{{'WEBSITE' | translate}}"
                pattern="^(http[s]?:\/\/)?([0-9a-z\-]+\.)+[0-9a-z\-]+(\/[^/\s]+)*\/?([?#].*)?$"
                data-error="{{'ERROR_INVALID_URL' | translate}}">
-        <span class="glyphicon form-control-feedback"></span>
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
