@@ -226,7 +226,7 @@ var angular_translate_en = {
 
     HOTEL_STATUS_APPROVED: "Approved",
     HOTEL_STATUS_PENDING: "Pending",
-    HOTEL_STATUS_ALL: "All Status",
+    HOTEL_STATUS_ALL: "All Statuses",
     HOTEL_STATUS: "Status",
 
     TOGGLE_TO_APPROVE: "Toggle to approve hotel",

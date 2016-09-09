@@ -385,11 +385,6 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 .box .nav-tabs-custom > .nav-tabs > li.active {
     border-top-color: #00a65a;
 }
-.box .nav-tabs-custom > .nav-tabs > li > a {
-    padding: 30px 15px;
-    min-width: 120px;
-    text-align: center;
-}
 .box .nav-tabs-custom .btn.dip-btn-app {
     margin: 10px;
 }
@@ -518,5 +513,12 @@ form .checkbox.icheck label {
 @media (min-width: 768px) {
     .row.row-grid [class*="col-sm-"] + [class*="col-sm-"] {
         margin-top: 0;
+    }
+    .box .nav-tabs-custom > .nav-tabs > li > a {
+        min-width: 120px;
+    }
+    .box .nav-tabs-custom > .nav-tabs > li > a {
+        padding: 30px 15px;
+        text-align: center;
     }
 }

@@ -85,7 +85,11 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         };
 
         $scope.getPageTitle = function () {
-            var prefix = $scope.translate(userUtils.getUserRole(config.ROLE));
+            var role = config.ROLE;
+            if ($scope.currentUser && $scope.currentUser.role) {
+                role = $scope.currentUser.role;
+            }
+            var prefix = $scope.translate(userUtils.getUserRole(role));
             var suffix = $scope.translate($rootScope.pageTitle);
             var pageTitle = [prefix, suffix];
             return pageTitle.filter(Boolean).join(' | ');

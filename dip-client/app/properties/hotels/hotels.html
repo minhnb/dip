@@ -22,12 +22,14 @@
                 translate}}</a></li>
             <li><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_ALL)">{{'HOTEL_STATUS_ALL' |
                 translate}}</a></li>
-            <div class="pull-right">
-                <a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateEditHotelBox"
-                   ng-click="showCreateHotelBox()">
-                    <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
-                </a>
-            </div>
+            <li class="pull-right">
+                <div>
+                    <a class="btn btn-info dip-btn-app" ng-show="!isShowingCreateEditHotelBox"
+                       ng-click="showCreateHotelBox()">
+                        <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
+                    </a>
+                </div>
+            </li>
         </ul>
         <div class="tab-content">
             <div>
