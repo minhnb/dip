@@ -5,16 +5,16 @@
         </a>
         <h3 class="box-title">{{'HOTEL' | translate}}</h3>
         <div class="pull-right" ng-show="!isEditingHotel">
-            <span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid"
-                  ng-model="hotel.active"
-                  title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"
-                  ng-class="{ checked:hotel.displayActive, disabled:undefined }"
-                  ng-click="toggleHotelStatus(hotel)">
-                <small></small>
-                <input type="checkbox" style="display:none" ng-model="hotel.active"
-                       class="ng-pristine ng-untouched ng-valid ng-empty">
-                <span class="switch-text"> </span>
-            </span>
+            <!--<span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid"-->
+                  <!--ng-model="hotel.active"-->
+                  <!--title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"-->
+                  <!--ng-class="{ checked:hotel.displayActive, disabled:undefined }"-->
+                  <!--ng-click="toggleHotelStatus(hotel)">-->
+                <!--<small></small>-->
+                <!--<input type="checkbox" style="display:none" ng-model="hotel.active"-->
+                       <!--class="ng-pristine ng-untouched ng-valid ng-empty">-->
+                <!--<span class="switch-text"> </span>-->
+            <!--</span>-->
             <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}"
                     ng-click="showEditHotelBox(hotel)">
                 <span aria-hidden="true" class="fa fa-edit"></span>
@@ -37,8 +37,10 @@
                     <div class="row">
                         <div class="col-md-4">{{'HOTEL_STATUS' | translate}}</div>
                         <div class="col-md-8">
-                            <span class="label label-success label-form hotel-status" ng-if="hotel.active">{{'HOTEL_STATUS_APPROVED' | translate}}</span>
-                            <span class="label label-default label-form hotel-status" ng-if="!hotel.active">{{'HOTEL_STATUS_PENDING' | translate}}</span>
+                            <span class="label label-form hotel-status"
+                                  ng-class="hotel.activeStatusClass">{{hotel.activeStatus | translate}}</span>
+                            <span class="label label-form hotel-status" ng-class="hotel.submissionStatusClass"
+                                  ng-if="hotel.submissionStatus">{{hotel.submissionStatus | translate}}</span>
                         </div>
                     </div>
                     <div class="row" ng-if="hotel.fullAddress">

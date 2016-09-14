@@ -39,6 +39,34 @@ dipApp.factory('hotelUtils', [
                     hotel.imageUrl = hotel.imageUrl + '_resized';
                 }
                 hotel.displayActive = hotel.active;
+                if (hotel.active) {
+                    hotel.activeStatus = 'HOTEL_ON_AIR';
+                    hotel.activeStatusClass = 'label-success';
+                } else {
+                    hotel.activeStatus = 'HOTEL_OFF_AIR';
+                    hotel.activeStatusClass = 'label-default';
+                }
+                if (hotel.submission && hotel.submission.status) {
+                    switch (hotel.submission.status) {
+                        case HOTEL_STATUS_INITIAL:
+                            hotel.submissionStatus = 'HOTEL_STATUS_INITIAL';
+                            hotel.submissionStatusClass = 'label-info';
+                            break;
+                        case HOTEL_STATUS_PENDING:
+                            hotel.submissionStatus = 'HOTEL_STATUS_PENDING';
+                            hotel.submissionStatusClass = 'label-default';
+                            break;
+                        case HOTEL_STATUS_APPROVED:
+                            hotel.submissionStatus = 'HOTEL_STATUS_APPROVED';
+                            hotel.submissionStatusClass = 'label-success';
+                            break;
+                        case HOTEL_STATUS_DECLINED:
+                            hotel.submissionStatus = 'HOTEL_STATUS_DECLINED';
+                            hotel.submissionStatusClass = 'label-danger';
+                            break;
+                        default:
+                    }
+                }
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {

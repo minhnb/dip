@@ -2,15 +2,32 @@
 
 angular.module('dipApp.properties_hotels', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/properties/hotels', {
-            templateUrl: '/properties/hotels/hotels.html',
-            controller: 'HotelController'
-        });
+        $routeProvider
+            .when('/properties/hotels/on-air', {
+                templateUrl: '/properties/hotels/on-air-hotels.html',
+                controller: 'HotelController'
+            })
+            .when('/properties/hotels/initial', {
+                templateUrl: '/properties/hotels/hotels.html',
+                controller: 'HotelController'
+            })
+            .when('/properties/hotels/submission', {
+                templateUrl: '/properties/hotels/hotels.html',
+                controller: 'HotelController'
+            })
+            .when('/properties/hotels/all', {
+                templateUrl: '/properties/hotels/all-hotels.html',
+                controller: 'HotelController'
+            })
+            .when('/properties/hotels', {
+                templateUrl: '/properties/hotels/all-hotels.html',
+                controller: 'HotelController'
+            });
     }])
     .controller('HotelController', ['$scope', '$timeout', '$rootScope', '$location', 'hotelService', 'hotelUtils', 'formValidatorUtils',
         function ($scope, $timeout, $rootScope, $location, hotelService, hotelUtils, formValidatorUtils) {
             $rootScope.isNoMenuPage = false;
-            $rootScope.pageTitle = "LIST_HOTELS";
+            // $rootScope.pageTitle = "LIST_HOTELS";
             $scope.isShowingCreateEditHotelBox = false;
             $scope.isShowingProfileImage = false;
             $scope.isShowingListHotels = true;
@@ -22,7 +39,12 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.HOTEL_STATUS_PENDING = HOTEL_STATUS_PENDING;
             $scope.HOTEL_STATUS_ALL = HOTEL_STATUS_ALL;
 
-            $scope.filterHotelStatus = $scope.HOTEL_STATUS_APPROVED;
+            $scope.filterHotelStatus = $scope.HOTEL_STATUS_ALL;
+
+            $scope.KEY_ALL = 'ALL';
+            $scope.KEY_INITIAL = 'INITIAL';
+            $scope.KEY_ON_AIR = 'ON-AIR';
+            $scope.KEY_SUBMISSION = 'SUBMISSION';
 
             $scope.hotel = {};
             $scope.list = [];
@@ -199,7 +221,26 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 $scope.getListHotel();
             };
 
+            $scope.initHotelPageTitle = function (key) {
+                switch (key) {
+                    case $scope.KEY_ALL:
+                        $rootScope.pageTitle = 'LIST_ALL_HOTELS';
+                        break;
+                    case $scope.KEY_ON_AIR:
+                        $rootScope.pageTitle = 'LIST_ON_AIR_HOTELS';
+                        break;
+                    case $scope.KEY_INITIAL:
+                        $rootScope.pageTitle = 'LIST_INITIAL_HOTELS';
+                        break;
+                    case $scope.KEY_SUBMISSION:
+                        $rootScope.pageTitle = 'LIST_SUBMISSION_HOTELS';
+                        break;
+                    default:
+                }
+            };
+
             $scope.init = function () {
+                $scope.initHotelPageTitle($scope.KEY);
                 $scope.getListHotel();
                 formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-hotel"]'), $scope.createHotel);
             };

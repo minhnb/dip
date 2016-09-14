@@ -8,6 +8,10 @@ var angular_translate_en = {
     HOTEL_RESERVATIONS: "Hotel Reservations",
     PROPERTIES: "Properties",
     HOTELS: "Hotels",
+    ALL_HOTELS: "All",
+    SUBMISSION_HOTELS: "Submission statuses",
+    INITIAL_HOTELS: "Initial",
+    ON_AIR_HOTELS: "On air",
     SETTINGS: "Settings",
 
     ONLINE: "Online",
@@ -102,6 +106,10 @@ var angular_translate_en = {
     PROFILE_PICTURE: "Profile picture",
 
     LIST_HOTELS: "Hotel List",
+    LIST_ALL_HOTELS: "All Hotels" ,
+    LIST_SUBMISSION_HOTELS: "Submission Hotels",
+    LIST_INITIAL_HOTELS: "Initial Hotels",
+    LIST_ON_AIR_HOTELS: "On Air Hotels",
 
     HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
     ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
@@ -224,8 +232,12 @@ var angular_translate_en = {
 
     UNAUTHORIZED: "Unauthorized",
 
-    HOTEL_STATUS_APPROVED: "Approved",
+    HOTEL_ON_AIR: "On Air",
+    HOTEL_OFF_AIR: "Off Air",
+    HOTEL_STATUS_INITIAL: "Initial",
     HOTEL_STATUS_PENDING: "Pending",
+    HOTEL_STATUS_APPROVED: "Approved",
+    HOTEL_STATUS_DECLINED: "Declined",
     HOTEL_STATUS_ALL: "All Statuses",
     HOTEL_STATUS: "Status",
 

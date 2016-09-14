@@ -1,6 +1,8 @@
 <div class="col-xs-12">
-    <span class="label label-success label-form hotel-status" ng-if="hotel.active">{{'HOTEL_STATUS_APPROVED' | translate}}</span>
-    <span class="label label-default label-form hotel-status" ng-if="!hotel.active">{{'HOTEL_STATUS_PENDING' | translate}}</span>
+    <span class="label label-form hotel-status"
+          ng-class="hotel.activeStatusClass">{{hotel.activeStatus | translate}}</span>
+    <span class="label label-form hotel-status" ng-class="hotel.submissionStatusClass"
+          ng-if="hotel.submissionStatus">{{hotel.submissionStatus | translate}}</span>
     <p class="lead" ng-click="goToPath('/properties/hotel/' + hotel.id)">{{hotel.name}}</p>
     <!--<button type="button" class="btn btn-default pull-right" title="{{'EDIT' | translate}}" ng-click="showEditHotelBox(hotel)">-->
     <!--<span aria-hidden="true" class="fa fa-edit"></span>-->
@@ -9,15 +11,15 @@
     <!--<span aria-hidden="true" class="fa fa-trash"></span>-->
     <!--</button>-->
     <div class="pull-right">
-        <span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid" ng-model="hotel.active"
-              title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"
-              ng-class="{ checked:hotel.displayActive, disabled:undefined }"
-              ng-click="toggleHotelStatus(hotel)">
-            <small></small>
-            <input type="checkbox" style="display:none" ng-model="hotel.active"
-                class="ng-pristine ng-untouched ng-valid ng-empty">
-            <span class="switch-text"> </span>
-        </span>
+        <!--<span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid" ng-model="hotel.active"-->
+        <!--title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"-->
+        <!--ng-class="{ checked:hotel.displayActive, disabled:undefined }"-->
+        <!--ng-click="toggleHotelStatus(hotel)">-->
+        <!--<small></small>-->
+        <!--<input type="checkbox" style="display:none" ng-model="hotel.active"-->
+        <!--class="ng-pristine ng-untouched ng-valid ng-empty">-->
+        <!--<span class="switch-text"> </span>-->
+        <!--</span>-->
         <button type="button" class="btn btn-default" title="{{'SEE_DETAILS' | translate}}"
                 ng-click="goToPath('/properties/hotel/' + hotel.id)">
             <span aria-hidden="true" class="fa fa-eye"></span>
