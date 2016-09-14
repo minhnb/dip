@@ -12,7 +12,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 controller: 'HotelController'
             })
             .when('/properties/hotels/submission', {
-                templateUrl: '/properties/hotels/hotels.html',
+                templateUrl: '/properties/hotels/submission-hotels.html',
                 controller: 'HotelController'
             })
             .when('/properties/hotels/all', {
@@ -36,10 +36,11 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.isShowingButtonCreateHotel = false;
 
             $scope.HOTEL_STATUS_APPROVED = HOTEL_STATUS_APPROVED;
+            $scope.HOTEL_STATUS_DECLINED = HOTEL_STATUS_DECLINED;
             $scope.HOTEL_STATUS_PENDING = HOTEL_STATUS_PENDING;
             $scope.HOTEL_STATUS_ALL = HOTEL_STATUS_ALL;
 
-            $scope.filterHotelStatus = $scope.HOTEL_STATUS_ALL;
+            $scope.filterHotelStatus = $scope.HOTEL_STATUS_APPROVED;
 
             $scope.KEY_ALL = HOTEL_KEY_ALL;
             $scope.KEY_INITIAL = HOTEL_KEY_INITIAL;

@@ -1,0 +1,21 @@
+<div class="box box-info list-hotel" ng-init="key = KEY_SUBMISSION">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_APPROVED)">{{'HOTEL_STATUS_APPROVED'
+                | translate}}</a></li>
+            <li class="tab-declined-hotel"><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_DECLINED)">{{'HOTEL_STATUS_DECLINED'
+                | translate}}</a></li>
+            <li class="tab-pending-hotel"><a data-toggle="tab" ng-click="loadListHotelByStatus(HOTEL_STATUS_PENDING)">{{'HOTEL_STATUS_PENDING'
+                | translate}}</a></li>
+        </ul>
+        <div class="tab-content">
+            <div>
+            </div>
+            <div class="box-body">
+                <div class="row" ng-repeat="hotel in list">
+                    <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
