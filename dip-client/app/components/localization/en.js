@@ -104,6 +104,7 @@ var angular_translate_en = {
     CITY: "City",
     NEIGHBORHOOD: "Neighborhood",
     PROFILE_PICTURE: "Profile picture",
+    SELECT_LOCATION: "Select location",
 
     LIST_HOTELS: "Hotel List",
     LIST_ALL_HOTELS: "All Hotels" ,

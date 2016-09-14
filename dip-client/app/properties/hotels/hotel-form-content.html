@@ -28,13 +28,14 @@
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
-        <label class="control-label">{{'HOTEL_DIP_LOCATION' | translate}}</label>
+        <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_DIP_LOCATION' | translate}}</label>
         <select class="form-control select2" style="width: 100%;" ng-model="hotel.dipLocation">
+            <option value="">{{'SELECT_LOCATION' | translate}}</option>
             <option ng-if="dipLocations.length > 0" ng-repeat="location in dipLocations"
                     value="{{location.id}}">{{location.name}}
             </option>
         </select>
-        <span class="glyphicon form-control-feedback"></span>
+        <!--<span class="glyphicon form-control-feedback"></span>-->
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">

@@ -30,7 +30,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             // $rootScope.pageTitle = "LIST_HOTELS";
             $scope.isShowingCreateEditHotelBox = false;
             $scope.isShowingProfileImage = false;
-            $scope.isShowingListHotels = true;
+            $scope.isShowingListHotels = false;
             $scope.hotelProfilePicture = "";
             $scope.isEditingHotel = false;
             $scope.isShowingButtonCreateHotel = false;
@@ -41,10 +41,10 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.filterHotelStatus = $scope.HOTEL_STATUS_ALL;
 
-            $scope.KEY_ALL = 'ALL';
-            $scope.KEY_INITIAL = 'INITIAL';
-            $scope.KEY_ON_AIR = 'ON-AIR';
-            $scope.KEY_SUBMISSION = 'SUBMISSION';
+            $scope.KEY_ALL = HOTEL_KEY_ALL;
+            $scope.KEY_INITIAL = HOTEL_KEY_INITIAL;
+            $scope.KEY_ON_AIR = HOTEL_KEY_ON_AIR;
+            $scope.KEY_SUBMISSION = HOTEL_KEY_SUBMISSION;
 
             $scope.hotel = {};
             $scope.list = [];
@@ -56,8 +56,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.hideCreateEditHotelBox = function () {
                 $scope.isShowingCreateEditHotelBox = false;
-                // $scope.isShowingListHotels = $scope.list.length > 0;
-                $scope.isShowingListHotels = true;
+                $scope.isShowingListHotels = $scope.list.length > 0;
             };
 
             $scope.showCreateHotelBox = function () {
@@ -166,7 +165,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.getListHotel = function () {
                 $scope.startSpin();
-                hotelService.getListHotel($scope.filterHotelStatus)
+                hotelService.getListHotel($scope.key, $scope.filterHotelStatus)
                     .success(function (data, status) {
                         $scope.displayListHotel(data);
                         $scope.stopSpin();
@@ -210,7 +209,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
 
             $scope.displayListHotel = function (hotels) {
                 $scope.list = hotels.map(hotelUtils.convertHotel);
-                // $scope.isShowingListHotels = $scope.list.length > 0;
+                $scope.isShowingListHotels = $scope.list.length > 0;
             };
 
             $scope.loadListHotelByStatus = function (hotelStatus) {
@@ -240,7 +239,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             };
 
             $scope.init = function () {
-                $scope.initHotelPageTitle($scope.KEY);
+                $scope.initHotelPageTitle($scope.key);
                 $scope.getListHotel();
                 formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-hotel"]'), $scope.createHotel);
             };
