@@ -8,7 +8,7 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 controller: 'HotelController'
             })
             .when('/properties/hotels/initial', {
-                templateUrl: '/properties/hotels/hotels.html',
+                templateUrl: '/properties/hotels/initial-hotels.html',
                 controller: 'HotelController'
             })
             .when('/properties/hotels/submission', {

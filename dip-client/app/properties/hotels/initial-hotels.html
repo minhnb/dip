@@ -1,0 +1,7 @@
+<div class="box box-info list-hotel" ng-show="isShowingListHotels" ng-init="key = KEY_INITIAL">
+    <div class="box-body">
+        <div class="row" ng-repeat="hotel in list">
+            <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>
+        </div>
+    </div>
+</div>
