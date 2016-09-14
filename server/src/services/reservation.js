@@ -817,5 +817,8 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
         recipients = recipients.concat(hotel.emails.reservation);
     }
     mailer.adminHotelReservationConfirmation(recipients, data);
-    mailer.userReservationConfirmation([user.email], data);
+    mailer.userReservationConfirmation({
+        email: user.email,
+        name: user.nameOrEmail
+    }, data);
 }
