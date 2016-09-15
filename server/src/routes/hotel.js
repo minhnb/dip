@@ -40,8 +40,37 @@ router
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId,
-                status = ctx.request.body.active;
-            let hotel = await(resourcesServices.updateHotelStatus(user, hotelId, status));
+                active = ctx.request.body.active,
+                status = ctx.request.body.submission.status;
+            let hotel = await(resourcesServices.updateHotelStatus(user, hotelId, active, status));
+            ctx.status = 200;
+        })
+    )
+    .put('submit hotel', '/:hotelId/submit',
+        auth.isPartner,
+        async(ctx => {
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
+            let hotel = await(resourcesServices.submitHotel(user, hotelId));
+            ctx.status = 200;
+        })
+    )
+    .put('approve hotel', '/:hotelId/approve',
+        auth.isAdmin,
+        async(ctx => {
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
+            let hotel = await(resourcesServices.approveHotel(user, hotelId));
+            ctx.status = 200;
+        })
+    )
+    .put('decline hotel', '/:hotelId/decline',
+        auth.isAdmin,
+        async(ctx => {
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId,
+                failReason = ctx.request.body.submission ? ctx.request.body.submission.failReason : undefined;
+            let hotel = await(resourcesServices.declineHotel(user, hotelId, failReason));
             ctx.status = 200;
         })
     )

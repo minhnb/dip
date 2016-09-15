@@ -349,6 +349,36 @@ module.exports = {
         code: "HOTEL_NEED_LOCATION_BEFORE_APPROVE",
         details: "Please set location for hotel before approve"
     },
+    HOTEL_CAN_NOT_SUBMIT_APPROVED_OR_PENDING_HOTEL: {
+        status: 400,
+        code: "HOTEL_CAN_NOT_SUBMIT_APPROVED_OR_PENDING_HOTEL",
+        details: "Can not submit approved or pending hotel"
+    },
+    HOTEL_IS_NOT_PENDING_HOTEL: {
+        status: 400,
+        code: "HOTEL_IS_NOT_PENDING_HOTEL",
+        details: "It's not pending hotel"
+    },
+    HOTEL_STATUS_MUST_BE_APPROVED_OR_DECLINED: {
+        status: 400,
+        code: "HOTEL_STATUS_MUST_BE_APPROVED_OR_DECLINED",
+        details: "Status must be Approved or Declined"
+    },
+    HOTEL_NEED_FAIL_REASON: {
+        status: 400,
+        code: "HOTEL_NEED_FAIL_REASON",
+        details: "Please provide a reason for declining this hotel"
+    },
+    HOTEL_ALREADY_APPROVED: {
+        status: 400,
+        code: "HOTEL_ALREADY_APPROVED",
+        details: "Hotel is already approved"
+    },
+    HOTEL_INVALID_STATUS: {
+        status: 400,
+        code: "HOTEL_INVALID_STATUS",
+        details: "Invalid hotel status"
+    },
     PASS_NOT_FOUND: {
         status: 404,
         code: "PASS_NOT_FOUND",

@@ -13,6 +13,7 @@ const DIPError = require('../helpers/DIPError');
 
 const hotelServiceType = require('../constants/hotelServiceType');
 const passType = require('../constants/passType');
+const submissionStatus = require('../constants/submissionStatus');
 const utils = require('../helpers/utils');
 
 const s3 = require('../helpers/s3');
@@ -174,8 +175,26 @@ resourcesServices.updateHotel = function (user, hotelId, update) {
     });
 };
 
-resourcesServices.updateHotelStatus = function (user, hotelId, status) {
-    return resourcesServices.dbUpdateHotelStatus(user, hotelId, status).then(result => {
+resourcesServices.updateHotelStatus = function (user, hotelId, active, status) {
+    return resourcesServices.dbUpdateHotelStatus(user, hotelId, active, status).then(result => {
+        return true;
+    });
+};
+
+resourcesServices.submitHotel = function (user, hotelId) {
+    return resourcesServices.dbSubmitHotel(user, hotelId).then(result => {
+        return true;
+    });
+};
+
+resourcesServices.approveHotel = function (user, hotelId) {
+    return resourcesServices.dbUpdateHotelStatus(user, hotelId, undefined, submissionStatus.APPROVED).then(result => {
+        return true;
+    });
+};
+
+resourcesServices.declineHotel = function (user, hotelId, failReason) {
+    return resourcesServices.dbUpdateHotelStatus(user, hotelId, undefined, submissionStatus.DECLINED, failReason).then(result => {
         return true;
     });
 };
@@ -336,13 +355,57 @@ resourcesServices.dbUpdateHotel = async (function (user, hotelId, update) {
     return hotel.save();
 });
 
-resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, status) {
+resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, active, status, failReason) {
     let hotel = await (_checkHotelPermission(user, hotelId));
-    status = status ? true : false;
-    if (status && !hotel.dipLocation) {
+    if (hotel.submission.status != submissionStatus.PENDING) {
+        throw new DIPError(dipErrorDictionary.HOTEL_IS_NOT_PENDING_HOTEL);
+    }
+    if (status != submissionStatus.APPROVED && status != submissionStatus.DECLINED) {
+        throw new DIPError(dipErrorDictionary.HOTEL_STATUS_MUST_BE_APPROVED_OR_DECLINED);
+    }
+    if (status == submissionStatus.DECLINED && !failReason) {
+        throw new DIPError(dipErrorDictionary.HOTEL_NEED_FAIL_REASON);
+    }
+    if (active === undefined) {
+        if (status == submissionStatus.APPROVED) {
+            active = true;
+        } else {
+            active = hotel.active;
+        }
+    }
+    active = active ? true : false;
+    if (active && status == submissionStatus.APPROVED && !hotel.dipLocation) {
         throw new DIPError(dipErrorDictionary.HOTEL_NEED_LOCATION_BEFORE_APPROVE);
     }
-    return db.hotels.update({_id: hotel._id}, {active: status});
+    if (!active && status == submissionStatus.APPROVED) {
+        throw new DIPError(dipErrorDictionary.HOTEL_INVALID_STATUS);
+    }
+    let update = {active: active, 'submission.status': status};
+    if (active && hotel.active && status == submissionStatus.APPROVED) {
+        let hotelHasPendingContent = utils.objectToArray(hotel.pendingContent).length > 0;
+        if (hotelHasPendingContent) {
+            for (var key in hotel.pendingContent) {
+                update[key] = hotel.pendingContent[key];
+            }
+            update.pendingContent = {};
+        } else {
+            throw new DIPError(dipErrorDictionary.HOTEL_ALREADY_APPROVED);
+        }
+    }
+    if (status == submissionStatus.DECLINED) {
+        update['submission.failReason'] = failReason;
+    }
+    return db.hotels.update({_id: hotel._id}, update);
+});
+
+resourcesServices.dbSubmitHotel = async (function (user, hotelId) {
+    let hotel = await (_checkHotelPermission(user, hotelId));
+    let hotelHasPendingContent = utils.objectToArray(hotel.pendingContent).length > 0;
+    if (hotel.submission.status == submissionStatus.PENDING
+        || (hotel.submission.status == submissionStatus.APPROVED && !hotelHasPendingContent)) {
+        throw new DIPError(dipErrorDictionary.HOTEL_CAN_NOT_SUBMIT_APPROVED_OR_PENDING_HOTEL);
+    }
+    return db.hotels.update({_id: hotel._id}, {'submission.status': submissionStatus.PENDING});
 });
 
 resourcesServices.dbDeleteHotel = async (function (user, hotelId) {
@@ -549,34 +612,35 @@ resourcesServices.getExistedPass = function (passId, user) {
  -------------------------------------------------------------------------*/
 
 resourcesServices.initNormalHotel = function (hotel) {
-    hotel.featured = false;
-    hotel.reservable = false;
-    hotel.active = false;
-    if (hotel._id) {
-        delete hotel._id;
-    }
-    // if (hotel.dipLocation) {
-    //     delete hotel.dipLocation;
-    // }
-    if (hotel.image) {
-        delete hotel.image;
-    }
-    if (hotel.services) {
-        delete hotel.services;
-    }
-
     if (hotel.fullAddress) {
         let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
         hotel.address = hotelAddressData.address;
         hotel.coordinates = hotelAddressData.coordinates;
+
+        hotel.address.city = hotel.city;
+        hotel.address.neighborhood = hotel.neighborhood;
+    } else {
+        delete hotel.address;
+        delete hotel.coordinates;
     }
 
-    hotel.address.city = hotel.city;
-    hotel.address.neighborhood = hotel.neighborhood;
-    delete hotel.city;
-    delete hotel.neighborhood;
+    let initFields = ['name', 'url', 'instagram', 'phone', 'roomService', 'address', 'coordinates', 'dipLocation'],
+        initHotel = {
+            featured: false,
+            reservable: false,
+            active: false,
+            submission: {
+                status: submissionStatus.INITIAL
+            },
+            banned: {
+                status: false
+            }
+        };
+    initFields.forEach(field => {
+        if (hotel[field]) initHotel[field] = hotel[field];
+    });
 
-    return hotel;
+    return initHotel;
 };
 
 resourcesServices.getHotelAddress = function (hotelFullAddress) {
