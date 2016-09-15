@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const amenitySchema = require('./subSchemas/amenity');
-
+const submissionStatuses = require('../constants/submissionStatus');
 const hotelSchema = new Schema({
     name: {
         type: String,
@@ -64,7 +64,31 @@ const hotelSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User',
         required: false
-    }
+    },
+    submission: {
+        type: {
+            status: {
+                type: String,
+                enum: Object.values(submissionStatuses),
+                default: submissionStatuses.INITIAL,
+                required: true
+            },
+            failReason: String
+        },
+        required: true
+    },
+    banned: {
+        type: {
+            status: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            reason: String
+        },
+        required: true
+    },
+    changesHistory: [Schema.Mixed]
 }, {
     timestamps: true
 });

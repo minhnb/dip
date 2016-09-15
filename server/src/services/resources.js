@@ -198,8 +198,8 @@ resourcesServices.getListApprovedHotel = function (user) {
     });
 };
 
-resourcesServices.getHotelList = function(user) {
-    let condition = {};
+resourcesServices.getHotelList = function(user, condition) {
+    condition = condition || {};
     if (!user.isAdmin()) {
         condition.owner = user;
     }
