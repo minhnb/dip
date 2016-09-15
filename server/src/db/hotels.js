@@ -69,7 +69,7 @@ const hotelSchema = new Schema({
         type: {
             status: {
                 type: String,
-                enum: Object.values(submissionStatuses),
+                enum: Object.keys(submissionStatuses).map(key => submissionStatuses[key]),
                 default: submissionStatuses.INITIAL,
                 required: true
             },
@@ -87,8 +87,7 @@ const hotelSchema = new Schema({
             reason: String
         },
         required: true
-    },
-    changesHistory: [Schema.Mixed]
+    }
 }, {
     timestamps: true
 });
