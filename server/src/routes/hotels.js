@@ -37,19 +37,19 @@ router
                 {'submission.status': submissionStatus.INITIAL}));
         })
     )
-    .get('get approved hotels', '/approved',
+    .get('get approved hotels', '/submission/approved',
         async(ctx => {
             ctx.body = await(resourcesServices.getHotelList(ctx.state.user,
                 {'submission.status': submissionStatus.APPROVED}));
         })
     )
-    .get('get pending hotels', '/pending',
+    .get('get pending hotels', '/submission/pending',
         async(ctx => {
             ctx.body = await(resourcesServices.getHotelList(ctx.state.user,
                 {'submission.status': submissionStatus.PENDING}));
         })
     )
-    .get('get declined hotels', '/declined',
+    .get('get declined hotels', '/submission/declined',
         async(ctx => {
             ctx.body = await(resourcesServices.getHotelList(ctx.state.user,
                 {'submission.status': submissionStatus.DECLINED}));
