@@ -1,4 +1,13 @@
-<div class="box box-info list-hotel" ng-show="isShowingListHotels" ng-init="key = KEY_INITIAL">
+<div class="box box-info list-hotel" ng-init="key = KEY_INITIAL">
+    <div class="box-header with-border">
+        <!--<h3 class="box-title">{{'LIST_HOTELS' | translate }}</h3>-->
+        <div class="pull-right">
+            <a class="btn btn-info dip-btn-app" ng-if="userHasRole([ROLE_PARTNER])"
+               ng-show="!isShowingCreateEditHotelBox" ng-click="showCreateHotelBox()">
+                <i class="fa fa-plus"></i> {{'CREATE_NEW' | translate}}
+            </a>
+        </div>
+    </div>
     <div class="box-body">
         <div class="row" ng-repeat="hotel in list">
             <ng-include src="'/properties/hotels/hotel-info.html'"></ng-include>

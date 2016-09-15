@@ -61,6 +61,21 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             changeHotelStatus: function (hotelId, status) {
                 return $http.put(apiHotelUrl + "/" + hotelId + '/status', {active: status});
             },
+            submitHotel: function (hotelId) {
+                return $http.put(apiHotelUrl + "/" + hotelId + '/submit', {});
+            },
+            approveHotel: function (hotelId) {
+                return $http.put(apiHotelUrl + "/" + hotelId + '/approve', {});
+            },
+            declineHotel: function (hotelId, failReason) {
+                return $http.put(apiHotelUrl + "/" + hotelId + '/decline',
+                    {
+                        submission: {
+                            failReason: failReason
+                        }
+                    }
+                );
+            },
             createHotelService: function (hotelId, hotelService) {
                 return $http.post(apiHotelUrl + '/' + hotelId + '/service', hotelService);
             },

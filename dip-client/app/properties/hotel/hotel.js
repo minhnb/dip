@@ -320,6 +320,74 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
             };
 
+            $scope.submitHotel = function (hotel) {
+                if (!hotel.dipLocation) {
+                    $scope.notifyValidateError('ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE');
+                    return;
+                }
+                utils.notyConfirm($scope.translate('HOTEL_SUBMIT_CONFIRM', {name: hotel.name}),
+                    $scope.okText, $scope.cancelText, function () {
+                        $scope.startSpin();
+                        var hotelId = hotel.id;
+                        hotelService.submitHotel(hotelId)
+                            .success(function (data, status) {
+                                $scope.stopSpin();
+                                hotel.submission.status = HOTEL_STATUS_PENDING;
+                                hotelUtils.setHotelSubmissionStatus(hotel);
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
+                    }, function () {
+
+                    });
+            };
+
+            $scope.approveHotel = function (hotel) {
+                if (!hotel.dipLocation) {
+                    $scope.notifyValidateError('ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE');
+                    return;
+                }
+                utils.notyConfirm($scope.translate('HOTEL_APPROVE_CONFIRM', {name: hotel.name}),
+                    $scope.okText, $scope.cancelText, function () {
+                        $scope.startSpin();
+                        var hotelId = hotel.id;
+                        hotelService.approveHotel(hotelId)
+                            .success(function (data, status) {
+                                $scope.stopSpin();
+                                hotel.active = true;
+                                hotel.submission.status = HOTEL_STATUS_APPROVED;
+                                hotelUtils.setHotelActiveStatus(hotel);
+                                hotelUtils.setHotelSubmissionStatus(hotel);
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
+                    }, function () {
+
+                    });
+            };
+
+            $scope.declineHotel = function (hotel) {
+                utils.notyConfirmWithTextbox($scope.translate('CONFIRM_PROVIDE_REASON_FOR_DECLINING_HOTEL', {name: hotel.name}),
+                    $scope.okText, $scope.cancelText, function (failReason) {
+                        console.log(failReason);
+                        $scope.startSpin();
+                        var hotelId = hotel.id;
+                        hotelService.declineHotel(hotelId, failReason)
+                            .success(function (data, status) {
+                                $scope.stopSpin();
+                                hotel.submission.status = HOTEL_STATUS_DECLINED;
+                                hotelUtils.setHotelSubmissionStatus(hotel);
+                            })
+                            .error(function (data, status) {
+                                $scope.handleError(data);
+                            });
+                    }, function () {
+
+                    });
+            };
+
             $scope.showCreateModuleBox = function () {
                 $scope.initCreateModulePanel();
                 $scope.isShowingCreateModule = true;

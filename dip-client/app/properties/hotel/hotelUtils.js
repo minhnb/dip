@@ -31,14 +31,7 @@ dipApp.factory('hotelUtils', [
                 }
                 return url;
             },
-            convertHotel: function (hotel) {
-                hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
-                hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
-                hotel.fullUrl = hotelUtils.getFullUrWithProtocol(hotel.url);
-                if (hotel.imageUrl) {
-                    hotel.imageUrl = hotel.imageUrl + '_resized';
-                }
-                hotel.displayActive = hotel.active;
+            setHotelActiveStatus: function (hotel) {
                 if (hotel.active) {
                     hotel.activeStatus = 'HOTEL_ON_AIR';
                     hotel.activeStatusClass = 'label-success';
@@ -46,6 +39,8 @@ dipApp.factory('hotelUtils', [
                     hotel.activeStatus = 'HOTEL_OFF_AIR';
                     hotel.activeStatusClass = 'label-default';
                 }
+            },
+            setHotelSubmissionStatus: function (hotel) {
                 if (hotel.submission && hotel.submission.status) {
                     switch (hotel.submission.status) {
                         case HOTEL_STATUS_INITIAL:
@@ -67,6 +62,17 @@ dipApp.factory('hotelUtils', [
                         default:
                     }
                 }
+            },
+            convertHotel: function (hotel) {
+                hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
+                hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
+                hotel.fullUrl = hotelUtils.getFullUrWithProtocol(hotel.url);
+                if (hotel.imageUrl) {
+                    hotel.imageUrl = hotel.imageUrl + '_resized';
+                }
+                hotel.displayActive = hotel.active;
+                hotelUtils.setHotelActiveStatus(hotel);
+                hotelUtils.setHotelSubmissionStatus(hotel);
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {

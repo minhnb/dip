@@ -2,7 +2,7 @@
     <div class="box-header with-border">
         <h3 class="box-title">{{ 'PASS' | translate }}</h3>
         <div class="pull-right">
-            <button type="button" class="btn btn-default btn-big"
+            <button type="button" class="btn btn-default btn-big" ng-if="userHasRole([ROLE_PARTNER])"
                     ng-show="!module.isMappingToCalendar && !module.isAddingPass" title="{{'ADD_PASS' | translate}}"
                     ng-click="showCreatePassBox(module)">
                 <span aria-hidden="true" class="fa fa-plus-circle"></span>

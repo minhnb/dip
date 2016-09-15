@@ -20,6 +20,18 @@
         <!--class="ng-pristine ng-untouched ng-valid ng-empty">-->
         <!--<span class="switch-text"> </span>-->
         <!--</span>-->
+        <button type="button" class="btn btn-success" title="{{'APPROVE' | translate}}" ng-click="approveHotel(hotel)"
+                ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
+            {{'APPROVE' | translate}}
+        </button>
+        <button type="button" class="btn btn-danger" title="{{'DECLINE' | translate}}" ng-click="declineHotel(hotel)"
+                ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
+            {{'DECLINE' | translate}}
+        </button>
+        <button type="button" class="btn btn-default" title="{{'SUBMIT' | translate}}" ng-click="submitHotel(hotel)"
+                ng-if="userHasRole([ROLE_PARTNER]) && hotel.activeStatus == 'HOTEL_OFF_AIR' && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'">
+            {{'SUBMIT' | translate}}
+        </button>
         <button type="button" class="btn btn-default" title="{{'SEE_DETAILS' | translate}}"
                 ng-click="goToPath('/properties/hotel/' + hotel.id)">
             <span aria-hidden="true" class="fa fa-eye"></span>
@@ -27,6 +39,10 @@
     </div>
 </div>
 <div class="col-md-8 hotel-info">
+    <div class="row" ng-if="hotel.submissionStatus == 'HOTEL_STATUS_DECLINED'">
+        <div class="col-md-4">{{'DECLINED_REASON' | translate}}</div>
+        <div class="col-md-8">{{hotel.submission.failReason}}</div>
+    </div>
     <div class="row" ng-if="hotel.fullAddress">
         <div class="col-md-4">{{'ADDRESS' | translate}}</div>
         <div class="col-md-8">{{hotel.fullAddress}}</div>

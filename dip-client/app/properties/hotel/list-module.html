@@ -2,7 +2,8 @@
     <div class="box-header with-border">
         <h3 class="box-title">{{'SWIMMING_POOL' | translate }}</h3>
         <div class="pull-right">
-            <button type="button" class="btn btn-default btn-big" ng-show="!isShowingCreateModule"
+            <button type="button" class="btn btn-default btn-big"
+                    ng-if="userHasRole([ROLE_PARTNER])" ng-show="!isShowingCreateModule"
                     title="{{'ADD_MODULE' | translate}}" ng-click="showCreateModuleBox()">
                 <span aria-hidden="true" class="fa fa-plus-circle"></span>
             </button>

@@ -83,6 +83,9 @@ var angular_translate_en = {
     DELETE: "Delete",
     EDIT: "Edit",
     CHANGE: "Change",
+    SUBMIT: "Submit",
+    APPROVE: "Approve",
+    DECLINE: "Decline",
     DETAILS: "Details",
     SEE_DETAILS: "See details",
     UPLOAD: "Upload",
@@ -105,6 +108,7 @@ var angular_translate_en = {
     NEIGHBORHOOD: "Neighborhood",
     PROFILE_PICTURE: "Profile picture",
     SELECT_LOCATION: "Select location",
+    DECLINED_REASON: "Declined reason",
 
     LIST_HOTELS: "Hotel List",
     LIST_ALL_HOTELS: "All Hotels" ,
@@ -119,6 +123,7 @@ var angular_translate_en = {
     CLICK_TO_CHANGE_PICTURE: "Click here to change the profile picture",
     HOTEL_APPROVE_CONFIRM: "Do you want to approve hotel {{ name }} ?",
     HOTEL_UNAPPROVE_CONFIRM: "Do you want to decline hotel {{ name }} ?",
+    HOTEL_SUBMIT_CONFIRM: "Do you want to submit hotel {{ name }} ?",
 
     ERROR_INVALID_URL: "Invalid url",
     ERROR_INVALID_INSTAGRAM: "Instagram handle must like @username or #hashtag",
@@ -245,5 +250,7 @@ var angular_translate_en = {
     TOGGLE_TO_APPROVE: "Toggle to approve hotel",
     TOGGLE_TO_UNAPPROVE: "Toggle to decline hotel",
     HOTEL_DIP_LOCATION: "Location",
-    ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE: "Please set location for hotel before approve"
+    ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE: "Please set location for hotel before approve",
+    ERROR_HOTEL_NEED_LOCATION_BEFORE_SUBMIT: "Please set location for hotel before submit",
+    CONFIRM_PROVIDE_REASON_FOR_DECLINING_HOTEL: "Please provide a reason for declining this hotel"
 };

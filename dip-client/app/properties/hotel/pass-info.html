@@ -1,9 +1,11 @@
 <div class="col-xs-12 module-header">
     <div class="pull-right">
-        <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}" ng-click="showEditPassBox(pass)">
+        <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}"
+                ng-if="userHasRole([ROLE_PARTNER])" ng-click="showEditPassBox(pass)">
             <span aria-hidden="true" class="fa fa-edit"></span>
         </button>
-        <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}" ng-click="deletePass(pass)">
+        <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}"
+                ng-if="userHasRole([ROLE_PARTNER])" ng-click="deletePass(pass)">
             <span aria-hidden="true" class="fa fa-trash"></span>
         </button>
     </div>
