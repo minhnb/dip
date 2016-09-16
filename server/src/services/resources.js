@@ -151,10 +151,7 @@ resourcesServices.createAggregateSort = function (sort, needDistanceKey) {
  -------------------------------------------------------------------------*/
 
 resourcesServices.createHotel = function (user, hotel) {
-    if (user.isPartner()) {
-        hotel.owner = user._id;
-    }
-    return resourcesServices.dbCreateHotel(hotel).then(hotel => {
+    return resourcesServices.dbCreateHotel(hotel, user).then(hotel => {
        return entities.hotel(hotel);
     });
 };
@@ -303,11 +300,14 @@ resourcesServices.getPassesByHotel = function (hotelId) {
  *
  -------------------------------------------------------------------------*/
 
-resourcesServices.dbCreateHotel = function (hotel) {
+resourcesServices.dbCreateHotel = function (hotel, user) {
     if (!hotel.fullAddress) {
         throw new DIPError(dipErrorDictionary.HOTEL_INVALID_ADDRESS);
     }
     hotel = resourcesServices.initNormalHotel(hotel);
+    if (user.isPartner()) {
+        hotel.owner = user._id;
+    }
     let newHotel = db.hotels(hotel);
     return newHotel.save();
 };
@@ -348,10 +348,11 @@ resourcesServices.dbGetHotelById = function (hotelId) {
 resourcesServices.dbUpdateHotel = async (function (user, hotelId, update) {
     // let hotel = resourcesServices.getExistedHotel(hotelId);
     let hotel = await (_checkHotelPermission(user, hotelId));
-    update = resourcesServices.initNormalHotel(update);
-    for (let key in update) {
-        hotel[key] = update[key];
+
+    if (hotel.submission.status == submissionStatus.PENDING) {
+        throw new DIPError(dipErrorDictionary.CANNOT_CHANGE_PENDING_HOTEL);
     }
+    hotel = resourcesServices.initNormalHotel(update, hotel);
     return hotel.save();
 });
 
@@ -611,21 +612,21 @@ resourcesServices.getExistedPass = function (passId, user) {
  *
  -------------------------------------------------------------------------*/
 
-resourcesServices.initNormalHotel = function (hotel) {
-    if (hotel.fullAddress) {
-        let hotelAddressData = await(resourcesServices.getHotelAddress(hotel.fullAddress));
-        hotel.address = hotelAddressData.address;
-        hotel.coordinates = hotelAddressData.coordinates;
-
-        hotel.address.city = hotel.city;
-        hotel.address.neighborhood = hotel.neighborhood;
+resourcesServices.initNormalHotel = function (update, hotel) {
+    update = utils.trimObject(update, true);
+    if (!utils.isEmptyObject(update.address)) {
+        update.coordinates = await(resourcesServices.getHotelCoordinates(update.address));
     } else {
-        delete hotel.address;
-        delete hotel.coordinates;
+        delete update.address;
+        delete update.coordinates;
     }
 
-    let initFields = ['name', 'url', 'instagram', 'phone', 'roomService', 'address', 'coordinates', 'dipLocation'],
-        initHotel = {
+    let criticalFields = ['name', 'address', 'coordinates', 'dipLocation'];
+    let initFields = ['url', 'instagram', 'phone', 'roomService'];
+
+    if (!hotel) {
+        // Initialize default values if creating new hotel
+        hotel = {
             featured: false,
             reservable: false,
             active: false,
@@ -636,35 +637,43 @@ resourcesServices.initNormalHotel = function (hotel) {
                 status: false
             }
         };
+    }
+    criticalFields.forEach(field => {
+        if (update[field] !== undefined) {
+            if (hotel.active) {
+                if (utils.compareObject(hotel[field], update[field])) {
+                    delete hotel.pendingContent[field];
+                } else {
+                    hotel.pendingContent[field] = update[field];
+                }
+            } else {
+                hotel[field] = update[field];
+            }
+        }
+    });
     initFields.forEach(field => {
-        if (hotel[field]) initHotel[field] = hotel[field];
+        if (update[field]) hotel[field] = update[field];
     });
 
-    return initHotel;
+    return hotel;
 };
 
-resourcesServices.getHotelAddress = function (hotelFullAddress) {
-    return geocoder.geocode(hotelFullAddress)
-        .then(data => {
-            if (data.length == 0) {
-                throw new DIPError(dipErrorDictionary.HOTEL_ADDRESS_NOT_FOUND);
-            }
-            let hotelAddressData = {
-                address: {},
-                coordinates: []
-            };
-            hotelAddressData.address.street = hotelFullAddress.split(",")[0];
-            if (data.length > 0) {
-                hotelAddressData.address.state = data[0].administrativeLevels.level1short;
-                hotelAddressData.coordinates.push(data[0].longitude);
-                hotelAddressData.coordinates.push(data[0].latitude);
-            }
-
-            let tmpAddArr = hotelFullAddress.split(" ");
-            hotelAddressData.address.postalCode = tmpAddArr[tmpAddArr.length - 1];
-
-            return hotelAddressData;
-        });
+resourcesServices.getHotelCoordinates = function (address) {
+    let parts = [];
+    if (address.street) parts.push(address.street);
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    let fullAddress = parts.join(', ');
+    return geocoder.geocode(fullAddress)
+    .then(data => {
+        if (data.length == 0) {
+            throw new DIPError(dipErrorDictionary.HOTEL_ADDRESS_NOT_FOUND);
+        }
+        let coordinates = [];
+        coordinates.push(data[0].longitude);
+        coordinates.push(data[0].latitude);
+        return coordinates;
+    });
 };
 
 resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceType) {

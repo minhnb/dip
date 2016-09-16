@@ -93,6 +93,67 @@ function objectToArray(object) {
     return result;
 }
 
+function isEmptyObject(object) {
+    return !object
+        || (Array.isArray(object) && object.length == 0)
+        || (typeof object == 'object' && Object.keys(object).length == 0);
+}
+
+function trimObject(object, forced) {
+    if (Array.isArray(object)) {
+        // Checking for array first because typeof [] == 'object'
+        // Iterate through array, trimming each item
+        return object.map(val => trimObject(val));
+    } else if (object === null || object === undefined) {
+        // Checking for null first because typeof null == 'object'
+        // Convert null / undefined to empty string if forced is passed in
+        if (forced) return '';
+        else return object;
+    } else if (typeof object == 'object') {
+        // Iterate through object, trimming each item
+        let clone = {};
+        Object.keys(object).forEach(key => {
+            clone[key] = trimObject(object[key]);
+        });
+        return clone;
+    } else if (typeof object == 'string') {
+        // trimming string
+        return object.trim();
+    } else {
+        // otherwise, simply return object (can be number, boolean, ...)
+        return object;
+    }
+}
+
+function compareObject(obj1, obj2) {
+    if (Array.isArray(obj1) + Array.isArray(obj2) === 1) {
+        // If only 1 of them is array, return false
+        // Checking using js type-coercing
+        return false;
+    } else if (Array.isArray(obj1)) {
+        if (obj1.length !== obj2.length) return false;
+        for (let i = 0; i < obj1.length; i++) {
+            if (!compareObject(obj1[i], obj2[i])) return false;
+        }
+    } else if (obj1 === null || obj2 === null) {
+        // Special case: checking for null first because typeof null == 'object'
+        return obj1 === obj2;
+    } else if (typeof obj1 !== typeof obj2) {
+        return false;
+    } else if (typeof obj1 == 'object') {
+        let keys1 = Object.keys(obj1).sort(),
+            keys2 = Object.keys(obj2).sort();
+        if (!compareObject(keys1, keys2)) return false;
+        for (let i = 0; i < keys1.length; i++) {
+            let key = keys1[i];
+            if (!compareObject(obj1[key], obj2[key])) return false;
+        }
+    } else return obj1 === obj2;
+
+    // all tests passed
+    return true;
+}
+
 function hasDuplicateElement(firstArray, secondArray) {
     return firstArray.some(value => {
         return secondArray.indexOf(value) > -1;
@@ -113,5 +174,8 @@ module.exports = {
     getFullName: getFullName,
     getHotelDisplayName: getHotelDisplayName,
     objectToArray: objectToArray,
+    isEmptyObject: isEmptyObject,
+    trimObject: trimObject,
+    compareObject: compareObject,
     hasDuplicateElement: hasDuplicateElement
 };

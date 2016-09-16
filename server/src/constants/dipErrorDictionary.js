@@ -384,4 +384,9 @@ module.exports = {
         code: "PASS_NOT_FOUND",
         details: "Pass not found"
     },
+    CANNOT_CHANGE_PENDING_HOTEL: {
+        status: 400,
+        code: 'CANNOT_CHANGE_PENDING_HOTEL',
+        details: 'Cannot change pending hotel'
+    }
 };
