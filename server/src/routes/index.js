@@ -27,6 +27,8 @@ const hotels = require('./hotels');
 const hotel = require('./hotel');
 const reports = require('./reports');
 
+const configs = require('./configs');
+
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
@@ -57,3 +59,5 @@ router.use('/reports', reports.routes(), reports.allowedMethods());
 
 router.use('/hotels', hotels.routes(), hotels.allowedMethods());
 router.use('/hotel', hotel.routes(), hotel.allowedMethods());
+
+router.use('/configs', configs.routes(), configs.allowedMethods());
