@@ -23,8 +23,9 @@ router
     )
     .get('get hotel by id', '/:hotelId',
         async(ctx => {
-            let hotelId = ctx.params.hotelId;
-            ctx.body = await(resourcesServices.getHotelById(hotelId));
+            let user = ctx.state.user,
+                hotelId = ctx.params.hotelId;
+            ctx.body = await(resourcesServices.getHotelById(user, hotelId));
         })
     )
     .put('update hotel', '/:hotelId',
@@ -124,7 +125,7 @@ router
             ctx.body = await(resourcesServices.updateHotelService(user, hotelId, hotelServiceId, hotelService));
         })
     )
-    .put('update hotel image', '/:hotelId/service/:hotelServiceId/image',
+    .put('update hotel service image', '/:hotelId/service/:hotelServiceId/image',
         multer().single('image'),
         async(ctx => {
             let user = ctx.state.user,

@@ -152,23 +152,23 @@ resourcesServices.createAggregateSort = function (sort, needDistanceKey) {
 
 resourcesServices.createHotel = function (user, hotel) {
     return resourcesServices.dbCreateHotel(hotel, user).then(hotel => {
-       return entities.hotel(hotel);
+       return entities.hotel(hotel, user);
     });
 };
 
-resourcesServices.getHotelById = function (hotelId) {
-    return entities.hotel(resourcesServices.dbGetHotelById(hotelId));
+resourcesServices.getHotelById = function (user, hotelId) {
+    return entities.hotel(resourcesServices.dbGetHotelById(hotelId, user), user);
 };
 
 resourcesServices.updateHotelImage = function (user, hotelId, img) {
     return resourcesServices.dbUpdateHotelImage(user, hotelId, img).then(hotel => {
-        return entities.hotel(hotel);
+        return entities.hotel(hotel, user);
     });
 };
 
 resourcesServices.updateHotel = function (user, hotelId, update) {
     return resourcesServices.dbUpdateHotel(user, hotelId, update).then(hotel => {
-        return entities.hotel(hotel);
+        return entities.hotel(hotel, user);
     });
 };
 
@@ -202,25 +202,13 @@ resourcesServices.deleteHotel = function (user, hotelId) {
     });
 };
 
-resourcesServices.getListPendingHotel = function (user) {
-    return resourcesServices.dbGetListPendingHotel(user).then(hotels => {
-        return hotels.map(entities.hotel);
-    });
-};
-
-resourcesServices.getListApprovedHotel = function (user) {
-    return resourcesServices.dbGetListApprovedHotel(user).then(hotels => {
-        return hotels.map(entities.hotel);
-    });
-};
-
 resourcesServices.getHotelList = function(user, condition) {
     condition = condition || {};
     if (!user.isAdmin()) {
         condition.owner = user;
     }
     return db.hotels.find(condition).exec().then(hotels => {
-        return hotels.map(entities.hotel);
+        return hotels.map(hotel => entities.hotel(hotel, user));
     });
 };
 
@@ -333,13 +321,25 @@ resourcesServices.dbUpdateHotelImage = async (function (user, hotelId, img) {
     }
 });
 
-resourcesServices.dbGetHotelById = function (hotelId) {
-    let hotel = await(db.hotels.findById(hotelId)
+resourcesServices.dbGetHotelById = function (hotelId, user) {
+    let condition = {
+        _id: hotelId,
+        deleted: false
+    };
+    if (!user) {
+        condition.active = true;
+    } else if (!user.isAdmin()) {
+        condition['$or'] = [
+            {owner: user._id},
+            {active: true}
+        ];
+    }
+    let hotel = await(db.hotels.findOne(condition)
         .populate({
             path: 'services',
             model: db.hotelServices
         }));
-    if (!hotel || hotel.deleted) {
+    if (!hotel) {
         throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
     }
     return hotel;
@@ -414,26 +414,6 @@ resourcesServices.dbDeleteHotel = async (function (user, hotelId) {
     let hotel = await (_checkHotelPermission(user, hotelId));
     return db.hotels.update({_id: hotel._id}, {deleted: true});
 });
-
-resourcesServices.dbGetListHotelByStatus = function (user, status) {
-    let condition = {};
-    condition.active = status;
-    if (!user.isAdmin()) {
-        condition.owner = user;
-    }
-    let sort = {_id: -1};
-    return db.hotels.find(condition).sort(sort).exec().then(hotels => {
-        return hotels;
-    });
-};
-
-resourcesServices.dbGetListPendingHotel = function (user) {
-    return resourcesServices.dbGetListHotelByStatus(user, false);
-};
-
-resourcesServices.dbGetListApprovedHotel = function (user) {
-    return resourcesServices.dbGetListHotelByStatus(user, true);
-};
 
 resourcesServices.getExistedHotel = function (hotelId) {
     let hotel = await(db.hotels.findById(hotelId));
