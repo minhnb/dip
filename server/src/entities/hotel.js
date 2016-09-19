@@ -35,7 +35,7 @@ function convertHotel(hotel, user) {
     };
     if (user && hasPermission(user, hotel)) {
         data.submission = hotel.submission;
-        let pendingContent = Object.assign({}, hotel.pendingContent);
+        let pendingContent = Object.assign({}, hotel.pendingContent.toObject());
         Object.keys(pendingContent).forEach(key => {
             if (utils.isEmptyObject(pendingContent[key])) {
                 delete pendingContent[key];
