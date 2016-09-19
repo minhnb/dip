@@ -2,6 +2,8 @@
 
 const hotelService = require('./hotelService');
 
+const utils = require('../helpers/utils');
+
 function convertHotel(hotel, user) {
     let data = {
         id: hotel._id,
@@ -32,8 +34,15 @@ function convertHotel(hotel, user) {
         active: hotel.active
     };
     if (user && hasPermission(user, hotel)) {
-        data.pendingContent = hotel.pendingContent;
         data.submission = hotel.submission;
+        let pendingContent = Object.assign({}, hotel.pendingContent);
+        Object.keys(pendingContent).forEach(key => {
+            if (utils.isEmptyObject(pendingContent[key])) {
+                delete pendingContent[key];
+            }
+        });
+        data.pendingContent = pendingContent;
+        data.hasPendingContent = !utils.isEmptyObject(pendingContent);
     }
     return data;
 }
