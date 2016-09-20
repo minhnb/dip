@@ -91,6 +91,9 @@ dipApp.factory('userService', ['$q', '$http', '$localStorage',
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     });
+            },
+            getConfigs: function () {
+                return $http.get(config.DIP_API + 'configs');
             }
         };
         return userService;

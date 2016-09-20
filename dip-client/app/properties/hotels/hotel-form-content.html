@@ -1,34 +1,98 @@
 <div class="col-md-8">
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_NAME' | translate}}</label>
+        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.name">
+            <span class="pending-label">{{'PENDING_HOTEL_NAME' | translate}}: </span>
+            <span>{{hotel.pendingContent.name}}</span>
+        </div>
         <input type="text" required class="form-control" ng-model="hotel.name"
                placeholder="{{'HOTEL_NAME' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
         <div class="help-block with-errors"></div>
     </div>
-    <div class="form-group has-feedback">
-        <label ng-if="isEditingHotel" class="control-label">{{'ADDRESS' | translate}}</label>
-        <input type="text" required class="form-control" ng-model="hotel.fullAddress"
-               placeholder="{{'ADDRESS' | translate}}">
-        <span class="glyphicon form-control-feedback"></span>
-        <div class="help-block with-errors"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group has-feedback">
+                <label ng-if="isEditingHotel" class="control-label">{{'STREET' | translate}}</label>
+                <div class="pending-content"
+                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.street">
+                    <span class="pending-label">{{'PENDING_STREET' | translate}}: </span>
+                    <span>{{hotel.pendingContent.address.street}}</span>
+                </div>
+                <input type="text" required class="form-control" ng-model="hotel.address.street"
+                       placeholder="{{'STREET' | translate}}">
+                <span class="glyphicon form-control-feedback"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group has-feedback">
+                <label ng-if="isEditingHotel" class="control-label">{{'CITY' | translate}}</label>
+                <div class="pending-content"
+                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.city">
+                    <span class="pending-label">{{'PENDING_CITY' | translate}}: </span>
+                    <span>{{hotel.pendingContent.address.city}}</span>
+                </div>
+                <input type="text" required class="form-control" ng-model="hotel.address.city"
+                       placeholder="{{'CITY' | translate}}">
+                <span class="glyphicon form-control-feedback"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group has-feedback">
+                <label ng-if="isEditingHotel" class="control-label">{{'STATE' | translate}}</label>
+                <div class="pending-content"
+                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.state">
+                    <span class="pending-label">{{'PENDING_STATE' | translate}}: </span>
+                    <span>{{hotel.pendingContent.address.state}}</span>
+                </div>
+                <ui-select ng-model="hotel.address.state" theme="bootstrap" required>
+                    <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="state in usStates | filter: $select.search">
+                        <div ng-bind-html="state | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <!--<span class="glyphicon form-control-feedback"></span>-->
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group has-feedback">
+                <label ng-if="isEditingHotel" class="control-label">{{'ZIP_CODE' | translate}}</label>
+                <div class="pending-content"
+                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.postalCode">
+                    <span class="pending-label">{{'PENDING_ZIP_CODE' | translate}}: </span>
+                    <span>{{hotel.pendingContent.address.postalCode}}</span>
+                </div>
+                <input type="text" required class="form-control" ng-model="hotel.address.postalCode"
+                       placeholder="{{'ZIP_CODE' | translate}}">
+                <span class="glyphicon form-control-feedback"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'NEIGHBORHOOD' | translate}}</label>
-        <input type="text" class="form-control" ng-model="hotel.neighborhood"
+        <div class="pending-content"
+             ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.neighborhood">
+            <span class="pending-label">{{'PENDING_NEIGHBORHOOD' | translate}}: </span>
+            <span>{{hotel.pendingContent.address.neighborhood}}</span>
+        </div>
+        <input type="text" class="form-control" ng-model="hotel.address.neighborhood"
                placeholder="{{'NEIGHBORHOOD' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
         <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
-        <label ng-if="isEditingHotel" class="control-label">{{'CITY' | translate}}</label>
-        <input type="text" class="form-control" ng-model="hotel.city"
-               placeholder="{{'CITY' | translate}}">
-        <span class="glyphicon form-control-feedback"></span>
-        <div class="help-block with-errors"></div>
-    </div>
-    <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_DIP_LOCATION' | translate}}</label>
+        <div class="pending-content"
+             ng-show="hotel.hasPendingContent && pendingContent.dipLocation">
+            <span class="pending-label">{{'PENDING_HOTEL_DIP_LOCATION' | translate}}: </span>
+            <span>{{hotel.pendingContent.dipLocation ? mapDipLocations[hotel.pendingContent.dipLocation].name : ''}}</span>
+        </div>
         <select class="form-control select2" style="width: 100%;" ng-model="hotel.dipLocation">
             <option value="">{{'SELECT_LOCATION' | translate}}</option>
             <option ng-if="dipLocations.length > 0" ng-repeat="location in dipLocations"
@@ -40,6 +104,10 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'FRONT_DESK' | translate}}</label>
+        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.phone">
+            <span class="pending-label">{{'PENDING_FRONT_DESK' | translate}}: </span>
+            <span>{{hotel.pendingContent.phone}}</span>
+        </div>
         <input type="text" class="form-control" ng-model="hotel.phone"
                placeholder="{{'FRONT_DESK' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
@@ -47,6 +115,10 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'ROOM_SERVICE' | translate}}</label>
+        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.roomService">
+            <span class="pending-label">{{'PENDING_ROOM_SERVICE' | translate}}: </span>
+            <span>{{hotel.pendingContent.roomService}}</span>
+        </div>
         <input type="text" class="form-control" ng-model="hotel.roomService"
                placeholder="{{'ROOM_SERVICE' | translate}}">
         <span class="glyphicon form-control-feedback"></span>
@@ -54,6 +126,10 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'WEBSITE' | translate}}</label>
+        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.url">
+            <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
+            <span><a href="{{hotel.pendingContent.fullUrl}}" target="_blank">{{hotel.pendingContent.url}}</a></span>
+        </div>
         <input type="text" class="form-control" ng-model="hotel.url"
                placeholder="{{'WEBSITE' | translate}}"
                pattern="^(http[s]?:\/\/)?([0-9a-z\-]+\.)+[0-9a-z\-]+(\/[^/\s]+)*\/?([?#].*)?$"
@@ -62,6 +138,10 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'INSTAGRAM' | translate}}</label>
+        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.instagram">
+            <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
+            <span><a href="{{hotel.pendingContent.instagramUrl}}" target="_blank">{{hotel.pendingContent.instagram}}</a></span>
+        </div>
         <input type="text" class="form-control" ng-model="hotel.instagram"
                placeholder="{{'INSTAGRAM' | translate}}" pattern="^[@#][^@#]+"
                data-error="{{'ERROR_INVALID_INSTAGRAM' | translate}}">

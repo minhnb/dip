@@ -6,6 +6,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
         $scope.currentUser = {};
         $scope.dipLocations = [];
         $scope.mapDipLocations = [];
+        $scope.usStates = [];
 
         $scope.ROLE_ADMIN = ROLE_ADMIN;
         $scope.ROLE_PARTNER = ROLE_PARTNER;
@@ -72,9 +73,10 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 .success(function (data, status) {
                     var convertedUser = userUtils.convertUser(data.user);
                     utils.updateObjectInfo($scope.currentUser, convertedUser);
-                    hotelService.getListDipLocation()
+                    userService.getConfigs()
                         .success(function (data, status) {
-                            $scope.dipLocations = data;
+                            $scope.usStates = data.country.states;
+                            $scope.dipLocations = data.dipLocations;
                             $scope.dipLocations.map(function (location) {
                                 $scope.mapDipLocations[location.id] = location;
                             });

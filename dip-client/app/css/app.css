@@ -37,6 +37,10 @@ a {
 .noty_message form > .form-group {
     margin-bottom: 0;
 }
+.ui-select-container.ui-select-bootstrap .btn.btn-default, .ui-select-container.ui-select-bootstrap .btn-default-focus {
+    background: transparent;
+}
+
 /*-------------------------HOTEL PROFILE--------------------------*/
 .pull-right .switch {
     float: left;
@@ -108,7 +112,8 @@ a {
     text-overflow: ellipsis;
     max-width: 100%;
     overflow: hidden;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
+    min-height: 36px;
 }
 .list-hotel .hotel-info > .row {
     line-height: 1.42857;
@@ -124,6 +129,17 @@ a {
 
 .list-hotel.hotel-profile .hotel-info > .row:first-child > div {
     border-top: none;
+}
+.pending-content, .approved-content {
+    font-size: 12px;
+    color: #666;
+}
+.pending-content .pending-label, .approved-content .approved-label {
+    color: #aaa;
+}
+.form-group .pending-content  {
+    margin-left: 10px;
+    display: inline-block;
 }
 
 .module-header {
@@ -372,17 +388,29 @@ a.back-button {
 input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly], input.form-control.timepicker[readonly] {
     background-color: #fff;
 }
-.label.label-form {
+.label.hotel-status {
     display: inline-block;
     font-size: 11px;
     line-height: 12px;
-    margin-top: 4px;
-    padding: 5px 10px;
+    padding: 5px;
     font-weight: 500;
 }
-.box .label.label-form.hotel-status {
+.box .label.hotel-status {
     float: left;
     margin-right: 5px;
+}
+.hotel-header .pending-content {
+    display: block;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: -15px;
+    width: 100%;
+}
+.hotel-header .lead {
+    margin-right: 7px;
+}
+.hotel-header .pull-right {
+    margin-bottom: 5px;
 }
 .box .nav-tabs-custom > .nav-tabs > li {
     margin-top: -3px;
@@ -526,5 +554,8 @@ form .checkbox.icheck label {
     .box .nav-tabs-custom > .nav-tabs > li > a {
         padding: 30px 15px;
         text-align: center;
+    }
+    .label.hotel-status {
+        margin-top: 4px;
     }
 }
