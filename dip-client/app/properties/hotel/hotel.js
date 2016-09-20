@@ -326,7 +326,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.submitHotel = function (hotel) {
                 if (!hotel.dipLocation) {
-                    $scope.notifyValidateError('ERROR_HOTEL_NEED_LOCATION_BEFORE_APPROVE');
+                    $scope.notifyValidateError('ERROR_HOTEL_NEED_LOCATION_BEFORE_SUBMIT');
                     return;
                 }
                 utils.notyConfirm($scope.translate('HOTEL_SUBMIT_CONFIRM', {name: hotel.name}),
