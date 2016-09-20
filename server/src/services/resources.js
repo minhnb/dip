@@ -296,8 +296,7 @@ resourcesServices.dbCreateHotel = function (hotel, user) {
     if (user.isPartner()) {
         hotel.owner = user._id;
     }
-    let newHotel = db.hotels(hotel);
-    return newHotel.save();
+    return hotel.save();
 };
 
 resourcesServices.dbUpdateHotelImage = async (function (user, hotelId, img) {
@@ -606,7 +605,7 @@ resourcesServices.initNormalHotel = function (update, hotel) {
 
     if (!hotel) {
         // Initialize default values if creating new hotel
-        hotel = {
+        hotel = new db.hotels({
             featured: false,
             reservable: false,
             active: false,
@@ -616,12 +615,13 @@ resourcesServices.initNormalHotel = function (update, hotel) {
             banned: {
                 status: false
             }
-        };
+        });
     }
+    let hotelData = hotel.toObject();
     criticalFields.forEach(field => {
         if (update[field] !== undefined) {
             if (hotel.active) {
-                if (utils.compareObject(hotel[field], update[field])) {
+                if (utils.compareObject(hotelData[field], update[field])) {
                     delete hotel.pendingContent[field];
                 } else {
                     hotel.pendingContent[field] = update[field];
@@ -632,7 +632,7 @@ resourcesServices.initNormalHotel = function (update, hotel) {
         }
     });
     initFields.forEach(field => {
-        if (update[field]) hotel[field] = update[field];
+        if (update[field] !== undefined) hotel[field] = update[field];
     });
 
     return hotel;
