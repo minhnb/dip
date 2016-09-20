@@ -73,10 +73,13 @@ dipApp.factory('hotelUtils', [
                 hotel.displayActive = hotel.active;
                 hotelUtils.setHotelActiveStatus(hotel);
                 hotelUtils.setHotelSubmissionStatus(hotel);
+                if (hotel.hasPendingContent && hotel.pendingContent) {
+                    hotel.pendingContent = hotelUtils.convertHotel(hotel.pendingContent);
+                }
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {
-                if (!hotel.name || !hotel.fullAddress) {
+                if (!hotel.name || !hotel.address || !hotel.address.street || !hotel.address.city || !hotel.address.state || !hotel.address.postalCode) {
                     return false;
                 }
                 if (requiredImage && !$('#image_box_hotel > .input-upload-img').val()) {

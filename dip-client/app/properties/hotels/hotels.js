@@ -170,6 +170,8 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     .success(function (data, status) {
                         $scope.displayListHotel(data);
                         $scope.stopSpin();
+
+                        formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-hotel"]'), $scope.createHotel);
                     })
                     .error(function (data, status) {
                         $scope.handleError(data);
@@ -261,7 +263,6 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.declineHotel = function (hotel) {
                 utils.notyConfirmWithTextbox($scope.translate('CONFIRM_PROVIDE_REASON_FOR_DECLINING_HOTEL', {name: hotel.name}),
                     $scope.okText, $scope.cancelText, function (failReason) {
-                        console.log(failReason);
                         $scope.startSpin();
                         var hotelId = hotel.id;
                         hotelService.declineHotel(hotelId, failReason)
@@ -316,7 +317,6 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
             $scope.init = function () {
                 $scope.initHotelPageTitle($scope.key);
                 $scope.getListHotel();
-                formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-hotel"]'), $scope.createHotel);
             };
 
             $rootScope.initDipApp($scope.init);

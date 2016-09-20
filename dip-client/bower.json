@@ -6,16 +6,18 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "~1.5.0",
-    "angular-route": "~1.5.0",
-    "angular-loader": "~1.5.0",
-    "angular-mocks": "~1.5.0",
+    "angular": "1.5.7",
+    "angular-route": "1.5.7",
+    "angular-loader": "1.5.7",
+    "angular-mocks": "1.5.7",
     "html5-boilerplate": "^5.3.0",
     "ng-storage": "^0.4.2",
     "angular-spinner": "~0.8.1",
     "angular-translate": "~2.11.1",
     "fullcalendar": "~2.9.1",
     "randomcolor": "~0.4.4",
-    "ng-pattern-restrict": "~0.2.0"
+    "ng-pattern-restrict": "~0.2.0",
+    "angular-ui-select": "~0.19.4",
+    "angular-sanitize": "1.5.7"
   }
 }

@@ -1,0 +1,87 @@
+<div class="col-md-8 hotel-info">
+    <div class="row" ng-if="isShowingHotelProfile">
+        <div class="col-md-4">{{'HOTEL_NAME' | translate}}</div>
+        <div class="col-md-8">{{hotel.name}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.name">
+                <span class="pending-label">{{'PENDING_HOTEL_NAME' | translate}}: </span>
+                <span>{{hotel.pendingContent.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="isShowingHotelProfile">
+        <div class="col-md-4">{{'HOTEL_STATUS' | translate}}</div>
+        <div class="col-md-8">
+                            <span class="label label-form hotel-status"
+                                  ng-class="hotel.activeStatusClass">{{hotel.activeStatus | translate}}</span>
+            <span class="label label-form hotel-status" ng-class="hotel.submissionStatusClass"
+                  ng-show="hotel.submissionStatus">{{hotel.submissionStatus | translate}}</span>
+        </div>
+    </div>
+    <div class="row" ng-show="hotel.submissionStatus == 'HOTEL_STATUS_DECLINED'">
+        <div class="col-md-4">{{'DECLINED_REASON' | translate}}</div>
+        <div class="col-md-8">{{hotel.submission.failReason}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'ADDRESS' | translate}}</div>
+        <div class="col-md-8">{{hotel.fullAddress}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.fullAddress">
+                <span class="pending-label">{{'PENDING_ADDRESS' | translate}}: </span>
+                <span>{{hotel.pendingContent.fullAddress}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'NEIGHBORHOOD' | translate}}</div>
+        <div class="col-md-8">{{hotel.address.neighborhood}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.neighborhood">
+                <span class="pending-label">{{'PENDING_NEIGHBORHOOD' | translate}}: </span>
+                <span>{{hotel.pendingContent.address.neighborhood}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'HOTEL_DIP_LOCATION' | translate}}</div>
+        <div class="col-md-8">{{hotel.dipLocation ? mapDipLocations[hotel.dipLocation].name : ''}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.dipLocation">
+                <span class="pending-label">{{'PENDING_HOTEL_DIP_LOCATION' | translate}}: </span>
+                <span>{{hotel.pendingContent.dipLocation ? mapDipLocations[hotel.pendingContent.dipLocation].name : ''}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'FRONT_DESK' | translate}}</div>
+        <div class="col-md-8">{{hotel.phone}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.phone">
+                <span class="pending-label">{{'PENDING_FRONT_DESK' | translate}}: </span>
+                <span>{{hotel.pendingContent.phone}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'ROOM_SERVICE' | translate}}</div>
+        <div class="col-md-8">{{hotel.roomService}}
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.roomService">
+                <span class="pending-label">{{'PENDING_ROOM_SERVICE' | translate}}: </span>
+                <span>{{hotel.pendingContent.roomService}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'WEBSITE' | translate}}</div>
+        <div class="col-md-8"><a href="{{hotel.fullUrl}}" target="_blank">{{hotel.url}}</a>
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.url">
+                <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
+                <span><a href="{{hotel.pendingContent.fullUrl}}" target="_blank">{{hotel.pendingContent.url}}</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">{{'INSTAGRAM' | translate}}</div>
+        <div class="col-md-8"><a href="{{hotel.instagramUrl}}" target="_blank">{{hotel.instagram}}</a>
+            <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.instagramUrl">
+                <span class="pending-label">{{'PENDING_INSTAGRAM' | translate}}: </span>
+                <span><a href="{{hotel.pendingContent.instagramUrl}}" target="_blank">{{hotel.pendingContent.instagram}}</a></span>
+            </div>
+        </div>
+    </div>
+</div>

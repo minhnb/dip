@@ -5,34 +5,15 @@
         </a>
         <h3 class="box-title">{{'HOTEL' | translate}}</h3>
         <div class="pull-right" ng-show="!isEditingHotel">
-            <!--<span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid"-->
-                  <!--ng-model="hotel.active"-->
-                  <!--title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"-->
-                  <!--ng-class="{ checked:hotel.displayActive, disabled:undefined }"-->
-                  <!--ng-click="toggleHotelStatus(hotel)">-->
-                <!--<small></small>-->
-                <!--<input type="checkbox" style="display:none" ng-model="hotel.active"-->
-                       <!--class="ng-pristine ng-untouched ng-valid ng-empty">-->
-                <!--<span class="switch-text"> </span>-->
-            <!--</span>-->
-            <button type="button" class="btn btn-success" title="{{'APPROVE' | translate}}" ng-click="approveHotel(hotel)"
-                    ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
-                {{'APPROVE' | translate}}
-            </button>
-            <button type="button" class="btn btn-danger" title="{{'DECLINE' | translate}}" ng-click="declineHotel(hotel)"
-                    ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
-                {{'DECLINE' | translate}}
-            </button>
-            <button type="button" class="btn btn-default" title="{{'SUBMIT' | translate}}" ng-click="submitHotel(hotel)"
-                    ng-if="userHasRole([ROLE_PARTNER]) && hotel.activeStatus == 'HOTEL_OFF_AIR' && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'">
-                {{'SUBMIT' | translate}}
-            </button>
+            <ng-include src="'/properties/hotels/hotel-buttons.html'"></ng-include>
             <button type="button" class="btn btn-default" title="{{'EDIT' | translate}}"
-                    ng-if="userHasRole([ROLE_PARTNER]) && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'" ng-click="showEditHotelBox(hotel)">
+                    ng-if="userHasRole([ROLE_PARTNER]) && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'"
+                    ng-click="showEditHotelBox(hotel)">
                 <span aria-hidden="true" class="fa fa-edit"></span>
             </button>
             <button type="button" class="btn btn-default" title="{{'DELETE' | translate}}"
-                    ng-if="userHasRole([ROLE_PARTNER]) && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'" ng-click="deleteHotel(hotel)">
+                    ng-if="userHasRole([ROLE_PARTNER]) && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'"
+                    ng-click="deleteHotel(hotel)">
                 <span aria-hidden="true" class="fa fa-trash"></span>
             </button>
             <!--<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-angle-down"></i></button>-->
@@ -41,58 +22,8 @@
     <div class="box-body">
         <form role="form" dip-smart-validate-form name="edit-hotel">
             <div class="row" ng-show="!isEditingHotel">
-                <div class="col-md-8 hotel-info">
-                    <div class="row" ng-if="hotel.name">
-                        <div class="col-md-4">{{'HOTEL_NAME' | translate}}</div>
-                        <div class="col-md-8">{{hotel.name}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">{{'HOTEL_STATUS' | translate}}</div>
-                        <div class="col-md-8">
-                            <span class="label label-form hotel-status"
-                                  ng-class="hotel.activeStatusClass">{{hotel.activeStatus | translate}}</span>
-                            <span class="label label-form hotel-status" ng-class="hotel.submissionStatusClass"
-                                  ng-if="hotel.submissionStatus">{{hotel.submissionStatus | translate}}</span>
-                        </div>
-                    </div>
-                    <div class="row" ng-if="hotel.submissionStatus == 'HOTEL_STATUS_DECLINED'">
-                        <div class="col-md-4">{{'DECLINED_REASON' | translate}}</div>
-                        <div class="col-md-8">{{hotel.submission.failReason}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.fullAddress">
-                        <div class="col-md-4">{{'ADDRESS' | translate}}</div>
-                        <div class="col-md-8">{{hotel.fullAddress}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.address.neighborhood">
-                        <div class="col-md-4">{{'NEIGHBORHOOD' | translate}}</div>
-                        <div class="col-md-8">{{hotel.address.neighborhood}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.address.city">
-                        <div class="col-md-4">{{'CITY' | translate}}</div>
-                        <div class="col-md-8">{{hotel.address.city}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.dipLocation">
-                        <div class="col-md-4">{{'HOTEL_DIP_LOCATION' | translate}}</div>
-                        <div class="col-md-8">{{hotel.dipLocation ? mapDipLocations[hotel.dipLocation].name : ''}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.phone">
-                        <div class="col-md-4">{{'FRONT_DESK' | translate}}</div>
-                        <div class="col-md-8">{{hotel.phone}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.roomService">
-                        <div class="col-md-4">{{'ROOM_SERVICE' | translate}}</div>
-                        <div class="col-md-8">{{hotel.roomService}}</div>
-                    </div>
-                    <div class="row" ng-if="hotel.url">
-                        <div class="col-md-4">{{'WEBSITE' | translate}}</div>
-                        <div class="col-md-8"><a href="{{hotel.fullUrl}}" target="_blank">{{hotel.url}}</a></div>
-                    </div>
-                    <div class="row" ng-if="hotel.instagramUrl">
-                        <div class="col-md-4">{{'INSTAGRAM' | translate}}</div>
-                        <div class="col-md-8"><a href="{{hotel.instagramUrl}}" target="_blank">{{hotel.instagram}}</a></div>
-                    </div>
-                </div>
-                <div class="col-md-4" ng-if="hotel.imageUrl">
+                <dip-hotel-info-content></dip-hotel-info-content>
+                <div class="col-md-4" ng-show="hotel.imageUrl">
                     <img alt="{{hotel.name}} Profile Picture" class="img-responsive" ng-src="{{hotel.imageUrl}}"/>
                 </div>
             </div>
@@ -100,7 +31,8 @@
                 <ng-include src="'/properties/hotels/hotel-form-content.html'"></ng-include>
             </div>
             <div class="text-center row-button" ng-show="isEditingHotel">
-                <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}</button>
+                <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}
+                </button>
                 <button type="submit" class="btn btn-info">{{'SAVE' | translate}}</button>
             </div>
         </form>

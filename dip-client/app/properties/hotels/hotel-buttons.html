@@ -1,0 +1,28 @@
+<!--<span ng-if="userHasRole([ROLE_ADMIN])" class="green switch green ng-not-empty ng-valid"-->
+<!--ng-model="hotel.active"-->
+<!--title="{{hotel.displayActive ? 'TOGGLE_TO_UNAPPROVE' : 'TOGGLE_TO_APPROVE' | translate}}"-->
+<!--ng-class="{ checked:hotel.displayActive, disabled:undefined }"-->
+<!--ng-click="toggleHotelStatus(hotel)">-->
+<!--<small></small>-->
+<!--<input type="checkbox" style="display:none" ng-model="hotel.active"-->
+<!--class="ng-pristine ng-untouched ng-valid ng-empty">-->
+<!--<span class="switch-text"> </span>-->
+<!--</span>-->
+<button type="button" class="btn btn-success" title="{{'APPROVE' | translate}}"
+        ng-click="approveHotel(hotel)"
+        ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
+    {{'APPROVE' | translate}}
+</button>
+<button type="button" class="btn btn-danger" title="{{'DECLINE' | translate}}"
+        ng-click="declineHotel(hotel)"
+        ng-if="userHasRole([ROLE_ADMIN]) && hotel.submissionStatus == 'HOTEL_STATUS_PENDING'">
+    {{'DECLINE' | translate}}
+</button>
+<button type="button" class="btn btn-default" title="{{'SUBMIT' | translate}}" ng-click="submitHotel(hotel)"
+        ng-if="userHasRole([ROLE_PARTNER]) && hotel.activeStatus == 'HOTEL_OFF_AIR' && hotel.submissionStatus != 'HOTEL_STATUS_PENDING'">
+    {{'SUBMIT' | translate}}
+</button>
+<button type="button" class="btn btn-default" title="{{'SUBMIT' | translate}}" ng-click="submitHotel(hotel)"
+        ng-if="userHasRole([ROLE_PARTNER]) && hotel.activeStatus == 'HOTEL_ON_AIR' && hotel.submissionStatus != 'HOTEL_STATUS_PENDING' && hotel.hasPendingContent">
+    {{'SUBMIT' | translate}}
+</button>
