@@ -6,6 +6,9 @@ dipApp.factory('hotelUtils', [
             passTypes: [],
             passTypeMap: [],
             getHotelFullAddress: function (hotel) {
+                if (!hotel.address) {
+                    return '';
+                }
                 var address = [hotel.address.street, hotel.address.city, hotel.address.state];
                 return address.filter(Boolean).join(", ");
             },
