@@ -238,6 +238,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     });
             };
 
+            $scope.stateSelected = function () {
+                $('form[name="edit-hotel"] input[ng-model="hotel.address.state"]').trigger('change');
+            };
+
             $scope.editHotel = function () {
                 if (!hotelUtils.isValidHotel($scope.hotel, false)) {
                     return;

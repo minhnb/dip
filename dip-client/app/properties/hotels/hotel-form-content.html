@@ -49,12 +49,14 @@
                     <span class="pending-label">{{'PENDING_STATE' | translate}}: </span>
                     <span>{{hotel.pendingContent.address.state}}</span>
                 </div>
-                <ui-select ng-model="hotel.address.state" theme="bootstrap" required>
+                <ui-select ng-model="hotel.address.state" theme="bootstrap" on-select="stateSelected()">
                     <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
                     <ui-select-choices repeat="state in usStates | filter: $select.search">
                         <div ng-bind-html="state | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
+                <input type="text" required class="form-control" ng-model="hotel.address.state" ng-show="false"
+                       placeholder="{{'STATE' | translate}}">
                 <!--<span class="glyphicon form-control-feedback"></span>-->
                 <div class="help-block with-errors"></div>
             </div>

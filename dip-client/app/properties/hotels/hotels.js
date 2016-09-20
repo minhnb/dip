@@ -82,6 +82,10 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                     });
             };
 
+            $scope.stateSelected = function () {
+                $('form[name="create-hotel"] input[ng-model="hotel.address.state"]').trigger('change');
+            };
+
             $scope.createHotel = function () {
                 if (!hotelUtils.isValidHotel($scope.hotel, true, $scope.translate('ERROR_INVALID_HOTEL_PICTURE'))) {
                     return;
