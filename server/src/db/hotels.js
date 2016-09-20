@@ -129,6 +129,17 @@ hotelSchema.pre('find', function () {
     }
 });
 
+hotelSchema.virtual('hasPendingContent').get(function() {
+    let pendingContent = this.pendingContent.toObject(),
+        hasPendingContent = false;
+    Object.keys(pendingContent).forEach(key => {
+        if (!utils.isEmptyObject(pendingContent[key])) {
+            hasPendingContent = true;
+        }
+    });
+    return hasPendingContent;
+});
+
 const hotelModel = mongoose.model('Hotel', hotelSchema);
 
 module.exports = hotelModel;

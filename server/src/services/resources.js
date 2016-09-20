@@ -380,10 +380,12 @@ resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, active, 
     let update = {active: active, 'submission.status': status};
     if (active && hotel.active && status == submissionStatus.APPROVED) {
         let pendingContent = hotel.pendingContent.toObject();
-        let hotelHasPendingContent = utils.objectToArray(pendingContent).length > 0;
+        let hotelHasPendingContent = hotel.hasPendingContent;
         if (hotelHasPendingContent) {
             for (var key in pendingContent) {
-                update[key] = pendingContent[key];
+                if (!utils.isEmptyObject(pendingContent[key])) {
+                    update[key] = pendingContent[key];
+                }
             }
             update.pendingContent = {};
         } else {
@@ -398,7 +400,7 @@ resourcesServices.dbUpdateHotelStatus = async (function (user, hotelId, active, 
 
 resourcesServices.dbSubmitHotel = async (function (user, hotelId) {
     let hotel = await (_checkHotelPermission(user, hotelId));
-    let hotelHasPendingContent = utils.objectToArray(hotel.pendingContent.toObject()).length > 0;
+    let hotelHasPendingContent = hotel.hasPendingContent;
     if (hotel.submission.status == submissionStatus.PENDING
         || (hotel.submission.status == submissionStatus.APPROVED && !hotelHasPendingContent)) {
         throw new DIPError(dipErrorDictionary.HOTEL_CAN_NOT_SUBMIT_APPROVED_OR_PENDING_HOTEL);
