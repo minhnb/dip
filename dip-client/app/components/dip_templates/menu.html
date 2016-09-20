@@ -34,25 +34,23 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active" ng-show="userHasRole([ROLE_ADMIN])"><a ng-click="goToPath('/dashboard')"><i class="fa fa-dashboard"></i> <span
                     translate="DASHBOARD"></span></a></li>
-            <li class="treeview" ng-if="userHasRole([ROLE_ADMIN, ROLE_PARTNER])">
-                <a><i class="fa fa-table"></i> <span translate="HOTELS"></span>
+            <li class="active" ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/properties/hotels/all')"><i class="fa fa-hotel"></i> <span
+                    translate="HOTELS"></span></a></li>
+            <li class="treeview" ng-if="userHasRole([ROLE_ADMIN])">
+                <a><i class="fa fa-hotel"></i> <span translate="HOTELS"></span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a ng-click="goToPath('/properties/hotels/all')" ng-if="userHasRole([ROLE_ADMIN, ROLE_PARTNER])"><i
+                        <a ng-click="goToPath('/properties/hotels/all')"><i
                                 class="fa fa-circle-o"></i><span translate="ALL_HOTELS"></span></a>
                     </li>
                     <li>
-                        <a ng-click="goToPath('/properties/hotels/initial')" ng-if="userHasRole([ROLE_PARTNER])"><i
-                                class="fa fa-circle-o"></i><span translate="INITIAL_HOTELS"></span></a>
-                    </li>
-                    <li>
-                        <a ng-click="goToPath('/properties/hotels/on-air')" ng-if="userHasRole([ROLE_ADMIN])"><i
+                        <a ng-click="goToPath('/properties/hotels/on-air')"><i
                                 class="fa fa-circle-o"></i><span translate="ON_AIR_HOTELS"></span></a>
                     </li>
                     <li>
-                        <a ng-click="goToPath('/properties/hotels/submission')" ng-if="userHasRole([ROLE_ADMIN, ROLE_PARTNER])"><i
+                        <a ng-click="goToPath('/properties/hotels/submission')"><i
                                 class="fa fa-circle-o"></i><span translate="SUBMISSION_HOTELS"></span></a>
                     </li>
                 </ul>
