@@ -1,7 +1,7 @@
 <div class="col-md-8">
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_NAME' | translate}}</label>
-        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.name">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('name')">
             <span class="pending-label">{{'PENDING_HOTEL_NAME' | translate}}: </span>
             <span>{{hotel.pendingContent.name}}</span>
         </div>
@@ -14,8 +14,7 @@
         <div class="col-xs-6">
             <div class="form-group has-feedback">
                 <label ng-if="isEditingHotel" class="control-label">{{'STREET' | translate}}</label>
-                <div class="pending-content"
-                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.street">
+                <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.street')">
                     <span class="pending-label">{{'PENDING_STREET' | translate}}: </span>
                     <span>{{hotel.pendingContent.address.street}}</span>
                 </div>
@@ -28,8 +27,7 @@
         <div class="col-xs-6">
             <div class="form-group has-feedback">
                 <label ng-if="isEditingHotel" class="control-label">{{'CITY' | translate}}</label>
-                <div class="pending-content"
-                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.city">
+                <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.city')">
                     <span class="pending-label">{{'PENDING_CITY' | translate}}: </span>
                     <span>{{hotel.pendingContent.address.city}}</span>
                 </div>
@@ -44,8 +42,7 @@
         <div class="col-xs-6">
             <div class="form-group has-feedback">
                 <label ng-if="isEditingHotel" class="control-label">{{'STATE' | translate}}</label>
-                <div class="pending-content"
-                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.state">
+                <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.state')">
                     <span class="pending-label">{{'PENDING_STATE' | translate}}: </span>
                     <span>{{hotel.pendingContent.address.state}}</span>
                 </div>
@@ -64,8 +61,7 @@
         <div class="col-xs-6">
             <div class="form-group has-feedback">
                 <label ng-if="isEditingHotel" class="control-label">{{'ZIP_CODE' | translate}}</label>
-                <div class="pending-content"
-                     ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.postalCode">
+                <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.postalCode')">
                     <span class="pending-label">{{'PENDING_ZIP_CODE' | translate}}: </span>
                     <span>{{hotel.pendingContent.address.postalCode}}</span>
                 </div>
@@ -78,8 +74,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'NEIGHBORHOOD' | translate}}</label>
-        <div class="pending-content"
-             ng-show="hotel.hasPendingContent && hotel.pendingContent.address && hotel.pendingContent.address.neighborhood">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.neighborhood')">
             <span class="pending-label">{{'PENDING_NEIGHBORHOOD' | translate}}: </span>
             <span>{{hotel.pendingContent.address.neighborhood}}</span>
         </div>
@@ -90,8 +85,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'HOTEL_DIP_LOCATION' | translate}}</label>
-        <div class="pending-content"
-             ng-show="hotel.hasPendingContent && pendingContent.dipLocation">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('dipLocation')">
             <span class="pending-label">{{'PENDING_HOTEL_DIP_LOCATION' | translate}}: </span>
             <span>{{hotel.pendingContent.dipLocation ? mapDipLocations[hotel.pendingContent.dipLocation].name : ''}}</span>
         </div>
@@ -106,7 +100,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'FRONT_DESK' | translate}}</label>
-        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.phone">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('phone')">
             <span class="pending-label">{{'PENDING_FRONT_DESK' | translate}}: </span>
             <span>{{hotel.pendingContent.phone}}</span>
         </div>
@@ -117,7 +111,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'ROOM_SERVICE' | translate}}</label>
-        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.roomService">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('roomService')">
             <span class="pending-label">{{'PENDING_ROOM_SERVICE' | translate}}: </span>
             <span>{{hotel.pendingContent.roomService}}</span>
         </div>
@@ -128,7 +122,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'WEBSITE' | translate}}</label>
-        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.url">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('url')">
             <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
             <span><a href="{{hotel.pendingContent.fullUrl}}" target="_blank">{{hotel.pendingContent.url}}</a></span>
         </div>
@@ -140,7 +134,7 @@
     </div>
     <div class="form-group has-feedback">
         <label ng-if="isEditingHotel" class="control-label">{{'INSTAGRAM' | translate}}</label>
-        <div class="pending-content" ng-show="hotel.hasPendingContent && hotel.pendingContent.instagram">
+        <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('instagram')">
             <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
             <span><a href="{{hotel.pendingContent.instagramUrl}}" target="_blank">{{hotel.pendingContent.instagram}}</a></span>
         </div>

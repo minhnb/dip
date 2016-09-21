@@ -66,6 +66,20 @@ dipApp.factory('hotelUtils', [
                     }
                 }
             },
+            hotelHasPendingContentByKey: function (hotel, key) {
+                if (!hotel.pendingContent) {
+                    return false;
+                }
+                var value = utils.getObjectValueByKey(hotel.pendingContent, key);
+                if (value == undefined || value == '' || value == null) {
+                    return false;
+                }
+                var currentValue = utils.getObjectValueByKey(hotel, key);
+                if (currentValue == value) {
+                    return false;
+                }
+                return true;
+            },
             convertHotel: function (hotel) {
                 hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
                 hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
@@ -79,6 +93,9 @@ dipApp.factory('hotelUtils', [
                 if (hotel.hasPendingContent && hotel.pendingContent) {
                     hotel.pendingContent = hotelUtils.convertHotel(hotel.pendingContent);
                 }
+                hotel.hasPendingContentByKey = function (key) {
+                    return hotelUtils.hotelHasPendingContentByKey(hotel, key);
+                };
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {
