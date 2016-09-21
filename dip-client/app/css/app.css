@@ -1,3 +1,10 @@
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+}
+.main-header .logo, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: inherit;
+}
 .dip-app-body {
     width: 100%;
     height: 100%;
@@ -40,6 +47,66 @@ a {
 .ui-select-container.ui-select-bootstrap .btn.btn-default, .ui-select-container.ui-select-bootstrap .btn-default-focus {
     background: transparent;
 }
+
+/*---------------------------LEFT SIDE BAR--------------------------------------*/
+.main-sidebar, .main-header .logo {
+    width: 200px;
+}
+.content-wrapper, .right-side, .main-footer, .main-header .navbar {
+    margin-left: 200px;
+}
+.sidebar-menu > li > a > .fa, .sidebar-menu > li > a > .glyphicon, .sidebar-menu > li > a > .ion,
+.sidebar-menu .treeview-menu > li > a > .fa, .sidebar-menu .treeview-menu > li > a > .glyphicon, .sidebar-menu .treeview-menu > li > a > .ion {
+    visibility: hidden;
+}
+.sidebar {
+    font-weight: 300;
+}
+ul.sidebar-menu > li > a {
+    padding-left: 30px;
+    padding-right: 15px;
+}
+.sidebar-menu .treeview-menu > li > a {
+    padding-left: 40px;
+}
+.main-sidebar {
+    background-color: #1A4448 !important;
+}
+.sidebar-collapse .sidebar-menu > li > a > .fa, .sidebar-collapse .sidebar-menu > li > a > .glyphicon, .sidebar-collapse .sidebar-menu > li > a > .ion,
+.sidebar-collapse .sidebar-menu .treeview-menu > li > a > .fa, .sidebar-collapse .sidebar-menu .treeview-menu > li > a > .glyphicon, .sidebar-collapse .sidebar-menu .treeview-menu > li > a > .ion {
+    visibility: visible;
+}
+.sidebar-collapse ul.sidebar-menu > li > a {
+    padding-left: 15px;
+}
+.sidebar-collapse .sidebar-menu .treeview-menu > li > a {
+    padding-left: 15px;
+}
+
+.user-panel {
+    margin-top: 15px;
+}
+.user-panel > .info {
+    left: auto;
+    margin-top: 10px;
+    padding: 5px;
+    position: static;
+    border-bottom: 1px solid #537275;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+.user-panel > .info > p {
+    white-space: normal;
+    font-weight: 300;
+}
+.user-panel > .info i.fa-circle {
+    font-size: 8px;
+}
+.user-panel > .info a {
+    color: #aaa;
+    font-size: 10px;
+}
+/*-----------------------------END LEFT SIDE BAR------------------------------------*/
 
 /*-------------------------HOTEL PROFILE--------------------------*/
 .pull-right .switch {

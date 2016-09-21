@@ -172,6 +172,13 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.getListHotel($scope.key, $scope.filterHotelStatus)
                     .success(function (data, status) {
+                        if ($scope.key == $scope.KEY_ALL || $scope.key == $scope.KEY_INITIAL) {
+                            if (data.length == 1) {
+                                var hotel = data[0];
+                                $scope.goToPath('properties/hotel/' + hotel.id);
+                                return;
+                            }
+                        }
                         $scope.displayListHotel(data);
                         $scope.stopSpin();
 

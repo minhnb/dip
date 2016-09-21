@@ -13,6 +13,10 @@ var angular_translate_en = {
     INITIAL_HOTELS: "Initial",
     ON_AIR_HOTELS: "On air",
     SETTINGS: "Settings",
+    PROPERTY_PROFILE: "Property Profile",
+    RESERVATIONS: "Reservations",
+    CALENDAR: "Calendar",
+    MESSAGES: "Messages",
 
     ONLINE: "Online",
     SEARCH: "Search...",
