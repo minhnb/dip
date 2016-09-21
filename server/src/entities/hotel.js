@@ -3,6 +3,7 @@
 const hotelService = require('./hotelService');
 
 const utils = require('../helpers/utils');
+const db = require('../db');
 
 function convertHotel(hotel, user) {
     let data = {
@@ -33,7 +34,7 @@ function convertHotel(hotel, user) {
         dipLocation: hotel.dipLocation,
         active: hotel.active
     };
-    if (user && hasPermission(user, hotel)) {
+    if ((user instanceof db.users) && hasPermission(user, hotel)) {
         data.submission = hotel.submission;
         let pendingContent = Object.assign({}, hotel.pendingContent.toObject());
         Object.keys(pendingContent).forEach(key => {
