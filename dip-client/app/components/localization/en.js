@@ -163,6 +163,7 @@ var angular_translate_en = {
     HOTEL_APPROVE_CONFIRM: "Do you want to approve hotel {{ name }} ?",
     HOTEL_UNAPPROVE_CONFIRM: "Do you want to decline hotel {{ name }} ?",
     HOTEL_SUBMIT_CONFIRM: "Do you want to submit hotel {{ name }} ?",
+    HOTEL_BOX_PROMPT: "This is your hotel profile. The information you enter here will appear on the app.",
 
     ERROR_INVALID_URL: "Invalid url",
     ERROR_INVALID_INSTAGRAM: "Instagram handle must like @username or #hashtag",

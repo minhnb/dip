@@ -156,6 +156,12 @@ resourcesServices.createHotel = function (user, hotel) {
     });
 };
 
+resourcesServices.initEmptyHotel = function (user) {
+    return resourcesServices.dbInitEmptyHotel(user).then(hotel => {
+        return entities.hotel(hotel, user);
+    });
+};
+
 resourcesServices.getHotelById = function (user, hotelId) {
     return entities.hotel(resourcesServices.dbGetHotelById(hotelId, user), user);
 };
@@ -290,6 +296,14 @@ resourcesServices.getPassesByHotel = function (hotelId) {
 
 resourcesServices.dbCreateHotel = function (hotel, user) {
     hotel = resourcesServices.initNormalHotel(hotel);
+    if (user.isPartner()) {
+        hotel.owner = user._id;
+    }
+    return hotel.save();
+};
+
+resourcesServices.dbInitEmptyHotel = function (user) {
+    let hotel = new db.hotels();
     if (user.isPartner()) {
         hotel.owner = user._id;
     }
@@ -635,7 +649,15 @@ resourcesServices.initNormalHotel = function (update, hotel) {
         if (update[field] !== undefined) hotel[field] = update[field];
     });
 
+    resourcesServices.validateHotel(hotel);
+
     return hotel;
+};
+
+resourcesServices.validateHotel = function (hotel) {
+    if (!hotel.name) {
+        throw new DIPError(dipErrorDictionary.HOTEL_INVALID_NAME);
+    }
 };
 
 resourcesServices.getHotelCoordinates = function (address) {

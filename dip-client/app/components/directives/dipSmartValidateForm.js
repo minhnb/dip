@@ -8,6 +8,12 @@ dipApp.directive('dipSmartValidateForm', ['$location', function ($location) {
                         $(this).attr('data-error', $scope.translate('ERROR_INPUT_REQUIRED'));
                     }
                 });
+                $(element).find('.input-group input').focus(function () {
+                    $(this).closest('.input-group').find('.input-group-addon').addClass('focus');
+                });
+                $(element).find('.input-group input').blur(function () {
+                    $(this).closest('.input-group').find('.input-group-addon').removeClass('focus');
+                });
                 $(element).find('input').keydown(function (e) {
                     var group = $(this).closest('.form-group');
                     group.find('.form-control-feedback')

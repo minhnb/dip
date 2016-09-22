@@ -10,7 +10,7 @@ const utils = require('../helpers/utils');
 const hotelSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     details: String,
     url: String,
@@ -97,27 +97,21 @@ const hotelSchema = new Schema({
         dipLocation: String
     },
     submission: {
-        type: {
-            status: {
-                type: String,
-                enum: utils.objectToArray(submissionStatus),
-                default: submissionStatus.INITIAL,
-                required: true
-            },
-            failReason: String
+        status: {
+            type: String,
+            enum: utils.objectToArray(submissionStatus),
+            default: submissionStatus.INITIAL,
+            required: true
         },
-        required: true
+        failReason: String
     },
     banned: {
-        type: {
-            status: {
-                type: Boolean,
-                required: true,
-                default: false
-            },
-            reason: String
+        status: {
+            type: Boolean,
+            required: true,
+            default: false
         },
-        required: true
+        reason: String
     }
 }, {
     timestamps: true

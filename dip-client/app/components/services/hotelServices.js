@@ -7,6 +7,9 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             createHotel: function (hotel) {
                 return $http.post(apiHotelUrl, hotel);
             },
+            initEmptyHotel: function () {
+                return $http.post(apiHotelUrl + '/empty', {});
+            },
             updateHotelImage: function (hotelId, image) {
                 var fd = new FormData();
                 fd.append('image', image);

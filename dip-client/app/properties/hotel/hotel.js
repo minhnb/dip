@@ -3,7 +3,7 @@
 angular.module('dipApp.properties_hotel', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/properties/hotel/:hotelId', {
-            templateUrl: '/properties/hotel/hotel.html',
+            templateUrl: '/properties/hotel/property-profile.html',
             controller: 'HotelProfileController'
         });
     }])
@@ -91,6 +91,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     .success(function (data, status) {
                         var hotel = hotelUtils.convertHotel(data);
                         utils.updateObjectInfo($scope.hotel, hotel, ['services']);
+                        utils.updateObjectInfo($scope.pureHotel, hotel, ['services']);
                         $scope.stopSpin();
                     })
                     .error(function (data, status) {
@@ -111,6 +112,13 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
                             formValidatorUtils.initDIPDefaultFormValidator($('form[name="edit-hotel"]'), $scope.editHotel);
                             formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-module"]'), $scope.createModule);
+                            $('#image_box_hotel').trigger('setImage', [hotel.imageUrl, hotel.name]);
+                            $('form[name="edit-hotel"]').change(function () {
+                                $scope.isEditingHotel = true;
+                                setTimeout(function () {
+                                    $scope.$apply();
+                                }, 0);
+                            });
                         });
                     });
             };
@@ -269,10 +277,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 utils.updateObjectInfo($scope.hotel, hotel, ['services']);
                 $scope.stopSpin();
                 $scope.isEditingHotel = false;
+                $('form[name="edit-hotel"]').validator('reset');
             };
 
             $scope.cancelEditHotel = function () {
                 $scope.isEditingHotel = false;
+                $('form[name="edit-hotel"]').validator('reset');
                 utils.updateObjectInfo($scope.hotel, $scope.pureHotel, ['services']);
             };
 

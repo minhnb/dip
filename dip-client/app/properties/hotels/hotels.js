@@ -177,6 +177,16 @@ angular.module('dipApp.properties_hotels', ['ngRoute'])
                                 var hotel = data[0];
                                 $scope.goToPath('properties/hotel/' + hotel.id);
                                 return;
+                            } else {
+                                if (data.length == 0 && $scope.currentUser.role == ROLE_PARTNER) {
+                                    return hotelService.initEmptyHotel()
+                                        .success(function (data, status) {
+                                            $scope.goToPath('properties/hotel/' + data.id);
+                                        })
+                                        .error(function (data, status) {
+                                            $scope.handleError(data);
+                                        });
+                                }
                             }
                         }
                         $scope.displayListHotel(data);

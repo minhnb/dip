@@ -12,7 +12,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-envelope"></i>
                     </div>
-                    <input type="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
+                    <input type="email" name="email" class="form-control" placeholder="{{'EMAIL' | translate}}" ng-model="username"
                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$"
                            data-error="{{'ERROR_INVALID_EMAIL' | translate}}" required>
                 </div>
@@ -24,7 +24,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-lock"></i>
                     </div>
-                    <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password"
+                    <input type="password" name="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" ng-model="password"
                            required>
                 </div>
                 <span class="glyphicon form-control-feedback"></span>

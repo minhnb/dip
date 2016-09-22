@@ -1,0 +1,23 @@
+<div class="box box-info list-hotel hotel-profile" ng-show="isShowingHotelProfile">
+    <div class="box-header with-border">
+        <div class="box-prompt">
+            <span>{{'HOTEL_BOX_PROMPT' | translate}}</span>
+        </div>
+        <div class="pull-right" ng-show="false">
+            <ng-include src="'/properties/hotels/hotel-buttons.html'"></ng-include>
+        </div>
+    </div>
+    <div class="box-body">
+        <form role="form" dip-smart-validate-form name="edit-hotel" class="form-horizontal">
+            <div class="row create-edit-box">
+                <ng-include src="'/properties/hotel/hotel-form-content-horizontal.html'"></ng-include>
+            </div>
+            <div class="text-center row-button" ng-show="isEditingHotel">
+                <button type="button" class="btn btn-default" ng-click="cancelEditHotel()">{{'CANCEL' | translate}}
+                </button>
+                <button type="submit" class="btn btn-info">{{'SAVE' | translate}}</button>
+            </div>
+        </form>
+        <ng-include src="'/properties/hotel/list-module.html'"></ng-include>
+    </div>
+</div>

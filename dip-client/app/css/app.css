@@ -2,30 +2,43 @@ body {
     font-family: 'Lato', sans-serif;
     font-size: 13px;
 }
+
 .main-header .logo, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: inherit;
 }
+
 .dip-app-body {
     width: 100%;
     height: 100%;
 }
+
 a {
     cursor: pointer;
 }
+
+image, img {
+    color: #aaaaaa;
+    font-size: 10px;
+}
+
 .dip-report-pass {
     min-width: 150px;
 }
+
 .dip-report-pass > span {
     margin: 5px;
     display: inline-block;
 }
+
 .dip-report-pass > span:first-child {
     margin-left: 0;
     width: 60px;
 }
+
 .dip-report-pass > span:nth-child(2) {
     width: 40px;
 }
+
 .dip-report-pass > span:last-child {
     margin-right: 0;
 }
@@ -41,44 +54,59 @@ a {
 .noty_message form {
     margin-top: 15px;
 }
+
 .noty_message form > .form-group {
     margin-bottom: 0;
 }
+
 .ui-select-container.ui-select-bootstrap .btn.btn-default, .ui-select-container.ui-select-bootstrap .btn-default-focus {
     background: transparent;
+}
+
+.input-group-addon.focus {
+    border-color: #3c8dbc;
 }
 
 /*---------------------------LEFT SIDE BAR--------------------------------------*/
 .main-sidebar, .main-header .logo {
     width: 200px;
 }
+
 .content-wrapper, .right-side, .main-footer, .main-header .navbar {
     margin-left: 200px;
 }
+
 .sidebar-menu > li > a > .fa, .sidebar-menu > li > a > .glyphicon, .sidebar-menu > li > a > .ion,
 .sidebar-menu .treeview-menu > li > a > .fa, .sidebar-menu .treeview-menu > li > a > .glyphicon, .sidebar-menu .treeview-menu > li > a > .ion {
     visibility: hidden;
 }
+
 .sidebar {
     font-weight: 300;
 }
+
 ul.sidebar-menu > li > a {
     padding-left: 30px;
     padding-right: 15px;
 }
+
 .sidebar-menu .treeview-menu > li > a {
     padding-left: 40px;
 }
+
 .main-sidebar {
     background-color: #1A4448 !important;
 }
+
 .sidebar-collapse .sidebar-menu > li > a > .fa, .sidebar-collapse .sidebar-menu > li > a > .glyphicon, .sidebar-collapse .sidebar-menu > li > a > .ion,
 .sidebar-collapse .sidebar-menu .treeview-menu > li > a > .fa, .sidebar-collapse .sidebar-menu .treeview-menu > li > a > .glyphicon, .sidebar-collapse .sidebar-menu .treeview-menu > li > a > .ion {
     visibility: visible;
 }
+
 .sidebar-collapse ul.sidebar-menu > li > a {
     padding-left: 15px;
 }
+
 .sidebar-collapse .sidebar-menu .treeview-menu > li > a {
     padding-left: 15px;
 }
@@ -86,6 +114,7 @@ ul.sidebar-menu > li > a {
 .user-panel {
     margin-top: 15px;
 }
+
 .user-panel > .info {
     left: auto;
     margin-top: 10px;
@@ -95,23 +124,28 @@ ul.sidebar-menu > li > a {
     margin-bottom: 20px;
     padding-bottom: 10px;
 }
+
 .user-panel > .info > p {
     white-space: normal;
     font-weight: 300;
 }
+
 .user-panel > .info i.fa-circle {
     font-size: 8px;
 }
+
 .user-panel > .info a {
     color: #aaa;
     font-size: 10px;
 }
+
 /*-----------------------------END LEFT SIDE BAR------------------------------------*/
 
 /*-------------------------HOTEL PROFILE--------------------------*/
 .pull-right .switch {
     float: left;
 }
+
 .image-box {
     width: 100%;
     min-height: 15vw;
@@ -119,6 +153,17 @@ ul.sidebar-menu > li > a {
     position: relative;
     margin-bottom: 10px;
     cursor: pointer;
+    background-color: #FAFAFA;
+}
+
+.image-box .upload-icon {
+    color: #dddddd;
+    font-size: 70px;
+    left: 50%;
+    opacity: 0.5;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .create-edit-box label {
@@ -129,9 +174,11 @@ ul.sidebar-menu > li > a {
 .light-font, .light-font h1, .light-font h2, .light-font h3, .light-font h4, .light-font p, .light-font span {
     /*font-weight: 300;*/
 }
+
 .lead {
     font-weight: normal;
 }
+
 .dip-btn-app {
     color: #fff;
     font-size: 12px;
@@ -142,38 +189,49 @@ ul.sidebar-menu > li > a {
     position: relative;
     text-align: center;
 }
+
 .dip-btn-app > .fa, .dip-btn-app > .glyphicon, .dip-btn-app > .ion {
     display: block;
     font-size: 20px;
 }
+
 .btn-big {
     font-size: 24px;
 }
+
 .btn-big span {
     width: 24px;
 }
+
 .list-hotel .box-body > .row {
     margin-bottom: 30px;
 }
+
 .list-hotel .box-body > .row:last-child {
     margin-bottom: 0;
 }
+
 .list-hotel .lead {
     float: left;
     cursor: pointer;
 }
+
 .box {
     border-radius: 0;
 }
+
 .list-hotel .pull-right button.btn {
     margin-left: 10px;
 }
+
 .list-hotel .hotel-info {
     clear: both;
 }
+
 .list-hotel .hotel-info > .row > div:first-child {
     font-weight: 600;
 }
+
 .list-hotel .hotel-info > .row > div:last-child {
     /*font-weight: 300;*/
     text-overflow: ellipsis;
@@ -182,14 +240,17 @@ ul.sidebar-menu > li > a {
     /*white-space: nowrap;*/
     min-height: 36px;
 }
+
 .list-hotel .hotel-info > .row {
     line-height: 1.42857;
     padding-left: 15px;
 }
+
 .list-hotel .hotel-info > .row > div {
     border-top: 1px solid #f4f4f4;
     padding: 8px;
 }
+
 .list-hotel img {
     border: 1px solid #cccccc;
 }
@@ -197,14 +258,17 @@ ul.sidebar-menu > li > a {
 .list-hotel.hotel-profile .hotel-info > .row:first-child > div {
     border-top: none;
 }
+
 .pending-content, .approved-content {
     font-size: 12px;
     color: #666;
 }
+
 .pending-content .pending-label, .approved-content .approved-label {
     color: #aaa;
 }
-.form-group .pending-content  {
+
+.form-group .pending-content {
     margin-left: 10px;
     display: inline-block;
 }
@@ -224,35 +288,43 @@ ul.sidebar-menu > li > a {
 .row-button {
     padding: 10px;
 }
+
 .row-button button {
     min-width: 70px;
     margin-right: 10px;
 }
+
 .pass-box {
     margin-top: 20px;
     box-shadow: none;
 }
+
 .passes-row {
     height: 1px;
     border-top: 1px solid #d2d6de;
     margin: 15px 5% 0 5%;
 }
+
 .row.pass-info:last-child .passes-row {
     border: none;
 }
+
 .module-row {
     height: 1px;
     border-top: 2px solid #c0c0c0;
     margin-top: 15px;
 }
+
 .row.module-info:last-child .module-row {
     border: none;
 }
+
 .box.module-box {
     margin-top: 30px;
     border-top: 3px solid #c0c0c0;
     box-shadow: none;
 }
+
 .box.module-box .box-header, .box.module-box .box-body {
     padding-right: 0;
 }
@@ -262,11 +334,13 @@ ul.sidebar-menu > li > a {
     margin-bottom: 5px;
     box-shadow: none;
 }
+
 .box.calendar-pass .box-header {
     padding-bottom: 5px;
     padding-top: 5px;
     cursor: pointer;
 }
+
 .box.calendar-pass .box-header .box-title {
     font-size: 14px;
     max-width: calc(100% - 120px);
@@ -274,9 +348,11 @@ ul.sidebar-menu > li > a {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .box.calendar-pass .box-header .fa-angle-collapse-button {
     min-width: 20px;
 }
+
 .pass-color {
     display: inline-block;
     width: 10px;
@@ -290,55 +366,68 @@ ul.sidebar-menu > li > a {
     color: #c2185b;
     border-color: #c2185b;
 }
+
 .daybed {
     background-color: #0097a7;
     color: #0097a7;
     border-color: #0097a7;
 }
+
 .cabana {
     background-color: #009e11;
     color: #009e11;
     border-color: #009e11;
 }
+
 .box.calendar-pass.pass-content {
     border-bottom: 1px solid #d2d6de;
 }
+
 .box.calendar-pass > .box-header > .pass-time-period {
     display: inline-block;
     font-size: 12px;
     float: right;
 }
+
 .box.calendar-pass > .box-body.main-box-body {
     padding-left: 20px;
 }
+
 .dip-vertical-checkbox {
     display: inline-block;
     margin: 0 8px;
 }
+
 .dip-vertical-checkbox:first-child {
     margin-left: 0;
 }
+
 .dip-vertical-checkbox span {
     display: block;
     font-size: 12px;
     text-align: center;
 }
+
 .box.calendar-pass .box-body > .row {
     margin-bottom: 15px;
 }
+
 label.time-label {
     font-size: 12px;
     padding-top: 10px;
 }
+
 .calendar-selected-day {
     padding: 20px;
     font-size: 18px;
 }
+
 .calendar-row {
     border-bottom: 1px solid #cccccc;
     border-right: 1px solid #cccccc;
     display: table;
 }
+
 .calendar-cell {
     border-left: 1px solid #cccccc;
     float: left;
@@ -347,17 +436,20 @@ label.time-label {
     position: relative;
     padding-top: 25px;
 }
+
 .calendar-header .calendar-cell {
     border-top: 3px solid #cccccc;
     padding: 15px;
     min-height: 1px;
 }
+
 .calendar-row span.day-number {
     position: absolute;
     right: 5px;
     top: 5px;
     font-size: 12px;
 }
+
 .calendar-line {
     border-radius: 0;
     display: block;
@@ -366,79 +458,100 @@ label.time-label {
     width: 101%;
     margin-left: -1px;
 }
+
 .pass-calendar {
 
 }
+
 .pass-calendar .fc-view-container .fc-view > table {
     border-color: #cccccc;
     border-top-width: 3px;
 }
+
 .pass-calendar .fc-view-container .fc-view .fc-head-container table thead th {
     padding-top: 10px;
     padding-bottom: 10px;
     /*font-weight: 300;*/
     font-weight: normal;
 }
+
 .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover {
     border-color: #cccccc;
 }
+
 .fc th {
     border-top-width: 3px;
 }
+
 .pass-calendar .fc-widget-header {
     background: none;
 }
+
 .pass-calendar .fc-row:first-child > table {
     border-top: 3px solid #cccccc;
 }
+
 .pass-calendar .fc-event {
     height: 5px;
     border-radius: 0;
 }
+
 .pass-calendar .fc-day-grid-event {
     margin: 0 0 5px -1px;
 }
+
 .pass-calendar .fc-toolbar h2 {
     /*font-weight: 300;*/
     font-size: 18px;
 }
+
 .pass-calendar .fc-day-number {
     font-size: 12px;
     padding: 5px;
 }
+
 .pass-calendar .fc-toolbar button {
     border-radius: 0 !important;
     box-shadow: none;
 }
+
 .fc-button {
     background-color: transparent;
     border-color: #cccccc;
 }
+
 .fc-button:disabled {
     background-color: #e9e9e9;
 }
+
 .pass-calendar .fc-icon-left-single-arrow::after, .pass-calendar .fc-icon-right-single-arrow::after {
     font-weight: 100 !important;
     color: #ddd;
 }
+
 .pass-calendar .fc-scroller.fc-day-grid-container {
     height: auto !important;
     overflow: hidden !important;
 }
+
 .pass-calendar .fc-event-container .tooltip {
     position: fixed;
 }
-.pass-box .pass-tooltip-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner{
+
+.pass-box .pass-tooltip-container .tooltip .tooltip-inner, .calendar-pass.pass-content .tooltip .tooltip-inner {
     background-color: #3c8dbc;
     font-size: 12px;
-    white-space:pre-wrap;
+    white-space: pre-wrap;
 }
+
 .pass-calendar .pass-tooltip-container .tooltip .tooltip-arrow, .calendar-pass.pass-content .tooltip .tooltip-arrow {
     border-top-color: #3c8dbc;
 }
+
 .calendar-pass.pass-content .tooltip.top {
     left: 0 !important;
 }
+
 a.back-button {
     color: inherit;
     font-size: 20px;
@@ -446,15 +559,19 @@ a.back-button {
     margin-right: 5px;
     padding: 5px;
 }
+
 .form-control[disabled], fieldset[disabled] .form-control {
     cursor: inherit !important;
 }
+
 .form-add-object {
     margin-bottom: 20px;
 }
+
 input.form-control.datepicker[readonly], input.form-control.user-birthday[readonly], input.form-control.timepicker[readonly] {
     background-color: #fff;
 }
+
 .label.hotel-status {
     display: inline-block;
     font-size: 11px;
@@ -462,10 +579,12 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     padding: 5px;
     font-weight: 500;
 }
+
 .box .label.hotel-status {
     float: left;
     margin-right: 5px;
 }
+
 .hotel-header .pending-content {
     display: block;
     float: left;
@@ -473,123 +592,193 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     margin-top: -15px;
     width: 100%;
 }
+
 .hotel-header .lead {
     margin-right: 7px;
 }
+
 .hotel-header .pull-right {
     margin-bottom: 5px;
 }
+
 .box .nav-tabs-custom > .nav-tabs > li {
     margin-top: -3px;
     border-top-width: 3px;
 }
+
 .box .nav-tabs-custom > .nav-tabs > li.active {
     border-top-color: #00a65a;
 }
+
 .box .nav-tabs-custom .btn.dip-btn-app {
     margin: 10px;
 }
+
+.hotel-profile .form-horizontal .form-control {
+    border: none;
+    color: #666666;
+}
+
+.hotel-profile .form-horizontal .control-label {
+    text-align: left;
+    font-weight: 500;
+    padding-left: 0px;
+}
+
+.hotel-profile .form-horizontal .form-group.has-error label, .hotel-profile .form-horizontal .form-group.has-success label {
+    color: inherit;
+}
+
+.hotel-profile .form-horizontal .form-group {
+    margin-bottom: inherit;
+}
+
+.hotel-profile .form-horizontal .ui-select-container.ui-select-bootstrap i.caret.pull-right {
+    display: none;
+}
+
+.box .box-prompt {
+    float: left;
+    padding: 5px 5px 5px 30px;
+}
+
+.hotel-profile .form-horizontal {
+    padding-left: 45px;
+}
+
+.box.hotel-profile {
+    border: none;
+}
+
+.hotel-profile .form-horizontal dip-image-box button.btn {
+    display: none;
+}
+
 /*-------------------------END HOTEL PROFILE--------------------------*/
 
 /*-------------------LOGIN - REGISTER--------------------------*/
 .modal .login-box {
     margin: 10px auto;
 }
-.login-box, .register-box  {
+
+.login-box, .register-box {
     margin: 50px auto;
 }
+
 .register-box form, .login-box form {
     margin-bottom: 15px;
 }
+
 form .checkbox.icheck label {
     color: #666;
 }
+
 .login-box a {
     line-height: 30px;
 }
+
 .register-logo img, .login-logo img {
     width: 40%;
 }
+
 .row.text-center [class*="col-"] {
     display: inline-block;
     float: none;
 }
+
 .input-group .input-group-addon i {
     min-width: 14px;
 }
+
 .has-error .input-group .input-group-addon {
     border-color: #dd4b39;
 }
+
 .has-success .input-group .input-group-addon {
     border-color: #00a65a;
 }
+
 .has-feedback select.form-control {
     padding-right: 12px;
 }
-    /*-------------------END LOGIN - REGISTER--------------------------*/
+
+/*-------------------END LOGIN - REGISTER--------------------------*/
 
 /*------------------------USER PROFILE-----------------------------*/
 .user-profile .box-body {
     padding-top: 30px;
     padding-bottom: 20px;
 }
+
 .user-profile .list-group-item {
     padding: 15px 20px 5px 20px;
 }
+
 .user-profile .list-group-item > * {
     display: inline-block;
 }
+
 .user-profile .list-group-item > *:first-child {
     margin-right: 20px;
 }
+
 .user-profile .list-group-item:first-child {
     border-top: none;
 }
+
 .user-profile .list-group-item:last-child {
     border-bottom: none;
 }
+
 .user-profile .box-tools {
     position: absolute;
     right: 7px;
     top: 7px;
     z-index: 1;
 }
+
 .user-profile .form-group {
     margin-bottom: 10px;
     width: 100%;
     display: block;
     margin-left: -13px;
 }
+
 .user-profile .form-group[name="full-name"] {
     margin: 0 auto;
     max-width: 300px;
 }
+
 .user-profile .row.text-center.row-button {
     clear: both;
 }
+
 .profile-user-img {
     margin-bottom: 15px;
     width: 100px;
     height: 100px;
 }
+
 .user-profile .image-box {
     border-color: transparent;
     min-height: 1px;
 }
+
 .user-profile dip-image-box button {
     display: none;
 }
+
 .user-panel > .image > img {
     width: 45px;
     height: 45px;
 }
+
 .sidebar-collapse .user-panel > .image > img {
     width: 30px;
     height: 30px;
 }
+
 /*------------------------END USER PROFILE-----------------------------*/
-
-
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
     margin-top: 15px;
@@ -599,29 +788,36 @@ form .checkbox.icheck label {
     .row.row-grid [class*="col-lg-"] + [class*="col-lg-"] {
         margin-top: 0;
     }
+
     .list-hotel .hotel-info {
         clear: none;
     }
 }
+
 @media (min-width: 992px) {
     .row.row-grid [class*="col-md-"] + [class*="col-md-"] {
         margin-top: 0;
     }
+
     .list-hotel .hotel-info {
         clear: none;
     }
 }
+
 @media (min-width: 768px) {
     .row.row-grid [class*="col-sm-"] + [class*="col-sm-"] {
         margin-top: 0;
     }
+
     .box .nav-tabs-custom > .nav-tabs > li > a {
         min-width: 120px;
     }
+
     .box .nav-tabs-custom > .nav-tabs > li > a {
         padding: 30px 15px;
         text-align: center;
     }
+
     .label.hotel-status {
         margin-top: 4px;
     }
