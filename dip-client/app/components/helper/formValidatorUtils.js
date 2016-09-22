@@ -10,6 +10,7 @@ dipApp.factory('formValidatorUtils', [
                             formValidatorUtils.handleSubmitForm(e, submitFunction);
                         }
                 });
+                $(form).validator('reset');
             },
             initDIPDefaultFormValidator: function (form, submitFunction) {
                 formValidatorUtils.initDIPFormValidatorWithOptions(form, {disable: false, delay: 0}, submitFunction);

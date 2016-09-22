@@ -334,6 +334,11 @@ module.exports = {
         code: "STRIPE_INVALID_TOKEN",
         details: "Invalid stripe token"
     },
+    HOTEL_INVALID_NAME: {
+        status: 400,
+        code: "HOTEL_INVALID_NAME",
+        details: "Invalid hotel name"
+    },
     HOTEL_INVALID_ADDRESS: {
         status: 400,
         code: "HOTEL_INVALID_ADDRESS",

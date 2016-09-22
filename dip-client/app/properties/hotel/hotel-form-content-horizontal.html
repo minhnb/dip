@@ -1,0 +1,153 @@
+<div class="col-md-8">
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'HOTEL_NAME' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" required class="form-control" ng-model="hotel.name"
+                   placeholder="{{'HOTEL_NAME' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('name')">
+                <span class="pending-label">{{'PENDING_HOTEL_NAME' | translate}}: </span>
+                <span>{{hotel.pendingContent.name}}</span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'STREET' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" required class="form-control" ng-model="hotel.address.street"
+                   placeholder="{{'STREET' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.street')">
+                <span class="pending-label">{{'PENDING_STREET' | translate}}: </span>
+                <span>{{hotel.pendingContent.address.street}}</span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group has-feedback">
+                <label class="col-sm-2 control-label">{{'CITY' | translate}}</label>
+                <div class="col-sm-10">
+                    <input type="text" required class="form-control" ng-model="hotel.address.city"
+                           placeholder="{{'CITY' | translate}}">
+                    <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.city')">
+                        <span class="pending-label">{{'PENDING_CITY' | translate}}: </span>
+                        <span>{{hotel.pendingContent.address.city}}</span>
+                    </div>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group has-feedback">
+                <label class="col-sm-2 control-label">{{'STATE' | translate}}</label>
+                <div class="col-sm-10">
+                    <ui-select ng-model="hotel.address.state" theme="bootstrap" on-select="stateSelected()">
+                        <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="state in usStates | filter: $select.search">
+                            <div ng-bind-html="state | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <input type="text" required class="form-control" ng-model="hotel.address.state" ng-show="false"
+                           placeholder="{{'STATE' | translate}}">
+                    <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.state')">
+                        <span class="pending-label">{{'PENDING_STATE' | translate}}: </span>
+                        <span>{{hotel.pendingContent.address.state}}</span>
+                    </div>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">{{'ZIP_CODE' | translate}}</label>
+                <div class="col-sm-8">
+                    <input type="text" required class="form-control" ng-model="hotel.address.postalCode"
+                           placeholder="{{'ZIP_CODE' | translate}}">
+                    <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.postalCode')">
+                        <span class="pending-label">{{'PENDING_ZIP_CODE' | translate}}: </span>
+                        <span>{{hotel.pendingContent.address.postalCode}}</span>
+                    </div>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'NEIGHBORHOOD' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="hotel.address.neighborhood"
+                   placeholder="{{'NEIGHBORHOOD' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.neighborhood')">
+                <span class="pending-label">{{'PENDING_NEIGHBORHOOD' | translate}}: </span>
+                <span>{{hotel.pendingContent.address.neighborhood}}</span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'FRONT_DESK' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="hotel.phone"
+                   placeholder="{{'FRONT_DESK' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('phone')">
+                <span class="pending-label">{{'PENDING_FRONT_DESK' | translate}}: </span>
+                <span>{{hotel.pendingContent.phone}}</span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'ROOM_SERVICE' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="hotel.roomService"
+                   placeholder="{{'ROOM_SERVICE' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('roomService')">
+                <span class="pending-label">{{'PENDING_ROOM_SERVICE' | translate}}: </span>
+                <span>{{hotel.pendingContent.roomService}}</span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'WEBSITE' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="hotel.url"
+                   placeholder="{{'WEBSITE' | translate}}"
+                   pattern="^(http[s]?:\/\/)?([0-9a-z\-]+\.)+[0-9a-z\-]+(\/[^/\s]+)*\/?([?#].*)?$"
+                   data-error="{{'ERROR_INVALID_URL' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('url')">
+                <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
+                <span><a href="{{hotel.pendingContent.fullUrl}}" target="_blank">{{hotel.pendingContent.url}}</a></span>
+            </div>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="col-sm-2 control-label">{{'INSTAGRAM' | translate}}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="hotel.instagram"
+                   placeholder="{{'INSTAGRAM' | translate}}" pattern="^[@#][^@#]+"
+                   data-error="{{'ERROR_INVALID_INSTAGRAM' | translate}}">
+            <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('instagram')">
+                <span class="pending-label">{{'PENDING_WEBSITE' | translate}}: </span>
+                <span><a href="{{hotel.pendingContent.instagramUrl}}" target="_blank">{{hotel.pendingContent.instagram}}</a></span>
+            </div>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <dip-image-box class="form-group" id="image_box_hotel"
+                   data-title="{{'PROFILE_PICTURE' | translate}}"
+                   data-alt="Hotel Profile Picture"></dip-image-box>
+</div>

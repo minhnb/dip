@@ -22,7 +22,11 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                 }
                 $(element).find('.image-box img').load(function () {
                     $(element).find('.image-box').css({
-                        'min-height': '1px'
+                        'min-height': '1px',
+                        'border': 'none'
+                    });
+                    $(element).find('.image-box .upload-icon').css({
+                        'display': 'none'
                     });
                 });
                 $(element).bind('clearImageBox', function () {
@@ -31,14 +35,22 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                     $(element).find('.image-box img').attr('src', '');
                     $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_UPLOAD_PICTURE'));
                     $(element).find('.image-box').css({
-                        'min-height': ''
+                        'min-height': '',
+                        'border': 'inherit'
+                    });
+                    $(element).find('.image-box .upload-icon').css({
+                        'display': 'inherit'
                     });
                 });
                 $(element).bind('setImage', function (event, imageUrl, name) {
                     $(element).find('.image-box img').attr('alt', name + $scope.translate('PROFILE_PICTURE'));
                     if (imageUrl) {
                         $(element).find('.image-box').css({
-                            'min-height': ''
+                            'min-height': '',
+                            'border': 'none'
+                        });
+                        $(element).find('.image-box .upload-icon').css({
+                            'display': 'none'
                         });
                         $(element).find('.image-box img').attr('src', imageUrl);
                         $(element).find('.image-box img').show();
