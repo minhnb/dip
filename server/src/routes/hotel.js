@@ -21,6 +21,13 @@ router
             ctx.body = await(resourcesServices.createHotel(user, hotel));
         })
     )
+    .post('init empty hotel', '/empty',
+        auth.isPartner,
+        async(ctx => {
+            let user = ctx.state.user;
+            ctx.body = await(resourcesServices.initEmptyHotel(user));
+        })
+    )
     .get('get hotel by id', '/:hotelId',
         async(ctx => {
             let user = ctx.state.user,
