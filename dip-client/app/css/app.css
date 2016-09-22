@@ -645,7 +645,11 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 .hotel-profile .form-horizontal {
     padding-left: 45px;
 }
-
+.hotel-profile .form-horizontal .form-control {
+    font-size: inherit;
+    height: auto;
+    padding: 7px 0 0 0;
+}
 .box.hotel-profile {
     border: none;
 }

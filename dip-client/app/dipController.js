@@ -72,7 +72,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
             return userService.getUserInfo()
                 .success(function (data, status) {
                     var convertedUser = userUtils.convertUser(data.user);
-                    utils.updateObjectInfo($scope.currentUser, convertedUser);
+                    $scope.currentUser = utils.copyObject(convertedUser);
                     userService.getConfigs()
                         .success(function (data, status) {
                             $scope.usStates = data.country.states;

@@ -80,6 +80,14 @@ dipApp.factory('hotelUtils', [
                 }
                 return true;
             },
+            initEmptyStringForUndefinedField: function (hotel) {
+                if (!hotel.url) {
+                    hotel.url = '';
+                }
+                if (!hotel.instagram) {
+                    hotel.instagram = '';
+                }
+            },
             convertHotel: function (hotel) {
                 hotel.fullAddress = hotelUtils.getHotelFullAddress(hotel);
                 hotel.instagramUrl = hotelUtils.getInstagramUrl(hotel.instagram);
@@ -96,6 +104,7 @@ dipApp.factory('hotelUtils', [
                 hotel.hasPendingContentByKey = function (key) {
                     return hotelUtils.hotelHasPendingContentByKey(hotel, key);
                 };
+                hotelUtils.initEmptyStringForUndefinedField(hotel);
                 return hotel;
             },
             isValidHotel: function (hotel, requiredImage, imageErrorMessage) {

@@ -24,7 +24,7 @@ dipApp.factory('hotelService', ['$q', '$http', '$localStorage',
             },
             updateHotel: function (hotel) {
                 var hotelId = hotel.id;
-                var update = Object.assign({}, hotel);
+                var update = utils.copyObject(hotel);
                 delete update.services;
                 return $http.put(apiHotelUrl + "/" + hotelId, update);
             },

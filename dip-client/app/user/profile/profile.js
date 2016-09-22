@@ -43,9 +43,9 @@ angular.module('dipApp.profile', ['ngRoute'])
 
             $scope.actionAfterLoadUserInfo = function (data) {
                 var convertedUser = userUtils.convertUser(data);
-                utils.updateObjectInfo($scope.user, convertedUser);
-                utils.updateObjectInfo($scope.pureUser, convertedUser);
-                utils.updateObjectInfo($scope.$parent.currentUser, convertedUser);
+                $scope.user = utils.copyObject(convertedUser);
+                $scope.pureUser = utils.copyObject(convertedUser);
+                $scope.$parent.currentUser = utils.copyObject(convertedUser);
                 $('#image_box_profile').trigger('setImage', [$scope.user.avatarUrl, $scope.user.fullName]);
             };
 
@@ -55,7 +55,7 @@ angular.module('dipApp.profile', ['ngRoute'])
             };
 
             $scope.discardChangeUser = function () {
-                utils.updateObjectInfo($scope.user, $scope.pureUser);
+                $scope.user = utils.copyObject($scope.pureUser);
                 $('#image_box_profile').trigger('setImage', [$scope.user.avatarUrl, $scope.user.fullName]);
                 $scope.hideEditProfile();
             };
