@@ -1,5 +1,5 @@
-dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'hotelService', 'userUtils',
-    function ($scope, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, hotelService, userUtils) {
+dipApp.controller('DIPController', ['$scope', '$q', '$timeout', '$rootScope', '$location', '$route', '$translate', 'usSpinnerService', 'userService', 'hotelService', 'userUtils',
+    function ($scope, $q, $timeout, $rootScope, $location, $route, $translate, usSpinnerService, userService, hotelService, userUtils) {
         $scope.showNgView = false;
         $rootScope.isNoMenuPage = false;
         $scope.isInitTemplate = false;
@@ -67,7 +67,7 @@ dipApp.controller('DIPController', ['$scope', '$timeout', '$rootScope', '$locati
                 $scope.currentUser = userUtils.convertUser(userService.user.info);
             }
             if (!userService.user.JWT) {
-                return Promise.resolve();
+                return $q.defer().promise;
             }
             return userService.getUserInfo()
                 .success(function (data, status) {
