@@ -5,6 +5,9 @@ dipApp.factory('hotelUtils', [
             poolTypeMap: [],
             passTypes: [],
             passTypeMap: [],
+            amenityTypes: [],
+            amenityTypeMap: [],
+            amenityTags: {},
             getHotelFullAddress: function (hotel) {
                 if (!hotel.address) {
                     return '';
@@ -118,12 +121,12 @@ dipApp.factory('hotelUtils', [
                 return true;
             },
             convertHotelService: function (hotelService) {
-                if (hotelService.type == MODULE_TYPE_POOL) {
-                    if (!hotelService.poolType) {
-                        hotelService.poolType = POOL_TYPE_OTHERS;
-                    }
-                    hotelService.poolTypeDisplay = this.getPoolTypeDisplay(hotelService.poolType);
-                    
+                hotelService.typeDisplay = this.getAmenityTypeDisplay(hotelService.type);
+                if (hotelService.type) {
+                    hotelService.amenityTags = hotelUtils.amenityTags[hotelService.type];
+                }
+                if (hotelService.descriptionTags) {
+                    hotelService.tags = hotelService.descriptionTags.split(', ');
                 }
                 if (hotelService.imageUrl) {
                     hotelService.imageUrl = hotelService.imageUrl + '_resized';
@@ -131,8 +134,13 @@ dipApp.factory('hotelUtils', [
                 return hotelService;
             },
             isValidHotelService: function (hotelService, requiredImage, imageErrorMessage) {
-                if (!hotelService.name) {
+                if (!hotelService.name || !hotelService.type) {
                     return false;
+                }
+                if (hotelService.tags != undefined) {
+                    hotelService.descriptionTags = hotelService.tags.filter(Boolean).join(', ');
+                } else {
+                    hotelService.descriptionTags = '';
                 }
                 if (requiredImage && !$('#image_box_module > .input-upload-img').val()) {
                     utils.notyErrorMessage(imageErrorMessage, true);
@@ -146,8 +154,20 @@ dipApp.factory('hotelUtils', [
                     hotelUtils.poolTypeMap[poolType.value] = poolType.display;
                 });
             },
+            setAmenityTypes: function (amenityTypes) {
+                this.amenityTypes = amenityTypes;
+                amenityTypes.map(function (amenityType) {
+                    hotelUtils.amenityTypeMap[amenityType.value] = amenityType.display;
+                });
+            },
+            setAmenityTags: function (amenityTags) {
+                this.amenityTags = amenityTags;
+            },
             getPoolTypeDisplay: function (poolType) {
                 return this.poolTypeMap[poolType];
+            },
+            getAmenityTypeDisplay: function (amenityType) {
+                return this.amenityTypeMap[amenityType];
             },
             setPassTypes: function (passTypes) {
                 this.passTypes = passTypes;

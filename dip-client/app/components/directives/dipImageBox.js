@@ -10,6 +10,7 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                 var imageAlt = attrs.alt || '';
                 var imgClass = attrs.imgClass;
                 var borderColor = attrs.borderCorlor || '';
+                var imageUrl = attrs.imageUrl || '';
                 $(element).find('.image-box-title').html(imageTitle);
                 $(element).find('.image-box img').attr('alt', imageAlt);
                 if (borderColor) {
@@ -43,7 +44,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                     });
                 });
                 $(element).bind('setImage', function (event, imageUrl, name) {
-                    $(element).find('.image-box img').attr('alt', name + $scope.translate('PROFILE_PICTURE'));
+                    if (name) {
+                        $(element).find('.image-box img').attr('alt', name + $scope.translate('PROFILE_PICTURE'));
+                    }
                     if (imageUrl) {
                         $(element).find('.image-box').css({
                             'min-height': '',
@@ -57,6 +60,9 @@ dipApp.directive('dipImageBox', ['$location', function ($location) {
                         $(element).find('.image-box').attr('title', $scope.translate('CLICK_TO_CHANGE_PICTURE'));
                     }
                 });
+                if (imageUrl) {
+                    $(element).trigger('setImage', imageUrl);
+                }
             }
 
             setTimeout(initImageBox, 0);

@@ -11,6 +11,10 @@ var MAX_IMAGE_SIZE_MB = 5;
 
 var MODULE_TYPE_POOL = "Pool";
 var MODULE_TYPE_SPA = "Spa";
+var MODULE_TYPE_SALON = "Salon";
+var MODULE_TYPE_CONFERENCE_CENTER = "ConferenceCenter";
+var MODULE_TYPE_GYM = "Gym";
+var MODULE_TYPE_HOTEL_ROOM = "HotelRoom";
 
 var POOL_TYPE_INDOOR = "InDoor";
 var POOL_TYPE_OUTDOOR = "OutDoor";
