@@ -353,6 +353,24 @@ ul.sidebar-menu > li > a {
     min-width: 20px;
 }
 
+.box.calendar-pass.module-info > .box-body.main-box-body {
+    padding: 0;
+}
+.box.calendar-pass.module-info.has-pass > .box-body.main-box-body {
+    border-bottom: 1px solid #ddd;
+}
+.box.calendar-pass.module-info .box-header {
+    padding-left: 0;
+}
+.box.calendar-pass.module-info .box-header .box-title {
+    color: #00acd6;
+    float: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.box.calendar-pass .box-header button.btn.btn-no-bg {
+    background: transparent;
+}
 .pass-color {
     display: inline-block;
     width: 10px;
@@ -552,6 +570,20 @@ label.time-label {
     left: 0 !important;
 }
 
+.box-header.module-name {
+    background-color: #eee;
+}
+.box-header.module-name p {
+    padding: 5px;
+}
+#calendar_full_modules {
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+#calendar_full_modules .image-box {
+    min-height: 10vw;
+}
+
 a.back-button {
     color: inherit;
     font-size: 20px;
@@ -623,6 +655,7 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     text-align: left;
     font-weight: 500;
     padding-left: 0px;
+    padding-right: 0px;
 }
 
 .hotel-profile .form-horizontal .form-group.has-error label, .hotel-profile .form-horizontal .form-group.has-success label {
@@ -631,6 +664,26 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 
 .hotel-profile .form-horizontal .form-group {
     margin-bottom: inherit;
+}
+.hotel-profile .form-horizontal dip-image-box {
+    display: block;
+    margin-right: 0;
+}
+.hotel-profile .form-horizontal select {
+    -moz-appearance: none;
+    -webkit-appearance:none;
+}
+.hotel-profile .form-horizontal select::-ms-expand {
+    display: none;
+}
+.hotel-profile .form-horizontal .ui-select-container {
+    height: 26px;
+}
+.hotel-profile .form-horizontal .ui-select-container .ui-select-search {
+    width: auto !important;
+}
+#calendar_full_modules .form-horizontal dip-image-box {
+    margin-top: 10px;
 }
 
 .hotel-profile .form-horizontal .ui-select-container.ui-select-bootstrap i.caret.pull-right {
@@ -642,13 +695,13 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     padding: 5px 5px 5px 30px;
 }
 
-.hotel-profile .form-horizontal {
+.hotel-profile > .box-body > .form-horizontal {
     padding-left: 45px;
 }
 .hotel-profile .form-horizontal .form-control {
     font-size: inherit;
     height: auto;
-    padding: 7px 0 0 0;
+    padding: 7px 5px 0 5px;
 }
 .box.hotel-profile {
     border: none;

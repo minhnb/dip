@@ -23,7 +23,8 @@ function convertService(service) {
         reservable: service.reservable,
         amenities: service.amenities,
         policy: service.policy,
-        tax: config.taxPercent
+        tax: config.taxPercent,
+        descriptionTags: service.descriptionTags
     }
 }
 

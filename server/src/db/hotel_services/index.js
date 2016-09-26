@@ -53,7 +53,8 @@ const hotelServiceSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    descriptionTags: String
 }, {
     timestamps: true,
     discriminatorKey: 'type'

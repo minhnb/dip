@@ -143,6 +143,24 @@ var utils = {
         }
         return temp;
     },
+    updateObjectInfo: function (obj, newInfo, ignoreKeys) {
+        if (!ignoreKeys) {
+            ignoreKeys = [];
+        }
+        for (var key in newInfo) {
+            if (ignoreKeys.indexOf(key) == -1) {
+                if (obj[key] != newInfo[key]) {
+                    obj[key] = newInfo[key];
+                }
+            }
+        }
+        var newInfoKeys = Object.keys(newInfo);
+        for (var key in obj) {
+            if (ignoreKeys.indexOf(key) == -1 && newInfoKeys.indexOf(key) == -1) {
+                obj[key] = undefined;
+            }
+        }
+    },
     updateEditingObject: function (editingObject, latestObject, oldObject, ignoreKeys) {
         for (var key in oldObject) {
             if (ignoreKeys.indexOf(key) == -1) {
