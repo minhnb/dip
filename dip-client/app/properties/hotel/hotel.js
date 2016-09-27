@@ -1122,6 +1122,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         }
                     }
                 });
+                var height = $(calendarId).find('.pass-calendar').height();
+                $(calendarId).find('.left-side-bar').height(height);
             };
 
             $scope.initPassCalendar = function (calendarId, isFullModules) {

@@ -1,7 +1,7 @@
 <div class="col-md-8">
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'HOTEL_NAME' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'HOTEL_NAME' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" required class="form-control" ng-model="hotel.name"
                    placeholder="{{'HOTEL_NAME' | translate}}">
             <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('name')">
@@ -13,8 +13,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'STREET' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'STREET' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" required class="form-control" ng-model="hotel.address.street"
                    placeholder="{{'STREET' | translate}}">
             <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.street')">
@@ -28,8 +28,8 @@
     <div class="row">
         <div class="col-md-4">
             <div class="form-group has-feedback">
-                <label class="col-sm-2 control-label">{{'CITY' | translate}}</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'CITY' | translate}}</label>
+                <div class="col-md-10 col-sm-9 col-xs-8">
                     <input type="text" required class="form-control" ng-model="hotel.address.city"
                            placeholder="{{'CITY' | translate}}">
                     <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.city')">
@@ -43,8 +43,8 @@
         </div>
         <div class="col-md-4">
             <div class="form-group has-feedback">
-                <label class="col-sm-2 control-label">{{'STATE' | translate}}</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'STATE' | translate}}</label>
+                <div class="col-md-10 col-sm-9 col-xs-8">
                     <ui-select ng-model="hotel.address.state" theme="bootstrap" ng-change="stateSelected()">
                         <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
                         <ui-select-choices repeat="state in usStates | filter: $select.search">
@@ -64,8 +64,8 @@
         </div>
         <div class="col-md-4">
             <div class="form-group has-feedback">
-                <label class="col-sm-4 control-label">{{'ZIP_CODE' | translate}}</label>
-                <div class="col-sm-8">
+                <label class="col-md-4 col-sm-3 col-xs-4 control-label">{{'ZIP_CODE' | translate}}</label>
+                <div class="col-md-8 col-sm-9 col-xs-8">
                     <input type="text" required class="form-control" ng-model="hotel.address.postalCode"
                            placeholder="{{'ZIP_CODE' | translate}}">
                     <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.postalCode')">
@@ -79,8 +79,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'NEIGHBORHOOD' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'NEIGHBORHOOD' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" class="form-control" ng-model="hotel.address.neighborhood"
                    placeholder="{{'NEIGHBORHOOD' | translate}}">
             <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('address.neighborhood')">
@@ -92,8 +92,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'FRONT_DESK' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'FRONT_DESK' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" class="form-control" ng-model="hotel.phone"
                    placeholder="{{'FRONT_DESK' | translate}}">
             <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('phone')">
@@ -105,8 +105,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'ROOM_SERVICE' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'ROOM_SERVICE' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" class="form-control" ng-model="hotel.roomService"
                    placeholder="{{'ROOM_SERVICE' | translate}}">
             <div class="pending-content" ng-show="::hotel.hasPendingContentByKey('roomService')">
@@ -118,8 +118,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'WEBSITE' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'WEBSITE' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" class="form-control" ng-model="hotel.url"
                    placeholder="{{'WEBSITE' | translate}}"
                    pattern="^(http[s]?:\/\/)?([0-9a-z\-]+\.)+[0-9a-z\-]+(\/[^/\s]+)*\/?([?#].*)?$"
@@ -132,8 +132,8 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <label class="col-sm-2 control-label">{{'INSTAGRAM' | translate}}</label>
-        <div class="col-sm-10">
+        <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'INSTAGRAM' | translate}}</label>
+        <div class="col-md-10 col-sm-9 col-xs-8">
             <input type="text" class="form-control" ng-model="hotel.instagram"
                    placeholder="{{'INSTAGRAM' | translate}}" pattern="^[@#][^@#]+"
                    data-error="{{'ERROR_INVALID_INSTAGRAM' | translate}}">

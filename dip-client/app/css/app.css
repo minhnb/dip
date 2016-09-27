@@ -590,7 +590,7 @@ label.time-label {
     margin-top: 20px;
 }
 #calendar_full_modules .image-box {
-    min-height: 10vw;
+    min-height: 100px;
 }
 
 a.back-button {
@@ -711,6 +711,7 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 }
 .hotel-profile .form-horizontal .has-feedback .form-control-feedback {
     right: 10px;
+    margin-top: -7px;
 }
 .box .box-prompt {
     float: left;
@@ -723,7 +724,7 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 .hotel-profile .form-horizontal .form-control {
     font-size: inherit;
     height: auto;
-    padding: 7px 5px 0 5px;
+    padding-top: 0;
 }
 .box.hotel-profile {
     border: none;
@@ -915,6 +916,13 @@ form .checkbox.icheck label {
 
     .content-wrapper, .right-side, .main-footer, .main-header .navbar {
         margin-left: 200px;
+    }
+    .hotel-profile .form-horizontal .form-control {
+        padding: 7px 5px 0;
+    }
+
+    .hotel-profile .form-horizontal .has-feedback .form-control-feedback {
+        margin-top: 0;
     }
 }
 
