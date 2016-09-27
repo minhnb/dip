@@ -23,6 +23,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.hotel = {};
             $scope.module = {};
+            $scope.modules = [];
             $scope.pureHotel = {};
 
             var endDate = config.END_DAY;
@@ -149,7 +150,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     .success(function (data, status) {
                         var passes = data;
                         $scope.mapPass = [];
-                        $scope.hotel.services.map(function (module) {
+                        $scope.modules.map(function (module) {
                             module.passes = [];
                             $scope.mapHotelService[module.id] = module;
                         });
@@ -167,7 +168,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.updatePassesMapByPassType = function () {
-                $scope.hotel.services.map(function (module) {
+                $scope.modules.map(function (module) {
                     module.passesMapByPassType = [];
                     for (var i = 0; i < $scope.passTypes.length; i++) {
                         var passType = $scope.passTypes[i];
@@ -186,22 +187,22 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.bindingModules = function (services) {
                 var serviceMap = [];
-                if ($scope.hotel.services) {
-                    $scope.hotel.services.map(function (module) {
+                if ($scope.modules.length > 0) {
+                    $scope.modules.map(function (module) {
                         serviceMap[module.id] = module;
                     });
                 } else {
-                    $scope.hotel.services = services.map(function (module) {
+                    $scope.modules = services.map(function (module) {
                         var converted_module = $scope.convertModule(module);
                         $scope.mapPureHotelService[module.id] = utils.copyObject(converted_module);
                         return converted_module;
                     });
                     return;
                 }
-                $scope.hotel.services = services.map(function (module) {
+                $scope.modules = services.map(function (module) {
                     var converted_module = $scope.convertModule(module);
-                    var pureModule = utils.copyObject($scope.mapPureHotelService[module.id]);
                     if (serviceMap[module.id]) {
+                        var pureModule = utils.copyObject($scope.mapPureHotelService[module.id]);
                         if (serviceMap[module.id].isEditingModuleInfo) {
                             converted_module.isEditingModuleInfo = true;
                             converted_module = hotelUtils.updateEditingModule(serviceMap[module.id], converted_module, pureModule);
@@ -217,6 +218,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             converted_module.newPass = $scope.initNewPass(converted_module);
                         }
 
+                    } else {
+                        $scope.mapPureHotelService[module.id] = utils.copyObject(converted_module);
                     }
                     module = converted_module;
                     return module;
@@ -308,6 +311,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.isEditingHotel = false;
                 $('form[name="edit-hotel"]').validator('reset');
                 $scope.hotel = utils.copyObject($scope.pureHotel, ['services']);
+                $('#image_box_hotel').trigger('setImage', [$scope.hotel.imageUrl, $scope.hotel.name]);
             };
 
             $scope.deleteHotel = function (hotel) {
@@ -561,6 +565,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.discardChangeModule = function (module) {
                 var pureModule = $scope.mapPureHotelService[module.id];
                 utils.updateObjectInfo(module, pureModule, ['passes']);
+                $('#image_box_module_' + module.id).trigger('setImage', [module.imageUrl, module.name]);
                 $scope.hideEditModuleBox(module);
                 setTimeout(function () {
                     $scope.$apply();
@@ -1152,7 +1157,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.initModuleForm = function () {
                 formValidatorUtils.initDIPDefaultFormValidator($('form[name="create-module"]'), $scope.createModule);
-                $scope.hotel.services.map(function (module) {
+                $scope.modules.map(function (module) {
                     var formSelector = 'form[name="edit-module"]#module_form_' + module.id;
                     $scope.initFormValidator($(formSelector), true);
                     $(formSelector).change(function () {
