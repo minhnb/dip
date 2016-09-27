@@ -503,6 +503,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         .success(function (data, status) {
                             $scope.stopSpin();
                             $scope.getHotelProfile($routeParams.hotelId).then(function () {
+                                delete $scope.mapHotelService[module.id];
                                 module.passes.map(function (pass) {
                                    delete $scope.mapPass[pass.id];
                                 });
@@ -1198,10 +1199,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.updatePassesForFullCalendar = function (start, end, timezone, calendarView) {
                 var passes = [];
                 for (var key in $scope.mapPass) {
-                    var pass = $scope.mapPass[key];
-                    if ($scope.mapHotelService[pass.service]) {
-                        passes.push(pass);
-                    }
+                    passes.push($scope.mapPass[key]);
                 }
                 return $scope.updatePassesToCalendar(passes, start, end, timezone, calendarView);
             };
