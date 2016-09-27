@@ -26,20 +26,22 @@
     </div>
     <div class="form-group">
         <label class="control-label col-xs-4">{{'TIME_PERIOD' | translate}}</label>
-        <div class="col-xs-4">
-            <div class="form-group timepicker has-feedback">
-                <input type="text" class="form-control timepicker" data-duration="start"
-                       ng-model="pass.startTime" placeholder="{{'DURATION_START' | translate}}" required>
-                <span class="glyphicon form-control-feedback"></span>
-                <!--<div class="help-block with-errors"></div>-->
+        <div class="col-xs-8">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group timepicker has-feedback">
+                    <input type="text" class="form-control timepicker" data-duration="start"
+                           ng-model="pass.startTime" placeholder="{{'DURATION_START' | translate}}" required>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <!--<div class="help-block with-errors"></div>-->
+                </div>
             </div>
-        </div>
-        <div class="col-xs-4">
-            <div class="form-group timepicker has-feedback">
-                <input type="text" class="form-control timepicker" data-duration="end"
-                       ng-model="pass.endTime" placeholder="{{'DURATION_END' | translate}}" required>
-                <span class="glyphicon form-control-feedback"></span>
-                <!--<div class="help-block with-errors"></div>-->
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group timepicker has-feedback">
+                    <input type="text" class="form-control timepicker" data-duration="end"
+                           ng-model="pass.endTime" placeholder="{{'DURATION_END' | translate}}" required>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <!--<div class="help-block with-errors"></div>-->
+                </div>
             </div>
         </div>
     </div>
