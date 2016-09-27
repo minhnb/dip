@@ -197,6 +197,32 @@ dipApp.factory('hotelUtils', [
             updateEditingPass: function (editingPass, pass, oldPass) {
                 var ignoreKeys = ['isEditingPassInfo'];
                 return utils.updateEditingObject(editingPass, pass, oldPass, ignoreKeys);
+            },
+            getListUnusedPassColor: function (listPassColor, listUsedPassColor) {
+                if (listUsedPassColor.length == 0) {
+                    return listPassColor;
+                }
+                var listUnusedColor = [];
+                listPassColor.forEach(function (color) {
+                    if (listUsedPassColor.indexOf(color) == -1) {
+                        listUnusedColor.push(color);
+                    }
+                });
+                return listUnusedColor;
+            },
+            getRandomPassColor: function (listPassColor, listUsedPassColor) {
+                var listUnusedColor = hotelUtils.getListUnusedPassColor(listPassColor, listUsedPassColor);
+                var min = 0, max = listUnusedColor.length - 1;
+                var random = Math.floor(Math.random() * (max - min) + min);
+                var color = listUnusedColor[random];
+                listUsedPassColor.push(color);
+                return color;
+            },
+            removePassColorFromListUsedPassColor: function (passColor, listUsedPassColor) {
+                var passColorIndex = listUsedPassColor.indexOf(passColor);
+                if (passColorIndex > -1) {
+                    listUsedPassColor.splice(passColorIndex);
+                }
             }
         };
         return hotelUtils;
