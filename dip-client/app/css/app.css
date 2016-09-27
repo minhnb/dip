@@ -68,14 +68,6 @@ image, img {
 }
 
 /*---------------------------LEFT SIDE BAR--------------------------------------*/
-.main-sidebar, .main-header .logo {
-    width: 200px;
-}
-
-.content-wrapper, .right-side, .main-footer, .main-header .navbar {
-    margin-left: 200px;
-}
-
 .sidebar-menu > li > a > .fa, .sidebar-menu > li > a > .glyphicon, .sidebar-menu > li > a > .ion,
 .sidebar-menu .treeview-menu > li > a > .fa, .sidebar-menu .treeview-menu > li > a > .glyphicon, .sidebar-menu .treeview-menu > li > a > .ion {
     visibility: hidden;
@@ -909,5 +901,13 @@ form .checkbox.icheck label {
 
     .label.hotel-status {
         margin-top: 4px;
+    }
+
+    .main-sidebar, .main-header .logo {
+        width: 200px;
+    }
+
+    .content-wrapper, .right-side, .main-footer, .main-header .navbar {
+        margin-left: 200px;
     }
 }
