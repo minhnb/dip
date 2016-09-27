@@ -1,0 +1,78 @@
+<div class="col-xs-12">
+    <div class="form-group has-feedback">
+        <label class="control-label col-xs-4">{{'PASS_TYPE' | translate}}</label>
+        <div class="col-xs-8">
+            <ui-select reset-search-input="true" ng-model="pass.passType" theme="bootstrap"
+                       ng-change="updatePassTitle(pass)">
+                <ui-select-match placeholder="{{'SELECT_TYPE' | translate}}">{{$select.selected.display}}</ui-select-match>
+                <ui-select-choices repeat="passType.value as passType in passTypes | filter: $select.search">
+                    <div ng-bind-html="passType.display | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <input type="text" required class="form-control" ng-model="pass.passType" ng-show="false"
+                   placeholder="{{'SELECT_TYPE' | translate}}">
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="control-label col-xs-4">{{'PASS_TITLE' | translate}}</label>
+        <div class="col-xs-8">
+            <input type="text" required class="form-control" ng-model="pass.title"
+                   placeholder="{{'PASS_TITLE' | translate}}">
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-4">{{'TIME_PERIOD' | translate}}</label>
+        <div class="col-xs-4">
+            <div class="form-group timepicker has-feedback">
+                <input type="text" class="form-control timepicker" data-duration="start"
+                       ng-model="pass.startTime" placeholder="{{'DURATION_START' | translate}}" required>
+                <span class="glyphicon form-control-feedback"></span>
+                <!--<div class="help-block with-errors"></div>-->
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group timepicker has-feedback">
+                <input type="text" class="form-control timepicker" data-duration="end"
+                       ng-model="pass.endTime" placeholder="{{'DURATION_END' | translate}}" required>
+                <span class="glyphicon form-control-feedback"></span>
+                <!--<div class="help-block with-errors"></div>-->
+            </div>
+        </div>
+    </div>
+    <div class="form-group pass_maximum">
+        <label class="control-label col-xs-4">{{'MAXIMUM_PASSES' | translate}}</label>
+        <div class="col-xs-8">
+            <input type="text" ng-model="pass.allotmentCount" data-value="{{pass.allotmentCount}}"
+                   class="slider form-control" data-slider-min="1"
+                   data-slider-max="50" data-slider-step="1" data-slider-value="{{pass.allotmentCount}}"
+                   data-slider-orientation="horizontal" data-slider-selection="before"
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom" required>
+        </div>
+    </div>
+    <div class="form-group pass_capacity">
+        <label class="control-label col-xs-4">{{'CAPACITY' | translate}}</label>
+        <div class="col-xs-8">
+            <input type="text" ng-model="pass.capacity" data-value="{{pass.capacity}}" class="slider form-control"
+                   data-slider-min="1"
+                   data-slider-max="20" data-slider-step="1" data-slider-value="{{pass.capacity}}"
+                   data-slider-orientation="horizontal" data-slider-selection="before"
+                   data-slider-tooltip="always" data-slider-tooltip-position="bottom" required>
+        </div>
+    </div>
+    <div class="form-group has-feedback">
+        <label class="control-label col-xs-4">{{'PRICE' | translate}}</label>
+        <div class="col-xs-8">
+            <input type="text" class="form-control" ng-model="pass.displayPrice"
+                   data-inputmask="'alias': 'numeric', 'allowMinus': false, 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                   data-mask required>
+            <span class="glyphicon form-control-feedback"></span>
+            <div class="help-block with-errors"></div>
+        </div>
+    </div>
+</div>
+<div ng-show="false" ng-if="!pass.id" ng-init="initPassFormWithId('new_pass_', module.id)"></div>
+<div ng-show="false" ng-if="pass.id" ng-init="initPassFormWithId('pass_', pass.id, true)"></div>
