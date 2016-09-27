@@ -735,6 +735,12 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 .has-feedback input[ng-model="pass.displayPrice"].form-control {
     padding-right: 34px;
 }
+#calendar_full_modules .left-side-bar {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 5px;
+    padding-right: 3px;
+}
 /*-------------------------END HOTEL PROFILE--------------------------*/
 
 /*-------------------LOGIN - REGISTER--------------------------*/
@@ -909,5 +915,11 @@ form .checkbox.icheck label {
 
     .content-wrapper, .right-side, .main-footer, .main-header .navbar {
         margin-left: 200px;
+    }
+}
+
+@media (max-width: 991px) {
+    #calendar_full_modules .left-side-bar {
+        height: auto !important;
     }
 }
