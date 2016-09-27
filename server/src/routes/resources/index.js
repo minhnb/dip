@@ -88,6 +88,7 @@ router
                 .populate('services')
                 .exec()
                 .then(data => {
+                    if (!data) throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
                     ctx.state.hotel = data;
                     return next();
                 });
