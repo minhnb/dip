@@ -606,6 +606,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.actionAfterSaveModule = function (module, data) {
                 var converted_module = $scope.convertModule(data);
                 utils.updateObjectInfo(module, converted_module, ['passes']);
+                $scope.mapPureHotelService[module.id] = utils.copyObject(converted_module);
                 $scope.hideEditModuleBox(module);
                 $scope.stopSpin();
                 // $scope.getHotelProfile($routeParams.hotelId);
@@ -748,6 +749,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.discardChangePass = function (pass) {
                 var purePass = $scope.mapPurePass[pass.id];
                 utils.updateObjectInfo(pass, purePass, []);
+                $('#pass_' + pass.id).find('form').validator('reset');
+                $scope.hideEditPassBox(pass);
             };
 
             $scope.editPass = function (pass, module, $event) {
@@ -760,8 +763,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.updatePass(updatePass)
                     .success(function (data, status) {
-                        pass = hotelUtils.convertPass(pass);
-                        $scope.mapPurePass[pass.id] = utils.copyObject(pass);
+                        var convertedPass = hotelUtils.convertPass(pass);
+                        utils.updateObjectInfo(pass, convertedPass);
+                        $scope.mapPurePass[pass.id] = convertedPass;
                         $scope.hideEditPassBox(pass);
                         $('#pass_' + pass.id).validator('reset');
                         $scope.initCalendarFullModules();
@@ -974,13 +978,13 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 });
             };
 
-            $scope.initPassFormWithId = function (key, id, isEdit) {
+            $scope.initPassFormWithId = function (key, id, isExisting) {
                 var elementId = '#' + key + id;
                 $scope.initPassForm($(elementId));
                 $scope.initFormValidator($(elementId).find('form'), false);
-                if (isEdit) {
-                    var pass = $scope.mapPass[id];
+                if (isExisting) {
                     $(elementId).find('form').change(function () {
+                        var pass = $scope.mapPass[id];
                         pass.isEditingPassInfo = true;
                         setTimeout(function () {
                             $scope.$apply();
