@@ -343,6 +343,8 @@ ul.sidebar-menu > li > a {
 
 .box.calendar-pass .box-header .box-title {
     font-size: 14px;
+}
+.box.calendar-pass .box-header > .box-title {
     max-width: calc(100% - 120px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -364,12 +366,27 @@ ul.sidebar-menu > li > a {
 }
 .box.calendar-pass.module-info .box-header .box-title {
     color: #00acd6;
-    float: right;
     padding-top: 10px;
     padding-bottom: 10px;
 }
+.box.calendar-pass.module-info .box-header .pull-right .box-title {
+    min-width: 100px;
+    float: right;
+}
+.box.calendar-pass.module-info .box-header .left-header {
+    float: left;
+    margin-left: -12px;
+}
+.box.calendar-pass.module-info .box-header .left-header > * {
+    float: left;
+}
 .box.calendar-pass .box-header button.btn.btn-no-bg {
     background: transparent;
+}
+
+.box.calendar-pass.pass-info {
+    padding-left: 0;
+    padding-right: 0;
 }
 .pass-color {
     display: inline-block;
@@ -408,7 +425,7 @@ ul.sidebar-menu > li > a {
 }
 
 .box.calendar-pass > .box-body.main-box-body {
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .dip-vertical-checkbox {
@@ -690,6 +707,19 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     display: none;
 }
 
+.hotel-profile .form-horizontal .form-group.pass_maximum, .hotel-profile .form-horizontal .form-group.pass_capacity {
+    min-height: 60px;
+}
+
+.hotel-profile .form-horizontal .slider.slider-horizontal {
+    margin-top: 7px;
+}
+.hotel-profile .form-horizontal .tooltip .tooltip-inner, .hotel-profile .form-horizontal .tooltip .tooltip-inner {
+    background-color: #000000;
+}
+.hotel-profile .form-horizontal .has-feedback .form-control-feedback {
+    right: 10px;
+}
 .box .box-prompt {
     float: left;
     padding: 5px 5px 5px 30px;
@@ -710,7 +740,9 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
 .hotel-profile .form-horizontal dip-image-box button.btn {
     display: none;
 }
-
+.has-feedback input[ng-model="pass.displayPrice"].form-control {
+    padding-right: 34px;
+}
 /*-------------------------END HOTEL PROFILE--------------------------*/
 
 /*-------------------LOGIN - REGISTER--------------------------*/

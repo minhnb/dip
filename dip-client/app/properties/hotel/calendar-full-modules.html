@@ -30,13 +30,20 @@
                 <div class="box-body main-box-body collapse in">
                     <div class="box calendar-pass module-info" ng-class="module.passes.length > 0 ? 'has-pass' : ''">
                         <div class="box-header" ng-click="module.isShowingDetails = !module.isShowingDetails">
-                            <p class="box-title" ng-show="!module.isShowingDetails">{{'SHOW_AMENITY_DETAILS' | translate}}</p>
-                            <p class="box-title" ng-show="module.isShowingDetails">{{'HIDE_AMENITY_DETAILS' | translate}}</p>
+                            <div class="left-header" ng-click="module.isAddingPass = !module.isAddingPass; $event.stopPropagation();">
+                                <button type="button" class="btn btn-no-bg">
+                                    <span aria-hidden="true" class="fa fa-plus"></span>
+                                </button>
+                                <p class="box-title" ng-show="!module.isAddingPass">{{'ADD_PASS' | translate}}</p>
+                                <p class="box-title" ng-show="module.isAddingPass">{{'HIDE_ADD_PASS' | translate}}</p>
+                            </div>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-no-bg" title="{{'DELETE' | translate}}"
                                         ng-if="userHasRole([ROLE_PARTNER])" ng-click="deleteModule(module); $event.stopPropagation();">
                                     <span aria-hidden="true" class="fa fa-trash"></span>
                                 </button>
+                                <p class="box-title" ng-show="!module.isShowingDetails">{{'SHOW_AMENITY_DETAILS' | translate}}</p>
+                                <p class="box-title" ng-show="module.isShowingDetails">{{'HIDE_AMENITY_DETAILS' | translate}}</p>
                             </div>
                         </div>
                         <div class="box-body main-box-body collapse" ng-class="::initClassForModuleInfoCollapse(module)">
@@ -46,6 +53,19 @@
                                     <div class="text-center row-button" ng-show="module.isEditingModuleInfo">
                                         <button type="button" class="btn btn-default" ng-click="discardChangeModule(module)">{{'CANCEL' | translate}}</button>
                                         <button type="submit" class="btn btn-info" ng-click="editModule(module, $event)">{{'SAVE' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="box calendar-pass pass-content" ng-repeat="pass in [module.newPass]" ng-show="module.isAddingPass">
+                        <div class="box-body main-box-body" ng-repeat="pass in [module.newPass]" ng-show="module.isAddingPass" id="new_pass_{{module.id}}">
+                            <form role="form" dip-smart-validate-form name="create-pass" class="form-horizontal">
+                                <ng-include src="'/properties/hotel/pass-form-content-small.html'"></ng-include>
+                                <div class="col-xs-12">
+                                    <div class="text-center row-button">
+                                        <button type="button" class="btn btn-default" ng-click="hideCreatePassBox(module)">{{'CANCEL' | translate}}</button>
+                                        <button type="submit" class="btn btn-info" ng-click="createPass(pass, module, $event)">{{'ADD' | translate}}</button>
                                     </div>
                                 </div>
                             </form>
@@ -96,6 +116,29 @@
                                                ng-checked="pass.days.indexOf(day.value) > -1">
                                         <span>{{day.display}}</span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="box calendar-pass module-info pass-info">
+                                <div class="box-header" ng-click="pass.isShowingDetails = !pass.isShowingDetails">
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-no-bg" title="{{'DELETE' | translate}}"
+                                                ng-if="userHasRole([ROLE_PARTNER])" ng-click="deletePass(pass); $event.stopPropagation();">
+                                            <span aria-hidden="true" class="fa fa-trash"></span>
+                                        </button>
+                                        <p class="box-title" ng-show="!pass.isShowingDetails">{{'SHOW_PASS_DETAILS' | translate}}</p>
+                                        <p class="box-title" ng-show="pass.isShowingDetails">{{'HIDE_PASS_DETAILS' | translate}}</p>
+                                    </div>
+                                </div>
+                                <div class="box-body main-box-body collapse" id="pass_{{pass.id}}">
+                                    <form role="form" dip-smart-validate-form name="edit-pass" class="form-horizontal">
+                                        <ng-include src="'/properties/hotel/pass-form-content-small.html'"></ng-include>
+                                        <div class="col-xs-12">
+                                            <div class="text-center row-button" ng-show="pass.isEditingPassInfo">
+                                                <button type="button" class="btn btn-default" ng-click="discardChangePass(pass)">{{'CANCEL' | translate}}</button>
+                                                <button type="submit" class="btn btn-info" ng-click="editPass(pass, module, $event)">{{'SAVE' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
