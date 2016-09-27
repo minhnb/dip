@@ -13,7 +13,7 @@
         <div class="row create-edit-box form-add-object" ng-show="isShowingCreateModule">
             <ng-include src="'/properties/hotel/create-module.html'"></ng-include>
         </div>
-        <div class="row module-info" ng-repeat="module in hotel.services">
+        <div class="row module-info" ng-repeat="module in modules">
             <div ng-show="!module.isEditingModuleInfo">
                 <ng-include src="'/properties/hotel/module-info.html'"></ng-include>
             </div>
