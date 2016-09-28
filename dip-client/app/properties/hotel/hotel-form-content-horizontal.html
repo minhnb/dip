@@ -45,7 +45,7 @@
             <div class="form-group has-feedback">
                 <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'STATE' | translate}}</label>
                 <div class="col-md-10 col-sm-9 col-xs-8">
-                    <ui-select ng-model="hotel.address.state" theme="bootstrap" ng-change="stateSelected()">
+                    <ui-select ng-model="hotel.address.state" theme="bootstrap" on-select="stateSelected()">
                         <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
                         <ui-select-choices repeat="state in usStates | filter: $select.search">
                             <div ng-bind-html="state | highlight: $select.search"></div>

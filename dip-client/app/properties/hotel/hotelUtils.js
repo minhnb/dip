@@ -181,13 +181,19 @@ dipApp.factory('hotelUtils', [
             getPassTimePeriod: function (duration) {
                 return utils.convertMinuteDurationToTime(duration.startTime) + " - " + utils.convertMinuteDurationToTime(duration.endTime);
             },
+            getDisplayStartDay: function (startDay) {
+                return startDay == '0000-01-01' ? '' : utils.formatDipDateToDate(startDay);
+            },
+            getDisplayDueDay: function (dueDay) {
+                return dueDay == '9999-12-31' ? '' : utils.formatDipDateToDate(dueDay);
+            },
             convertPass: function (pass) {
                 pass.timePeriod = hotelUtils.getPassTimePeriod(pass.duration);
                 pass.displayPrice = utils.displayMoney(pass.price);
                 pass.startTime = utils.convertMinuteDurationToTime(pass.duration.startTime);
                 pass.endTime = utils.convertMinuteDurationToTime(pass.duration.endTime);
-                pass.displayStartDay = pass.startDay == '0000-01-01' ? '' : utils.formatDipDateToDate(pass.startDay);
-                pass.displayDueDay = pass.dueDay == '9999-12-31' ? '' : utils.formatDipDateToDate(pass.dueDay);
+                pass.displayStartDay = hotelUtils.getDisplayStartDay(pass.startDay);
+                pass.displayDueDay = hotelUtils.getDisplayDueDay(pass.dueDay);
                 return pass;
             },
             updateEditingModule: function (editingModule, module, oldModule) {

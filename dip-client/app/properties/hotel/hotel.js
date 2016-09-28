@@ -315,7 +315,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.isEditingHotel = false;
                 $('form[name="edit-hotel"]').validator('reset');
                 $scope.hotel = utils.copyObject($scope.pureHotel, ['services']);
-                $('#image_box_hotel').trigger('setImage', [$scope.hotel.imageUrl, $scope.hotel.name]);
+                if ($scope.hotel.imageUrl) {
+                    $('#image_box_hotel').trigger('setImage', [$scope.hotel.imageUrl, $scope.hotel.name]);
+                } else {
+                    $('#image_box_hotel').trigger('clearImageBox');
+                }
             };
 
             $scope.deleteHotel = function (hotel) {
@@ -853,7 +857,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 return hotelService.updatePass(updatePass)
                     .success(function (data, status) {
-                        pass = hotelUtils.convertPass(pass);
+                        pass.days = data.days;
                         $scope.stopSpin();
                     })
                     .error(function (data, status) {
@@ -870,7 +874,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 return hotelService.updatePass(updatePass)
                     .success(function (data, status) {
-                        pass = hotelUtils.convertPass(pass);
+                        pass.startDay = data.startDay;
+                        pass.dueDay = data.dueDay;
+                        pass.displayStartDay = hotelUtils.getDisplayStartDay(pass.startDay);
+                        pass.displayDueDay = hotelUtils.getDisplayDueDay(pass.dueDay);
                         $scope.stopSpin();
                     })
                     .error(function (data, status) {
