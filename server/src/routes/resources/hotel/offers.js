@@ -21,7 +21,6 @@ const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 router.get('/',
     validator.offers(false),
     ctx => {
-        console.log(ctx.state.hotel.services.find);
         // TODO: Add filter for price and duration
         let serviceId = ctx.query.service,
             hotel = ctx.state.hotel,
