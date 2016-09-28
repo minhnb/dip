@@ -82,10 +82,9 @@ router.get('/',
             .exec()
             .then(offers => {
                 let listOffer = [];
-                let reserveDate = today.clone(),
-                    date, weekday;
+                let reserveDate, date, weekday;
                 for(let i = 0; i < 14; i++) {
-                    reserveDate = reserveDate.add(1, 'days');
+                    reserveDate = today.clone().add(i, 'days');
                     date = utils.formatMomentDate(reserveDate);
                     weekday = reserveDate.weekday();
                     offers.forEach(offer => {
