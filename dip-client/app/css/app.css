@@ -277,7 +277,7 @@ ul.sidebar-menu > li > a {
     background: #00c0ef none repeat scroll 0 0;
 }
 
-.pass_maximum .tooltip, .pass_maximum .tooltip {
+.pass_maximum .tooltip, .pass_capacity .tooltip {
     z-index: 10;
 }
 

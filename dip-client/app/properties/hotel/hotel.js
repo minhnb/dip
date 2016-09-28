@@ -40,7 +40,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 {display: $scope.translate('MODULE_TYPE_GYM'), value: MODULE_TYPE_GYM},
                 {display: $scope.translate('MODULE_TYPE_HOTEL_ROOM'), value: MODULE_TYPE_HOTEL_ROOM}
             ];
-            hotelUtils.setPoolTypes($scope.amenityTypes);
+            hotelUtils.setAmenityTypes($scope.amenityTypes);
 
             $scope.amenityTags = [];
             $scope.amenityTags[MODULE_TYPE_POOL] = ["Lap Pool", "Olympic", "Large", "Medium", "Small", "Jacuzzi", "Indoor", "Outdoor"];
@@ -502,7 +502,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     return;
                 }
                 $scope.startSpin();
-                $scope.module.type = MODULE_TYPE_POOL;
                 hotelService.createHotelService($scope.hotel.id, $scope.module)
                     .success(function (data, status) {
                         $scope.updateHotelServiceImage(data.id)
@@ -802,7 +801,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.discardChangePass = function (pass) {
                 var purePass = $scope.mapPurePass[pass.id];
-                utils.updateObjectInfo(pass, purePass, ['displayStartDay', 'displayDueDay', 'daysInWeek']);
+                utils.updateObjectInfo(pass, purePass, ['displayStartDay', 'displayDueDay', 'days', 'startDay', 'dueDay']);
                 $('#pass_' + pass.id).find('form').validator('reset');
                 $('#pass_' + pass.id).find('input[ng-model="pass.allotmentCount"]').closest('.slider').slider('setValue', pass.allotmentCount);
                 $('#pass_' + pass.id).find('input[ng-model="pass.capacity"]').closest('.slider').slider('setValue', pass.capacity);
