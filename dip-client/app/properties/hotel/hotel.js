@@ -518,6 +518,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                 $scope.modules.push(module);
                                 $scope.mapHotelService[module.id] = module;
                                 $scope.initCalendarFullModules();
+                                setTimeout(function () {
+                                    utils.scrollToElement($('#module_form_' + module.id).closest('.module-calendar'), $('#calendar_full_modules .left-side-bar'));
+                                }, 500);
                             });
                     })
                     .error(function (data, status) {
@@ -661,6 +664,16 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 module.isAddingPass = true;
             };
 
+            $scope.toggleCreatePassBox = function (module, $event) {
+                module.isAddingPass = !module.isAddingPass;
+                $event.stopPropagation();
+                if (module.isAddingPass) {
+                    setTimeout(function () {
+                        utils.scrollToElement($('#new_pass_' + module.id), $('#calendar_full_modules .left-side-bar'));
+                    }, 500);
+                }
+            };
+
             $scope.hideCreatePassBox = function (module) {
                 module.isAddingPass = false;
                 $scope.isInitializedCreatePassForm = false;
@@ -738,6 +751,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             $scope.modules[moduleIndex].passes.push($scope.mapPass[data.id]);
                             // $scope.mapHotelService[pass.service] = $scope.modules[moduleIndex];
                             $scope.initCalendarFullModules();
+                            setTimeout(function () {
+                                utils.scrollToElement($('#pass_calendar_content_' + data.id), $('#calendar_full_modules .left-side-bar'));
+                            }, 500);
                         }
                     })
                     .error(function (data, status) {
@@ -1188,6 +1204,18 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         }
                     }
                 });
+                if (!$scope.isInitPassCalendarLeftSideBarHeight) {
+                    $scope.setPassCalendarLeftSideBarHeight(calendarId);
+                    $(window).resize(function () {
+                        setTimeout(function () {
+                            $scope.setPassCalendarLeftSideBarHeight(calendarId);
+                        }, 500);
+                    });
+                    $scope.isInitPassCalendarLeftSideBarHeight = true;
+                }
+            };
+
+            $scope.setPassCalendarLeftSideBarHeight = function (calendarId) {
                 var height = $(calendarId).find('.pass-calendar').height();
                 $(calendarId).find('.left-side-bar').height(height);
             };

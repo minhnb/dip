@@ -140,7 +140,7 @@ ul.sidebar-menu > li > a {
 
 .image-box {
     width: 100%;
-    min-height: 15vw;
+    min-height: 20vh;
     border: 1px solid #cccccc;
     position: relative;
     margin-bottom: 10px;
@@ -150,7 +150,7 @@ ul.sidebar-menu > li > a {
 
 .image-box .upload-icon {
     color: #dddddd;
-    font-size: 70px;
+    font-size: 15vh;
     left: 50%;
     opacity: 0.5;
     position: absolute;
@@ -594,7 +594,7 @@ label.time-label {
     margin-top: 20px;
 }
 #calendar_full_modules .image-box {
-    min-height: 100px;
+
 }
 .calendar-view #calendar_full_modules {
     border-top: none;
@@ -692,7 +692,7 @@ input.form-control.datepicker[readonly], input.form-control.user-birthday[readon
     display: none;
 }
 .hotel-profile .form-horizontal .ui-select-container {
-    height: 26px;
+    height: auto;
 }
 .hotel-profile .form-horizontal .ui-select-container .ui-select-search {
     width: auto !important;
