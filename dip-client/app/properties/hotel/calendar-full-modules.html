@@ -1,7 +1,7 @@
 <div class="box-body pass-tooltip-container" id="calendar_full_modules">
     <div class="row">
         <div class="col-md-4 left-side-bar">
-            <div class="box calendar-pass">
+            <div class="box calendar-pass" ng-show="!isCalendarView">
                 <div class="box-header module-name">
                     <p class="box-title">{{'ADD_MODULE' | translate}}</p>
                     <div class="pull-right">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="box-body main-box-body collapse in">
-                    <div class="box calendar-pass module-info" ng-class="module.passes.length > 0 ? 'has-pass' : ''">
+                    <div class="box calendar-pass module-info" ng-class="module.passes.length > 0 ? 'has-pass' : ''"  ng-show="!isCalendarView">
                         <div class="box-header" ng-click="module.isShowingDetails = !module.isShowingDetails">
                             <div class="left-header" ng-click="module.isAddingPass = !module.isAddingPass; $event.stopPropagation();">
                                 <button type="button" class="btn btn-no-bg">
@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="box calendar-pass module-info pass-info">
+                            <div class="box calendar-pass module-info pass-info" ng-show="!isCalendarView">
                                 <div class="box-header" ng-click="pass.isShowingDetails = !pass.isShowingDetails">
                                     <div class="pull-right">
                                         <button type="button" class="btn btn-no-bg" title="{{'DELETE' | translate}}"

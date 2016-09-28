@@ -21,6 +21,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.isInitializedCreatePassForm = false;
 
+            $scope.hotelId = '';
             $scope.hotel = {};
             $scope.module = {};
             $scope.modules = [];
@@ -644,7 +645,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.mapPureHotelService[module.id] = utils.copyObject(converted_module);
                 $scope.hideEditModuleBox(module);
                 $scope.stopSpin();
-                // $scope.getHotelProfile($routeParams.hotelId);
+                // $scope.getHotelProfile($scope.hotelId);
             };
 
             $scope.initNewPass = function (module) {
@@ -1315,7 +1316,23 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.init = function () {
-                $scope.getHotelProfile($routeParams.hotelId);
+                if ($scope.isCalendarView) {
+                    hotelService.getListHotel(HOTEL_KEY_ALL)
+                        .success(function (data, status) {
+                            if (data.length == 0) {
+                                $scope.stopSpin();
+                                return;
+                            }
+                            $scope.hotelId = data[0].id;
+                            return $scope.getHotelProfile($scope.hotelId);
+                        })
+                        .error(function (data, status) {
+                            $scope.handleError(data);
+                        });
+                } else {
+                    $scope.hotelId = $routeParams.hotelId;
+                    $scope.getHotelProfile($scope.hotelId);
+                }
             };
 
             $rootScope.initDipApp($scope.init);

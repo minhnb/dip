@@ -596,7 +596,9 @@ label.time-label {
 #calendar_full_modules .image-box {
     min-height: 100px;
 }
-
+.calendar-view #calendar_full_modules {
+    border-top: none;
+}
 a.back-button {
     color: inherit;
     font-size: 20px;
