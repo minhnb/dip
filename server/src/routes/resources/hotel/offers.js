@@ -19,15 +19,15 @@ const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
  * until offers list is not empty
  ---------------------------------------------------------------------------------------*/
 router.get('/',
-    validator.offers(true),
+    validator.offers(false),
     ctx => {
+        console.log(ctx.state.hotel.services.find);
         // TODO: Add filter for price and duration
         let serviceId = ctx.query.service,
             hotel = ctx.state.hotel,
-            service = hotel.services.id(serviceId),
             date = utils.convertDate(ctx.query.date);
 
-        if (!service) throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
+        if (hotel.services.indexOf(serviceId) == -1) throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
 
         let currentTime = moment().tz(hotel.address.timezone);
         if (date) {
@@ -107,6 +107,10 @@ router.get('/',
                         listOffer.push(offer);
                     });
                     if (listOffer.length > 0) break;
+                }
+                if (listOffer.length == 0) {
+                    // Change back to today if no offers found
+                    date = utils.formatMomentDate(today);
                 }
                 ctx.body = {offers: listOffer.map(entities.offer), date: date};
             });
