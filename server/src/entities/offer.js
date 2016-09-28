@@ -3,6 +3,8 @@
 const amenityEntity = require('./amenity');
 const ticketEntity = require('./ticket');
 const addonEntity = require('./addon');
+const hotelEntity = require('./hotel');
+const serviceEntity = require('./hotelService');
 
 function convertOfferType(type) {
     return {
@@ -26,9 +28,9 @@ function convertOffer(offer) {
         //     ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
         // },
         price: offer.price,
-        type: isPopulatedOfferType(offer.type) ? convertOfferType(offer.type) : offer.type,
-        service: offer.service,
-        hotel: offer.hotel,
+        type: isPopulatedData(offer.type) ? convertOfferType(offer.type) : offer.type,
+        service: isPopulatedData(offer.service) ? serviceEntity(offer.service) : offer.service,
+        hotel: isPopulatedData(offer.hotel) ? hotelEntity(offer.hotel) : offer.hotel,
         passType: offer.passType,
         title: offer.title,
         days: offer.days,
@@ -44,7 +46,7 @@ function convertOffer(offer) {
     return obj;
 }
 
-function isPopulatedOfferType(type) {
+function isPopulatedData(type) {
     if (type._id) {
         return true;
     }

@@ -10,12 +10,15 @@ const offersRouter = require('./offers');
 
 router
     .get('hotel', '/', ctx => {
-        ctx.body = {hotel: entities.hotel(ctx.state.hotel)};
+        return ctx.state.hotel.populate('services')
+        .execPopulate().then(hotel => {
+            ctx.body = {hotel: entities.hotel(hotel)};
+        });
     })
     .use('/offers',
         offersRouter.routes(),
         offersRouter.allowedMethods()
-    )
+    );
 
 
 module.exports = router;

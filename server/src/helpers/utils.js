@@ -17,6 +17,9 @@ function convertDate(dateString) {
     var date = new Date(dateString);
     return dateformat(date, 'yyyy-mm-dd');
 }
+function formatMoment(m) {
+    return m.format('YYYY-MM-DD');
+}
 function convertCardExpireDate(year, month) {
     var date = new Date(year, month);
     return dateformat(date, 'mm/yyyy');
@@ -163,6 +166,7 @@ function hasDuplicateElement(firstArray, secondArray) {
 module.exports = {
     generateToken: generateRandomToken,
     convertDate: convertDate,
+    formatMomentDate: formatMoment,
     convertCardExpireDate: convertCardExpireDate,
     checkGroupOwner: checkGroupOwner,
     isAdmin: isAdmin,

@@ -85,9 +85,9 @@ router
         (ctx, next) => {
             let id = ctx.params.hotelId;
             return db.hotels.findById(id)
-                .populate('services')
                 .exec()
                 .then(data => {
+                    if (!data) throw new DIPError(dipErrorDictionary.HOTEL_NOT_FOUND);
                     ctx.state.hotel = data;
                     return next();
                 });
