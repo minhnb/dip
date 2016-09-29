@@ -53,7 +53,10 @@ angular.module('dipApp.signup', ['ngRoute'])
                         increaseArea: '20%' // optional
                     });
                     $('form input[type="checkbox"]').on('ifChanged', function () {
-                        $(this).trigger('change');
+                        var self = this;
+                        setTimeout(function () {
+                            $(self).trigger('change');
+                        }, 100);
                     });
                 });
             };
