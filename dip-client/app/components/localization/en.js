@@ -195,6 +195,7 @@ var angular_translate_en = {
     HIDE_AMENITY_DETAILS: "Hide Details",
     AMENITY_NO_PASS: "There is no passes on this amenity",
     HOTEL_NO_AMENITY: "There is no amenity on this hotel. Please create a new one",
+    TAGGINGLABEL: '(new tag)',
 
     ERROR_INVALID_HOTEL_SERVICE_PICTURE: "Invalid amenity picture",
     MODULE_DELETE_CONFIRM: "Do you want to delete amenity {{ name }} ?",

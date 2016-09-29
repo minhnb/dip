@@ -27,10 +27,10 @@
     <div class="form-group has-feedback">
         <label class="col-xs-4 control-label">{{'DESCRIPTION_TAG' | translate}}</label>
         <div class="col-xs-8">
-            <ui-select multiple tagging reset-search-input="true" tagging-label="(custom 'new' label)"
+            <ui-select multiple tagging reset-search-input="true" click-triggered-select="false" tagging-label="{{'TAGGINGLABEL' | translate}}"
                        ng-model="module.tags" theme="bootstrap" sortable="true" style="width: 100%;"
                        title="{{'DESCRIPTION_TAG' | translate}}"
-                       on-select="module.isEditingModuleInfo = true" on-remove="module.isEditingModuleInfo = true">
+                       on-select="amenityTagChanged($item, module)" on-remove="module.isEditingModuleInfo = true">
                 <ui-select-match placeholder="{{'DESCRIPTION_TAG' | translate}}">{{$item}}</ui-select-match>
                 <ui-select-choices repeat="tag in module.amenityTags | filter:$select.search">
                     {{tag}}

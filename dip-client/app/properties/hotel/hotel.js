@@ -23,7 +23,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.hotelId = '';
             $scope.hotel = {};
-            $scope.module = {};
+            $scope.module = {amenityTags: []};
             $scope.modules = [];
             $scope.pureHotel = {};
 
@@ -449,8 +449,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.initCreateModulePanel = function () {
-                $scope.module = {};
-                $scope.module.poolType = POOL_TYPE_OTHERS;
+                $scope.module = {amenityTags: []};
+                // $scope.module.poolType = POOL_TYPE_OTHERS;
                 $('#image_box_module').trigger('clearImageBox');
                 $('form[name="create-module"]').validator('reset');
             };
@@ -465,6 +465,16 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     formSelector = 'form[name="edit-module"]#module_form_' + module.id;
                 }
                 $(formSelector + ' input[ng-model="module.type"]').trigger('change');
+            };
+
+            $scope.amenityTagChanged = function ($item, module) {
+                var index = module.tags.indexOf($item);
+                var taggingLabel = $scope.translate('TAGGINGLABEL');
+                $item = $item.replace(taggingLabel,'').trim();
+                if (index > -1) {
+                    module.tags[index] = $item;
+                }
+                module.isEditingModuleInfo = true;
             };
 
             $scope.initClassForModuleInfoCollapse = function (module) {
@@ -507,9 +517,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         $scope.updateHotelServiceImage(data.id)
                             .success(function (data, status) {
                                 $scope.hideCreateModuleBox();
-                                $scope.module = {};
-                                $('form[name="create-module"]').validator('reset');
-                                $('#image_box_module').trigger('clearImageBox');
+                                $scope.initCreateModulePanel();
 
                                 $scope.stopSpin();
                                 var module = $scope.convertModule(data);
@@ -576,9 +584,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         $scope.stopSpin();
                         var convertedModule = hotelUtils.convertHotelService(data);
                         module = utils.copyObject(convertedModule);
-                        if (!$scope.mapPureHotelService[module.id]) {
-                            $scope.mapPureHotelService[module.id] = {};
-                        }
                         $scope.mapPureHotelService[module.id] = utils.copyObject(convertedModule);
                         if (module.imageUrl) {
                             $('#image_box_module_' + module.id).trigger('setImage', [module.imageUrl, module.name]);
@@ -796,9 +801,6 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     .success(function (data, status) {
                         var convertedPass = hotelUtils.convertPass(data);
                         pass = utils.copyObject(convertedPass);
-                        if (!$scope.mapPurePass[pass.id]) {
-                            $scope.mapPurePass[pass.id] = {};
-                        }
                         $scope.mapPurePass[pass.id] = utils.copyObject(convertedPass);
                         setTimeout(function () {
                             pass.isEditingPassInfo = true;
@@ -837,9 +839,9 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.startSpin();
                 hotelService.updatePass(updatePass)
                     .success(function (data, status) {
-                        var convertedPass = hotelUtils.convertPass(pass);
+                        var convertedPass = hotelUtils.convertPass(data);
                         utils.updateObjectInfo(pass, convertedPass);
-                        $scope.mapPurePass[pass.id] = convertedPass;
+                        $scope.mapPurePass[pass.id] = utils.copyObject(convertedPass);
                         $scope.hideEditPassBox(pass);
                         $('#pass_' + pass.id).validator('reset');
                         $scope.initCalendarFullModules();
