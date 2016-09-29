@@ -819,8 +819,8 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 var purePass = $scope.mapPurePass[pass.id];
                 utils.updateObjectInfo(pass, purePass, ['displayStartDay', 'displayDueDay', 'days', 'startDay', 'dueDay']);
                 $('#pass_' + pass.id).find('form').validator('reset');
-                $('#pass_' + pass.id).find('input[ng-model="pass.allotmentCount"]').closest('.slider').slider('setValue', pass.allotmentCount);
-                $('#pass_' + pass.id).find('input[ng-model="pass.capacity"]').closest('.slider').slider('setValue', pass.capacity);
+                $('#pass_' + pass.id).find('input[ng-model="pass.allotmentCount"]').closest('.slider').slider('setValue', parseInt(pass.allotmentCount));
+                $('#pass_' + pass.id).find('input[ng-model="pass.capacity"]').closest('.slider').slider('setValue', parseInt(pass.capacity));
                 $('#pass_' + pass.id).find('input[ng-model="pass.displayPrice"]').val(pass.displayPrice);
                 $('#pass_' + pass.id).find('input[ng-model="pass.startTime"]').val(pass.startTime);
                 $('#pass_' + pass.id).find('input[ng-model="pass.endTime"]').val(pass.endTime);
