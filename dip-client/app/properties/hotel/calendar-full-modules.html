@@ -119,7 +119,7 @@
                                     <div class="dip-vertical-checkbox" ng-repeat="day in daysInWeek">
                                         <input type="checkbox" class="minimal" data-day="{{day.value}}"
                                                data-pass-id="{{pass.id}}"
-                                               ng-checked="pass.days.indexOf(day.value) > -1">
+                                               ng-checked="::(pass.days.indexOf(day.value) > -1)">
                                         <span>{{day.display}}</span>
                                     </div>
                                 </div>
