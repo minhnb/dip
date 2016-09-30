@@ -69,7 +69,7 @@
         <label class="control-label col-xs-4">{{'PRICE' | translate}}</label>
         <div class="col-xs-8">
             <input type="text" class="form-control" ng-model="pass.displayPrice"
-                   data-inputmask="'alias': 'numeric', 'allowMinus': false, 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"
+                   data-inputmask="'alias': 'numeric', 'allowMinus': false, 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0', 'clearMaskOnLostFocus' : 'false'"
                    data-mask required>
             <span class="glyphicon form-control-feedback"></span>
             <div class="help-block with-errors"></div>

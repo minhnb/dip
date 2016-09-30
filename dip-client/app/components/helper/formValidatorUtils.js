@@ -19,8 +19,8 @@ dipApp.factory('formValidatorUtils', [
                 if (options.delay == undefined) {
                     options.delay = 0;
                 }
-                if (options.disabled == undefined) {
-                    options.disabled = false;
+                if (options.disable == undefined) {
+                    options.disable = false;
                 }
                 formValidatorUtils.initDIPFormValidatorWithOptions(form, options, submitFunction);
             },
