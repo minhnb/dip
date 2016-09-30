@@ -840,6 +840,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.updatePass(updatePass)
                     .success(function (data, status) {
                         var convertedPass = hotelUtils.convertPass(data);
+                        convertedPass.passColor = pass.passColor;
                         utils.updateObjectInfo(pass, convertedPass);
                         $scope.mapPurePass[pass.id] = utils.copyObject(convertedPass);
                         $scope.hideEditPassBox(pass);
