@@ -11,108 +11,18 @@ const utils = require('../../../helpers/utils');
 const DIPError = require('../../../helpers/DIPError');
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 
-/**
- * @api Get hotel's offers for a service for a date
- *
- * When no date is passed in,
- * use current date as start point and keep incrementing it (till at most 2 weeks later)
- * until offers list is not empty
- ---------------------------------------------------------------------------------------*/
+const offerServices = require('../../../services/offer');
+
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
+
 router.get('/',
-    validator.offers(false),
-    ctx => {
-        // TODO: Add filter for price and duration
+    async(ctx => {
         let serviceId = ctx.query.service,
             hotel = ctx.state.hotel,
-            date = utils.convertDate(ctx.query.date);
-
-        if (hotel.services.indexOf(serviceId) == -1) throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
-
-        let currentTime = moment().tz(hotel.address.timezone);
-        if (date) {
-            let reserveDate = moment.tz(date, hotel.address.timezone);
-            let day = reserveDate.weekday();
-
-            return db.offers.find({
-                hotel: hotel,
-                service: mongoose.Types.ObjectId(serviceId),
-                days: day,
-                $or: [
-                    {dueDay: {$gte: date}},
-                    {dueDay: {$exists: false}}
-                ],
-                startDay: {$lte: date},
-                offDays: {$nin: [date]},
-                type: 'pass'
-            })
-            .populate('type')
-            .populate('addons')
-            .populate('hotel')
-            .exec()
-            .then(offers => {
-                let listOffer = [];
-                offers.forEach(offer => {
-                    // New rule: disable offers that has less than 1 hour to endTime
-                    let beginTime = reserveDate.clone().add(moment.duration(offer.duration.startTime / 60, 'hours'));
-                    let lastAllowTime = reserveDate.clone().add(moment.duration(offer.duration.endTime / 60 - 1, 'hours'));
-                    if ((beginTime < currentTime) && (lastAllowTime < currentTime)) {
-                        return;
-                    }
-
-                    offer.date = date;
-                    listOffer.push(offer);
-                });
-                ctx.body = {offers: listOffer.map(entities.offer), date: date};
-            });
-        } else {
-            let date = utils.formatMomentDate(currentTime),
-                today = moment.tz(date, hotel.address.timezone); // so that we can get rid of hh:mm:ss in currentTime
-            return db.offers.find({
-                hotel: hotel,
-                service: mongoose.Types.ObjectId(serviceId),
-                $or: [
-                    {dueDay: {$gte: date}},
-                    {dueDay: {$exists: false}}
-                ],
-                type: 'pass'
-            })
-            .populate('type')
-            .populate('addons')
-            .populate('hotel')
-            .exec()
-            .then(offers => {
-                let listOffer = [];
-                let reserveDate, date, weekday;
-                for(let i = 0; i < 14; i++) {
-                    reserveDate = today.clone().add(i, 'days');
-                    date = utils.formatMomentDate(reserveDate);
-                    weekday = reserveDate.weekday();
-                    offers.forEach(offer => {
-                        if (offer.days.indexOf(weekday) == -1
-                        || offer.startDay > date
-                        || (offer.dueDay && offer.dueDay < date)
-                        || offer.offDays.indexOf(date) > -1
-                        || (offer.reservationCount && offer.reservationCount[date] && offer.reservationCount[date] >= offer.allotmentCount))
-                            return;
-
-                        let beginTime = reserveDate.clone().add(moment.duration(offer.duration.startTime / 60, 'hours'));
-                        let lastAllowTime = reserveDate.clone().add(moment.duration(offer.duration.endTime / 60 - 1, 'hours'));
-                        if ((beginTime < currentTime) && (lastAllowTime < currentTime)) {
-                            return;
-                        }
-
-                        offer.date = date;
-                        listOffer.push(offer);
-                    });
-                    if (listOffer.length > 0) break;
-                }
-                if (listOffer.length == 0) {
-                    // Change back to today if no offers found
-                    date = utils.formatMomentDate(today);
-                }
-                ctx.body = {offers: listOffer.map(entities.offer), date: date};
-            });
-        }
-    });
+            date = ctx.query.date;
+        ctx.body = await(offerServices.getOffers(hotel, serviceId, date));
+    })
+);
 
 module.exports = router;

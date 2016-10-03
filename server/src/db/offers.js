@@ -29,6 +29,7 @@ const offerSchema = new Schema({
         required: true,
         default: 'New Offer'
     },
+    details: String,
     // pool: {
     //     type: Schema.ObjectId,
     //     ref: 'Pool',
