@@ -602,7 +602,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.discardChangeModule = function (module) {
                 var pureModule = $scope.mapPureHotelService[module.id];
-                utils.updateObjectInfo(module, pureModule, ['passes']);
+                utils.updateObjectInfo(module, pureModule, ['passes', 'isShowingDetails', 'isAddingPass']);
                 $('#image_box_module_' + module.id).trigger('setImage', [module.imageUrl, module.name]);
                 $scope.hideEditModuleBox(module);
                 setTimeout(function () {
@@ -648,7 +648,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.actionAfterSaveModule = function (module, data) {
                 var converted_module = $scope.convertModule(data);
-                utils.updateObjectInfo(module, converted_module, ['passes']);
+                utils.updateObjectInfo(module, converted_module, ['passes', 'isShowingDetails', 'isAddingPass']);
                 $scope.mapPureHotelService[module.id] = utils.copyObject(converted_module);
                 $scope.hideEditModuleBox(module);
                 $scope.stopSpin();
@@ -819,7 +819,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
 
             $scope.discardChangePass = function (pass) {
                 var purePass = $scope.mapPurePass[pass.id];
-                utils.updateObjectInfo(pass, purePass, ['displayStartDay', 'displayDueDay', 'days', 'startDay', 'dueDay']);
+                utils.updateObjectInfo(pass, purePass, ['displayStartDay', 'displayDueDay', 'days', 'startDay', 'dueDay', 'isShowingDetails']);
                 $('#pass_' + pass.id).find('form').validator('reset');
                 $('#pass_' + pass.id).find('input[ng-model="pass.allotmentCount"]').closest('.slider').slider('setValue', parseInt(pass.allotmentCount));
                 $('#pass_' + pass.id).find('input[ng-model="pass.capacity"]').closest('.slider').slider('setValue', parseInt(pass.capacity));
@@ -840,8 +840,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 hotelService.updatePass(updatePass)
                     .success(function (data, status) {
                         var convertedPass = hotelUtils.convertPass(data);
-                        convertedPass.passColor = pass.passColor;
-                        utils.updateObjectInfo(pass, convertedPass);
+                        utils.updateObjectInfo(pass, convertedPass, ['isShowingDetails', 'passColor']);
                         $scope.mapPurePass[pass.id] = utils.copyObject(convertedPass);
                         $scope.hideEditPassBox(pass);
                         $('#pass_' + pass.id).validator('reset');
