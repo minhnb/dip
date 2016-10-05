@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const db = require('../../db');
 const entities = require('../../entities');
+const config = require('../../config');
 const contactDipHelper = require('../../helpers/contact_dip');
 
 const dipErrorDictionary = require('../../constants/dipErrorDictionary');
@@ -124,7 +125,7 @@ exports.authenticateGroup = (ctx, next) => {
 exports.contactDip = ctx => {
     let contactDipPromise;
     let user = ctx.state.user;
-    contactDipPromise = contactDipHelper.sendMessage(user, ctx.dipId, 'Welcome to Dip. We hope you will enjoy it here');
+    contactDipPromise = contactDipHelper.sendMessage(user, ctx.dipId, config.strings.dipWelcomeMessage);
     return contactDipPromise.then(group => {   
         ctx.status = 200;
         ctx.body = {groupId: group._id}
