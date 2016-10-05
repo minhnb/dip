@@ -69,7 +69,7 @@ function sendMessage(user, dipId, content) {
                     members = [dipId, userId];
                 let message = new db.messages({
                     user: dipId,
-                    content: content || 'Welcome to Dip. We hope you will enjoy it here'
+                    content: content || config.strings.dipWelcomeMessage
                 });
                 group = new db.groups({
                     name: name,
