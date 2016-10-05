@@ -31,7 +31,9 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <!-- Optionally, you can add icons to the links -->
-            <li ng-show="userHasRole([ROLE_ADMIN, ROLE_PARTNER])"><a ng-click="goToPath('/dashboard')"><i class="fa fa-dashboard"></i> <span
+            <!--<li ng-show="userHasRole([ROLE_ADMIN, ROLE_PARTNER])"><a ng-click="goToPath('/dashboard')"><i class="fa fa-dashboard"></i> <span-->
+                    <!--translate="DASHBOARD"></span></a></li>-->
+            <li ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/properties/calendar')"><i class="fa fa-calendar"></i> <span
                     translate="DASHBOARD"></span></a></li>
             <li ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/properties/hotels/all')"><i class="fa fa-hotel"></i> <span
                     translate="PROPERTY_PROFILE"></span></a></li>
@@ -54,8 +56,8 @@
                     </li>
                 </ul>
             </li>
-            <li ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/properties/calendar')"><i class="fa fa-calendar"></i> <span
-                    translate="CALENDAR"></span></a></li>
+            <!--<li ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/properties/calendar')"><i class="fa fa-calendar"></i> <span-->
+                    <!--translate="CALENDAR"></span></a></li>-->
             <li ng-if="userHasRole([ROLE_PARTNER])"><a ng-click="goToPath('/reports/hotel-reservations')"><i class="fa fa-table"></i> <span
                     translate="RESERVATIONS"></span></a></li>
             <li class="treeview" ng-if="userHasRole([ROLE_ADMIN])">

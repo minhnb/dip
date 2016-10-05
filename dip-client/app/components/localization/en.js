@@ -184,7 +184,7 @@ var angular_translate_en = {
     OTHERS: "Others",
     LIST_MODULES: "List Swimming Pools",
     SWIMMING_POOL: "Swimming Pool",
-    DESCRIPTION_TAG: "Description Tags",
+    DESCRIPTION_TAG: "Amenity Description",
     MODULE_TYPE_POOL: "Swimming Pool",
     MODULE_TYPE_SPA: "Spa",
     MODULE_TYPE_SALON: "Salon",
