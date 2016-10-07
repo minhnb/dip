@@ -401,6 +401,7 @@ reservationServices.verifySpecialOffers = function(userOffer, offer) {
 reservationServices.calculateOfferPromotion = function (ctx, next) {
     let promotionCode = ctx.request.body.promotionCode;
     if (promotionCode) {
+        promotionCode = promotionCode.toLowerCase();
         let hotel = ctx.request.body.hotel;
         let offers = ctx.state.offerIds;
         let needAddingDipCreditPromotionCode = true;

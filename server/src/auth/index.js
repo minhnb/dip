@@ -70,7 +70,7 @@ var signupHandler = async (function (ctx, next) {
         _setupNewUser(ctx, user);
         ctx.response.status = 204;
         if(referer) {
-            await (_addDipCreditToReferer(referer));
+            await (_addDipCreditToReferer(referer, user));
         }
         return next();
     } catch (err) {
@@ -205,7 +205,7 @@ function _createUser(ctx, referer) {
 function _getReferrer(code) {
     if (!code) return Promise.resolve(null);
     code = code.toLowerCase();
-    return db.users.findOne({'account.refCode': code}).exec();
+    return db.users.findOne({'account.refCode': new RegExp('^' + code + '$','i')}).exec();
 }
 
 function _setupNewUser(ctx, user) {
@@ -222,7 +222,7 @@ function _setupNewUser(ctx, user) {
     });
 }
 
-function _addDipCreditToReferer(referer) {
+function _addDipCreditToReferer(referer, user) {
     return db.refs.findOne({owner: referer._id})
     .exec()
     .then(ref => {

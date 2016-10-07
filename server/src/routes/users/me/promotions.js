@@ -20,6 +20,10 @@ router.put('add promotion', '/:promotionCode',
             offers = ctx.request.body.offers,
             event = ctx.request.body.event;
 
+        if (promotionCode) {
+            promotionCode = promotionCode.toLowerCase();
+        }
+
         return promotionServices.addPromotionCode(user, promotionCode, hotel, offers, event).then((promotion) => {
             ctx.body = promotion;
         });

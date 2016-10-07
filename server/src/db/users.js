@@ -113,13 +113,48 @@ const userSchema = new Schema({
 });
 userSchema.index({firstName: 'text', lastName: 'text'});
 
-userSchema.pre('validate', function(next) {
+userSchema.pre('validate', function (next) {
     if (this.isNew || !this.account.refCode) {
-        this.account.refCode = utils.generateMemberCode(this.email, 5);
+        let key = 'dip';
+        let name = this.firstName;
+        if (!name) {
+            name = this.lastName;
+        }
+        if (name) {
+            key += name.split(' ')[0];
+        }
+        key = key.toUpperCase();
+        return userModel.find({"account.refCode": new RegExp('^' + key + '\\d+', 'i')}, {"account.refCode": 1}).exec().then(users => {
+            let suggestNumber = users.length + 1;
+            let refCode = key + suggestNumber;
+            if (users.length == 0) {
+                this.account.refCode = refCode;
+                return next();
+            }
+            return userModel.findOne({"account.refCode": refCode}, {"account.refCode": 1}).exec().then(user => {
+                if (user) {
+                    let listRefCodeSuffix = users.map(user => {
+                        var suffix = user.account.refCode.toUpperCase().replace(key, '');
+                        return parseInt(suffix, 10);
+                    });
+                    listRefCodeSuffix.sort();
+                    for (let i = 0; i < listRefCodeSuffix.length; i++) {
+                        if (i != listRefCodeSuffix[i] - 1) {
+                            this.account.refCode = key + (i + 1);
+                            return next();
+                        }
+                    }
+                } else {
+                    this.account.refCode = refCode;
+                    return next();
+                }
+            });
+        });
+    } else {
+        return next();
     }
-    next();
 });
-userSchema.pre('save', function(next) {
+userSchema.pre('save', function (next) {
     if (this.dob) {
         this.dob = utils.convertDate(this.dob);
     }
@@ -129,10 +164,10 @@ userSchema.pre('save', function(next) {
     next();
 });
 
-userSchema.virtual('username').get(function() {
+userSchema.virtual('username').get(function () {
     return this.email;
 });
-userSchema.virtual('nameOrEmail').get(function() {
+userSchema.virtual('nameOrEmail').get(function () {
     let arr = [];
     if (this.firstName) {
         arr.push(this.firstName);
@@ -150,22 +185,22 @@ userSchema.virtual('nameOrEmail').get(function() {
 /**
  * @properties avatarS3Path
  */
-userSchema.virtual('avatarS3Path').get(function() {
+userSchema.virtual('avatarS3Path').get(function () {
     return 'avatars/' + this._id;
 });
 
-userSchema.statics.findByEmail = function(email, callback) {
+userSchema.statics.findByEmail = function (email, callback) {
     if (email) {
         email = email.toLowerCase();
     }
     return this.findOne({email: email}, callback);
 };
 
-userSchema.statics.findByFacebookId = function(id, cb) {
+userSchema.statics.findByFacebookId = function (id, cb) {
     return this.findOne({facebookId: id}, cb);
 };
 
-userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
+userSchema.statics.createFromFacebook = function (fbInfo, requestBody) {
     let facebookId = fbInfo.id,
         email = requestBody.email || fbInfo.email,
         firstName = requestBody.firstName !== undefined ? requestBody.firstName : fbInfo.first_name,
@@ -190,7 +225,7 @@ userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
 
     return this.findByFacebookId(facebookId).exec().then(user => {
         if (!user) {
-            if(!email) {
+            if (!email) {
                 // ctx.throw(400, 'Missing Email');
                 throw new DIPError(dipErrorDictionary.MISSING_EMAIL);
             }
@@ -209,25 +244,25 @@ userSchema.statics.createFromFacebook = function(fbInfo, requestBody) {
 };
 
 
-userSchema.methods.generateSalt = function() {
+userSchema.methods.generateSalt = function () {
     return crypto.randomBytes(64).toString('hex');
 };
-userSchema.methods.setPassword = function(password) {
+userSchema.methods.setPassword = function (password) {
     if (!this.salt) {
         this.salt = this.generateSalt();
     }
     this.encryptedPassword = this.encryptPassword(password);
 };
-userSchema.methods.hasPassword = function() {
+userSchema.methods.hasPassword = function () {
     return this.encryptedPassword !== undefined && this.encryptedPassword !== null;
 };
-userSchema.methods.checkPassword = function(password) {
+userSchema.methods.checkPassword = function (password) {
     return this.hasPassword() && this.encryptedPassword === this.encryptPassword(password);
 };
 userSchema.methods.encryptPassword = function (password) {
     return crypto.pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString('hex');
 };
-userSchema.methods.generateJWT = function() {
+userSchema.methods.generateJWT = function () {
     var sessionKey = utils.generateToken(64);
     var refreshToken = utils.generateToken(64);
     var session = new sessions({
@@ -239,14 +274,14 @@ userSchema.methods.generateJWT = function() {
         return session.generateToken();
     });
 };
-userSchema.methods.setRefCode = function(code) {
+userSchema.methods.setRefCode = function (code) {
     this.account.refCode = code;
 };
 
-userSchema.methods.isAdmin = function() {
+userSchema.methods.isAdmin = function () {
     return this.role == 'admin';
 };
-userSchema.methods.isPartner = function() {
+userSchema.methods.isPartner = function () {
     return this.role == 'partner';
 };
 

@@ -11,7 +11,11 @@ module.exports = router;
 router.get('get promotion', '/:code',
     auth.authenticate(),
     ctx => {
-        return db.promotions.findOne({code: ctx.params.code}).exec().then(data => {
+        let code = ctx.params.code;
+        if (code) {
+            code = code.toLowerCase();
+        }
+        return db.promotions.findOne({code: code}).exec().then(data => {
             ctx.body = {promotion: entities.promotion(data)};
         });
     }

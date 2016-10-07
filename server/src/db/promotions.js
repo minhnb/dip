@@ -13,6 +13,7 @@ const promotionSchema = new Schema({
     code: {
         type: String,
         required: true,
+        lowercase: true,
         index: {
             unique: true
         }
