@@ -167,6 +167,7 @@ var angular_translate_en = {
 
     ERROR_INVALID_URL: "Invalid url",
     ERROR_INVALID_INSTAGRAM: "Instagram handle must like @username or #hashtag",
+    ERROR_INVALID_ADDRESS: "Invalid address",
 
     HOTEL_PROFILE: "Hotel Profile",
     HOTEL_INFO: "Hotel Info",

@@ -120,6 +120,51 @@ dipApp.factory('hotelUtils', [
                 }
                 return true;
             },
+            createGeoQuery: function (fullAddressString, address) {
+                var geoQuery = {'address': fullAddressString};
+                if (address && (address.city || address.state || address.postalCode)) {
+                    var componentRestrictions = {country: "US"};
+                    if (address.city) {
+                        componentRestrictions.locality = address.city;
+                    }
+                    if (address.state) {
+                        componentRestrictions.administrativeArea = address.state;
+                    }
+                    if (address.postalCode) {
+                        componentRestrictions.postalCode = address.postalCode;
+                    }
+                    geoQuery.componentRestrictions = componentRestrictions;
+                }
+                console.log(geoQuery);
+                return geoQuery;
+            },
+            getGeoAddress: function (address_components) {
+                var geoAddress = {};
+                address_components.forEach(function (address_component) {
+                    if (address_component.types.indexOf('street_number') > -1) {
+                        geoAddress.street_number = address_component.long_name;
+                        return;
+                    }
+                    if (address_component.types.indexOf('route') > -1) {
+                        geoAddress.route = address_component.long_name;
+                        return;
+                    }
+                    if (address_component.types.indexOf('locality') > -1) {
+                        geoAddress.city = address_component.long_name;
+                        return;
+                    }
+                    if (address_component.types.indexOf('administrative_area_level_1') > -1) {
+                        geoAddress.state = address_component.long_name;
+                        return;
+                    }
+                    if (address_component.types.indexOf('postal_code') > -1) {
+                        geoAddress.postalCode = address_component.long_name;
+                    }
+                });
+                var streets = [geoAddress.street_number, geoAddress.route];
+                geoAddress.street = streets.filter(Boolean).join(' ');
+                return geoAddress;
+            },
             convertHotelService: function (hotelService) {
                 hotelService.typeDisplay = this.getAmenityTypeDisplay(hotelService.type);
                 if (hotelService.type) {

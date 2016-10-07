@@ -18,6 +18,7 @@
     "randomcolor": "~0.4.4",
     "ng-pattern-restrict": "~0.2.0",
     "angular-ui-select": "~0.19.4",
-    "angular-sanitize": "1.5.7"
+    "angular-sanitize": "1.5.7",
+    "ngmap": "1.17.6"
   }
 }

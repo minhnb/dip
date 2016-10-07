@@ -148,7 +148,10 @@
     </div>
 </div>
 <div class="col-md-4">
-    <dip-image-box class="form-group" id="image_box_hotel"
+    <dip-image-box id="image_box_hotel"
                    data-title="{{'PROFILE_PICTURE' | translate}}"
                    data-alt="Hotel Profile Picture"></dip-image-box>
+    <ng-map zoom="{{position.pos ? 15 : 1}}" center="{{position.pos || [39.8333333, -98.585522]}}" scrollwheel="false" ng-if="isShowingMap">
+        <marker ng-if="position.pos" position="{{position.pos}}" title="pos: "></marker>
+    </ng-map>
 </div>
