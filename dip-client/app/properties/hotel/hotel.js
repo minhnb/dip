@@ -588,7 +588,11 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             };
 
             $scope.deleteModule = function (module) {
-                utils.notyConfirm($scope.translate('MODULE_DELETE_CONFIRM', {name: module.name}), $scope.okText, $scope.cancelText, function () {
+                var confirmMessage = $scope.translate('MODULE_DELETE_CONFIRM', {name: module.name});
+                if (module.passes && module.passes.length > 0) {
+                    confirmMessage = $scope.translate('MODULE_HAS_PASS_DELETE_CONFIRM', {name: module.name});
+                }
+                utils.notyConfirm(confirmMessage, $scope.okText, $scope.cancelText, function () {
                     $scope.startSpin();
                     hotelService.deleteHotelService($scope.hotel.id, module)
                         .success(function (data, status) {

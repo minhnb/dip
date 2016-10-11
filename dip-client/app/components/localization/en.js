@@ -155,14 +155,14 @@ var angular_translate_en = {
     LIST_INITIAL_HOTELS: "Initial Hotels",
     LIST_ON_AIR_HOTELS: "On Air Hotels",
 
-    HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }} ?",
+    HOTEL_DELETE_CONFIRM: "Do you want to delete hotel {{ name }}?",
     ERROR_MAX_FILE_SIZE: "Allowed file size exceeded. (Max. {{ number }} MB)",
     ERROR_INVALID_HOTEL_PICTURE: "Invalid hotel profile picture",
     CLICK_TO_UPLOAD_PICTURE: "Click here to upload the profile picture",
     CLICK_TO_CHANGE_PICTURE: "Click here to change the profile picture",
-    HOTEL_APPROVE_CONFIRM: "Do you want to approve hotel {{ name }} ?",
-    HOTEL_UNAPPROVE_CONFIRM: "Do you want to decline hotel {{ name }} ?",
-    HOTEL_SUBMIT_CONFIRM: "Do you want to submit hotel {{ name }} ?",
+    HOTEL_APPROVE_CONFIRM: "Do you want to approve hotel {{ name }}?",
+    HOTEL_UNAPPROVE_CONFIRM: "Do you want to decline hotel {{ name }}?",
+    HOTEL_SUBMIT_CONFIRM: "Do you want to submit hotel {{ name }}?",
     HOTEL_BOX_PROMPT: "This is your hotel profile. The information you enter here will appear on the app.",
 
     ERROR_INVALID_URL: "Invalid url",
@@ -199,7 +199,8 @@ var angular_translate_en = {
     TAGGINGLABEL: '(new tag)',
 
     ERROR_INVALID_HOTEL_SERVICE_PICTURE: "Invalid amenity picture",
-    MODULE_DELETE_CONFIRM: "Do you want to delete amenity {{ name }} ?",
+    MODULE_DELETE_CONFIRM: "Do you want to delete amenity {{ name }}?",
+    MODULE_HAS_PASS_DELETE_CONFIRM: "This amenity {{ name }} contains some passes. Do you want to delete it?",
 
     ADD_PASSES: "Add Passes",
     ADD_PASS: "Add Pass",
@@ -233,7 +234,7 @@ var angular_translate_en = {
 
     ADD_PASS_SUCCESS_PROMPT: "Your pass is added successfully. Click the calendar to proceed with mapping it",
 
-    PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }} ?",
+    PASS_DELETE_CONFIRM: "Do you want to delete pass {{ name }}?",
 
     MAP_PASS_TO_CALENDAR: "Map pass to calendar",
     BACK_TO_LIST_VIEW: "Back to list view",
