@@ -135,7 +135,6 @@ dipApp.factory('hotelUtils', [
                     }
                     geoQuery.componentRestrictions = componentRestrictions;
                 }
-                console.log(geoQuery);
                 return geoQuery;
             },
             getGeoAddress: function (address_components) {

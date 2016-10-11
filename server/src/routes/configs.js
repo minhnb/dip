@@ -6,7 +6,7 @@ const auth = require('../auth');
 const db = require('../db');
 const entities = require('../entities');
 
-var country = require('countryjs');
+const usStates = require('../constants/usStates');
 
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
@@ -21,7 +21,7 @@ router.get('get config', '/',
         ctx.body = {
             dipLocations: dipLocations,
             country: {
-                states: country.states('US')
+                states: usStates.LIST
             }
         };
     })

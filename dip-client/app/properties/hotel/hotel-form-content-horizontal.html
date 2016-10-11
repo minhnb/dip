@@ -46,9 +46,9 @@
                 <label class="col-md-2 col-sm-3 col-xs-4 control-label">{{'STATE' | translate}}</label>
                 <div class="col-md-10 col-sm-9 col-xs-8">
                     <ui-select ng-model="hotel.address.state" theme="bootstrap" on-select="stateSelected()">
-                        <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected}}</ui-select-match>
-                        <ui-select-choices repeat="state in usStates | filter: $select.search">
-                            <div ng-bind-html="state | highlight: $select.search"></div>
+                        <ui-select-match placeholder="{{'SELECT_STATE' | translate}}">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="state.value as state in usStates | filter: $select.search">
+                            <div ng-bind-html="state.name | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
                     <input type="text" required class="form-control" ng-model="hotel.address.state" ng-show="false"
