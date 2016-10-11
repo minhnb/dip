@@ -18,12 +18,17 @@ const contactDip = require('./../helpers/contact_dip');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
+const dipLoginBy = require('../constants/loginBy');
 
 const makerEvent = require('./../helpers/iftttMakerEvent');
 
 const passport = require('./passport');
 
 function login(ctx, next) {
+    ctx.state.sessionInfo = {
+        loginBy: dipLoginBy.LOGIN_BY_PASSWORD,
+        device: ctx.request.body.device
+    };
     return passport.authenticate('local', {session: false}, (user, info, status) => {
         if (!user) {
             ctx.state.error = info;
@@ -41,6 +46,10 @@ function login(ctx, next) {
 }
 
 function facebookLogin(ctx, next) {
+    ctx.state.sessionInfo = {
+        loginBy: dipLoginBy.LOGIN_BY_FACEBOOK,
+        device: ctx.request.body.device
+    };
     return passport.authenticateFacebook(ctx).then(user => {
         if (user.wasNew) {
             _setupNewUser(ctx, user);
@@ -145,7 +154,7 @@ var isPartnerOrAdmin = compose([
 ]);
 
 function setupAccessToken(ctx, next) {
-    return ctx.state.user.generateJWT().then(token => {
+    return ctx.state.user.generateJWT(ctx.state.sessionInfo).then(token => {
         _returnToken(token, ctx);
         return next();
     });

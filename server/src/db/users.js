@@ -262,7 +262,7 @@ userSchema.methods.checkPassword = function (password) {
 userSchema.methods.encryptPassword = function (password) {
     return crypto.pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString('hex');
 };
-userSchema.methods.generateJWT = function () {
+userSchema.methods.generateJWT = function (sessionInfo) {
     var sessionKey = utils.generateToken(64);
     var refreshToken = utils.generateToken(64);
     var session = new sessions({
@@ -270,10 +270,38 @@ userSchema.methods.generateJWT = function () {
         user: this,
         refreshToken: refreshToken
     });
+    if (sessionInfo) {
+        session.loginBy = sessionInfo.loginBy;
+        session.device = sessionInfo.device;
+    }
     return session.save().then(session => {
         return session.generateToken();
     });
 };
+userSchema.methods.deleteRelativeSession = function (loginByList, excludedSession) {
+    let condition = {
+        user: this._id,
+        $or: [
+            {
+                loginBy: {
+                    $in: loginByList
+                }
+            },
+            {
+                loginBy: {
+                    $exists: false
+                }
+            }
+        ]
+    };
+    if (excludedSession) {
+        condition._id = {
+            $nin: [excludedSession]
+        }
+    }
+    return sessions.remove(condition);
+};
+
 userSchema.methods.setRefCode = function (code) {
     this.account.refCode = code;
 };

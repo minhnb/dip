@@ -19,8 +19,12 @@ const membershipRoute = require('./membership');
 const dipConstant = require('../../../constants/constants');
 const dipErrorDictionary = require('../../../constants/dipErrorDictionary');
 const DIPError = require('../../../helpers/DIPError');
+const dipLoginBy = require('../../../constants/loginBy');
 
 const mailer = require('../../../mailer');
+
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
 
 module.exports = router;
 
@@ -74,6 +78,7 @@ router.get('get me', '/',
         if (postData.picture && postData.picture.provider) {
             user.avatar.provider = postData.picture.provider;
         }
+        let needDeleteRelativeSession = false;
         if (postData.oldPassword !== undefined) {
             let oldPwd = postData.oldPassword;
             if (!user.checkPassword(oldPwd)) {
@@ -81,13 +86,18 @@ router.get('get me', '/',
                 throw new DIPError(dipErrorDictionary.WRONG_PASSWORD);
             }
             user.setPassword(postData.newPassword);
+            needDeleteRelativeSession = true;
         }
         if (postData.private !== undefined) {
             let mode = postData.private;
             user.privateMode = (mode == 'true' || mode == '1');
         }
 
-        return user.save().then(() => {
+        return user.save().then(async(() => {
+            if (needDeleteRelativeSession) {
+                let loginByList = [dipLoginBy.LOGIN_BY_PASSWORD];
+                await(user.deleteRelativeSession(loginByList, ctx.state.session));
+            }
             ctx.response.status = 204;
 
             // Send password-changed email if necessary
@@ -100,10 +110,11 @@ router.get('get me', '/',
                     name: userName
                 });
             }
-        }).catch(err => {
+        })).catch(err => {
             // ctx.response.status = 400;
             // ctx.body = "Bad request";
             // throw err;
+            console.log(err);
             throw new DIPError(dipErrorDictionary.UNKNOWN_ERROR);
         });
     }

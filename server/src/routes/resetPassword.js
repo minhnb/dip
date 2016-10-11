@@ -10,6 +10,10 @@ const mailer = require('../mailer');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
+const dipLoginBy = require('../constants/loginBy');
+
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
 
 module.exports = router;
 
@@ -94,7 +98,10 @@ router.post('Request password reset', '/',
                 }
                 let user = token.user;
                 user.setPassword(password);
-                return user.save().then(user => {
+                return user.save().then(async(user => {
+                    let loginByList = [dipLoginBy.LOGIN_BY_PASSWORD];
+                    await(user.deleteRelativeSession(loginByList));
+
                     ctx.status = 204;
                     token.remove();
 
@@ -106,7 +113,7 @@ router.post('Request password reset', '/',
                     }, {
                         name: userName
                     });
-                });
+                }));
             });
     }
 );

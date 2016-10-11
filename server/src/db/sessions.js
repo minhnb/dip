@@ -12,6 +12,7 @@ const sessionSchema = new Schema({
     user: {type: Schema.ObjectId, ref: 'User', required: true},
     refreshToken: {type: String, required: true, index: {unique: true}},
     createdAt: {type: Date, default: Date.now, required: true},
+    loginBy: String,
     device: {
         deviceId: {
             type: String
@@ -30,7 +31,8 @@ const sessionSchema = new Schema({
             osVersion: String,
             carrier: String,
             appVersion: String
-        }
+        },
+        ipAddress: String
     }
 });
 
