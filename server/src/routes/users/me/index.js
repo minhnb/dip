@@ -114,7 +114,6 @@ router.get('get me', '/',
             // ctx.response.status = 400;
             // ctx.body = "Bad request";
             // throw err;
-            console.log(err);
             throw new DIPError(dipErrorDictionary.UNKNOWN_ERROR);
         });
     }

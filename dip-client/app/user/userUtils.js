@@ -20,7 +20,13 @@ dipApp.factory('userUtils', [
             },
             getDisplayAvatar: function (avatar) {
                 if (avatar && avatar.url) {
-                    return avatar.url + '?t=' + (new Date()).getTime();
+                    var tQuery = 't=' + (new Date()).getTime();
+                    if (avatar.url.indexOf('?') > -1) {
+                        tQuery = '&' + tQuery;
+                    } else {
+                        tQuery = '?' + tQuery;
+                    }
+                    return avatar.url + tQuery;
                 }
                 return DEFAULT_AVATAR;
             },
