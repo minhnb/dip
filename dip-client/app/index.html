@@ -117,7 +117,12 @@
 <script src="components/helper/utils.js"></script>
 
 <script type="text/javascript">
-    var googleMapSrc = "https://maps.googleapis.com/maps/api/js?key=" + config.GOOGLE_API_KEY;
+    var global_geocoder;
+    var initNgMap = false;
+    function initGoogleMap() {
+        global_geocoder = new google.maps.Geocoder();
+    }
+    var googleMapSrc = "https://maps.googleapis.com/maps/api/js?key=" + config.GOOGLE_API_KEY + "&callback=initGoogleMap";
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.src = googleMapSrc;

@@ -111,8 +111,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
             $scope.listUsedPassColor = [];
 
             $scope.position = {};
-            $scope.isShowingMap = false;
-            $scope.geocoder = new google.maps.Geocoder();
+            $scope.isShowingMap = initNgMap;
 
             $scope.getHotelById = function (hotelId) {
                 return hotelService.getHotelById(hotelId)
@@ -145,6 +144,7 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                             .success(function (data, status) {
                                 $scope.isShowingHotelProfile = true;
                                 $scope.isShowingMap = true;
+                                initNgMap = true;
                                 $scope.stopSpin();
 
                                 formValidatorUtils.initDIPDefaultFormValidator($('form[name="edit-hotel"]'), $scope.editHotel);
@@ -157,6 +157,17 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                                 });
                                 $('form[name="edit-hotel"] :input([ng-model="hotel.address.street"], [ng-model="hotel.address.city"], [ng-model="hotel.address.state"])').change(function () {
                                     $scope.addressChanged();
+                                });
+                                $('form[name="edit-hotel"] :input([ng-model="hotel.address.street"], [ng-model="hotel.address.city"], [ng-model="hotel.address.state"])').keydown(function (event) {
+                                    if(event.keyCode == 13) {
+                                        $scope.startSpin();
+                                        $scope.addressChanged(function () {
+                                            $scope.stopSpin();
+                                            $('form[name="edit-hotel"]').submit();
+                                        });
+                                        event.preventDefault();
+                                        return false;
+                                    }
                                 });
                                 $scope.initCalendarFullModules();
                             });
@@ -255,9 +266,12 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 return converted_module;
             };
 
-            $scope.showAddressOnMap = function (fullAddressString, address) {
+            $scope.showAddressOnMap = function (fullAddressString, address, callback) {
+                if (!global_geocoder) {
+                    return;
+                }
                 var geoQuery = hotelUtils.createGeoQuery(fullAddressString, address);
-                $scope.geocoder.geocode(geoQuery, function (results, status) {
+                global_geocoder.geocode(geoQuery, function (results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results.length > 0) {
                             var result = results[0];
@@ -280,15 +294,18 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                     } else {
                         $scope.position = {};
                     }
+                    if (callback) {
+                        callback();
+                    }
                     setTimeout(function () {
                         $scope.$apply();
                     }, 0);
                 });
             };
 
-            $scope.addressChanged = function () {
+            $scope.addressChanged = function (callback) {
                 var address = hotelUtils.getHotelFullAddress($scope.hotel);
-                $scope.showAddressOnMap(address, $scope.hotel.address);
+                $scope.showAddressOnMap(address, $scope.hotel.address, callback);
             };
 
             $scope.showEditHotelBox = function (hotel) {
