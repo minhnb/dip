@@ -153,7 +153,7 @@ dipApp.factory('hotelUtils', [
                         return;
                     }
                     if (address_component.types.indexOf('administrative_area_level_1') > -1) {
-                        geoAddress.state = address_component.long_name;
+                        geoAddress.state = address_component.short_name;
                         return;
                     }
                     if (address_component.types.indexOf('postal_code') > -1) {

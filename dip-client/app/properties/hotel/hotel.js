@@ -120,6 +120,10 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                         var hotel = hotelUtils.convertHotel(data);
                         if (hotel.fullAddress) {
                             $scope.showAddressOnMap(hotel.fullAddress);
+                        } else {
+                            setTimeout(function () {
+                                $scope.$apply();
+                            }, 0);
                         }
                         $scope.hotel = utils.copyObject(hotel, ['services']);
                         $scope.pureHotel = utils.copyObject(hotel, ['services']);
@@ -367,6 +371,14 @@ angular.module('dipApp.properties_hotel', ['ngRoute'])
                 $scope.isEditingHotel = false;
                 $('form[name="edit-hotel"]').validator('reset');
                 $scope.hotel = utils.copyObject($scope.pureHotel, ['services']);
+                if ($scope.hotel.fullAddress) {
+                    $scope.showAddressOnMap($scope.hotel.fullAddress);
+                } else {
+                    $scope.position = {};
+                    setTimeout(function () {
+                        $scope.$apply();
+                    }, 0);
+                }
                 if ($scope.hotel.imageUrl) {
                     $('#image_box_hotel').trigger('setImage', [$scope.hotel.imageUrl, $scope.hotel.name]);
                 } else {
