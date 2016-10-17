@@ -17,6 +17,9 @@ exports.resize = function(buffer, width, format) {
                     width = dipConstant.HOTEL_IMAGE_MAX_WIDTH;
                 }
                 if (size.width > width && size.height > dipConstant.HOTEL_IMAGE_HEIGHT) {
+                    if (size.width > size.height) {
+                        width = width * (size.width / size.height);
+                    }
                     pipe = pipe.resize(width);
                 }
             }
