@@ -688,6 +688,18 @@ resourcesServices.uploadHotelImage = function (img, hotelName, hotelId, serviceT
             case hotelServiceType.SPA_SERVICE:
                 key = 'spas';
                 break;
+            case hotelServiceType.SALON_SERVICE:
+                key = 'salons';
+                break;
+            case hotelServiceType.CONFERENCE_CENTER_SERVICE:
+                key = 'conference-centers';
+                break;
+            case hotelServiceType.GYM_SERVICE:
+                key = 'gyms';
+                break;
+            case hotelServiceType.HOTEL_ROOM_SERVICE:
+                key = 'hotel-rooms';
+                break;
             case hotelServiceType.RESTAURANT_SERVICE:
                 key = 'restaurants';
                 break;

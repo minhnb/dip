@@ -5,16 +5,25 @@
 // Use imageMagick for jpg/png support
 const gm = require('gm').subClass({'imageMagick': true});
 
+const dipConstant = require('../constants/constants');
+
 exports.resize = function(buffer, width, format) {
     format = format || 'jpg';
     return new Promise((resolve, reject) => {
         var pipe = gm(buffer).setFormat(format);
-        if (width) {
-            pipe = pipe.resize(width);
-        }
-        pipe.toBuffer(function (err, buffer) {
-            if (err) reject(err);
-            else resolve(buffer);
+        pipe.size(function (err, size) {
+            if (size && size.width) {
+                if (!width) {
+                    width = dipConstant.HOTEL_IMAGE_MAX_WIDTH;
+                }
+                if (size.width > width && size.height > dipConstant.HOTEL_IMAGE_HEIGHT) {
+                    pipe = pipe.resize(width);
+                }
+            }
+            pipe.toBuffer(function (err, buffer) {
+                if (err) reject(err);
+                else resolve(buffer);
+            });
         });
 
 
