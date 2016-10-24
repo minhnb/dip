@@ -7,6 +7,7 @@ const config = require('../config');
 
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
+const userRole = require('../constants/userRole');
 
 function generateRandomToken(length) {
     return randomstring.generate(length);
@@ -35,7 +36,7 @@ function checkGroupOwner(ctx, next) {
 }
 
 function isAdmin(ctx, next) {
-    if(ctx.state.user && ctx.state.user.role == 'admin') {
+    if(ctx.state.user && ctx.state.user.role.indexOf(userRole.ADMIN) > -1) {
         return next();
     } else{
         // ctx.throw(401);

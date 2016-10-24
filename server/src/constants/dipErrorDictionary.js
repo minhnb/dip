@@ -394,6 +394,11 @@ module.exports = {
         code: 'CANNOT_CHANGE_PENDING_HOTEL',
         details: 'Cannot change pending hotel'
     },
+    HOTEL_EXISTED: {
+        status: 409,
+        code: 'HOTEL_EXISTED',
+        details: 'Hotel existed'
+    },
     INVALID_DATE: {
         status: 400,
         code: "INVALID_DATE",

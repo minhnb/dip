@@ -13,8 +13,9 @@ const await = require('asyncawait/await');
 module.exports = router;
 
 router
-    .use('/', auth.isPartnerOrAdmin)
+    .use('/', auth.authenticate())
     .post('create hotel', '/',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user;
             let hotel = ctx.request.body;
@@ -22,7 +23,6 @@ router
         })
     )
     .post('init empty hotel', '/empty',
-        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user;
             ctx.body = await(resourcesServices.initEmptyHotel(user));
@@ -36,6 +36,7 @@ router
         })
     )
     .put('update hotel', '/:hotelId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId;
@@ -83,6 +84,7 @@ router
         })
     )
     .delete('delete hotel', '/:hotelId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId;
@@ -91,6 +93,7 @@ router
         })
     )
     .put('update hotel image', '/:hotelId/image',
+        auth.isPartner,
         multer().single('image'),
         async(ctx => {
             let user = ctx.state.user,
@@ -101,6 +104,7 @@ router
     )
 
     .post('create hotelService', '/:hotelId/service',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelService = ctx.request.body;
@@ -109,6 +113,7 @@ router
         })
     )
     .delete('delete hotelService', '/:hotelId/service/:hotelServiceId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId;
@@ -118,12 +123,14 @@ router
         })
     )
     .get('get hotelService by id', '/service/:hotelServiceId',
+        auth.isPartner,
         async(ctx => {
             let hotelServiceId = ctx.params.hotelServiceId;
             ctx.body = await(resourcesServices.getHotelServiceById(hotelServiceId));
         })
     )
     .put('update hotelService', '/:hotelId/service/:hotelServiceId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId,
@@ -133,6 +140,7 @@ router
         })
     )
     .put('update hotel service image', '/:hotelId/service/:hotelServiceId/image',
+        auth.isPartner,
         multer().single('image'),
         async(ctx => {
             let user = ctx.state.user,
@@ -144,6 +152,7 @@ router
     )
 
     .post('create pass', '/:hotelId/service/:hotelServiceId/pass',
+        auth.isPartner,
         async(ctx => {
             let pass = ctx.request.body;
             let user = ctx.state.user,
@@ -153,12 +162,14 @@ router
         })
     )
     .get('get pass by id', '/pass/:passId',
+        auth.isPartner,
         async(ctx => {
             let passId = ctx.params.passId;
             ctx.body = await(resourcesServices.getPassById(passId));
         })
     )
     .put('update pass', '/pass/:passId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 passId = ctx.params.passId;
@@ -167,6 +178,7 @@ router
         })
     )
     .delete('delete pass', '/pass/:passId',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 passId = ctx.params.passId;
@@ -175,6 +187,7 @@ router
         })
     )
     .get('get passes by hotel', '/:hotelId/passes',
+        auth.isPartner,
         async(ctx => {
             let user = ctx.state.user,
                 hotelId = ctx.params.hotelId;

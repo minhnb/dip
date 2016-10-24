@@ -9,11 +9,12 @@ const reservationServices = require('../services/reservation');
 
 const DIPError = require('../helpers/DIPError');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const userRole = require('../constants/userRole');
 
 var reportServices = {};
 
 reportServices.dbGetListDIPUsers = function () {
-    return db.users.find({"role": "user"})
+    return db.users.find({role: userRole.USER})
         .populate({
             path: 'account.subscriptions.type',
             model: db.membershipTypes
@@ -67,9 +68,9 @@ reportServices.getListHotelReservations = async (function (user) {
  */
 var _buildCondition = reportServices.buildCondition = async ((user, reservationType) => {
     let condition = {type: reservationType};
-    if (user.role == 'admin') {
+    if (user.isAdmin()) {
         return condition;
-    } else if (user.role == 'partner') {
+    } else if (user.isPartner()) {
         if (reservationType == 'HotelReservation') {
             let hotelIds = await(db.hotels.find({owner: user}).select('_id').exec());
             hotelIds = hotelIds.map(h => h._id);

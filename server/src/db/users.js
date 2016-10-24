@@ -14,6 +14,7 @@ const sessions = require('./sessions');
 
 const DIPError = require('../helpers/DIPError');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
+const userRole = require('../constants/userRole');
 
 const userSchema = new Schema({
     //username: { type: String, required: true },
@@ -102,12 +103,12 @@ const userSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     }],
-    role: {
+    role: [{
         type: String,
-        enum: ['admin', 'user', 'partner'],
+        enum: utils.objectToArray(userRole),
         required: true,
-        default: 'user'
-    }
+        default: userRole.USER
+    }]
 }, {
     timestamps: true
 });
@@ -307,10 +308,17 @@ userSchema.methods.setRefCode = function (code) {
 };
 
 userSchema.methods.isAdmin = function () {
-    return this.role == 'admin';
+    return this.role.indexOf(userRole.ADMIN) > -1;
 };
 userSchema.methods.isPartner = function () {
-    return this.role == 'partner';
+    return this.role.indexOf(userRole.PARTNER) > -1;
+};
+userSchema.methods.addRole = function (role) {
+    let newRole = this.role.addToSet(role);
+    if (newRole.length > 0) {
+        return this.save();
+    }
+    return Promise.resolve();
 };
 
 /**

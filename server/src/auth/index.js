@@ -19,6 +19,7 @@ const contactDip = require('./../helpers/contact_dip');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 const dipLoginBy = require('../constants/loginBy');
+const userRole = require('../constants/userRole');
 
 const makerEvent = require('./../helpers/iftttMakerEvent');
 
@@ -60,14 +61,14 @@ function facebookLogin(ctx, next) {
 }
 
 var signupHandler = async (function (ctx, next) {
-    var role = ctx.request.body.role || 'user',
+    var role = ctx.request.body.role || userRole.USER,
         referer;
 
-    if (['user', 'partner'].indexOf(role) == -1) {
+    if ([userRole.USER, userRole.PARTNER].indexOf(role) == -1) {
         // TODO: Return more specific error
         throw new DIPError(dipErrorDictionary.BAD_REQUEST);
     }
-    if (role == 'user') {
+    if (role == userRole.USER) {
         // Referer rule doesn't apply for partner
         referer = await (_getReferrer(ctx.request.body.code));
         if (ctx.request.body.code && !referer) {
@@ -124,7 +125,7 @@ function authenticateJwt(requiredScopes) {
 var isPartner = compose([
     authenticateJwt(),
     (ctx, next) => {
-        if (ctx.state.user && ctx.state.user.role == 'partner') {
+        if (ctx.state.user && ctx.state.user.role.indexOf(userRole.PARTNER) > -1) {
             return next();
         } else {
             throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
@@ -134,7 +135,7 @@ var isPartner = compose([
 var isAdmin = compose([
     authenticateJwt(),
     (ctx, next) => {
-        if (ctx.state.user && ctx.state.user.role == 'admin') {
+        if (ctx.state.user && ctx.state.user.role.indexOf(userRole.ADMIN) > -1) {
             return next();
         } else {
             throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
@@ -145,7 +146,7 @@ var isAdmin = compose([
 var isPartnerOrAdmin = compose([
     authenticateJwt(),
     (ctx, next) => {
-        if (ctx.state.user && ['admin', 'partner'].indexOf(ctx.state.user.role) >= 0) {
+        if (ctx.state.user && (ctx.state.user.role.indexOf(userRole.PARTNER) > -1 || ctx.state.user.role.indexOf(userRole.ADMIN) > -1)) {
             return next();
         } else {
             throw new DIPError(dipErrorDictionary.UNAUTHORIZED);
@@ -195,13 +196,15 @@ function _returnToken(token, ctx) {
 }
 
 function _createUser(ctx, referer) {
+    let requestRole = ctx.request.body.role || userRole.USER;
+    let role = [requestRole];
     var user = new db.users({
         email: ctx.request.body.email.toLowerCase(),
         firstName: ctx.request.body.firstName,
         lastName: ctx.request.body.lastName,
         gender: ctx.request.body.gender,
         phone: ctx.request.body.phone ? ctx.request.body.phone : null,
-        role: ctx.request.body.role || 'user'
+        role: role
     });
     user.setPassword(ctx.request.body.password);
     // refCode is set directly when saving new user record -- see db.users

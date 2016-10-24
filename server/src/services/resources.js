@@ -8,6 +8,7 @@ var httpAdapter = 'http';
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 
 const dipConstant = require('../constants/constants');
+const userRole = require('../constants/userRole');
 const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('../helpers/DIPError');
 
@@ -157,6 +158,11 @@ resourcesServices.createHotel = function (user, hotel) {
 };
 
 resourcesServices.initEmptyHotel = function (user) {
+    await(user.addRole(userRole.PARTNER));
+    let hotels = await(resourcesServices.getHotelList(user));
+    if (hotels.length > 0) {
+        throw new DIPError(dipErrorDictionary.HOTEL_EXISTED);
+    }
     return resourcesServices.dbInitEmptyHotel(user).then(hotel => {
         return entities.hotel(hotel, user);
     });
