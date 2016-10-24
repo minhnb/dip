@@ -322,7 +322,7 @@ resourcesServices.dbUpdateHotelImage = async (function (user, hotelId, img) {
     }
     // let hotel = resourcesServices.getExistedHotel(hotelId);
     let hotel = await (_checkHotelPermission(user, hotelId));
-    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name, hotelId, null));
+    let uploadImage = await(resourcesServices.uploadHotelImage(img, hotel.name || '', hotelId, null));
     if (uploadImage) {
         if (hotel.image && hotel.image.url && hotel.image.verified && hotel.image.url != uploadImage.Location) {
             resourcesServices.deleteHotelImage(hotel.image.url);
