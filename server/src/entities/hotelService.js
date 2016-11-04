@@ -24,7 +24,8 @@ function convertService(service) {
         amenities: service.amenities,
         policy: service.policy,
         tax: config.taxPercent,
-        descriptionTags: service.descriptionTags
+        descriptionTags: service.descriptionTags,
+        passTypes: service.passTypes || []
     }
 }
 

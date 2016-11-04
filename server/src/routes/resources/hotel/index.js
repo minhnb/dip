@@ -14,12 +14,14 @@ const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 
 router
-    .get('hotel', '/', ctx => {
-        return ctx.state.hotel.populate('services')
-        .execPopulate().then(hotel => {
-            ctx.body = {hotel: entities.hotel(hotel)};
-        });
-    })
+    .get('hotel', '/', async (ctx => {
+        let hotel = await (ctx.state.hotel.populate('services').execPopulate());
+        await (hotel.services.map(function(service) {
+            if (!service) return Promise.resolve();
+            return offerServices.populateServicePassTypes(service);
+        }));
+        ctx.body = {hotel: entities.hotel(hotel)};
+    }))
     .get('available days for calendar', '/calendar',
         async(ctx => {
             let serviceId = ctx.query.service,

@@ -17,6 +17,7 @@ var httpAdapter = 'http';
 const geocoder = require('node-geocoder')(geocoderProvider, httpAdapter);
 
 const resourcesServices = require('../../services/resources');
+const offerServices = require('../../services/offer');
 
 const dipErrorDictionary = require('../../constants/dipErrorDictionary');
 const DIPError = require('../../helpers/DIPError');
@@ -27,6 +28,7 @@ router
     .use('/', auth.authenticate())
     .get('get resources', '/',
         getNearestHotels,
+        populateHotelServicesPassTypes,
         // getEvents,
         // getSpecialOffers,
         getHotels,
@@ -35,6 +37,7 @@ router
     .get('get featured resources', '/featured',
         setFeaturedForFindingResources,
         getNearestHotels,
+        populateHotelServicesPassTypes,
         getEvents,
         // getSpecialOffers,
         getHotels,
@@ -42,16 +45,19 @@ router
     )
     .get('get events', '/events',
         getNearestHotels,
+        populateHotelServicesPassTypes,
         getEvents,
         response
     )
     .get('get special offers', '/offers',
         getNearestHotels,
+        populateHotelServicesPassTypes,
         getSpecialOffers,
         response
     )
     .get('get hotels', '/hotels',
         getNearestHotels,
+        populateHotelServicesPassTypes,
         getHotels,
         response
     )
@@ -340,4 +346,14 @@ function filterPriceRanges(input) {
 function setFeaturedForFindingResources(ctx, next) {
     ctx.state.featured = true;
     return next();
+}
+
+function populateHotelServicesPassTypes(ctx, next) {
+    let hotels = ctx.state.nearestHotels;
+    return Promise.all(hotels.map(hotel => {
+        return Promise.all(hotel.services.map(service => {
+            if (!service) return Promise.resolve();
+            else return offerServices.populateServicePassTypes(service);
+        }));
+    })).then(() => next());
 }

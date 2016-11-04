@@ -25,25 +25,25 @@ offerServices.getOffers = function (hotel, serviceId, queryDate) {
     if (!moment(queryDate).isValid()) {
         throw new DIPError(dipErrorDictionary.INVALID_DATE);
     }
-    let date = utils.convertDate(queryDate);
+    let dateFormatted = utils.convertDate(queryDate);
 
     if (hotel.services.indexOf(serviceId) == -1) throw new DIPError(dipErrorDictionary.SERVICE_NOT_FOUND);
 
     let currentTime = moment().tz(hotel.address.timezone);
-    if (date) {
-        let reserveDate = moment.tz(date, hotel.address.timezone);
-        let day = reserveDate.weekday();
+    if (dateFormatted) {
+        let reserveDate = moment.tz(dateFormatted, hotel.address.timezone);
+        let weekday = reserveDate.weekday();
 
         return db.offers.find({
             hotel: hotel,
             service: mongoose.Types.ObjectId(serviceId),
-            days: day,
+            days: weekday,
             $or: [
-                {dueDay: {$gte: date}},
+                {dueDay: {$gte: dateFormatted}},
                 {dueDay: {$exists: false}}
             ],
-            startDay: {$lte: date},
-            offDays: {$nin: [date]},
+            startDay: {$lte: dateFormatted},
+            offDays: {$nin: [dateFormatted]},
             type: 'pass'
         })
             .populate('type')
@@ -51,17 +51,19 @@ offerServices.getOffers = function (hotel, serviceId, queryDate) {
             .populate('hotel')
             .exec()
             .then(offers => {
-                let listOffer = [];
-                offers.forEach(offer => {
+                let listOffer = offers.filter(offer => {
+                    if (!offerServices.isValidOffer(offer, weekday, dateFormatted)) {
+                        return false;
+                    }
                     // New rule: disable offers that has less than 1 hour to endTime
                     if (!offerServices.isValidOfferWithCurrentTime(offer, reserveDate, currentTime)) {
-                        return;
+                        return false;
                     }
 
-                    offer.date = date;
-                    listOffer.push(offer);
+                    offer.date = dateFormatted;
+                    return true;
                 });
-                return {offers: listOffer.map(entities.offer), date: date};
+                return {offers: listOffer.map(entities.offer), date: dateFormatted};
             });
     } else {
         let todayFormatted = utils.formatMomentDate(currentTime),
@@ -179,6 +181,16 @@ offerServices.isValidOfferWithCurrentTime = function (offer, reserveDate, curren
         return false;
     }
     return true;
+};
+
+offerServices.populateServicePassTypes = function(service) {
+    return db.offers.find({
+        service: service,
+        deleted: false,
+        type: 'pass'
+    }).distinct('passType').exec().then(passTypes => {
+        service.passTypes = passTypes;
+    });
 };
 
 module.exports = offerServices;
