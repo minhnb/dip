@@ -1,0 +1,545 @@
+$react-blue: #00D8FF;
+$bar-dark-text: $react-blue;
+$dark: #000000;
+$positive: $react-blue;
+$cyanColor: #0095A5;
+$cyanLightColor: #7EB1B5;
+$facebookBlueColor: #2C83E4;
+$lightDarkText: #333333;
+$veryLightDarkText: #666666;
+$lightGray: #DDDDDD;
+$lightGrayBackground: #F6F6F6;
+$pink: #F4006A;
+$notificationLayerWhiteLine: #999999;
+$notificationLayerWhiteText: #EEEEEE;
+
+@import "{}/node_modules/reactionic/dist/scss/styles/reactionic.scss";
+//@import "~reactionic/dist/scss/styles/_reactionic.scss";
+
+@mixin filter($filter-type,$filter-amount) {
+    -webkit-filter: $filter-type+unquote('(#{$filter-amount})');
+    -moz-filter: $filter-type+unquote('(#{$filter-amount})');
+    -ms-filter: $filter-type+unquote('(#{$filter-amount})');
+    -o-filter: $filter-type+unquote('(#{$filter-amount})');
+    filter: $filter-type+unquote('(#{$filter-amount})');
+}
+
+.bar-dark .button.button-clear {
+    color: $react-blue;
+}
+
+.stretch {
+    height: 100%;
+    width: 100%;
+}
+
+.platform-ios.platform-cordova {
+    &:not(.fullscreen) {
+        .scroll-content.ios-top-margin {
+            top: $ios-statusbar-height;
+        }
+        .bar-header:not(.bar-subheader) {
+            span > .title {
+                top: $ios-statusbar-height;
+            }
+        }
+    }
+}
+
+.slide-demo {
+    text-align: center;
+    padding-top: 200px;
+}
+
+.slide-demo.dark {
+    background-color: #444;
+    h3 {
+        color: $react-blue;
+    }
+}
+
+.slide-demo.blue {
+    background-color: $react-blue;
+    color: #000;
+}
+
+.side-menu {
+    background-color: $stable;
+    color: $dark;
+}
+
+
+* {
+    font-family: 'Lato', sans-serif !important;
+}
+
+img {
+    max-width: 100%;
+}
+
+.ionic-body {
+    position: fixed;
+}
+
+//-------------------WELCOME PAGE----------------
+.slick-initialized.slick-slider {
+    margin-bottom: 0;
+}
+.slick-track > .slick-slide {
+    position: relative;
+}
+.slick-slide > img {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    @include transform(translate(0, -50%));
+}
+.slick-track > .slick-slide .slide-text {
+    display: block;
+    position: absolute;
+    color: white;
+    text-align: center;
+    padding: 20px 5px;
+    width: 100%;
+    margin-top: 27px;
+    top: 0;
+    left: 0;
+}
+.slick-track > .slick-slide .slide-text p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 17px;
+}
+.slick-track > .slick-slide .slide-text .title {
+    font-size: 25px;
+    margin: 6px 0;
+    font-weight: 300;
+}
+.slick-dots li button:before {
+    font-size: 26px;
+}
+.slick-dots li {
+    margin: 0 -2px;
+}
+.slick-dots li.slick-active button:before {
+    color: white;
+}
+.slider-pager {
+    bottom: 19px;
+}
+.slider-content-fix {
+    top:0;
+}
+.slick-track > .slick-slide .slide-cover {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.2;
+}
+.slide-center-buttons {
+    position: absolute;
+    bottom: 57px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+.slide-center-buttons > div {
+    display: inline-block;
+}
+.slide-center-buttons .button {
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    min-width: 60px;
+    width: 115px;
+    min-height: 42px;
+    height: 42px;
+    padding: 0;
+}
+.slide-center-buttons .button:first-child {
+    margin-right: 50px;
+}
+//------------DIP NOTIFICATION - MESSAGES-------------
+.dip-notification-layer {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: $notificationLayerWhiteText;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3000;
+    @include transition(all ease-in-out 400ms);
+}
+.dip-notification-layer .notification-title {
+    width: 100%;
+    height: 40px;
+    margin-top: 40px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.dip-notification-layer .notification-title:after {
+    content: '';
+    display: block;
+    margin: auto;
+    position: relative;
+    bottom: -10px;
+    width: 62%;
+    height: 1px;
+    background: $notificationLayerWhiteLine;
+}
+.dip-notification-layer .notification-message {
+    width: 100%;
+    margin-top: 40px;
+    padding: 10px 40px;
+}
+.dip-notification-layer .button {
+    bottom: 56px;
+    position: absolute;
+    left: 50%;
+    @include translate(-50%, 0);
+    border: 1px solid $notificationLayerWhiteLine;
+    border-radius: 2px;
+    min-width: 116px;
+    min-height: 40px;
+    height: 44px;
+    font-size: 17px;
+    background-color: transparent;
+    color: $notificationLayerWhiteText;
+}
+.filter-blur > .ionic-body {
+    @include filter(blur, 15px);
+}
+//------------SIGN UP - LOG IN PAGE---------------
+.modal {
+    background-color: $lightGrayBackground;
+}
+.bar.bar-light {
+    border: none;
+    background-image: none;
+    margin-top: 20px;
+    background-color: inherit;
+}
+.bar.bar-light:after {
+    content: '';
+    display: block;
+    margin: auto;
+    position: relative;
+    bottom: -22px;
+    width: 100%;
+    height: 1px;
+    background: $cyanLightColor;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.bar.bar-light .button, .bar.bar-light .title {
+    color: $cyanColor;
+}
+.bar.bar-light .title {
+    font-size: 20px;
+    text-align: center;
+}
+.bar.bar-light .button, .bar.bar-light .button:last-child {
+    left: 10px;
+    top: 6px;
+    right: auto;
+}
+.bar.bar-light .button > .img-bg, .bar.bar-light .button:last-child > .img-bg {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('/images/icons/btn_close_green.png');
+    width: 22px;
+    height: 22px;
+}
+.bar .button.button-icon .icon:before {
+    font-size: 60px;
+}
+.modal.modal-back-button .bar.bar-light:after {
+    background: $lightGray;
+    margin-left: -5px;
+    margin-right: -5px;
+    width: 100vw;
+}
+.modal.modal-back-button .bar.bar-light .button, .modal.modal-back-button .bar.bar-light .button:last-child {
+    left: -1px;
+    top: 8px;
+    padding-right: 20px;
+}
+.modal.modal-back-button .bar.bar-light .button .img-bg, .modal.modal-back-button .bar.bar-light .button:last-child .img-bg {
+    background-image: url('/images/icons/btn_back_black.png');
+    width: 11px;
+    min-height: 18px;
+}
+.modal.modal-back-button .bar.bar-light .title {
+    font-size: 18px;
+}
+.modal .has-header {
+    top: 64px;
+}
+.login-signup-modal {
+    padding: 10px;
+    margin-top: 29px;
+    color: $cyanColor;
+}
+.login-signup-modal .button {
+    width: 100%;
+    background-color: inherit;
+    border: solid 1px $cyanColor;
+    min-height: 44px;
+    height: 44px;
+    padding-left: 44px;
+    border-radius: 2px;
+    color: $cyanColor;
+    font-size: 18px;
+}
+.login-signup-modal .button > .button-image {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    left: 0;
+    top: 0;
+    text-align: center;
+    padding: 10px;
+    border-right: solid 1px $cyanColor;
+}
+.login-signup-modal .button > .button-image > img {
+    display: inline-block;
+    max-height: 26px;
+    padding-bottom: 7px;
+}
+.login-signup-modal .button.fb-button {
+    background-color: $facebookBlueColor;
+    color: white;
+}
+.login-signup-modal .button.fb-button > .button-image {
+    border-right-color: white;
+}
+.login-signup-modal .button.fb-button > .button-image > img {
+    padding-bottom: 4px;
+}
+.login-signup-modal > .divider {
+    width: 100%;
+    height: 1px;
+    border-top: solid 1px $cyanLightColor;
+    margin: 40px 0 37px 0;
+}
+.login-signup-modal > .divider span {
+    position: absolute;
+    left: 50%;
+    text-transform: uppercase;
+    @include transform(translate(-50%, 0));
+    margin-top: -10px;
+    background: $lightGrayBackground;
+    font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 20px;
+}
+.agree-condition {
+    font-size: 12px;
+    text-align: center;
+    line-height: 18px;
+    color: $veryLightDarkText;
+}
+.login-signup-modal .agree-condition {
+    margin-top: 32px;
+}
+.agree-condition a, .user-form a {
+    font-weight: bold;
+    color: $lightDarkText;
+    cursor: pointer;
+}
+.modal.web-modal .padding {
+    padding: 0;
+    height: 100%;
+}
+.modal.web-modal .iframe-container {
+    overflow: auto;
+    overflow-x: hidden;
+    //-webkit-overflow-scrolling:touch;
+    width: 100%;
+    height: 100%;
+}
+.modal.web-modal .iframe-container iframe {
+    position: static !important;
+    border: none;
+    vertical-align: top;
+    min-width: 100%;
+    max-width: 100%;
+}
+.user-form {
+    padding: 10px 11px;
+    margin-top: 34px;
+    text-align: center;
+}
+.user-form .item.item-input {
+    background-color: transparent;
+    border: 1px solid $cyanColor;
+    height: 40px;
+    margin-top: 31px;
+    padding-left: 50px;
+    padding-right: 7px;
+}
+.user-form .item.item-input:first-of-type {
+    margin-top: 0;
+}
+.user-form .item.item-input .addon-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 40px;
+    width: 41px;
+    border-right: inherit;
+}
+.user-form .item.item-input .addon-icon > img {
+    max-width: 22px;
+    max-height: 23px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.user-form .item.item-input input {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 5px;
+    font-size: 16px;
+    line-height: 20px;
+    color: $veryLightDarkText;
+    @include placeholder(#cccccc);
+}
+.user-form .button.submit-button {
+    background-color: $pink;
+    margin-top: 31px;
+    min-height: 40px;
+    height: 44px;
+    width: 84%;
+    color: white;
+    font-size: 18px;
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+.user-form.sign-up-form {
+    margin-top: 27px;
+}
+.user-form.sign-up-form .password-condition {
+    margin-top: 10px;
+    color: $veryLightDarkText;
+}
+.user-form.sign-up-form .password-condition p {
+    margin: 0;
+}
+.user-form.sign-up-form .agree-condition {
+    margin-top: 20px;
+}
+.user-form.sign-up-form .button.submit-button {
+    margin-top: 43px;
+}
+.password-condition {
+    text-align: left;
+}
+.password-condition ul li:before {
+    content:"\2713\0020";
+}
+.password-condition ul li {
+    margin-left: 29px;
+}
+.slide-modal-content {
+    width: 200vw;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+.slide-modal-content > div {
+    width: 100vw;
+    overflow: auto;
+    float: left;
+    position: relative;
+    padding: 10px;
+}
+.slide-modal-content.slide-to-right {
+    @include translate3d(-50%, 0, 0);
+    @include transition(all ease-in-out 400ms);
+}
+.slide-modal-content.slide-to-left {
+    @include translate3d(0, 0, 0);
+    @include transition(all ease-in-out 400ms);
+}
+.reset-password .instruction-prompt {
+    color: $pink;
+    font-size: 13px;
+}
+//---------------MODAL ANIMATIONS-----------------------
+// Slide up from the bottom, used for modals
+.modal-slide-in-up.modal-enter,
+.modal-slide-in-up > .modal-enter {
+    @include translate3d(0, 100%, 0);
+}
+
+.modal-slide-in-down.modal-enter,
+.modal-slide-in-down > .modal-enter {
+    @include translate3d(0, -100%, 0);
+}
+
+.modal-slide-in-right.modal-enter,
+.modal-slide-in-right > .modal-enter {
+    @include translate3d(100%, 0, 0);
+}
+
+.modal-slide-in-left.modal-enter,
+.modal-slide-in-left > .modal-enter {
+    @include translate3d(-100%, 0, 0);
+}
+
+
+.modal-slide-in-down.modal-enter-active,
+.modal-slide-in-down > .modal-enter-active,
+.modal-slide-in-right.modal-enter-active,
+.modal-slide-in-right > .modal-enter-active,
+.modal-slide-in-left.modal-enter-active,
+.modal-slide-in-left > .modal-enter-active,
+.modal-slide-in-up.modal-enter-active,
+.modal-slide-in-up > .modal-enter-active {
+    @include translate3d(0, 0, 0);
+    @include transition(all cubic-bezier(.1, .5, .1, 1) 400ms);
+}
+
+.modal-slide-in-down.modal-leave,
+.modal-slide-in-down > .modal-leave,
+.modal-slide-in-right.modal-leave,
+.modal-slide-in-right > .modal-leave,
+.modal-slide-in-left.modal-leave,
+.modal-slide-in-left > .modal-leave,
+.modal-slide-in-up.modal-leave-active,
+.modal-slide-in-up > .modal-leave-active {
+    @include translate3d(0, 0, 0);
+}
+
+
+.modal-slide-in-up.modal-leave-active,
+.modal-slide-in-up > .modal-leave-active {
+    @include translate3d(0, 100%, 0);
+    @include transition(all ease-in-out 250ms);
+}
+
+.modal-slide-in-down.modal-leave-active,
+.modal-slide-in-down > .modal-leave-active {
+    @include translate3d(0, -100%, 0);
+    @include transition(all ease-in-out 250ms);
+}
+
+.modal-slide-in-right.modal-leave-active,
+.modal-slide-in-right > .modal-leave-active {
+    @include translate3d(100%, 0, 0);
+    @include transition(all ease-in-out 250ms);
+}
+
+.modal-slide-in-left.modal-leave-active,
+.modal-slide-in-left > .modal-leave-active {
+    @include translate3d(-100%, 0, 0);
+    @include transition(all ease-in-out 250ms);
+}

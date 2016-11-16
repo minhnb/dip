@@ -1,0 +1,9 @@
+*.swp
+*.pyc
+*~
+*.pem
+.emacs.desktop*
+node_modules
+/build/index.js
+/output/
+
