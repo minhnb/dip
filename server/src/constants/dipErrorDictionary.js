@@ -259,6 +259,11 @@ module.exports = {
         code: "PROMOTION_CODE_ALREADY_USED",
         details: "Promotion code already used"
     },
+    PROMOTION_CODE_NOT_ELIGIBLE: {
+        status: 400,
+        code: "PROMOTION_CODE_NOT_ELIGIBLE",
+        details: "Promotion code is not eligible"
+    },
     GEO_ERROR: {
         status: 400,
         code: "GEO_ERROR",

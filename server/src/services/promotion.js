@@ -244,7 +244,7 @@ promotionServices.dbGetPromotionCode = function (user, promotionCode, needAdding
                             if (this.checkValidPromotionCode(promotion, userCondition)) {
                                 resolve(result);
                             } else{
-                                reject(new DIPError(dipErrorDictionary.INVALID_PROMOTION_CODE));
+                                reject(new DIPError(dipErrorDictionary.PROMOTION_CODE_NOT_ELIGIBLE));
                             }
                         }, () => {
                             if (event) {
