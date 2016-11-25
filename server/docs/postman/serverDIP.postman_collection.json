@@ -1,0 +1,1985 @@
+{
+	"variables": [],
+	"info": {
+		"name": "DIP server",
+		"_postman_id": "5b20cbb2-acd1-6c5a-c3f5-38b4f155c15f",
+		"description": "API for\n- iOS app\n- Web app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Log in - Sign up",
+			"description": "",
+			"item": [
+				{
+					"name": "/auth/signup",
+					"request": {
+						"url": "{{API_URL}}/auth/signup",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"minh.nguyen@cofoundervp.com\",\n    \"gender\": \"female\",\n    \"password\": \"MinhMinh123\",\n    \"firstName\": \"Minh\",\n    \"code\": \"4cf82b00\"\n}\n"
+						},
+						"description": "Sign up by email"
+					},
+					"response": []
+				},
+				{
+					"name": "auth/login",
+					"request": {
+						"url": "{{API_URL}}/auth/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Og==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"minh.nguyen@cofoundervp1.com\", \"password\": \"MinhMinh123\"}"
+						},
+						"description": "Login by email"
+					},
+					"response": []
+				},
+				{
+					"name": "auth/fblogin",
+					"request": {
+						"url": "{{API_URL}}/auth/fblogin",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Og==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\" : \"EAAXiVevkYXsBANqhIXLpXXfavaWR2oVF6zJ9hpZAukPw0o5nsrEWlt5TqPfBd6X8JxrrZCw4T34WZBox2KZC3HYy8dEILD7WrJySiSL5ZCfRV4kXqyVm153InzaLWhvRM6Pmvqtaidl1demhRCnxNkoLGZAZBoboKtoj5SpKlRfq6vU91aAHfehs2DkwUzoZAusZD\"\n}"
+						},
+						"description": "Login/Sign up by Facebook account"
+					},
+					"response": []
+				},
+				{
+					"name": "auth/logout",
+					"request": {
+						"url": "{{API_URL}}/auth/logout",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Log out"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Resources (hotels, events)",
+			"description": "",
+			"item": [
+				{
+					"name": "/resources",
+					"request": {
+						"url": "{{API_URL}}/resources",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Use to get list published hotels, events of DIP (cascade page).\nVery important.\nDisplay image: imageUrl + \"_resized\""
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/events",
+					"request": {
+						"url": "{{API_URL}}/resources/events",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "GET all published events of DIP"
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/offers",
+					"request": {
+						"url": "{{API_URL}}/resources/offers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "GET all published offers (passes)"
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/hotels",
+					"request": {
+						"url": "{{API_URL}}/resources/hotels",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "GET all published hotels"
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/hotels/:hotelId",
+					"request": {
+						"url": "{{API_URL}}/resources/hotels/57595c8fd7acc6625e872e1d",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Return hotel profile and list services (amenities). Use in hotel profile page.\nVery important."
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/hotels/:hotelId/offers",
+					"request": {
+						"url": "{{API_URL}}/resources/hotels/5760cab096b9dbd11a34ceb9/offers?date=2016-09-28&service=56f9f247237bfa90794a27be",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Query list offers (passes) of an amenity of a hotel (by date). Use in hotel profile page.\nVery important."
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/events/:eventId",
+					"request": {
+						"url": "{{API_URL}}/resources/events/57595c8fd7acc6625e872e1d",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Query informations of an event by id."
+					},
+					"response": []
+				},
+				{
+					"name": "/resources/offers/:offerId",
+					"request": {
+						"url": "{{API_URL}}/resources/offers/57595c8fd7acc6625e872e1d",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Query informations of an offer (a pass) by id."
+					},
+					"response": []
+				},
+				{
+					"name": "/locations",
+					"request": {
+						"url": "{{API_URL}}/locations",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Query all locations of DIP (choosing location page). Very important."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. User",
+			"description": "",
+			"item": [
+				{
+					"name": "/users",
+					"request": {
+						"url": "{{API_URL}}/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET all users. Deprecated."
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me",
+					"request": {
+						"url": "{{API_URL}}/users/me",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET profile & more informations (payment methods, balance) of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:userEmail",
+					"request": {
+						"url": "{{API_URL}}/users/minh.nguyen@cofoundervp1.com",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET profile of an user"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/friends",
+					"request": {
+						"url": "{{API_URL}}/users/friends",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET all friends of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/friends",
+					"request": {
+						"url": "{{API_URL}}/users/friends",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"minhnb89@hotmail.com\"\n}"
+						},
+						"description": "Add friend"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/friends/:friendId",
+					"request": {
+						"url": "{{API_URL}}/users/friends/575a681d4b1cc9b9774c0ef7",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Remove friend"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me",
+					"request": {
+						"url": "{{API_URL}}/users/me",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"firstName\": \"Minh Minh\"\n    }\n}\n"
+						},
+						"description": "Change profile of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/membership",
+					"request": {
+						"url": "{{API_URL}}/users/me/membership",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"575949bba86188e552559f5c\"\n        \n}"
+						},
+						"description": "Add membership (subscription)"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/membership",
+					"request": {
+						"url": "{{API_URL}}/users/me/membership",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Remove membership (subscription)"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/promotions/:promotionCode",
+					"request": {
+						"url": "{{API_URL}}/users/me/promotions/bestbuds",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hotel\": \"5760cab096b9dbd11a34ceb9\",\n    \"offers\": [\"576b9d943d26b8a62bc2baed\"]\n}"
+						},
+						"description": "Check promotion code. If promotion code is valid, return condition of this promotion code"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/avatar",
+					"request": {
+						"url": "{{API_URL}}/users/me/avatar",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"enabled": true,
+									"src": "myavatar.jpeg",
+									"value": ""
+								}
+							]
+						},
+						"description": "Change profile picture of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/resetpassword",
+					"request": {
+						"url": "{{API_URL}}/resetpassword",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"minhnb89@hotmail.com\"\n        \n}"
+						},
+						"description": "Send request to reset password"
+					},
+					"response": []
+				},
+				{
+					"name": "/resetpassword",
+					"request": {
+						"url": "{{API_URL}}/resetpassword/47313415",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"Abc123\"\n        \n}"
+						},
+						"description": "Reset password by vertification code was sent by email"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Payment",
+			"description": "",
+			"item": [
+				{
+					"name": "/hooks/subscriptionscreated",
+					"request": {
+						"url": "{{API_URL}}/hooks/subscriptionscreated",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"\"\n}"
+						},
+						"description": "Stripe hook.\nWe're using monthly membership. Every month, Stripe will charge by credit card of DIP subscribers, then Stripe will call this API to update status of these subscribers."
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/payment_methods",
+					"request": {
+						"url": "{{API_URL}}/users/me/payment_methods",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stripeToken\": \"tok_18ZbW0BIut5ovwa2nMsAQBD3\"\n}"
+						},
+						"description": "Add a credit card by Stripe token. Very important."
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/payment_methods/:cardId/default",
+					"request": {
+						"url": "{{API_URL}}/users/me/payment_methods/575e7f5ca5d6814a135808bd/default",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"default\": true\n}"
+						},
+						"description": "Set default card"
+					},
+					"response": []
+				},
+				{
+					"name": "/users/me/payment_methods/:cardId",
+					"request": {
+						"url": "{{API_URL}}/users/me/payment_methods/575e7f5ca5d6814a135808bd",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Remove a credit card"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Stripe token",
+					"request": {
+						"url": "https://api.stripe.com/v1/tokens",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "card[number]",
+									"value": "4242 4242 4242 4242",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "card[cvc]",
+									"value": "123",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "card[exp_month]",
+									"value": "12",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "card[exp_year]",
+									"value": "2020",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "key",
+									"value": "pk_test_DhtYYYp418q54YmBMamTtUdm",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": "Client call this API to get Stripe token, then use this token to add credit card to DIP server."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Reservations",
+			"description": "",
+			"item": [
+				{
+					"name": "/reservations",
+					"request": {
+						"url": "{{API_URL}}/reservations",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Query all reservations of current user. Use in purchase page."
+					},
+					"response": []
+				},
+				{
+					"name": "/reservations/events",
+					"request": {
+						"url": "{{API_URL}}/reservations/events",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Query all event reservations of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/reservations/offers",
+					"request": {
+						"url": "{{API_URL}}/reservations/offers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Querry all special offer reservations of current user. Not using in current version"
+					},
+					"response": []
+				},
+				{
+					"name": "/reservations/hotels",
+					"request": {
+						"url": "{{API_URL}}/reservations/hotels",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Querry all pass reservations of current user"
+					},
+					"response": []
+				},
+				{
+					"name": "/reservations/hotels",
+					"request": {
+						"url": "{{API_URL}}/reservations/hotels",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceToken\": \"my_token\"\n}"
+						},
+						"description": "Purchase passes. Very important."
+					},
+					"response": []
+				},
+				{
+					"name": "/reservations/events",
+					"request": {
+						"url": "{{API_URL}}/reservations/events",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cardId\": \"my_card_id\",\n    \"eventId\": \"my_event_id\",\n    \"quantities\": 1,\n    \"price\": 1000\n}"
+						},
+						"description": "Purchase event. Not using in current version."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Partner - Admin",
+			"description": "",
+			"item": [
+				{
+					"name": "admin/appcontext/update",
+					"request": {
+						"url": "{{API_URL}}/admin/appcontext/update",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Auth: isAdmin. Admin use this API to update app context, after change list supported locations, list test emails."
+					},
+					"response": []
+				},
+				{
+					"name": "/reports/users",
+					"request": {
+						"url": "{{API_URL}}/admin/reports/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Auth: admin, partner. Query list users for report."
+					},
+					"response": []
+				},
+				{
+					"name": "/reports/reservations/hotels",
+					"request": {
+						"url": "{{API_URL}}/admin/reports/reservations/hotels",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Auth: admin, partner. Query list pass reservations"
+					},
+					"response": []
+				},
+				{
+					"name": "/reports/reservations/events",
+					"request": {
+						"url": "{{API_URL}}/admin/reports/reservations/events",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Cavallo Point\",\n    \"url\" : \"http://www.cavallopoint.com/\",\n    \"phone\" : \"(415) 339-4700\",\n    \"instagram\" : \"@cavallopoint\",\n    \"city\" : \"San Francisco\",\n    \"neighborhood\": \"North Bay\",\n    \"fullAddress\": \"601 Murray Circle, Sausalito, CA 94965\",\n    \"image\" : {\n        \"url\" : \"https://cvp-dip.s3-us-west-2.amazonaws.com/hotels/cavallo_point\",\n        \"verified\" : true\n    }\n}"
+						},
+						"description": "Auth: admin, partner. Query list event reservations."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/empty",
+					"request": {
+						"url": "{{API_URL}}/hotel/empty",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Auth: partner. Init empty hotel after each partner sign in."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel",
+					"request": {
+						"url": "{{API_URL}}/hotel",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Cavallo Point Minh Minh\",\n    \"url\" : \"http://www.cavallopoint.com/\",\n    \"phone\" : \"(415) 339-4700\",\n    \"instagram\" : \"@cavallopoint\",\n    \"city\" : \"San Francisco\",\n    \"neighborhood\": \"North Bay\",\n    \"fullAddress\": \"601 Murray Circle, Sausalito, CA 94965\"\n}"
+						},
+						"description": "Auth: partner. Create hotel. Deprecated.\nUse POST /hotel/empty and PUT /hotel/:hotelId instead. "
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/:hotelId/image",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e465a9c9641199f2e62/image",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"enabled": true,
+									"src": "pool-The Standard Spa Miami Beach.jpg",
+									"value": ""
+								}
+							]
+						},
+						"description": "Auth: partner. Update hotel image"
+					},
+					"response": []
+				},
+				{
+					"name": "hotels/pending",
+					"request": {
+						"url": "{{API_URL}}/hotels/pending",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Cavallo Point Minh Minh\",\n    \"url\" : \"http://www.cavallopoint.com/\",\n    \"phone\" : \"(415) 339-4700\",\n    \"instagram\" : \"@cavallopoint\",\n    \"city\" : \"San Francisco\",\n    \"neighborhood\": \"North Bay\",\n    \"fullAddress\": \"601 Murray Circle, Sausalito, CA 94965\"\n}"
+						},
+						"description": "Auth: partner/admin.\nQuery list pending hotels."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/:hotelId",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e3a5a9c9641199f2e61",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Cavallo Point Minh Minh\",\n    \"url\" : \"http://www.cavallopoint.com/\",\n    \"phone\" : \"(415) 339-4700\",\n    \"instagram\" : \"@cavallopoint\",\n    \"city\" : \"San Francisco\",\n    \"neighborhood\": \"North Bay\",\n    \"fullAddress\": \"601 Murray Circle, Sausalito, CA 94965\"\n}"
+						},
+						"description": "Auth: partner. Update hotel info by id"
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/:hotelId",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e3a5a9c9641199f2e61?debug=1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Auth: partner. Delete hotel by id"
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/:hotelId",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e465a9c9641199f2e62?debug=1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Auth: partner. Get informations of hotel by id."
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/:hotelId/service",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e465a9c9641199f2e62/service",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Cavallo Point Minh Minh\",\n    \"type\": \"PoolService\"\n}"
+						},
+						"description": "Auth: partner. Add an amenity."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/service/:hoteServicelId",
+					"request": {
+						"url": "{{API_URL}}/hotel/service/57a99a2cc5ed76dc29edea9b",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Auth: partner. Get all amenities of hotel (by hotel id)"
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/service/:hotelServiceId",
+					"request": {
+						"url": "{{API_URL}}/hotel/service/57a99a2cc5ed76dc29edea9b",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"Spa\",\n  \"name\": \"Minh Minh Spa\"\n}"
+						},
+						"description": "Auth: partner. Update informations of an amenity."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/service/:hotelServiceId",
+					"request": {
+						"url": "{{API_URL}}/hotel/service/57a99a2cc5ed76dc29edea9b?debug=1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Auth: partner. Delete an amenity."
+					},
+					"response": []
+				},
+				{
+					"name": "hotel/service/:hotelServiceId/image",
+					"request": {
+						"url": "{{API_URL}}/hotel/service/57a99a2cc5ed76dc29edea9b/image",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "Auth: partner. Update amenity image."
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/:hotelId/service/:hotelServiceId/pass",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e465a9c9641199f2e62/service/57b184ab47eaace21d65b637/pass",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allotmentCount\":\"10\",\n    \"capacity\":\"10\",\n    \"passType\":\"PoolPass\",\n    \"title\":\"Pool Pass\",\n    \"duration\":{\"startTime\":720,\"endTime\":780},\n    \"price\":3000,\n    \"type\":\"pass\",\n    \"startDay\":\"0000-01-01\",\n    \"dueDay\":\"9999-12-31\"\n}"
+						},
+						"description": "Auth: partner. Add a pass."
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/pass/passId",
+					"request": {
+						"url": "{{API_URL}}/hotel/pass/57b5726b5eaa502b7769e0ef",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allotmentCount\":\"10\",\n    \"capacity\":\"10\",\n    \"passType\":\"PoolPass\",\n    \"title\":\"Pool Pass\",\n    \"duration\":{\"startTime\":720,\"endTime\":780},\n    \"price\":3000,\n    \"type\":\"pass\",\n    \"startDay\":\"0000-01-01\",\n    \"dueDay\":\"9999-12-31\"\n}"
+						},
+						"description": "Auth: partner. Get informations of a pass (by hotel id, pass id)."
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/:hotelId/passes",
+					"request": {
+						"url": "{{API_URL}}/hotel/57a40e465a9c9641199f2e62/passes",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allotmentCount\":\"10\",\n    \"capacity\":\"10\",\n    \"passType\":\"PoolPass\",\n    \"title\":\"Pool Pass\",\n    \"duration\":{\"startTime\":720,\"endTime\":780},\n    \"price\":3000,\n    \"type\":\"pass\",\n    \"startDay\":\"0000-01-01\",\n    \"dueDay\":\"9999-12-31\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/pass/passId",
+					"request": {
+						"url": "{{API_URL}}/hotel/pass/57b5726b5eaa502b7769e0ef",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allotmentCount\":\"10\",\n    \"capacity\":\"10\",\n    \"passType\":\"PoolPass\",\n    \"title\":\"Pool Pass\",\n    \"duration\":{\"startTime\":720,\"endTime\":780},\n    \"price\":3000,\n    \"type\":\"pass\",\n    \"startDay\":\"0000-01-01\",\n    \"dueDay\":\"9999-12-31\"\n}"
+						},
+						"description": "Delete a pass (by hotel id, pass id)."
+					},
+					"response": []
+				},
+				{
+					"name": "/hotel/pass/passId",
+					"request": {
+						"url": "{{API_URL}}/hotel/pass/57b5a63d4883b5f620f8fd2f",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "jsonerror",
+								"value": "true",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"allotmentCount\":\"11\",\n    \"capacity\":\"10\",\n    \"passType\":\"PoolPass\",\n    \"title\":\"Pool Pass\",\n    \"duration\":{\"startTime\":720,\"endTime\":780},\n    \"price\":3000,\n    \"type\":\"pass\",\n    \"startDay\":\"0000-01-01\",\n    \"dueDay\":\"9999-12-31\"\n}"
+						},
+						"description": "Auth: partner. Update a pass."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. Conversation",
+			"description": "",
+			"item": [
+				{
+					"name": "/groups",
+					"request": {
+						"url": "{{API_URL}}/groups",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Get all groups of current user. Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/contactdip",
+					"request": {
+						"url": "{{API_URL}}/groups/contactdip",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Send request to DIP Admin (for help). Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/:groupId",
+					"request": {
+						"url": "{{API_URL}}/groups/575a681d4b1cc9b9774c0ef8",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Query informations by group id. Return list member, last message.\nNot using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/:groupId/messages",
+					"request": {
+						"url": "{{API_URL}}/groups/575a681d4b1cc9b9774c0ef8/messages",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Query messages of group by id. Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/:groupId/members",
+					"request": {
+						"url": "{{API_URL}}/groups/575a681d4b1cc9b9774c0ef8/members",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Query list memners of group by id. Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/:groupId/seen",
+					"request": {
+						"url": "{{API_URL}}/groups/575a681d4b1cc9b9774c0ef8/seen",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Mark user seen last message. Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/groups/messages",
+					"request": {
+						"url": "{{API_URL}}/groups/messages",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"group\": \"575a681d4b1cc9b9774c0ef8\",\n    \"content\": \"test\"\n}"
+						},
+						"description": "Send message to group. Not using in current version."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "8. Etc - Not using",
+			"description": "",
+			"item": [
+				{
+					"name": "/devices/myDeviceId",
+					"request": {
+						"url": "{{API_URL}}/devices/myDeviceId",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				},
+				{
+					"name": "/devices",
+					"request": {
+						"url": "{{API_URL}}/devices",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				},
+				{
+					"name": "/devices/myDeviceId",
+					"request": {
+						"url": "{{API_URL}}/devices/myDeviceId",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				},
+				{
+					"name": "/wishlist",
+					"request": {
+						"url": "{{API_URL}}/wishlist",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"longitude\": 10.0,\n    \"latitude\": 10.0\n}"
+						},
+						"description": "Not using in current version"
+					},
+					"response": []
+				},
+				{
+					"name": "/plans",
+					"request": {
+						"url": "{{API_URL}}/plans",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test plan1\",\n    \"dipCredit\": 200,\n    \"amount\": 100,\n    \"planId\": \"test_plan1\",\n    \"interval\": \"week\",\n    \"intervalCount\": 1,\n    \"description\": \"test plan\" \n}"
+						},
+						"description": "Authorization: isAdmin\nNot using in current version"
+					},
+					"response": []
+				},
+				{
+					"name": "/promotions",
+					"request": {
+						"url": "{{API_URL}}/promotions/abc123",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "This API contains error. Not using in current version."
+					},
+					"response": []
+				},
+				{
+					"name": "/sales",
+					"request": {
+						"url": "{{API_URL}}/sales/abc",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				},
+				{
+					"name": "/announcements",
+					"request": {
+						"url": "{{API_URL}}/announcements",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				},
+				{
+					"name": "/activities",
+					"request": {
+						"url": "{{API_URL}}/activities",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{JWT}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"deviceToken\": \"my_token\"}"
+						},
+						"description": "Not use"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
