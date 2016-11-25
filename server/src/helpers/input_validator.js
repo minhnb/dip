@@ -7,7 +7,16 @@ const dipErrorDictionary = require('../constants/dipErrorDictionary');
 const DIPError = require('./DIPError');
 
 function validatorWrapper() {
-    return convert(validator(...arguments));
+    return (ctx, next) => {
+            return convert(validator(...arguments))(ctx, () => Promise.resolve()).catch(err => {
+                if (err instanceof DIPError) throw err;
+                let errorBadRequest = dipErrorDictionary.BAD_REQUEST;
+                errorBadRequest.details = err.message;
+                throw new DIPError(errorBadRequest);
+            }).then(() => {
+                return next();
+            });
+    }
 }
 
 function validatePassword(pwd) {
