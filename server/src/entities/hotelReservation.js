@@ -31,6 +31,7 @@ module.exports = function(reservation) {
                     return {
                         ref: offerEntity(offer.ref),
                         price: offer.price,
+                        duration: getOfferDuration(offer),
                         count: offer.count,
                         date: offer.date,
                         tax: utils.calculateTax(offer.price * offer.count),
@@ -54,3 +55,9 @@ module.exports = function(reservation) {
         beforeTax: reservation.beforeTax
     }
 };
+
+function getOfferDuration(offer) {
+    if (!offer.duration || !Number.isFinite(offer.duration.startTime)) {
+        return offer.ref.duration;
+    } else return offer.duration;
+}

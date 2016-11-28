@@ -55,6 +55,16 @@ const hotelSubReservationSchema = new Schema({
         price: {
             type: Number,
             required: true
+        },
+        duration: {
+            startTime: {
+                type: Number,
+                required: true
+            },
+            endTime: {
+                type: Number,
+                required: true
+            }
         }
     }]
 }, {

@@ -28,6 +28,7 @@ function convertOffer(offer) {
         //     ref: offer.ticket.ref ? ticketEntity(offer.ticket.ref) : null
         // },
         price: offer.price,
+        hourlyPrice: offer.hourlyPrice,
         type: isPopulatedData(offer.type) ? convertOfferType(offer.type) : offer.type,
         service: isPopulatedData(offer.service) ? serviceEntity(offer.service) : offer.service,
         hotel: isPopulatedData(offer.hotel) ? hotelEntity(offer.hotel) : offer.hotel,

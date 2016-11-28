@@ -82,6 +82,12 @@ const offerSchema = new Schema({
         type: Schema.Types.Mixed,
         required: false
     },
+    hourlyReservationCount: {
+        // format:
+        // date: [{_id: ..., startTime: ..., endTime: ..., count: ...}]
+        type: Schema.Types.Mixed,
+        required: false
+    },
     allotmentCount: {
         type: Number,
         required: true
@@ -106,9 +112,14 @@ const offerSchema = new Schema({
     //         required: true
     //     }
     // },
+    // Exactly 1 of price and hourlyPrice must be not empty
     price: {
         type: Number,
-        required: true
+        // required: true
+    },
+    hourlyPrice: {
+        type: Number,
+        // required: true
     },
     pendingReservationCount: {
         type: Schema.Types.Mixed,
@@ -130,6 +141,15 @@ const offerSchema = new Schema({
     }
 }, {
     timestamps: true
+});
+offerSchema.pre('validate', function(next) {
+    let hasPrice = Number.isFinite(this.price),
+        hasHourlyPrice = Number.isFinite(this.hourlyPrice);
+    if ((!hasPrice && !hasHourlyPrice) || (hasPrice && hasHourlyPrice)) {
+        next(Error('Exactly one of price and hourlyPrice must be set'));
+    } else {
+        next();
+    }
 });
 offerSchema.pre('save', function(next) {
     this.date = utils.convertDate(this.date);

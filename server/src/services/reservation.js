@@ -2,6 +2,7 @@
 
 const moment = require('moment-timezone');
 
+const mongoose = require('mongoose');
 const db = require('../db');
 const entities = require('../entities');
 
@@ -167,45 +168,72 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
         throw new DIPError(dipErrorDictionary.INVALID_QUANTITIES);
     }
 
-    if (userOffer.price != baseOffer.price) {
-        // ctx.throw(400, 'Unmatched offer price');
-        throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
-    }
-
     let startDay = moment().weekday(),
         startDate = moment().weekday(startDay).format('YYYY-MM-DD'),
         maxDaysReservation = moment(startDate).add(14, 'days').format('YYYY-MM-DD'),
         reserveDay = moment(userOffer.date).weekday(),
-        reserveDate = moment(userOffer.date).format('YYYY-MM-DD'),
-        offerTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.startTime/60, 'hours'));
+        reserveDate = moment(userOffer.date).format('YYYY-MM-DD');
 
-    // New rule: disable offers that has less than 1 hour to endTime
-    let lastAllowTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.endTime/60 - 1, 'hours'));
     let now = moment().tz(baseOffer.hotel.address.timezone);
 
     if(baseOffer.days.indexOf(reserveDay) == -1 ||
-        ((offerTime < now) && (lastAllowTime < now)) ||
         moment(reserveDate) > moment(maxDaysReservation) ||
         (baseOffer.dueDay && moment(baseOffer.dueDay) < moment(reserveDate)) ||
         moment(baseOffer.startDay) > moment(reserveDate) ||
         (baseOffer.offDays.indexOf(reserveDate) > -1)) {
-        // ctx.throw(400, 'Not serve');
         throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
     }
 
-    let reservationCount = 0;
-    let pendingReservationCount = 0;
-    if (baseOffer.reservationCount && baseOffer.reservationCount[reserveDate]) {
-        reservationCount = baseOffer.reservationCount[reserveDate];
-    }
+    let totalReservationCount = 0;
+    if (baseOffer.price) {
+        if (userOffer.price !== baseOffer.price) {
+            throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
+        }
+        let offerTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.startTime/60, 'hours'));
+        // New rule: disable offers that has less than 1 hour to endTime
+        let lastAllowTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(baseOffer.duration.endTime/60 - 1, 'hours'));
+        if ((offerTime < now) && (lastAllowTime < now)) {
+            throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
+        }
 
-    if (baseOffer.pendingReservationCount && baseOffer.pendingReservationCount[reserveDate]) {
-        pendingReservationCount = baseOffer.pendingReservationCount[reserveDate];
-    }
+        let reservationCount = 0;
+        let pendingReservationCount = 0;
+        if (baseOffer.reservationCount && baseOffer.reservationCount[reserveDate]) {
+            reservationCount = baseOffer.reservationCount[reserveDate];
+        }
 
-    if(reservationCount + pendingReservationCount + userOffer.count > baseOffer.allotmentCount)
-    {
-        // ctx.throw(400, 'Over booking');
+        if (baseOffer.pendingReservationCount && baseOffer.pendingReservationCount[reserveDate]) {
+            pendingReservationCount = baseOffer.pendingReservationCount[reserveDate];
+        }
+        totalReservationCount = reservationCount + pendingReservationCount;
+    } else {
+        if (userOffer.hourlyPrice !== baseOffer.hourlyPrice) {
+            throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
+        } else if (!userOffer.duration || !userOffer.duration.startTime || !userOffer.duration.endTime
+            || !Number.isInteger(userOffer.duration.startTime)
+            || !Number.isInteger(userOffer.duration.endTime)
+            || userOffer.startTime >= userOffer.endTime
+            || (userOffer.duration.startTime < baseOffer.duration.startTime)
+            || (userOffer.duration.endTime > baseOffer.duration.endTime)) {
+            throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
+        }
+        let hours = (userOffer.duration.endTime - userOffer.duration.startTime) / 60;
+        let price = userOffer.hourlyPrice * hours;
+        if (price !== userOffer.price) {
+            throw new DIPError(dipErrorDictionary.UNMATCHED_OFFER_PRICE);
+        }
+
+        let offerTime = moment.tz(reserveDate, baseOffer.hotel.address.timezone).add(moment.duration(userOffer.duration.startTime/60, 'hours'));
+        if (offerTime < now) {
+            throw new DIPError(dipErrorDictionary.OFFER_NOT_SERVE);
+        }
+        let reservationCount = [];
+        if (baseOffer.hourlyReservationCount && baseOffer.hourlyReservationCount[reserveDate]) {
+            reservationCount = baseOffer.hourlyReservationCount[reserveDate];
+        }
+        totalReservationCount = getHourlyReservationCount(userOffer.duration.startTime, userOffer.duration.endTime, reservationCount);
+    }
+    if(totalReservationCount + userOffer.count > baseOffer.allotmentCount) {
         throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
     }
 };
@@ -345,6 +373,7 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
 
                 offer.reserveDate = reserveDate;
                 offer.reserveCount = expected.count;
+                offer.reserveDuration = expected.duration;
 
                 if (!reservationServices.verifySpecialOffers(expected, offer)) {
                     // ctx.throw(400, 'Invalid special offer');
@@ -353,7 +382,7 @@ reservationServices.verifyOffers = function(ctx, next, offers) {
                 let addonPrice = expected.addons.reduce((total, addon) => {
                     return total + addon.price * addon.count;
                 }, 0);
-                price += expected.count * offer.price;
+                price += expected.count * expected.price;
                 price += addonPrice;
 
                 ctx.state.beforeTax += price;
@@ -459,9 +488,24 @@ reservationServices.markPromotionCodeIsUsed = function (ctx, next) {
 reservationServices.freezeOfferAmount = function(ctx, next) {
     let needUpdateOffers = ctx.state.needUpdateOffers;
     let p = needUpdateOffers.map(offer => {
-        let update = {$inc: {}};
-        let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
-        update.$inc[pendingReservationCount] = offer.reserveCount;
+        let update = {};
+        if (offer.price) {
+            update['$inc'] = {};
+            let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+            update.$inc[pendingReservationCount] = offer.reserveCount;
+        } else {
+            let hourlyReservationCount = `hourlyReservationCount.${offer.reserveDate}`,
+                reservePending = {
+                    _id: new mongoose.Types.ObjectId(),
+                    startTime: offer.reserveDuration.startTime,
+                    endTime: offer.reserveDuration.endTime,
+                    count: offer.reserveCount,
+                    pending: true
+                };
+            update.$push = {};
+            update.$push[hourlyReservationCount] = reservePending;
+            offer.reservePending = reservePending;
+        }
         return db.offers.update({_id: offer._id}, update);
     });
     return Promise.all(p).then(next);
@@ -470,12 +514,21 @@ reservationServices.freezeOfferAmount = function(ctx, next) {
 reservationServices.updateListOfferAndReleaseOfferAmount = function(ctx, next) {
     let needUpdateOffers = ctx.state.needUpdateOffers;
     let p = needUpdateOffers.map(offer => {
-        let update = {$inc: {}};
-        let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
-        let reservationCount = `reservationCount.${offer.reserveDate}`;
-        update.$inc[pendingReservationCount] = -offer.reserveCount;
-        update.$inc[reservationCount] = offer.reserveCount;
-        return db.offers.update({_id: offer._id}, update).then(result => {
+        let query = {_id: offer._id},
+            update = {};
+        if (offer.price) {
+            update.$inc = {};
+            let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+            let reservationCount = `reservationCount.${offer.reserveDate}`;
+            update.$inc[pendingReservationCount] = -offer.reserveCount;
+            update.$inc[reservationCount] = offer.reserveCount;
+        } else {
+            update.$set = {};
+            let hourlyReservationCount = `hourlyReservationCount.${offer.reserveDate}`;
+            query[`${hourlyReservationCount}._id`] = offer.reservePending._id;
+            update.$set[`${hourlyReservationCount}.$.pending`] = false;
+        }
+        return db.offers.update(query, update).then(result => {
         }, () => {
             console.error("releaseOfferAmount failed " + offer._id);
         });
@@ -486,9 +539,16 @@ reservationServices.updateListOfferAndReleaseOfferAmount = function(ctx, next) {
 reservationServices.releaseOfferAmount = function(listOffers) {
     return new Promise((resolve, reject) => {
         let p = listOffers.map(offer => {
-            let update = {$inc: {}};
-            let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
-            update.$inc[pendingReservationCount] = -offer.reserveCount;
+            let update = {};
+            if (offer.price) {
+                update.$inc = {};
+                let pendingReservationCount = `pendingReservationCount.${offer.reserveDate}`;
+                update.$inc[pendingReservationCount] = -offer.reserveCount;
+            } else {
+                update.$pull = {};
+                let hourlyReservationCount = `hourlyReservationCount.${offer.reserveDate}`;
+                update.$pull[hourlyReservationCount] = {_id: offer.reservePending._id, pending: true};
+            }
             return db.offers.update({_id: offer._id}, update).then(result => {
             }, () => {
                 console.error("releaseOfferAmount failed " + offer._id);
@@ -606,7 +666,8 @@ reservationServices.initHotelSubReservation = function(ctx, next) {
                     count: userOffer.count,
                     date: userOffer.date,
                     addons: addons,
-                    price: userOffer.data.price
+                    price: userOffer.price,
+                    duration: userOffer.duration || userOffer.data.duration
                 };
             })
         });
@@ -791,8 +852,8 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
     reservation.services.forEach(subReservation => {
         subReservation.offers.forEach(offer => {
             let date = moment(offer.date),
-                startTime = date.clone().add(moment.duration(offer.ref.duration.startTime / 60, 'hours')),
-                endTime = date.clone().add(moment.duration(offer.ref.duration.endTime / 60, 'hours'));
+                startTime = date.clone().add(moment.duration(offer.duration.startTime / 60, 'hours')),
+                endTime = date.clone().add(moment.duration(offer.duration.endTime / 60, 'hours'));
             passes.push({
                 passType: offer.ref.description,
                 passCount: offer.count,
@@ -822,4 +883,38 @@ function sendConfirmationEmail(user, reservation, chargeAmount) {
         email: user.email,
         name: user.nameOrEmail
     }, data);
+}
+
+function getHourlyReservationCount(startTime, endTime, reservationCount) {
+    let reserObj = Object.create(null);
+    reservationCount.forEach(entry => {
+        reserObj[entry.startTime] = reserObj[entry.startTime] || 0;
+        reserObj[entry.startTime] += entry.count;
+
+        reserObj[entry.endTime] = reserObj[entry.endTime] || 0;
+        reserObj[entry.endTime] -= entry.count;
+    });
+
+    let reserList = [];
+    Object.keys(reserObj).forEach(time => {
+        reserList.push({
+            time: time,
+            count: reserObj[time]
+        });
+    });
+    reserList.sort((a, b) => {
+        return a.time - b.time;
+    });
+    let currentCount = 0, i = 0;
+    while (i < reserList.length && reserList[i].time <= startTime) {
+        currentCount += reserList[i].count;
+        i += 1;
+    }
+    let maxCount = currentCount;
+    while (i < reserList.length && reserList[i].time < endTime) {
+        currentCount += reserList[i].count;
+        i += 1;
+        if (maxCount < currentCount) maxCount = currentCount;
+    }
+    return maxCount;
 }
