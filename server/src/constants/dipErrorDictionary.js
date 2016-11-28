@@ -51,7 +51,7 @@ module.exports = {
     },
     USER_NOT_FOUND: {
         status: 404,
-        code: "USER NOT FOUND",
+        code: "USER_NOT_FOUND",
         details: "User not found"
     },
     MISSING_EVENT: {
@@ -286,7 +286,7 @@ module.exports = {
     },
     INVALID_RATING: {
         status: 400,
-        code: "INVALID RATING",
+        code: "INVALID_RATING",
         details: "Invalid rating"
     },
     INVALID_MEMBERS: {
