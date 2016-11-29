@@ -234,7 +234,9 @@ reservationServices.checkValidOffer = function (userOffer, baseOffer) {
         totalReservationCount = getHourlyReservationCount(userOffer.duration.startTime, userOffer.duration.endTime, reservationCount);
     }
     if(totalReservationCount + userOffer.count > baseOffer.allotmentCount) {
-        throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING);
+        throw new DIPError(dipErrorDictionary.OFFER_OVERBOOKING, {
+            offerId: userOffer.id
+        });
     }
 };
 
